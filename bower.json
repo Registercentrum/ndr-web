@@ -1,0 +1,25 @@
+{
+  "name": "apps",
+  "version": "0.0.0",
+  "homepage": "https://github.com/lapidus/NDR_GIT",
+  "authors": [
+    "Daniel Lapidus <daniel@lapidus.se>"
+  ],
+  "license": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "1.2.6",
+    "angular-loading-bar" : "*",
+    "angular-ui-router" : "*",
+    "highcharts" : "*",
+    "d3": "*",
+    "underscore" : "*"
+
+  }
+}

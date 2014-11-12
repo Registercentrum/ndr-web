@@ -1,0 +1,77 @@
+<div class="pane border-bottom">
+    <h1>Mina patienter</h1>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="list-group patients-list">
+
+
+            <div class="list-group-item" style="height:40px">
+                <div class="media col-md-3">
+                    Personnummer
+                </div>
+
+                <div class="col-md-2">
+                    Senaste besök
+                </div>
+
+                <div class="col-md-1">
+                    Ålder
+                </div>
+
+                <div class="col-md-1">
+                    HbA1c
+                </div>
+
+                <div class="col-md-1">
+                </div>
+
+                <div class="col-md-4 text-center">
+                        Funktioner
+               </div>
+            </div>
+
+
+            <a href="#/inloggad/patient/{{ patient.SubjectKey }}" class="list-group-item" ng-repeat="patient in gridData">
+                <div class="media col-md-3">
+                    {{ patient.SubjectKey }}
+                </div>
+
+                <div class="col-md-2">
+                    {{ patient.InsertedAt }}
+                </div>
+
+                <div class="col-md-1">
+                    {{ patient.Age }}
+                </div>
+
+                <div class="col-md-1">
+                    {{ patient.HbA1c }}
+                </div>
+
+                <div class="col-md-1">
+                    {{ patient.BPSystolic }}
+                </div>
+
+                <div class="col-md-4 text-center">
+
+                    <button type="button" class="btn btn-default btn-sm"> Komplettera </button>
+
+                    <button type="button" class="btn btn-default btn-sm"> Nytt besök </button>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+

@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" ng-app="ndrApp" id="ng-app">
+<head>
+
+    <!--[if lte IE 8]>
+    <script>
+        document.createElement('ng-include');
+        document.createElement('ng-pluralize');
+        document.createElement('ng-view');
+
+        // Optionally these for CSS
+        document.createElement('ng:include');
+        document.createElement('ng:pluralize');
+        document.createElement('ng:view');
+
+    </script>
+    <script src="http://cdnjs.cloudfare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Nationella Diabetesregistret</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="css/styles.css" rel="stylesheet"/>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+
+
+<body ng-controller="AppController">
+
+
+
+<!-- Include the header on every page via a partial -->
+<div ng-include="'templates/common/header.html'"></div>
+
+
+<!-- Main content -->
+<div ui-view autoscroll="false"> </div>
+
+<!-- Include the footer on every page via a partial -->
+<div class="page-footer" ng-include="'templates/common/footer.html'"></div>
+
+
+
+
+<!-- LIBS -->
+
+<!-- UNDERSCORE -->
+<script src="bower_components/underscore/underscore.js"></script>
+
+<!-- D3 -->
+<script src="bower_components/d3/d3.js"></script>
+
+<!-- HIGHCHARTS -->
+<script src="bower_components/highcharts/highcharts.js"></script>
+<script src="bower_components/highcharts/highcharts-more.js"></script>
+<script src="bower_components/highcharts/themes/grid-light.js"></script>
+
+
+<!-- ANGULAR -->
+<script src="bower_components/angularjs/angular.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+
+
+<!-- RESTANGULAR -->
+<script src="bower_components/restangular/dist/restangular.js"></script>
+
+
+
+<!-- SRC: NDR APP -->
+
+<!-- Bootstrap the app -->
+<script src="src/app.js"></script>
+<script src="src/AppController.js"></script>
+<script src="src/services/dataService.js"></script>
+
+
+<!-- Interctive charts -->
+<script src="src/interactive/barChart.js"></script>
+
+<!-- Controllers -->
+<script src="src/pages/PatientsController.js"></script>
+<script src="src/pages/ResearchController.js"></script>
+<script src="src/pages/PatientController.js"></script>
+
+
+
+</body>
+</html>
