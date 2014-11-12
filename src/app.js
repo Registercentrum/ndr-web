@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangular'])
+angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangular','selectize'])
 
     //
     // The routing system
@@ -25,6 +25,7 @@ angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangula
 
             .state('guidelines', {
                 url: "/guidelines",
+                controller : "GuidelinesController",
                 templateUrl: templateURL + "guidelines/guidelines.html"
             })
 

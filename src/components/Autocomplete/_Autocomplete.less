@@ -1,0 +1,42 @@
+@import '../../../bower_components/selectize/dist/less/selectize.less';
+
+@selectize-color-text: red;
+@selectize-color-border: blue;
+@selectize-color-highlight: rgba(125,168,208,0.2);
+@selectize-color-input: #fff;
+@selectize-color-input-full: @selectize-color-input;
+@selectize-color-disabled: #fafafa;
+@selectize-color-item: magenta;
+@selectize-color-item-text: @selectize-color-text;
+@selectize-color-item-border: #d0d0d0;
+@selectize-color-item-active: #e8e8e8;
+@selectize-color-item-active-text: @selectize-color-text;
+@selectize-color-item-active-border: #cacaca;
+@selectize-color-dropdown: #fff;
+@selectize-color-dropdown-border: @selectize-color-border;
+@selectize-color-dropdown-border-top: #f0f0f0;
+@selectize-color-dropdown-item-active: #f5fafd;
+@selectize-color-dropdown-item-active-text: #495c68;
+@selectize-color-dropdown-item-create-text: rgba(red(@selectize-color-text), green(@selectize-color-text), blue(@selectize-color-text), 0.5);
+@selectize-color-dropdown-item-create-active-text: @selectize-color-dropdown-item-active-text;
+@selectize-color-optgroup: @selectize-color-dropdown;
+@selectize-color-optgroup-text: @selectize-color-text;
+
+
+.Autocomplete {
+
+  border: 10px solid red;
+
+}
+
+
+.Autocomplete.Autocomplete--bare {
+
+  border: none;
+
+  .selectize-input {
+    background-color: black;
+  }
+
+
+}
