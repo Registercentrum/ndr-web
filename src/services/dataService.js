@@ -18,15 +18,25 @@ angular.module('ndrApp')
             APIKey : "LkUtebH6B428KkPqAAsV"
         })
 
-
+        /* RESTANGULAR OBJECTS */
         var units = Restangular.all('unit');
+        var counties = Restangular.all('county');
+        //.all('cars')
+
 
         units.getList().then(function(units) {
             self.data.units = units;
-
-            console.log("units", units);
-
         });
+
+        counties.getList().then(function(counties) {
+            self.data.counties = counties;
+        });
+
+
+        /* Returns a promise */
+        this.getOne = function (type, id){
+            return Restangular.one(type, id).get();
+        }
 
 
 
