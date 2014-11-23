@@ -1,12 +1,12 @@
 @import '../../../bower_components/selectize/dist/less/selectize.less';
 
-@selectize-color-text: red;
-@selectize-color-border: blue;
+@selectize-color-text: @gray-darker;
+@selectize-color-border: @gray-darker;
 @selectize-color-highlight: rgba(125,168,208,0.2);
 @selectize-color-input: #fff;
 @selectize-color-input-full: @selectize-color-input;
 @selectize-color-disabled: #fafafa;
-@selectize-color-item: magenta;
+@selectize-color-item: @gray-lighter;
 @selectize-color-item-text: @selectize-color-text;
 @selectize-color-item-border: #d0d0d0;
 @selectize-color-item-active: #e8e8e8;
@@ -23,19 +23,38 @@
 @selectize-color-optgroup-text: @selectize-color-text;
 
 
+
+@selectize-width-item-border: 0;
+@selectize-max-height-dropdown: 200px;
+
+@selectize-padding-x: 8px;
+@selectize-padding-y: 8px;
+@selectize-padding-item-x: 6px;
+@selectize-padding-item-y: 2px;
+@selectize-padding-dropdown-item-x: @selectize-padding-x;
+@selectize-padding-dropdown-item-y: 5px;
+@selectize-margin-item-x: 3px;
+@selectize-margin-item-y: 3px;
+
+@selectize-arrow-size: 5px;
+@selectize-arrow-color: #808080;
+@selectize-arrow-offset: 5px;
+
+
 .Autocomplete {
 
-  border: 10px solid red;
+  width:300px;
 
 }
 
 
 .Autocomplete.Autocomplete--bare {
 
-  border: none;
 
   .selectize-input {
-    background-color: black;
+    border: none !important;
+    background-color: transparent;
+
   }
 
 

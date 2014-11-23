@@ -14,6 +14,7 @@
     "commit": "5eebee88b258af38e47a9d07ddd0751275b0f7ba"
   },
   "_source": "git://github.com/highslide-software/highcharts-release.git",
-  "_target": "*",
-  "_originalSource": "highcharts"
+  "_target": "~4.0.4",
+  "_originalSource": "highcharts",
+  "_direct": true
 }

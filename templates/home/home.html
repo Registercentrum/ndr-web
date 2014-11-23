@@ -1,12 +1,47 @@
-<div class="well">
-    <pre>
-        {{ units | json }}
-    </pre>
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-8">
+
+            <div class="Panel">
+
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="Panel">
+
+                <h1 class="h3">Nyheter</h1>
+
+                <div ng-repeat="news in newsFeed">
+                    <h5><span ng-repeat="category in news.categories">{{ category.name }}</span></h5>
+                    {{ news.title }}
+                    {{ news.createdAt | date }}
+
+                </div>
+
+                <div newsfeed></div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
 </div>
 
-<div class="row col-wrap">
 
-    <div class="col-md-7">
+<div class="row">
+
+    <div class="col-md-8">
         <div class="pane no-padding equal-height">
 
             <img class="img-responsive" style="width: 100%" ng-src="" alt="Årsrapport" />

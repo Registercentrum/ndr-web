@@ -1,66 +1,56 @@
-<div id="top-bar">
+<div class="Header">
 
-    <div class="container">
 
-        <a class="logo navbar-btn pull-left" ui-sref="home" title="Start">
-            <img src="images/logo.png" alt="Start" />
-        </a>
-
-        <div class="pull-right" style="position: relative;top:60px;right:0px">
-            <span ui-sref-active="active"><a ui-sref="page({id: '404'})"><i class="icon-lightbulb-1"></i>In English</a></span>
-            <span ui-sref-active="active"><a ui-sref="page({id: '404'})"><i class="icon-lightbulb-1"></i>Forskning</a></span>
-            <span ui-sref-active="active"><a ui-sref="page({id: '404'})"><i class="icon-lightbulb-1"></i>Press</a></span>
-            <span ui-sref-active="active"><a ui-sref="page({id: '404'})"><i class="icon-lightbulb-1"></i>Blanketter</a></span>
+    <div class="Header-extras">
+        <div class="container">
+            <a class="Logo pull-left" ui-sref="home" title="Start">
+                <img src="images/logo.png" alt="Start" />
+            </a>
         </div>
     </div>
 
-</div>
+    <!-- Static navbar -->
+    <div class="Header-navbar navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li ng-class="{active: $state.includes('statistics')}" class="dropdown">
+                        <a class="dropdown-toggle" ui-sref="statistics" ui-sref-active-eq="statistics" data-toggle="dropdown"><i class="fa fa-bar-chart"></i> Statistik</a>
+                        <ul class="dropdown-menu">
+                            <li class="" ui-sref-active="active"><a ui-sref="statistics.sweden">Hela Sverige</a>
+
+                        </ul>
+                    </li>
 
 
-<!-- Static navbar -->
-<div class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+                    <li ui-sref-active="active"><a ui-sref="improvement"><i class="fa fa-lightbulb-o"></i> Förbättringsprojekt</a></li>
+                    <li ui-sref-active="active"><a ui-sref="research"><i class="fa fa-flash"></i> Forskning</a></li>
+
+                    <li ui-sref-active="active"><a ui-sref="patient"><i class="fa fa-user"></i> För dig med diabetes</a></li>
+                    <li ui-sref-active="active"><a ui-sref="about"><i class="fa fa-map-marker"></i> Om NDR</a></li>
+                    <li ui-sref-active="active"><a ui-sref="guidelines"><i class="fa fa-lightbulb-o"></i> Style guidelines</a></li>
+
+                    <!--<li ui-sref-active-eq="active"><a ui-sref="account.home"><i class="glyphicon glyphicon-home"></i> Min startsida</a></li>-->
+
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+
+                </ul>
+            </div><!--/.nav-collapse -->
         </div>
-
-
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-
-                <li ng-class="{active: $state.includes('statistics')}" class="dropdown">
-                    <a class="dropdown-toggle" ui-sref-active-eq="statistics.sweden" data-toggle="dropdown"><i class="glyphicon glyphicon-stats"></i> Statistik</a>
-                    <ul class="dropdown-menu">
-                        <li class="" ui-sref-active="active"><a ui-sref="statistics.sweden">Hela Sverige</a>
-                        <li class="divider"></li>
-                        <li><a ui-sref="statistics.compare">Jämför landsting</a></li>
-                        <li class="divider"></li>
-                        <li><a href="">Jämför vårdenheter</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Skräddarsydd statistik</a></li>
-                        <li class="divider"></li>
-                    </ul>
-                </li>
-
-
-                <li ui-sref-active="active"><a ui-sref="page({id: 'trender'})"><i class="glyphicon glyphicon-flash"></i>Trender & Analys</a></li>
-                <li ui-sref-active="active"><a ui-sref="page({id: 'forbattringsprojekt'})"><i class="icon-lightbulb-1"></i> Förbättringsprojekt</a></li>
-                <li ui-sref-active="active"><a ui-sref="page({id: 'vanliga-fragor'})"><i class="icon-help-circled"></i> Vanliga frågor</a></li>
-                <li ui-sref-active="active"><a ui-sref="page({id: 'om-ndr'})"><i class="icon-location-outline"></i> Om NDR</a></li>
-                <li ui-sref-active-eq="active"><a ui-sref="account.home"><i class="glyphicon glyphicon-home"></i> Min startsida</a></li>
-
-
-
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-
-
-            </ul>
-        </div><!--/.nav-collapse -->
     </div>
+
 </div>

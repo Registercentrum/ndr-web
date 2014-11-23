@@ -18,19 +18,39 @@ angular.module('ndrApp')
             APIKey : "LkUtebH6B428KkPqAAsV"
         })
 
+
         /* RESTANGULAR OBJECTS */
-        var units = Restangular.all('unit');
-        var counties = Restangular.all('county');
-        //.all('cars')
+        var endpoints = {
+            units                   :    Restangular.all('unit'),
+            counties                :    Restangular.all('county'),
+            news                    :    Restangular.all('news'),
+            indicatorresult         :    Restangular.one('indicatorresult')
+        }
 
 
-        units.getList().then(function(units) {
+
+        endpoints.units.getList().then(function(units) {
             self.data.units = units;
         });
 
-        counties.getList().then(function(counties) {
+        endpoints.counties.getList().then(function(counties) {
             self.data.counties = counties;
         });
+
+
+        this.getList = function (type){
+           return endpoints[type].getList();
+        }
+
+
+        this.getOne = function (type, id){
+            return Restangular.one(type, id).get();
+        }
+
+        this.getStats = function (params){
+            return endpoints.indicatorresult.get(params);
+        }
+
 
 
         /* Returns a promise */

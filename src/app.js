@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangular','selectize'])
+angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','selectize'])
 
     //
     // The routing system
@@ -19,6 +19,7 @@ angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangula
         $stateProvider
 
             .state('home', {
+                controller : "HomeController",
                 url: "/",
                 templateUrl: templateURL + "home/home.html"
             })
@@ -26,32 +27,39 @@ angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangula
             .state('guidelines', {
                 url: "/guidelines",
                 controller : "GuidelinesController",
-                templateUrl: templateURL + "guidelines/guidelines.html"
+                templateUrl: "src/Pages/guidelines/guidelines.html"
+            })
+
+            .state('patient', {
+                url: "/for-dig-med-diabetes",
+                //controller : "Controller",
+                templateUrl: "src/pages/Patient/patient.html"
             })
 
             /* Statistics */
 
             .state('statistics', {
                 url: "/statistik",
-                templateUrl: templateURL + "statistics/statistics.html",
+                templateUrl: "src/pages/Statistics/statistics.html",
                 //controller: "StatisticsController"
             })
 
 
             .state('statistics.compare', {
                 url: "/jamfor/",
-                templateUrl: templateURL + "statistics/statistics.compare.html"
+                templateUrl: "src/pages/Statistics/statistics.compare.html"
             })
 
             .state('statistics.sweden', {
                 url: "/riket/",
-                templateUrl: templateURL + "statistics/statistics.sweden.html"
+                templateUrl: "src/pages/Statistics/statistics.sweden.html"
             })
 
 
             .state('statistics.county', {
-                url: "/landsting/:countyID",
-                templateUrl: templateURL + "statistics/statistics.county.html"
+                controller : "CountyController",
+                url: "/landsting/:id",
+                templateUrl: "src/pages/Statistics/statistics.county.html"
             })
 
 
@@ -63,7 +71,17 @@ angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangula
                 controller : "ResearchController"
             })
 
+            .state('improvement', {
+                url: "/forskning",
+                templateUrl: templateURL + "research/research.html",
+                controller : "ResearchController"
+            })
 
+            .state('about', {
+                url: "/om-ndr",
+                templateUrl: "src/pages/About/about.html"
+                //controller : "ResearchController"
+            })
 
             /* Logged in states */
 
@@ -111,9 +129,4 @@ angular.module('ndrApp', ['ui.router', 'chieffancypants.loadingBar', 'restangula
                     }*/
                 }
             })
-
-
-
-
     })
-

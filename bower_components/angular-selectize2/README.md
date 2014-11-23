@@ -8,7 +8,7 @@ I decided to adapt Selectize for Angular after being disatisfied with the perfor
 Add the directive to `<div>` elements. It will not work with `<select>` because of conflicts with ngOptions.
 
 ##Demo
-[Try the Plunker here](http://plnkr.co/edit/4J6IUj?p=preview)
+[Try the Plunker here](http://plnkr.co/edit/pc3eT8?p=preview)
 
 ## Requirements
 
@@ -28,9 +28,9 @@ This will copy the angular-selectize2 files into your `bower_components` folder,
 ```html
 <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css ">
 <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
-<script type="text/javascript" src="bower_components/selectize/dist/js/standalone/selectize.min.js.js"></script>
+<script type="text/javascript" src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="bower_components/angular-selectize/dist/selectize.js"></script>
+<script type="text/javascript" src="bower_components/angular-selectize2/dist/selectize.js"></script>
 ```
 
 (Note that `jquery` must be loaded before `angular` so that it doesn't use `jqLite` internally)

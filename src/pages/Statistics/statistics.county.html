@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="Autocomplete Autocomplete--bare" selectize="config" options='model.autocompleteList' ng-model="model.selectedGeo"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="Panel">
+                Title
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel">
+                Title
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel">
+                Title
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel">
+                Jmf hbac1
+
+                <div class="column-chart" model="model.data.hba1c"></div>
+
+
+                <pre>
+                    {{ model.data.hba1c.statSet | json }}
+                </pre>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Nyckelindikatorer -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="Panel">
+                Title
+
+                <pre>
+                    {{ model | json }}
+                </pre>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

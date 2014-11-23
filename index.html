@@ -24,6 +24,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="bower_components/angular-loading-bar/build/loading-bar.css" rel="stylesheet"/>
     <link href="css/styles.css" rel="stylesheet"/>
 
 
@@ -41,7 +44,6 @@
 <body ng-controller="AppController">
 
 
-
 <!-- Include the header on every page via a partial -->
 <div ng-include="'templates/common/header.html'"></div>
 
@@ -57,11 +59,15 @@
 
 <!-- LIBS -->
 
+<!-- jQuery -->
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+
 <!-- UNDERSCORE -->
 <script src="bower_components/underscore/underscore.js"></script>
 
 <!-- D3 -->
-<script src="bower_components/d3/d3.js"></script>
+<script charset="utf-8"  src="bower_components/d3/d3.js"></script>
+
 
 <!-- HIGHCHARTS -->
 <script src="bower_components/highcharts/highcharts.js"></script>
@@ -69,11 +75,8 @@
 <script src="bower_components/highcharts/themes/grid-light.js"></script>
 
 
-<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
-
-
 <!-- ANGULAR -->
-<script src="bower_components/angularjs/angular.js"></script>
+<script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 
@@ -91,18 +94,23 @@
 <!-- Bootstrap the app -->
 <script src="src/app.js"></script>
 <script src="src/AppController.js"></script>
-<script src="src/components/Guidelines/GuidelinesController.js"></script>
+<script src="src/pages/Guidelines/GuidelinesController.js"></script>
 
 <script src="src/services/dataService.js"></script>
 
 
 <!-- Interctive charts -->
-<script src="src/components/interactive/barChart.js"></script>
+<script src="src/components/Interactive/highcharts/columnChart.js"></script>
+
 
 <!-- Controllers -->
+<script src="src/pages/County/CountyController.js"></script>
+
+
 <script src="src/pages/PatientsController.js"></script>
 <script src="src/pages/ResearchController.js"></script>
 <script src="src/pages/PatientController.js"></script>
+<script src="src/components/Home/HomeController.js"></script>
 
 
 

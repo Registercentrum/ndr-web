@@ -14,12 +14,13 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "1.2.6",
+    "angular": "1.2.6",
     "angular-loading-bar": "*",
     "angular-ui-router": "*",
     "highcharts": "*",
     "d3": "*",
     "underscore": "*",
-    "angular-selectize2": "~0.5.1"
+    "angular-selectize2": "0.6",
+    "jquery": "~1.x"
   }
 }
