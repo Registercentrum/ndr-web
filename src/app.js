@@ -21,7 +21,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
             .state('home', {
                 controller : "HomeController",
                 url: "/",
-                templateUrl: templateURL + "home/home.html"
+                templateUrl: "src/Pages/Home/home.html"
             })
 
             .state('guidelines', {
@@ -44,23 +44,29 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
                 //controller: "StatisticsController"
             })
 
-
-            .state('statistics.compare', {
-                url: "/jamfor/",
+            .state('compare', {
+                url: "/knappen",
                 templateUrl: "src/pages/Statistics/statistics.compare.html"
             })
 
-            .state('statistics.sweden', {
-                url: "/riket/",
-                templateUrl: "src/pages/Statistics/statistics.sweden.html"
+
+            .state('profiles', {
+                url: "/profil",
+                templateUrl: "src/pages/Profiles/profiles.html",
+                //controller: "StatisticsController"
             })
 
-
-            .state('statistics.county', {
+            .state('profiles.county', {
                 controller : "CountyController",
                 url: "/landsting/:id",
-                templateUrl: "src/pages/Statistics/statistics.county.html"
+                templateUrl: "src/pages/Profiles/profiles.county.html"
             })
+
+           /* .state('profiles.unit', {
+                controller : "UnitController",
+                url: "/enhet/:id",
+                templateUrl: "src/pages/Statistics/profiles.unit.html"
+            })*/
 
 
 
