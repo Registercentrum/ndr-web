@@ -24,9 +24,9 @@ angular.module('ndrApp')
             units                   :    Restangular.all('unit'),
             counties                :    Restangular.all('county'),
             news                    :    Restangular.all('news'),
-            indicatorresult         :    Restangular.one('indicatorresult')
+            indicatorresult         :    Restangular.one('indicatorresult'),
+            researchproject         :    Restangular.all('researchproject')
         }
-
 
 
         endpoints.units.getList().then(function(units) {

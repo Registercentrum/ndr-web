@@ -1,0 +1,67 @@
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">Forskning</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="Panel">
+
+                <article ng-repeat="publication in publications">
+
+                    <!--  "id": 2,
+    "name": "Hypertension in diabetes: trends in clinical control in repeated large-scale national surveys from Sweden",
+    "laymansDescription": "Studie av blodtrycksnivåer under det sena 1990-talet hos patienter med typ 1- och typ 2-diabetes, talande för en långsam successiv förbättring.",
+    "firstAuthor": "Nilsson PM",
+    "lastAuthor": "Cederholm J",
+    "otherAuthor": "Gudbjörnsdottir S, Eliasson B",
+    "dateOfSubmission": null,
+    "dateOfPublication": "2003-01-01T00:00:00",
+    "magazine": "J Hum Hypertens",
+    "issue": "2003;17",
+    "pages": "37-44",
+    "status": {
+      "id": 5,
+      "text": "Publicerat"
+    },
+    "ethicsApprovalStatus": {
+      "id": 2,
+      "text": "Ej relevant"
+    },
+    "image": null,
+    "pubMedURL": null,
+    "route": "researchproject",
+    "reqParams": null,
+    "fromServer": true,
+    "parentResource": null,
+    "restangularCollection": false
+  },
+  {-->
+                    <h5>{{publication.dateOfPublication | date: 'mediumDate' }}</h5><!--/*'d MMMM, yyyy'*/ -->
+                    <h3>
+                        {{ publication.name }}
+                    </h3>
+                    <p>
+                        {{ publication.laymansDescription }}
+                    </p>
+
+                </article>
+
+
+                <pre>
+                    {{ publications | json }}
+                </pre>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>

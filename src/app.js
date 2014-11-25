@@ -73,9 +73,11 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
 
             .state('research', {
                 url: "/forskning",
-                templateUrl: templateURL + "research/research.html",
+                templateUrl: "src/pages/Research/research.html",
                 controller : "ResearchController"
             })
+
+
 
             .state('improvement', {
                 url: "/forskning",
