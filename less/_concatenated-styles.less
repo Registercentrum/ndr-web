@@ -5,72 +5,6 @@
 **/
 
 
-// Grays
-@gray-darker: #222222;
-@gray-dark: #333333;
-@gray: #555555;
-@gray-light: #999999;
-@gray-lighter: #eeeeee;
-
-@ndr-white : #FFFFFF;
-@ndr-gray : #F6F5EE;
-@ndr-semidark : #555;
-@ndr-dark : #333;
-@ndr-yellow : #FFCC01;
-@ndr-green : #72BE9C;
-@ndr-darkgreen : #278470;
-@ndr-blue : #74BAD8;
-@ndr-purple : #7C4791;
-
-
-// Brand Colors
-@brand-primary: #428bca;
-@brand-success: #5cb85c;
-@brand-warning: #f0ad4e;
-@brand-danger: #d9534f;
-@brand-info: #5bc0de;
-
-
-// Scaffolding
-@body-bg: @ndr-gray;
-@text-color: @gray-dark;
-@link-color: @brand-primary;
-@link-hover-color: darken(@link-color, 15%);
-@padding-base-vertical: 6px;
-@padding-base-horizontal: 12px;
-@padding-large-vertical: 10px;
-@padding-large-horizontal: 16px;
-@padding-small-vertical: 5px;
-@padding-small-horizontal: 10px;
-@border-radius-base: 4px;
-@border-radius-large: 6px;
-@border-radius-small: 3px;
-@line-height-large: 1.33;
-@line-height-small: 1.5;
-@component-active-bg: @brand-primary;
-
-
-// Typography
-@font-family-sans-serif: "Open Sans";
-@font-family-serif: PT Serif;
-@font-family-monospace: Monaco;
-@font-family-base: @font-family-sans-serif;
-@font-size-base: 14px;
-@font-size-large: ceil(@font-size-base * 1.25);
-@font-size-small: ceil(@font-size-base * 0.85);
-@font-size-h1: floor((@font-size-base * 2.6));
-@font-size-h2: floor((@font-size-base * 2.15));
-@font-size-h3: floor((@font-size-base * 1.7));
-@font-size-h4: floor((@font-size-base * 1.25));
-@font-size-h5: @font-size-base;
-@font-size-h6: floor((@font-size-base * 0.85));
-@line-height-base: 1.428571429;
-@line-height-computed: floor(@font-size-base * @line-height-base);
-@headings-font-family: @font-family-base;
-@headings-font-weight: 300;
-@headings-line-height: 1.1;
-@headings-color: inherit;
-
 
 // Buttons
 @btn-font-weight: normal;
@@ -269,24 +203,39 @@ h3, .h3 {
 @import "../bower_components/bootstrap/less/bootstrap";
 @import "_variables";
 
-//@import "../src/components/Autocomplete/_Autocomplete";
-//@import "../src/components/Footer/_Footer";
-//@import "../src/components/Header/_Header";
-//@import "../src/components/Panel/_Panel";
-//@import "../src/components/Buttons/_Buttons";
-//@import "../src/components/Typography/_Typography";
+// Grays
+@gray-darker: #222222;
+@gray-dark: #333333;
+@gray: #555555;
+@gray-light: #999999;
+@gray-lighter: #eeeeee;
+
+@ndr-white : #FFFFFF;
+@ndr-gray : #F6F5EE;
+@ndr-semidark : #555;
+@ndr-dark : #333;
+@ndr-yellow : #FFCC01;
+@ndr-green : #72BE9C;
+@ndr-darkgreen : #278470;
+@ndr-blue : #74BAD8;
+@ndr-purple : #7C4791;
+
+
+// Brand Colors
+@brand-primary: #428bca;
+@brand-success: #5cb85c;
+@brand-warning: #f0ad4e;
+@brand-danger: #d9534f;
+@brand-info: #5bc0de;
 
 
 body {
   background: @ndr-gray;
+  line-height: 1.5;
 }
 
 p {
   font-weight: 300;
-}
-
-article {
-  border: 1px solid red;
 }
 @import '../bower_components/selectize/dist/less/selectize.less';
 
@@ -407,6 +356,30 @@ article {
 
 }
 
+.Page-title {
+  &:extend(.page-header);
+  margin-top: 20px;
+}
+
+
+
+// Scaffolding
+@body-bg: @ndr-gray;
+@text-color: @gray-dark;
+@link-color: @brand-primary;
+@link-hover-color: darken(@link-color, 15%);
+@padding-base-vertical: 6px;
+@padding-base-horizontal: 12px;
+@padding-large-vertical: 10px;
+@padding-large-horizontal: 16px;
+@padding-small-vertical: 5px;
+@padding-small-horizontal: 10px;
+@border-radius-base: 4px;
+@border-radius-large: 6px;
+@border-radius-small: 3px;
+@line-height-large: 1.33;
+@line-height-small: 1.5;
+@component-active-bg: @brand-primary;
 //== Panels
 
 @panel-bg:                    #fff;
@@ -443,8 +416,7 @@ article {
 @panel-danger-border:         @state-danger-border;
 @panel-danger-heading-bg:     @state-danger-bg;
 
-.Panel{
-
+.Panel {
   margin-bottom: @line-height-computed;
   background-color: @ndr-white;
   border-radius: @panel-border-radius;
@@ -452,22 +424,41 @@ article {
 }
 
 
-.Panel--green{
+.Panel--green {
   background-color: @ndr-green;
   color: @ndr-white;
 }
 
-.Panel--purple{
+.Panel--purple {
   background-color: @ndr-purple;
   color: @ndr-white;
-
 }
 
-.Panel--blue{
+.Panel--blue {
   background-color: @ndr-blue;
   color: @ndr-white;
 }
-.page-header{
-  margin-top: 20px;
-}
+
+
+
+// Typography
+@font-family-sans-serif: "Open Sans";
+@font-family-serif: PT Serif;
+@font-family-monospace: Monaco;
+@font-family-base: @font-family-sans-serif;
+@font-size-base: 14px;
+@font-size-large: ceil(@font-size-base * 1.25);
+@font-size-small: ceil(@font-size-base * 0.85);
+@font-size-h1: floor((@font-size-base * 2.6));
+@font-size-h2: floor((@font-size-base * 2.15));
+@font-size-h3: floor((@font-size-base * 1.7));
+@font-size-h4: floor((@font-size-base * 1.25));
+@font-size-h5: @font-size-base;
+@font-size-h6: floor((@font-size-base * 0.85));
+@line-height-base: 1.428571429;
+@line-height-computed: floor(@font-size-base * @line-height-base);
+@headings-font-family: @font-family-base;
+@headings-font-weight: 300;
+@headings-line-height: 1.1;
+@headings-color: inherit;
 
