@@ -1,0 +1,22 @@
+
+<ul class="SmallFeed">
+    <li ng-repeat="item in model.data" class="SmallFeed-item">
+
+    <p class="SmallFeed-category" >
+        <span ng-repeat="category in item.categories">
+            {{ category.name }}
+        </span>
+    </p>
+
+    <h3 class="SmallFeed-title">{{ item.title }}</h3>
+
+    </li>
+</ul>
+
+ <a class="Button btn-default">Se alla nyheter</a>
+
+ <pre>
+     {{ model.data | json }}
+ </pre>
+
+
