@@ -1,12 +1,17 @@
 angular.module("ndrApp")
     .controller('HomeController', ['$scope', 'dataService', function($scope, dataService) {
 
-        $scope.newsFeed = undefined
+        $scope.model = {
 
+            feedModelNews : {}
+
+        }
 
         dataService.getList("news").then(function (data){
             console.log("got news", data);
-            $scope.newsFeed = data;
+            $scope.model.feedModelNews = {
+                data : data
+            }
         })
 
 

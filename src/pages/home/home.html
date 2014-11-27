@@ -5,7 +5,7 @@
         <div class="col-md-8">
 
             <div class="Panel">
-
+                    f.kasf
             </div>
 
 
@@ -15,16 +15,7 @@
 
             <div class="Panel">
 
-                <h1 class="h3">Nyheter</h1>
-
-                <div ng-repeat="news in newsFeed">
-                    <h5><span ng-repeat="category in news.categories">{{ category.name }}</span></h5>
-                    {{ news.title }}
-                    {{ news.createdAt | date }}
-
-                </div>
-
-                <div newsfeed></div>
+               <div feed model="model.feedModelNews" type="small"></div>
 
             </div>
 
