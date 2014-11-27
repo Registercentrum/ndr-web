@@ -29,6 +29,7 @@ angular.module('ndrApp')
         }
 
 
+        /* POPULATE UNITS AND COUNTIES */
         endpoints.units.getList().then(function(units) {
             self.data.units = units;
         });
@@ -38,10 +39,10 @@ angular.module('ndrApp')
         });
 
 
+        /* METHODS - returns promises */
         this.getList = function (type){
            return endpoints[type].getList();
         }
-
 
         this.getOne = function (type, id){
             return Restangular.one(type, id).get();
@@ -50,14 +51,6 @@ angular.module('ndrApp')
         this.getStats = function (params){
             return endpoints.indicatorresult.get(params);
         }
-
-
-
-        /* Returns a promise */
-        this.getOne = function (type, id){
-            return Restangular.one(type, id).get();
-        }
-
 
 
     }])
