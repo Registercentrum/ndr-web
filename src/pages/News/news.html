@@ -1,0 +1,41 @@
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="Page-title">Nyheter</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="Panel">
+
+                <article ng-repeat="newsItem in news">
+
+                    <h2 class="News-title">{{ newsItem.title }}</h2>
+
+                    <p class="News-date">{{ newsItem.createdAt | date: 'mediumDate' }}</p>
+
+                    <div class="News-body">
+
+                        {{ newsItem.body }}
+
+                    </div>
+
+                </article>
+
+
+                <!--<pre>-->
+                    <!--{{ news | json }}-->
+                <!--</pre>-->
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
