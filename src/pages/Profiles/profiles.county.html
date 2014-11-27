@@ -32,14 +32,7 @@
         <div class="col-md-3">
             <div class="Panel">
                 Jmf hbac1
-
                 <div class="column-chart" model="model.data.hba1c"></div>
-
-
-                <pre>
-                    {{ model.data.hba1c.statSet | json }}
-                </pre>
-
             </div>
         </div>
 
@@ -49,10 +42,14 @@
     <div class="row">
         <div class="col-md-12">
             <div class="Panel">
-                Title
+                Nyckelindikatorer
+
+                   <pre>
+                    {{ data.indicators | json }}
+                </pre>
 
                 <pre>
-                    {{ model | json }}
+                    {{ model.data.keyIndicators | json }}
                 </pre>
 
             </div>

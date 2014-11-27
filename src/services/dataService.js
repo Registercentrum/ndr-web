@@ -9,7 +9,8 @@ angular.module('ndrApp')
 
         this.data = {
             units : [],
-            counties : []
+            counties : [],
+            indicators : []
         }
 
         /* RESTANGULAR CONFIG */
@@ -25,18 +26,9 @@ angular.module('ndrApp')
             counties                :    Restangular.all('county'),
             news                    :    Restangular.all('news'),
             indicatorresult         :    Restangular.one('indicatorresult'),
+            indicator               :    Restangular.one('indicator'),
             researchproject         :    Restangular.all('researchproject')
         }
-
-
-        /* POPULATE UNITS AND COUNTIES */
-        endpoints.units.getList().then(function(units) {
-            self.data.units = units;
-        });
-
-        endpoints.counties.getList().then(function(counties) {
-            self.data.counties = counties;
-        });
 
 
         /* METHODS - returns promises */
@@ -50,6 +42,30 @@ angular.module('ndrApp')
 
         this.getStats = function (params){
             return endpoints.indicatorresult.get(params);
+        }
+
+
+        this.bootstrap = function (){
+
+            var p = $q.all([
+                endpoints.units.getList(),
+                endpoints.counties.getList(),
+                endpoints.indicator.get()
+                ]).then(function (data){
+                    console.log("data",data);
+                    
+                self.data.units =  data[0];
+                self.data.counties = data[1];
+                self.data.indicators = data[2];
+            })
+
+            return p;
+
+
+
+
+
+
         }
 
 

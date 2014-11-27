@@ -1,6 +1,8 @@
 angular.module("ndrApp")
     .controller('CountyController',['$scope', '$stateParams', 'dataService', function($scope, $stateParams, dataService) {
 
+        console.log("cc");
+        
         var id = $stateParams.id;
 
         $scope.model = {
@@ -14,27 +16,48 @@ angular.module("ndrApp")
             $scope.model.county = data;
         })
 
+/*
 
-        var query = queryFactory();
-        dataService.getStats(query).then(function (data){
+        function getKeyIndicators(){
 
-            var series = [];
+            var indicators = $scope.data.indicators.byType.target;
+            
+            console.log("indicators", indicators);
 
-            _.each(data.statSet, function(obj, key){
 
-                var o = {
-                    name : obj.unit.name,
-                    //color : "#B4BCBE",
-                    y : obj.stat.r
-                }
+            $q.all(promises).then(function (results) {
+                var resultOfFirstPromise = results[0],
+                    resultOfSecondPromise = results[1];
+                // update model.property based on data returned and relevant logic.
+            });
 
-                series.push(o)
+
+            var query = queryFactory();
+            dataService.getStats(query).then(function (data){
+
+                var series = [];
+
+                _.each(data.statSet, function(obj, key){
+
+                    var o = {
+                        name : obj.unit.name,
+                        //color : "#B4BCBE",
+                        y : obj.stat.r
+                    }
+
+                    series.push(o)
+                })
+
+                console.log("s", series);
+                $scope.model.data.hba1c = series;
             })
 
-            console.log("s", series);
-            $scope.model.data.hba1c = series;
-        })
+        }
 
+
+        getKeyIndicators();
+
+*/
 
 
         var autocompleteList = [
