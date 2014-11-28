@@ -11,9 +11,12 @@ angular.module("ndrApp")
             data : {}
         }
 
+
         dataService.getOne("county", id).then(function (data){
             $scope.model.county = data;
+            $scope.model.data.noUnits = $scope.model.county.units.length;
         })
+
 
 
         // GET DATA FOR BAR CHART
@@ -40,22 +43,23 @@ angular.module("ndrApp")
         var query = queryFactory({countyCode : id, interval : "m"});
         dataService.getStats(query).then(function (data){
 
-            console.log("dd", data);
+            console.log("dda", data);
             
             var series = [];
 
-            _.each(data.statSet, function(obj, key){
+            _.each(data.statSet[0].intervalSet, function(obj, key){
 
                 var o = {
-                    name : obj.unit.name,
-                    color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
+                   // name : obj.unit.name,
+                   // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
+                    x : new Date(obj.Interval),
                     y : obj.stat.r
                 }
 
                 series.push(o)
             })
 
-            $scope.model.data.hba1c = series;
+            $scope.model.data.trendhba1c = series;
 
         })
 

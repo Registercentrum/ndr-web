@@ -2,7 +2,7 @@ angular.module('ndrApp')
     .directive('columnChart', [function() {
 
         return {
-            restrict: 'C',
+            restrict: 'A',
             template : "<div class='chart-container'></div>",
 
             scope: {
@@ -11,7 +11,6 @@ angular.module('ndrApp')
 
             // set up the isolate scope so that we don't clobber parent scope
             link: function(scope, element, attrs) {
-
 
 
                 var chart = jQuery(".chart-container", element).highcharts({
