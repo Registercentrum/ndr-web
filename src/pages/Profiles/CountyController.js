@@ -1,13 +1,12 @@
 angular.module("ndrApp")
     .controller('CountyController',['$scope', '$stateParams', 'dataService', function($scope, $stateParams, dataService) {
 
-        console.log("cc");
+        console.log("CountyController Init:", $scope.data);
         
         var id = $stateParams.id;
 
         $scope.model = {
             id : id,
-            autocompleteList : autocompleteList,
             data : {}
         }
 

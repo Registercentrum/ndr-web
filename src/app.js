@@ -2,15 +2,12 @@
 angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','selectize'])
 
     // The routing system
-
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
         var templateURL = "templates/";
 
         // Default and fallback state
-
         $urlRouterProvider.otherwise("/");
-
 
         $stateProvider
             .state('main', {
@@ -18,16 +15,13 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
                 // Make this state abstract so it can never be loaded directly
                 abstract: true,
                 template : "<ui-view/>",
-                 // Centralize the config resolution
-                 resolve: {
 
-                     //dataService : 'dataService',
-
-                     config: function(dataService){
-                         return dataService.bootstrap();
-                     }
-
-                 }
+                // Centralize the resolution of common meta data (counties, units, indicators etc.)
+                resolve: {
+                    config: function(dataService){
+                        return dataService.bootstrap();
+                    }
+                }
             })
 
 
@@ -81,12 +75,11 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
                 templateUrl: "src/pages/Profiles/profiles.county.html"
             })
 
-           /* .state('profiles.unit', {
-                controller : "UnitController",
+            .state('main.profiles.unit', {
+                controller : "CountyController",
                 url: "/enhet/:id",
-                templateUrl: "src/pages/Statistics/profiles.unit.html"
-            })*/
-
+                templateUrl: "src/pages/Profiles/profiles.unit.html"
+            })
 
 
 
