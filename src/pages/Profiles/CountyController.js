@@ -1,5 +1,5 @@
 angular.module("ndrApp")
-    .controller('CountyController',['$scope', '$stateParams', 'dataService', function($scope, $stateParams, dataService) {
+    .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
 
         console.log("CountyController Init ID:", $stateParams.id);
 
@@ -65,30 +65,52 @@ angular.module("ndrApp")
 
 
 
-/*
+
 
         function getKeyIndicators(){
 
             var indicators = $scope.data.indicators.byType.target;
-            
-            console.log("indicators", indicators);
+            var toInclude = [201,204,207,206,209,214,211,203,212,216,202,309];
+
+            var promises = [];
+
+            _.each(indicators, function(obj, key){
+
+                if(_.indexOf(toInclude, obj.id) != -1){
+                    var query = queryFactory({countyCode : id, indicatorID: obj.id});
+                    promises.push(dataService.getStats(query));
+                }
+            })
+
+            $q.all(promises).then(function (data){
+
+                var keyIndicators = [];
+
+                _.each(data, function(obj, key){
+                    var o = {
+                        indicator : obj.indicator,
+                        stat : obj.statSet[0].stat
+                    }
+                    keyIndicators.push(o);
+                })
+
+                $scope.model.data.keyIndicators = keyIndicators;
+
+            })
 
 
-            $q.all(promises).then(function (results) {
+         /*   $q.all(promises).then(function (results) {
                 var resultOfFirstPromise = results[0],
                     resultOfSecondPromise = results[1];
                 // update model.property based on data returned and relevant logic.
-            });
-
-
+            });*/
 
 
         }
 
-
         getKeyIndicators();
 
-*/
+
 
 
 
