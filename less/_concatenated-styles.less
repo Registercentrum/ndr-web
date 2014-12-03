@@ -583,7 +583,9 @@ p {
   border-radius: @panel-border-radius;
   padding: @panel-body-padding;
 
-  h1,h2,h3,h4{
+
+  // Using h2, h3, h4 etc overrides styling where it shouldn't be overridden.
+  .Panel-title {
     margin: 0px 0 20px 0px;
   }
 
