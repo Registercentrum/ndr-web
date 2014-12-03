@@ -50,6 +50,30 @@
   .selectize-input {
     border: none !important;
     background-color: transparent;
-
+    box-shadow: none;
   }
+
+  .selectize-dropdown {
+    border: none;
+  }
+}
+
+.Autocomplete.Autocomplete--large {
+
+  @padding-horizontal: 15px;
+
+  .selectize-input {
+    font-size: 30px;
+    padding: 20px @padding-horizontal;
+  }
+
+  .selectize-dropdown {
+    font-size: 18px;
+    font-weight: 300;
+
+    [data-selectable] {
+      padding: 12px @padding-horizontal;
+    }
+  }
+
 }
