@@ -16,7 +16,7 @@ module.exports = function(grunt) {
                 options: {
                     cleancss: false,
                     ieCompat: true,
-                    sourceMap: true,
+                    sourceMap: true
                     // sourceMapFilename : "css/ndr.css.map",
                     // sourceMapURL: '/css/ndr.css.map' // the complete url and filename put in the compiled css file
                     // sourceMapBasepath: 'css', // Sets sourcemap base path, defaults to current working directory.
@@ -47,7 +47,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
-
 
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('manual', ['concat', 'less']);
