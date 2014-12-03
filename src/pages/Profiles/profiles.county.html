@@ -2,7 +2,16 @@
     <div class="row">
 
         <div class="col-md-12">
-            <div class="Autocomplete Autocomplete--bare" selectize="config" options='model.autocompleteList' ng-model="model.selectedGeo"></div>
+
+            <h1 class="Page-title">{{ model.county.name }} <div autocomplete></div></h1>
+
+          <!--  <div class="Panel">
+                <h1 class="h3">Debug</h1>
+                <pre>
+                    {{ model.county | json }}
+                 </pre>
+            </div>-->
+
         </div>
     </div>
 </div>
@@ -13,32 +22,29 @@
 
         <div class="col-md-3">
             <div class="Panel">
-                Title
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="Panel">
-                Title
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="Panel">
-                Title
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="Panel">
-                Jmf hbac1
-
+                <h1 class="h3">Personer med diabetes</h1>
                 <div class="column-chart" model="model.data.hba1c"></div>
+            </div>
+        </div>
 
+        <div class="col-md-3">
+            <div class="Panel">
+                <h1 class="h3">{{ model.data.noUnits }} vårdenheter</h1>
+                <div class="column-chart" model="model.data.hba1c"></div>
+            </div>
+        </div>
 
-                <pre>
-                    {{ model.data.hba1c.statSet | json }}
-                </pre>
+        <div class="col-md-3">
+            <div class="Panel">
+                <h1 class="h3">Trend HbA1c</h1>
+                <div line-chart model="model.data.trendhba1c"></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel">
+                <h1 class="h3">Jämförelse HbA1c</h1>
+                <div column-chart model="model.data.hba1c"></div>
 
             </div>
         </div>
@@ -49,11 +55,26 @@
     <div class="row">
         <div class="col-md-12">
             <div class="Panel">
-                Title
+                <h1 class="h3">Nyckelindikatorer</h1>
 
-                <pre>
-                    {{ model | json }}
+                <div ng-repeat="indicator in model.data.keyIndicators">
+
+                    <div>{{indicator.indicator.name }} <b>{{indicator.stat.r}}</b></div>
+
+
+                </div>
+
+                <h2>Key Debug</h2>
+                 <pre>
+                    {{ model.data.keyIndicators | json }}
                 </pre>
+                <h2>All Debug</h2>
+
+                   <pre>
+                    {{ data.indicators | json }}
+                </pre>
+
+
 
             </div>
         </div>

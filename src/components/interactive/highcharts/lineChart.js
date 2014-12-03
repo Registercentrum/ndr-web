@@ -1,23 +1,17 @@
-angular.module('diApp')
-    .directive('singleLineChart', [function() {
+angular.module('ndrApp')
+    .directive('lineChart', [function() {
 
         return {
-            restrict: 'EAC',
+            restrict: 'A',
             template : "<div class='chart-container'></div>",
 
             scope: {
-                data: "="
+                model: "="
             },
 
             // set up the isolate scope so that we don't clobber parent scope
             link: function(scope, element, attrs) {
 
-
-                Highcharts.setOptions({
-                    lang: {
-                        numericSymbols: ['k', 'M', 'B', 'T', 'P', 'E']
-                    }
-                });
 
                 var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
@@ -32,16 +26,18 @@ angular.module('diApp')
                         title: {
                             text: ''
                         },
-                        /*   subtitle: {
-                         text: 'Source: Wikipedia.org'
-                         },*/
+
 
                         xAxis: {
-                           /* gridLineWidth: 0,
-                            gridLineColor : "#BDC3C7",
-                            title: {
-                                text: ""
-                            },*/
+
+
+                            type: 'datetime',
+                            dateTimeLabelFormats: { // don't display the dummy year
+                                month: '%e. %b',
+                                year: '%b'
+                            },
+
+
 
                             lineWidth: 0,
                             gridLineWidth: 0,
@@ -62,9 +58,7 @@ angular.module('diApp')
 
                             minorGridLineWidth: 0,
 
-                           // ceiling : 100,
-                           // min: 0,
-                           // max: 110,
+
                             title: {
                                 text: '',
                                 align: 'high'
@@ -73,12 +67,7 @@ angular.module('diApp')
                                 align : "right",
                                 x : 20,
                                 y : -8,
-                                //enabled: false
 
-                                /*formatter: function() {
-                                    if ( this.value > 1000 ) return Highcharts.numberFormat( this.value/1000, 1) + "K";  // maybe only switch if > 1000
-                                    return Highcharts.numberFormat(this.value,0);
-                                }*/
                             }
 
 
@@ -111,36 +100,18 @@ angular.module('diApp')
                         series: [{
                             dashStyle: "ShortDot",
                             color : "#D03928",
-                            name: ' ',
+                            name: 'a',
+                            data : [{x: 1, y:10}, {x: 3, y:5}]
                     
                         }]
                     });
 
 
-                scope.$watch('data', function(data) {
+                scope.$watch('model', function(model) {
 
-                    console.log("reloading data for line chart", data);
+                    chart.highcharts().series[0].setData(model)
 
-
-                    var dataToDraw = [];
-
-
-                    _.each(data, function(obj, key){
-                        
-                        console.log(typeof obj);
-                        
-                        
-                        var o = {
-                            x : obj.year,
-                            y : obj.value
-                        }
-                        dataToDraw.push(o)
-
-                    })
-
-                    chart.highcharts().series[0].setData(dataToDraw)
-
-                });
+                }, true);
             }
         };
     }]);

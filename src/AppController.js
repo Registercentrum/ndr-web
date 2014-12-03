@@ -5,15 +5,5 @@ angular.module('ndrApp')
         $scope.data = dataService.data;
 
 
-
-        dataService.getOne("unit", 150).then(function (data){
-            console.log("got", data);
-        })
-
-
-
-
-
-
     }]);
 

@@ -239,8 +239,8 @@ p {
 }
 @import '../bower_components/selectize/dist/less/selectize.less';
 
-@selectize-color-text: @gray-darker;
-@selectize-color-border: @gray-darker;
+@selectize-color-text: @ndr-dark;
+@selectize-color-border: @ndr-blue;
 @selectize-color-highlight: rgba(125,168,208,0.2);
 @selectize-color-input: #fff;
 @selectize-color-input-full: @selectize-color-input;
@@ -281,11 +281,10 @@ p {
 
 
 .Autocomplete {
-  width:300px;
+  width: 300px;
 }
 
-
-.Autocomplete.Autocomplete--bare {
+.Autocomplete--bare {
   .selectize-input {
     border: none !important;
     background-color: transparent;
@@ -539,6 +538,11 @@ p {
   background-color: @ndr-white;
   border-radius: @panel-border-radius;
   padding: @panel-body-padding;
+
+  h1,h2,h3,h4{
+    margin: 0px 0 20px 0px;
+  }
+
 }
 
 

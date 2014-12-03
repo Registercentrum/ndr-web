@@ -1,9 +1,9 @@
-<div class="Header">
+<div class="Header" ng-controller="HeaderController">
 
 
     <div class="Header-extras">
         <div class="container">
-            <a class="Logo pull-left" ui-sref="home" title="Start">
+            <a class="Logo pull-left" ui-sref="main.home" title="Start">
                 <img src="images/logo.png" alt="Start" />
             </a>
         </div>
@@ -25,9 +25,12 @@
                 <ul class="nav navbar-nav">
 
                     <li ng-class="{active: $state.includes('statistics')}" class="dropdown">
-                        <a class="dropdown-toggle" ui-sref="statistics" ui-sref-active-eq="statistics" data-toggle="dropdown"><i class="fa fa-bar-chart"></i> Statistik</a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200" data-close-others="false" ui-sref="statistics" ui-sref-active-eq="statistics"><i class="fa fa-bar-chart"></i> Statistik</a>
                         <ul class="dropdown-menu">
-                            <li class="" ui-sref-active="active"><a ui-sref="compare">Knappen</a>
+                            <li class="" ui-sref-active="active"><a ui-sref="compare">Sök ...</a>
+                            <li class="" ui-sref-active="active"><a ui-sref="compare">Jämförelser / Knappen</a>
+                            <li class="" ui-sref-active="active"><a ui-sref="compare">Årsrapport</a>
+                            <li class="" ui-sref-active="active"><a ui-sref="compare">Om statistiken</a>
                         </ul>
                     </li>
 
@@ -37,7 +40,9 @@
 
                     <li ui-sref-active="active"><a ui-sref="patient"><i class="fa fa-user"></i> För dig med diabetes</a></li>
                     <li ui-sref-active="active"><a ui-sref="about"><i class="fa fa-map-marker"></i> Om NDR</a></li>
-                    <li ui-sref-active="active"><a ui-sref="guidelines"><i class="fa fa-lightbulb-o"></i> Style guidelines</a></li>
+                    <li ui-sref-active="active"><a ui-sref="main.guidelines"><i class="fa fa-lightbulb-o"></i> Style guidelines</a></li>
+                    <li ui-sref-active="active"><a ui-sref="main.profiles.county({id : 6})"><i class="fa fa-lightbulb-o"></i> Test: Landsting</a></li>
+                    <li ui-sref-active="active"><a ui-sref="main.profiles.unit({id : 44})"><i class="fa fa-lightbulb-o"></i> Test: Enhet</a></li>
 
                     <!--<li ui-sref-active-eq="active"><a ui-sref="account.home"><i class="glyphicon glyphicon-home"></i> Min startsida</a></li>-->
 

@@ -1,33 +1,46 @@
 'use strict';
 angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','selectize'])
 
-    //
     // The routing system
-    //
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-
 
         var templateURL = "templates/";
 
-        //
         // Default and fallback state
-        //
-
         $urlRouterProvider.otherwise("/");
 
-
         $stateProvider
+            .state('main', {
 
-            .state('home', {
-                controller : "HomeController",
-                url: "/",
-                templateUrl: "src/Pages/Home/home.html"
+                // Make this state abstract so it can never be loaded directly
+                abstract: true,
+                template : "<ui-view/>",
+
+                // Centralize the resolution of common meta data (counties, units, indicators etc.)
+                resolve: {
+                    config: function(dataService){
+                        return dataService.bootstrap();
+                    }
+                }
             })
 
-            .state('guidelines', {
+
+            .state('main.home', {
+                controller : "HomeController",
+                url: "/",
+                templateUrl: "src/pages/Home/home.html",
+
+            })
+
+            .state('main.guidelines', {
                 url: "/guidelines",
                 controller : "GuidelinesController",
-                templateUrl: "src/Pages/guidelines/guidelines.html"
+                templateUrl: "src/pages/Guidelines/guidelines.html",
+
+                resolve: {
+
+
+                }
             })
 
             .state('patient', {
@@ -50,24 +63,23 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
             })
 
 
-            .state('profiles', {
+            .state('main.profiles', {
                 url: "/profil",
                 templateUrl: "src/pages/Profiles/profiles.html"
                 //controller: "StatisticsController"
             })
 
-            .state('profiles.county', {
+            .state('main.profiles.county', {
                 controller : "CountyController",
                 url: "/landsting/:id",
                 templateUrl: "src/pages/Profiles/profiles.county.html"
             })
 
-           /* .state('profiles.unit', {
-                controller : "UnitController",
+            .state('main.profiles.unit', {
+                controller : "CountyController",
                 url: "/enhet/:id",
-                templateUrl: "src/pages/Statistics/profiles.unit.html"
-            })*/
-
+                templateUrl: "src/pages/Profiles/profiles.unit.html"
+            })
 
 
 
