@@ -289,48 +289,137 @@ p {
   .selectize-input {
     border: none !important;
     background-color: transparent;
+    box-shadow: none;
+  }
 
+  .selectize-dropdown {
+    border: none;
   }
 }
-.Button{
-  color: blue;
+
+.Autocomplete.Autocomplete--large {
+
+  @padding-horizontal: 15px;
+
+  .selectize-input {
+    font-size: 30px;
+    padding: 20px @padding-horizontal;
+  }
+
+  .selectize-dropdown {
+    font-size: 18px;
+    font-weight: 300;
+
+    [data-selectable] {
+      padding: 12px @padding-horizontal;
+    }
+  }
+
+}
+.Button {
+  &:extend(.btn);
+  padding-right: 30px;
+  padding-left: 30px;
+  font-weight: 300;
+  letter-spacing: 0.03em;
 }
 
-.btn-default{
-  border-width: 2px;
-  padding: 15px 100px;
+.Button--default {
+  &:extend(.btn-default);
+//  border-width: 2px;
+//  padding: 15px 100px;
+  background-color: transparent;
 }
 
-.Button--white{
-  border:2px solid @ndr-white;
+.Button--primary {
+  &:extend(.btn-primary);
+}
+
+.Button--success {
+  &:extend(.btn-success);
+}
+
+.Button--info {
+  &:extend(.btn-info);
+  background: @ndr-blue;
+  color: #fff;
+  border: 1px solid @ndr-blue;
+}
+
+.Button--warning {
+  &:extend(.btn-warning);
+}
+
+.Button--danger {
+  &:extend(.btn-danger);
+}
+
+.Button--white {
+  border: 2px solid @ndr-white;
   color: @ndr-white;
 }
 
-.Button--centered{
+.Button--centered {
   display: block;
   width:60%;
   margin: 10px auto;
 }
-.SmallFeed {
+
+.Button--large {
+  padding: 20px 50px;
+}
+
+.Button--wide {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.Button--small {
+  font-size: 13px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: 400;
+}
+
+.Button--mini {
+  font-size: 11px;
+  padding: 5px 10px;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+.FeedLarge {
   margin: 0;
   padding: 0;
 }
 
-.SmallFeed-item {
+
+.FeedMedium {
+  margin: 0;
+  padding: 0;
+}
+
+
+.FeedSmall {
+  margin: 0;
+  padding: 0;
+}
+
+.FeedSmall-item {
   margin: 0 0 0px 0;
   padding: 0;
   list-style: none;
   border-bottom: 1px solid #ddd;
 }
 
-.SmallFeed-category {
+.FeedSmall-category {
   font-weight: 600;
   letter-spacing: 0.02em;
   font-size: 14px;
   margin: 10px 0 -10px 0;
 }
 
-.SmallFeed-title {
+.FeedSmall-title {
   margin: 10px 0 10px 0;
   font-size: 16px;
   line-height: 1.46;
@@ -355,6 +444,35 @@ p {
 .Header-navbar{
 
 }
+
+.InfoBlurb {
+
+}
+
+.InfoBlurb--blue {
+
+}
+
+.InfoBlurb-grey {
+
+}
+
+.InfoBlurb-pink {
+
+}
+
+.InfoBlurb-yellow {
+
+}
+
+.InfoBlurb-title {
+
+}
+
+.InfoBlurb-button {
+
+}
+
 
 .Page-title {
   &:extend(.page-header);

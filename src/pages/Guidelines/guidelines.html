@@ -65,19 +65,20 @@
                 <div class="panel-heading">Buttons</div>
                 <div class="panel-body" style="background-color: #eee">
 
-                    <p><!-- Standard gray button with gradient -->
-
-                        <button type="button" class="btn btn-default">Default</button>
-                        <button type="button" class="btn btn-default Button--white Button--centered">White</button>
-
-                        <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-                    </p>
                     <p>
-                        <button type="button" class="btn btn-primary btn-large">Large button</button>
-                        <button type="button" class="btn btn-primary disabled">Disabled</button>
-                        <button type="button" class="btn btn-primary btn-small">Small button</button>
-                        <button type="button" class="btn btn-primary btn-mini">Mini button</button>
+                        <button type="button" class="Button Button--default">Default</button>
+                        <button type="button" class="Button Button--default Button--white Button--centered">White centered</button>
+                        <button type="button" class="Button Button--default Button--centered">Centered</button>
                     </p>
+
+                    <p><button type="button" class="Button Button--info">Info button</button></p>
+                    <p><button type="button" class="Button Button--warning">Warning</button></p>
+                    <p><button type="button" class="Button Button--success">Success</button></p>
+                    <p><button type="button" class="Button Button--primary Button--large Button--wide">Primary large wide</button></p>
+                    <p><button type="button" class="Button Button--large">Large button</button></p>
+                    <p><button type="button" class="Button Button--small">Small button</button></p>
+                    <p><button type="button" class="Button Button--mini">Mini button</button></p>
+                    <p><button type="button" class="Button disabled">Disabled</button></p>
 
                 </div>
 
@@ -93,11 +94,40 @@
 
             <div class="Autocomplete Autocomplete--bare" selectize="config" options='myOptions' ng-model="myModel"></div>
             <div class="Autocomplete" selectize="config" options='myOptions' ng-model="myModel"></div>
+            <div class="Autocomplete Autocomplete--large Autocomplete--bare" selectize="config" options='myOptions' ng-model="myModel"></div>
 
         </div>
 
        </div>
 
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="Panel">
+
+                <table class="Table">
+
+                    <thead>
+                        <tr>
+                            <td>Namn</td>
+                            <td>Antal patienter</td>
+                            <td>Medelålder</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Wunderkraut</td>
+                            <td>26</td>
+                            <td>30</td>
+                        </tr>
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
 
 </div>
 
