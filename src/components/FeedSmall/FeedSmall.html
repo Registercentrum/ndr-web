@@ -1,19 +1,19 @@
 
-<ul class="SmallFeed">
-    <li ng-repeat="item in model.data" class="SmallFeed-item">
+<ul class="FeedSmall">
+    <li ng-repeat="item in model.data" class="FeedSmall-item">
 
-    <p class="SmallFeed-category" >
+    <p class="FeedSmall-category" >
         <span ng-repeat="category in item.categories">
             {{ category.name }}
         </span>
     </p>
 
-    <h3 class="SmallFeed-title">{{ item.title }}</h3>
+    <h3 class="FeedSmall-title"><a href="/#/nyheter/{{ item.newsID }}">{{ item.title }}</a></h3>
 
     </li>
 </ul>
 
- <a class="Button btn-default">Se alla nyheter</a>
+ <a class="Button Button--default">Se alla nyheter</a>
 
  <pre>
      {{ model.data | json }}

@@ -1,0 +1,16 @@
+
+<ul class="FeedLarge">
+    <li ng-repeat="item in model.data" class="FeedLarge-item">
+
+        <h3 class="FeedLarge-title">{{ item.title }}</h3>
+
+    </li>
+</ul>
+
+ <a class="Button btn-default">Se alla nyheter</a>
+
+ <pre>
+     {{ model.data | json }}
+ </pre>
+
+

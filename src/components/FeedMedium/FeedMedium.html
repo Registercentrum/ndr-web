@@ -1,0 +1,16 @@
+
+<ul class="FeedMedium">
+    <li ng-repeat="item in model.data" class="FeedMedium-item">
+
+        <h3 class="FeedMedium-title">{{ item.title }}</h3>
+
+    </li>
+</ul>
+
+ <a class="Button btn-default">Se alla nyheter</a>
+
+ <pre>
+     {{ model.data | json }}
+ </pre>
+
+
