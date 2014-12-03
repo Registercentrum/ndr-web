@@ -52,7 +52,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
 
             .state('profiles', {
                 url: "/profil",
-                templateUrl: "src/pages/Profiles/profiles.html",
+                templateUrl: "src/pages/Profiles/profiles.html"
                 //controller: "StatisticsController"
             })
 
@@ -85,9 +85,9 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
                 controller : "NewsController"
             })
 
-            .state('news.news', {
+            .state('news.newsItem', {
                 url: "/nyheter/:id",
-                templateUrl: "src/pages/NewsItem/newsItem.html",
+                templateUrl: "src/pages/NewsItem/news.newsItem.html",
                 controller: "NewsItemController"
             })
 
