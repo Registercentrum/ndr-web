@@ -97,7 +97,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
                 controller : "NewsController"
             })
 
-            .state('news.newsItem', {
+            .state('newsItem', {
                 url: "/nyheter/:id",
                 templateUrl: "src/pages/NewsItem/news.newsItem.html",
                 controller: "NewsItemController"
