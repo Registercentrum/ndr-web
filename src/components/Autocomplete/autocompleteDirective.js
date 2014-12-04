@@ -16,7 +16,7 @@ angular.module('ndrApp')
                 $scope.myModel = undefined;
                 
                 $scope.$watch('myModel', function (){
-                    console.log("Changed",  $scope.myModel);
+                   //  console.log("Changed",  $scope.myModel);
                 })
 
                 $scope.class =  "Autocomplete--bare";

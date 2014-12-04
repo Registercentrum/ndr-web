@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
 
-        console.log("CountyController Init ID:", $stateParams.id);
+        // console.log("CountyController Init ID:", $stateParams.id);
 
         var id = $stateParams.id;
 
