@@ -1,0 +1,41 @@
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="Panel clearfix">
+
+
+
+                <article class="col-md-8 pull-right">
+                    <h1 class="Article-title">{{ newsItem.title }}</h1>
+                    <p class="Article-date">{{ newsItem.createdAt }}</p>
+                    <div class="Article-body">
+                        {{ newsItem.body }}
+                    </div>
+
+                    <pre>
+                    {{ newsItem | json }}
+                    </pre>
+                </article>
+
+                <aside class="col-md-4">
+
+                    <img class="Article-author-image" src="https://placekitten.com/g/150/150">
+                    <span class="Article-author-name">{{ newsItem.author }}</span>
+
+                </aside>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel">
+                <h4>Nyheter i korthet</h4>
+                <div feed data-feedType="small"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

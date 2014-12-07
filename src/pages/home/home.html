@@ -17,7 +17,7 @@
 
             <div class="Panel">
 
-               <div feed model="model.feedModelNews" type="small"></div>
+               <div list model="model.listModelNews"></div>
 
             </div>
 
@@ -121,11 +121,16 @@
         <div class="pane equal-height">
             <h3>Publikationer</h3>
 
-            <ul>
-                <li><a href="">Risk Prediction of Cardiovascular Disease in Type 2 Diabetes</a></li>
-                <li><a href="">Fler ...</a></li>
-
-            </ul>
+            <div list model="{data: [
+                {
+                    title: 'Risk Prediction of Cardiovascular Disease in Type 2 Diabetes',
+                    link: 'http://www.google.se'
+                },
+                {
+                    title: 'Fler ...',
+                    link: 'http://www.google.se'
+                }
+                ]}"></div>
 
         </div>
     </div>
@@ -135,12 +140,16 @@
         <div class="pane equal-height">
             <h3>Länkar</h3>
 
-            <ul>
-                <li><a href="">Diabetesförbundet</a></li>
-                <li><a href="">Swediabkids</a></li>
-                <li><a href="">Fler ...</a></li>
-
-            </ul>
+            <div list model="{data: [
+                {
+                    title: 'Diabetesförbundet',
+                    link: 'http://www.diabetes.se'
+                },
+                {
+                    title: 'Tidningen Diabetesnålen',
+                    link: 'http://diabetesnalen.se'
+                }
+                ]}"></div>
 
         </div>
     </div>

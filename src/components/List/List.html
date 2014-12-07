@@ -1,0 +1,25 @@
+<ul class="List">
+
+    <li ng-repeat="item in model.data" class="List-item">
+
+        <div class="List-item-inner">
+
+            <p class="List-item-category"><span ng-repeat="category in item.categories">{{ category.name }} </span></p>
+
+            <h3 class="List-item-title">
+                <a href="{{ item.link }}" class="List-item-link">{{ item.title }}</a>
+            </h3>
+        </div>
+
+    </li>
+
+</ul>
+
+<p class="List-readmore">
+    <a class="Button Button--default">Visa alla</a>
+</p>
+
+
+
+
+
