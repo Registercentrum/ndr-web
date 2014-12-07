@@ -2,12 +2,18 @@ angular.module("ndrApp")
     .controller('HomeController', ['$scope', 'dataService', function($scope, dataService) {
 
         $scope.model = {
-            feedModelNews : {}
+            listModelNews : {}
+        }
+
+        function createLink(item) {
+            item.link = "/#/nyheter/" + item.newsID;
         }
 
         dataService.getList("news").then(function (data){
-            console.log("Got news", data);
-            $scope.model.feedModelNews = {
+
+            angular.forEach(data, createLink);
+
+            $scope.model.listModelNews = {
                 data : data
             }
         })
