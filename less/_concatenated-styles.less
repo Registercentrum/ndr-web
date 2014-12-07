@@ -288,7 +288,15 @@ p {
   .selectize-input {
     border: none !important;
     background-color: transparent;
-    box-shadow: none;
+  }
+
+  .selectize-input.input-active {
+    border: none !important;
+    background-color: transparent;
+  }
+
+  .selectize-input:after{
+    border-width : 8px 8px 0 8px !important;
   }
 
   .selectize-dropdown {
@@ -306,7 +314,7 @@ p {
   }
 
   .selectize-dropdown {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 300;
 
     [data-selectable] {
@@ -424,6 +432,7 @@ p {
   line-height: 1.46;
 }
 .Footer{
+  margin-top: 100px;
   background-color: @ndr-yellow;
 
 }
@@ -516,6 +525,28 @@ p {
 }
 
 
+
+
+
+
+
+.NavbarVertical {
+
+  li > a{
+    border-radius: 4px;
+    background: @ndr-yellow;
+    color : @ndr-semidark;
+    height:140px;
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  li.active > a, li.active > a:hover, li.active > a:focus{
+    border-radius: 4px;
+    background: @ndr-semidark;
+  }
+
+}
 
 .NewsItem-author-image {
   border-radius: 100%;

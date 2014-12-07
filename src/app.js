@@ -118,23 +118,30 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular','sel
 
             /* Logged in states */
 
-            .state('account', {
+            .state('main.account', {
                 url: "/inloggad",
-                templateUrl: templateURL + "/account/account.html"
+                templateUrl: "src/pages/Account/account.html"
             })
 
-            .state('account.home', {
+            .state('main.account.home', {
                 url: "/hem",
-                templateUrl: templateURL + "account/home.html"
+                templateUrl: "src/pages/Account/home.html"
             })
 
-            .state('account.patients', {
-                url: "/patienter",
-                templateUrl: templateURL + "account/patients.html",
+            .state('main.account.report', {
+                url: "/rapportera",
+                templateUrl: "src/pages/Account/patients.html",
                 controller : "PatientsController"
             })
 
-            .state('account.patient', {
+
+            .state('main.account.patients', {
+                url: "/patienter",
+                templateUrl: "src/pages/Account/patients.html",
+                controller : "PatientsController"
+            })
+
+            .state('main.account.patient', {
                 url: "/patient/:patientID",
                 templateUrl: templateURL + "account/patient_profile.html",
                 controller : "PatientController"

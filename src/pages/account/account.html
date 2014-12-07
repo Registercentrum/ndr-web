@@ -1,31 +1,54 @@
-<div class="row">
+<div class="container">
 
-    <div class="col-md-2">
+    <div class="row">
 
-        <a ui-sref="account.home">
-            <span class="big-btn" ui-sref-active="active">
-                <span class="glyphicon glyphicon-heart"></span>
-                <span>Min klinik</span>
-            </span>
-        </a>
+        <div class="col-md-2">
 
 
-        <a ui-sref="account.patients">
-            <span class="big-btn" ui-sref-active="active">
-                <span class="glyphicon glyphicon-user"></span>
-                <span>Mina patienter</span>
-            </span>
-        </a>
-
-    </div>
+            <ul class="NavbarVertical nav nav-pills nav-stacked" style="width: 100%">
 
 
-    <div class="col-md-10">
+                <li ui-sref="main.account.home" ui-sref-active="active">
 
-        <div ui-view></div>
+                    <a ui-sref="main.account.home">
+                        <span class="fa fa-heart-o fa-4x"></span>
+                        <h4>Översikt</h4>
+                    </a>
+
+                </li>
+
+
+                <li ui-sref="main.account.report" ui-sref-active="active">
+
+                    <a ui-sref="main.account.report">
+                        <span class="fa fa-pencil-square-o fa-4x"></span>
+                        <h4>Rapportera</h4>
+                    </a>
+
+                </li>
+
+                <li ui-sref="main.account.patients" ui-sref-active="active">
+
+                    <a ui-sref="main.account.patients">
+                        <span class="fa fa-users fa-4x"></span>
+                        <h4>Söklista</h4>
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+
+        </div>
+
+
+        <div class="col-md-10">
+
+            <div ui-view></div>
+
+        </div>
 
     </div>
 
 </div>
-
-

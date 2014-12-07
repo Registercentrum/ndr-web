@@ -1,5 +1,5 @@
 angular.module('ndrApp')
-    .directive('autocomplete', ['dataService', function(dataService) {
+    .directive('autocomplete', ['dataService', "$state", function(dataService, $state) {
 
         function link(scope, element, attrs) {
 
@@ -11,12 +11,25 @@ angular.module('ndrApp')
 
                 var preparedGeoList = dataService.data.preparedGeoList;
 
-
-                $scope.myOptions = preparedGeoList;
-                $scope.myModel = undefined;
+                $scope.options = preparedGeoList;
+                $scope.selected = $scope.model.selected;
                 
-                $scope.$watch('myModel', function (){
-                   //  console.log("Changed",  $scope.myModel);
+                $scope.$watch('selected', function (newVal, oldVal){
+                    console.log("Changed Autocomplete:",  $scope.selected);
+
+                    if(newVal == oldVal) return false;
+
+                    var type =  $scope.selected.split("_")[0];
+                    var id = $scope.selected.split("_")[1];
+
+                    if(type == "county"){
+                        $state.go("main.profiles.county", {id : id})
+                    }
+
+                    if(type == "unit"){
+                        $state.go("main.profiles.unit", {id : id})
+                    }
+
                 })
 
                 $scope.class =  "Autocomplete--bare";
@@ -52,7 +65,7 @@ angular.module('ndrApp')
             },
 
             restrict : 'A',
-            template : '<div class="Autocomplete" ng-class=\"class\" selectize="config" options="myOptions" ng-model="myModel"></div>',
+            template : '<div class="Autocomplete Autocomplete--bare Autocomplete--large" ng-class=\"class\" selectize="config" options="options" ng-model="selected"></div>',
             link: link,
 
             scope: {

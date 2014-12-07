@@ -1,14 +1,17 @@
 angular.module("ndrApp")
     .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
 
-        // console.log("CountyController Init ID:", $stateParams.id);
 
         var id = $stateParams.id;
+        var autocompleteSelected = "county_" + id;
 
         $scope.model = {
             county : _.findWhere(dataService.data.counties,  {code : id}),
             id : id,
-            data : {}
+            data : {},
+            autocompleteModel : {
+                selected : autocompleteSelected,
+            }
         }
 
 
@@ -16,7 +19,6 @@ angular.module("ndrApp")
             $scope.model.county = data;
             $scope.model.data.noUnits = $scope.model.county.units.length;
         })
-
 
 
         // GET DATA FOR BAR CHART
@@ -87,6 +89,7 @@ angular.module("ndrApp")
                 var keyIndicators = [];
 
                 _.each(data, function(obj, key){
+                    console.log(key, obj);
                     var o = {
                         indicator : obj.indicator,
                         stat : obj.statSet[0].stat
@@ -114,7 +117,7 @@ angular.module("ndrApp")
 
 
 
-
+        https://ndr.registercentrum.se/api/indicatorresult?IndicatorID=101&Level=0&FromYear=2013&ToYear=2013&DiabetesTypeCode=1&APIKey=LkUtebH6B428KkPqAAsV
 
 
         function queryFactory(params){

@@ -1,77 +1,57 @@
-<div class="pane border-bottom">
-    <h1>Mina patienter</h1>
-</div>
-
-
 <div class="row">
-
     <div class="col-md-12">
-
-        <div class="list-group patients-list">
-
-
-            <div class="list-group-item" style="height:40px">
-                <div class="media col-md-3">
-                    Personnummer
-                </div>
-
-                <div class="col-md-2">
-                    Senaste besök
-                </div>
-
-                <div class="col-md-1">
-                    Ålder
-                </div>
-
-                <div class="col-md-1">
-                    HbA1c
-                </div>
-
-                <div class="col-md-1">
-                </div>
-
-                <div class="col-md-4 text-center">
-                        Funktioner
-               </div>
-            </div>
+        <h1 class="Page-title">Söklista</h1>
 
 
-            <a href="#/inloggad/patient/{{ patient.SubjectKey }}" class="list-group-item" ng-repeat="patient in gridData">
-                <div class="media col-md-3">
-                    {{ patient.SubjectKey }}
-                </div>
+        <div class="Panel">
 
-                <div class="col-md-2">
-                    {{ patient.InsertedAt }}
-                </div>
+            <div>
 
-                <div class="col-md-1">
-                    {{ patient.Age }}
-                </div>
-
-                <div class="col-md-1">
-                    {{ patient.HbA1c }}
-                </div>
-
-                <div class="col-md-1">
-                    {{ patient.BPSystolic }}
-                </div>
-
-                <div class="col-md-4 text-center">
-
-                    <button type="button" class="btn btn-default btn-sm"> Komplettera </button>
-
-                    <button type="button" class="btn btn-default btn-sm"> Nytt besök </button>
-                </div>
-            </a>
+                <span><i class="fa fa-filter"></i> Filter: </span> {{ model.subjectList.length }} patienter</div>
 
         </div>
+
+
+        <table class="Table">
+
+            <thead>
+                <tr>
+                    <td>Personnummer</td>
+                    <td>Senaste besök</td>
+                    <td>Blodtryck</td>
+                    <td>HbA1c</td>
+                    <td>Val</td>
+                </tr>
+            </thead>
+
+            <tbody ng-repeat="subject in model.subjectList">
+
+                <tr>
+                    <td>{{ subject[0].subject.socialNumber }}</td>
+                    <td>{{ subject[0].lastUpdatedAt | date:'yyyy-MM-dd' }} </td>
+                    <td>{{ subject[0].hba1c }}</td>
+                    <td>{{ subject[0].bpDiastolic }}</td>
+
+                    <td><button class="Button Button--info">Profil</button></td>
+                </tr>
+            </tbody>
+
+
+        </table>
+
+
+
+         <pre>
+
+        {{ serverError }}
+        {{  accountModel | json  }}
+        </pre>
+
+
+
 
     </div>
 
 </div>
-
-
-
 
 
