@@ -13,9 +13,10 @@ angular.module('ndrApp')
 
         return {
             restrict : 'A',
-            templateUrl : function(elem, attr){
-                return 'src/components/Feed'+ attr.type.capitalize() +'/Feed'+ attr.type.capitalize() +'.html';
-            },
+            //templateUrl : function(elem, attr){
+            //    return 'src/components/Feed'+ attr.type.capitalize() +'/Feed'+ attr.type.capitalize() +'.html';
+            //},
+
             link: link,
             scope: {
                 model: "=",

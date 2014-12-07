@@ -2,6 +2,7 @@
 <ul class="FeedSmall">
     <li ng-repeat="item in model.data" class="FeedSmall-item">
 
+
     <p class="FeedSmall-category" >
         <span ng-repeat="category in item.categories">
             {{ category.name }}
@@ -9,6 +10,7 @@
     </p>
 
     <h3 class="FeedSmall-title"><a href="/#/nyheter/{{ item.newsID }}">{{ item.title }}</a></h3>
+
 
     </li>
 </ul>
