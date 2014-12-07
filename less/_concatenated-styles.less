@@ -237,6 +237,9 @@ body {
 p {
   font-weight: 300;
 }
+.Article-author-image {
+  border-radius: 100%;
+}
 @import '../bower_components/selectize/dist/less/selectize.less';
 
 @selectize-color-text: @ndr-dark;
@@ -387,38 +390,32 @@ p {
   font-weight: 400;
   letter-spacing: normal;
 }
-.FeedLarge {
-  margin: 0;
-  padding: 0;
-}
-
-
 .FeedMedium {
   margin: 0;
   padding: 0;
 }
 
 
-.FeedSmall {
+.FeedItemSmall {
   margin: 0;
   padding: 0;
 }
 
-.FeedSmall-item {
+.FeedItemSmall-item {
   margin: 0 0 0px 0;
   padding: 0;
   list-style: none;
   border-bottom: 1px solid #ddd;
 }
 
-.FeedSmall-category {
+.FeedItemSmall-category {
   font-weight: 600;
   letter-spacing: 0.02em;
   font-size: 14px;
   margin: 10px 0 -10px 0;
 }
 
-.FeedSmall-title {
+.FeedItemSmall-title {
   margin: 10px 0 10px 0;
   font-size: 16px;
   line-height: 1.46;
@@ -473,6 +470,48 @@ p {
 }
 
 
+.List {
+  margin: 0;
+  padding: 0;
+}
+
+.List-item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.List-item-inner {
+  margin: 15px 0;
+}
+
+.List-item-category {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 12px;
+  margin: 0;
+}
+
+.List-item-title {
+  font-size: 16px;
+  line-height: 1.46;
+  margin: 0;
+}
+
+.List-readmore {
+
+}
+
+.FeedLarge {
+  margin: 0;
+  padding: 0;
+}
+
 
 
 // Bootstrap navbar CRAP. Worst CSS ever.
@@ -480,28 +519,29 @@ p {
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
-  background-color: @ndr-blue;
+  background-color: @ndr-semidark;
 }
 
 .navbar-default .navbar-nav > .open > a {
   position: relative;
 
-  &:after {
-    content: '';
-    display: block;
-    height: 2px;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    background-color: @ndr-blue;
-    z-index: 100;
-  }
+//  &:after {
+//    content: '';
+//    display: block;
+//    height: 2px;
+//    position: absolute;
+//    bottom: -2px;
+//    left: 0;
+//    right: 0;
+//    background-color: @ndr-semidark;
+//    z-index: 100;
+//  }
+
 }
 
 .Navbar .dropdown-menu {
-  background-color: @ndr-blue;
-  padding: 15px;
+  background-color: @ndr-semidark;
+  padding: 20px;
 }
 
 .Navbar .dropdown-menu > li > a {
@@ -582,15 +622,12 @@ p {
   background-color: @ndr-white;
   border-radius: @panel-border-radius;
   padding: @panel-body-padding;
-
-
-  // Using h2, h3, h4 etc overrides styling where it shouldn't be overridden.
-  .Panel-title {
-    margin: 0px 0 20px 0px;
-  }
-
 }
 
+// Using h2, h3, h4 etc overrides styling where it shouldn't be overridden.
+.Panel-title {
+  margin: 0px 0 20px 0px;
+}
 
 .Panel--green {
   background-color: @ndr-green;
