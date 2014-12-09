@@ -6,7 +6,7 @@ angular.module('ndrApp')
 
 
         function link(scope, element, attrs) {
-            console.log(scope);
+
         }
 
         return {
