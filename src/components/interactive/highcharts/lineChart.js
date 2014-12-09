@@ -15,11 +15,11 @@ angular.module('ndrApp')
 
                 var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
-                            type: 'spline',
+                            type: 'area',
                             height : 130,
                             marginTop : 20,
                             marginBottom : 10,
-                            marginLeft : 15,
+                            marginLeft : 35,
                             marginRight: 5,
                             spacingLeft : 30
                         },
@@ -57,7 +57,8 @@ angular.module('ndrApp')
                            lineWidth: 0,
 
                             minorGridLineWidth: 0,
-
+                            min : 50,
+                            max : 70,
 
                             title: {
                                 text: '',
@@ -65,8 +66,8 @@ angular.module('ndrApp')
                             },
                             labels: {
                                 align : "right",
-                                x : 20,
-                                y : -8,
+                                //x : 20,
+                                //y : -8,
 
                             }
 
@@ -99,7 +100,7 @@ angular.module('ndrApp')
                         },
                         series: [{
                             dashStyle: "ShortDot",
-                            color : "#D03928",
+                            color : "#E14274",
                             name: 'a',
                             data : [{x: 1, y:10}, {x: 3, y:5}]
                     

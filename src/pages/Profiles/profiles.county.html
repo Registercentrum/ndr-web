@@ -65,17 +65,18 @@
                             <thead>
                                 <tr>
                                     <td>Indikator</td>
-                                    <td>Status</td>
-                                    <td> {{ model.county.name }}</td>
-                                    <td>Riket</td>
+                                    <td class="text-center">Status</td>
+                                    <td class="text-center">{{ model.county.name }}</td>
+                                    <td class="text-center">Riket</td>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <tr ng-repeat="indicator in model.data.keyIndicators">
-                                    <td>{{indicator.indicator.name}}</td>
-                                    <td><span class="badge bg-success">&nbsp;</span></td>
-                                    <td>{{indicator.stat.r}}</td>
-                                    <td>{{indicator.stat.r}}</td>
+                                    <td>{{indicator.precalculated.name}}</td>
+                                    <td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>
+                                    <td class="text-center">{{indicator.precalculated.geo}}</td>
+                                    <td class="text-center">{{indicator.precalculated.riket}}</td>
                                 </tr>
                             </tbody>
 
