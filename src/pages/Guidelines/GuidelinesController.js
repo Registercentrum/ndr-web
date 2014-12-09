@@ -19,7 +19,5 @@ angular.module('ndrApp')
             // maxItems: 1
         }
 
-        
-
     }]);
 
