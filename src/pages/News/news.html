@@ -13,17 +13,11 @@
             <div class="Panel">
 
                 <article ng-repeat="newsItem in news">
-
-                    <h2 class="News-title"><a href="/#/nyheter/{{newsItem.newsID}}">{{ newsItem.title }}</a></h2>
+                    <h2 class="News-title"><a href="{{newsItem.link}}">{{ newsItem.title }}</a></h2>
 
                     <p class="News-date">{{ newsItem.createdAt | date: 'mediumDate' }}</p>
 
-                    <div class="News-body">
-
-                        {{ newsItem.body }}
-
-                    </div>
-
+                    <div class="News-body" ng-bind-html="newsItem.body"></div>
                 </article>
 
 
