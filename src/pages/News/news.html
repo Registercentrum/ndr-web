@@ -12,11 +12,13 @@
         <div class="col-md-9">
             <div class="Panel">
 
+                <h2 class="Panel-title">Senaste</h2>
+
                 <article class="clearfix News" ng-repeat="newsItem in news">
-                    <div class="News-image col-md-3">
+                    <div class="News-image col-md-3 u-noLeftPadding">
                         <img src="//placekitten.com/g/200/200" class="News-image-img">
                     </div>
-                    <div class="News-text col-md-9">
+                    <div class="News-text col-md-9 u-noRightPadding">
                         <h2 class="News-text-title">
                             <a href="{{newsItem.link}}" class="News-text-title-link">{{ newsItem.title }}</a>
                         </h2>
