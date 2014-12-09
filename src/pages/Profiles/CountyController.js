@@ -31,7 +31,7 @@ angular.module("ndrApp")
 
                 var o = {
                     name : obj.unit.name,
-                    color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
+                    color : obj.unit.levelID != id ? "#D4D4D4" : "#FFCC01",
                     y : obj.stat.r
                 }
 
@@ -42,11 +42,9 @@ angular.module("ndrApp")
         })
 
         // GET DATA FOR TREND CHART
-        var query = queryFactory({countyCode : id, interval : "m"});
+        var query = queryFactory({countyCode : id, interval : "y", fromYear: 2000, toYear : 2015, indicatorID: 101});
         dataService.getStats(query).then(function (data){
 
-            console.log("dda", data);
-            
             var series = [];
 
             _.each(data.statSet[0].intervalSet, function(obj, key){
@@ -66,9 +64,7 @@ angular.module("ndrApp")
         })
 
 
-
-
-
+        
         function getKeyIndicators(){
 
             var indicators = $scope.data.indicators.byType.target;
@@ -77,47 +73,73 @@ angular.module("ndrApp")
             var promises = [];
 
             _.each(indicators, function(obj, key){
-
                 if(_.indexOf(toInclude, obj.id) != -1){
                     var query = queryFactory({countyCode : id, indicatorID: obj.id});
                     promises.push(dataService.getStats(query));
                 }
             })
 
+            _.each(indicators, function(obj, key){
+                if(_.indexOf(toInclude, obj.id) != -1){
+                    var query = queryFactory({ indicatorID: obj.id, level : 0});
+                    promises.push(dataService.getStats(query));
+                }
+            })
+
+
             $q.all(promises).then(function (data){
 
                 var keyIndicators = [];
 
-                _.each(data, function(obj, key){
-                    console.log(key, obj);
-                    var o = {
-                        indicator : obj.indicator,
-                        stat : obj.statSet[0].stat
+                console.log("data", data);
+
+                var byIndicator = _.groupBy(data, function (d){
+                    return d.indicator.name;
+                });
+
+                //loop through indicators and precalculate relevant info
+                _.each(byIndicator, function(obj, key){
+
+                    obj.precalculated = {
+                        riket   : undefined,
+                        geo     : undefined,
+                        status  : "equal",
+                        name : undefined,
                     }
-                    keyIndicators.push(o);
+
+                    var riket = _.filter(obj, function (o){
+                        return o.statSet[0].unit.name == "Riket";
+                    })[0]
+
+                    var geo = _.filter(obj, function (o){
+                        return o.statSet[0].unit.name != "Riket";
+                    })[0]
+
+                    obj.precalculated.name = riket.indicator.name;
+
+                    obj.precalculated.riket = riket.statSet[0].stat.r;
+                    obj.precalculated.geo = geo.statSet[0].stat.r;
+
+                    var lKonf = riket.statSet[0].stat.lKonf;
+                    var uKonf = riket.statSet[0].stat.uKonf;
+
+                    //console.log(obj.precalculated.geo < lKonf, obj.precalculated.geo, lKonf);
+
+                    if(obj.precalculated.geo < lKonf) obj.precalculated.status = "better";
+                    if(obj.precalculated.geo > uKonf) obj.precalculated.status = "worse";
+
                 })
 
-                $scope.model.data.keyIndicators = keyIndicators;
+                console.log("by", byIndicator);
+                
+                $scope.model.data.keyIndicators = byIndicator;
 
             })
-
-
-         /*   $q.all(promises).then(function (results) {
-                var resultOfFirstPromise = results[0],
-                    resultOfSecondPromise = results[1];
-                // update model.property based on data returned and relevant logic.
-            });*/
-
 
         }
 
         getKeyIndicators();
 
-
-
-
-
-        https://ndr.registercentrum.se/api/indicatorresult?IndicatorID=101&Level=0&FromYear=2013&ToYear=2013&DiabetesTypeCode=1&APIKey=LkUtebH6B428KkPqAAsV
 
 
         function queryFactory(params){

@@ -90,7 +90,7 @@ angular.module('ndrApp')
                         },
                         series: [{
                             //dashStyle: "ShortDot",
-                            color : "yellow",
+                            color : "#FFCC01",
                             name: 'a',
                             data : [{x: 1, y:10}, {x: 3, y:5}]
                     
