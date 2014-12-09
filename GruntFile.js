@@ -5,7 +5,12 @@ module.exports = function(grunt) {
             options: {
             },
             dist: {
-                src: ['less/_variables.less', 'less/_styles.less', 'src/components/*/*.less'],
+                src: [
+                    'less/_variables.less',
+                    'less/_styles.less',
+                    'src/components/*/*.less',
+                    'src/pages/*/*.less'
+                ],
                 dest: 'less/_concatenated-styles.less'
             }
         },
@@ -37,6 +42,7 @@ module.exports = function(grunt) {
                 "src/components/*/*.less",
                 "src/components/*/*.html",
                 "src/pages/*/*.html",
+                "src/pages/*/*.less",
                 "./less/*.less",
                 "bower_components/bootstrap/less/*.less"
             ],
