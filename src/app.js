@@ -39,7 +39,6 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
                 resolve: {
 
-
                 }
             })
 
@@ -53,7 +52,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('statistics', {
                 url: "/statistik",
-                templateUrl: "src/pages/Statistics/statistics.html",
+                templateUrl: "src/pages/Statistics/statistics.html"
                 //controller: "StatisticsController"
             })
 

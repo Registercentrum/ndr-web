@@ -12,18 +12,22 @@
         <div class="col-md-9">
             <div class="Panel">
 
-                <article ng-repeat="newsItem in news">
-                    <h2 class="News-title"><a href="{{newsItem.link}}">{{ newsItem.title }}</a></h2>
+                <article class="clearfix News" ng-repeat="newsItem in news">
+                    <div class="News-image col-md-3">
+                        <img src="//placekitten.com/g/200/200" class="News-image-img">
+                    </div>
+                    <div class="News-text col-md-9">
+                        <h2 class="News-text-title">
+                            <a href="{{newsItem.link}}" class="News-text-title-link">{{ newsItem.title }}</a>
+                        </h2>
+                        <p class="News-text-date">{{ newsItem.createdAt | date: 'mediumDate' }}</p>
+                        <div class="News-text-body" ng-bind-html="newsItem.body"></div>
+                        <p class="News-text-readmore">
+                            <a href="newsItem.link" class="News-text-readmore-link">Läs mer &raquo;</a>
+                        </p>
+                    </div>
 
-                    <p class="News-date">{{ newsItem.createdAt | date: 'mediumDate' }}</p>
-
-                    <div class="News-body" ng-bind-html="newsItem.body"></div>
                 </article>
-
-
-                <!--<pre>-->
-                    <!--{{ news | json }}-->
-                <!--</pre>-->
 
             </div>
         </div>
