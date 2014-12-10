@@ -13,7 +13,7 @@ angular.module("ndrApp")
             angular.forEach(data, function(item) {
                 item.link = '/#/nyheter/' + item.newsID;
             });
-            
+
             $scope.model.listModelNews = {
                 data : data
             }
