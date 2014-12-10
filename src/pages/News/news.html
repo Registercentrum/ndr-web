@@ -25,7 +25,7 @@
                         <p class="News-text-date">{{ newsItem.createdAt | date: 'mediumDate' }}</p>
                         <div class="News-text-body" ng-bind-html="newsItem.body"></div>
                         <p class="News-text-readmore">
-                            <a href="newsItem.link" class="News-text-readmore-link">Läs mer &raquo;</a>
+                            <a href="{{ newsItem.link }}" class="News-text-readmore-link">Läs mer &raquo;</a>
                         </p>
                     </div>
 
