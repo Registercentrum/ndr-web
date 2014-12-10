@@ -6,7 +6,7 @@ angular.module("ndrApp")
         }
 
         dataService.getList("news").then(function (data){
-            data = data.splice(0,4);
+            data = data.splice(0,3);
 
             angular.forEach(data, function(item) {
                 item.link = "/#/nyheter/" + item.newsID;
