@@ -5,13 +5,12 @@ angular.module("ndrApp")
             listModelNews : {}
         }
 
-        function createLink(item) {
-            item.link = "/#/nyheter/" + item.newsID;
-        }
-
         dataService.getList("news").then(function (data){
+            data = data.splice(0,4);
 
-            angular.forEach(data, createLink);
+            angular.forEach(data, function(item) {
+                item.link = "/#/nyheter/" + item.newsID;
+            });
 
             $scope.model.listModelNews = {
                 data : data

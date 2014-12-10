@@ -37,12 +37,21 @@ angular.module('ndrApp')
 
         /* METHODS - returns promises */
         this.getList = function (type){
-           return endpoints[type].getList();
+            return endpoints[type].getList();
         }
 
         this.getOne = function (type, id){
             return Restangular.one(type, id).get();
         }
+
+        //this.getSome = function(type, number){
+        //    var all = endpoints[type].getList();
+        //    all.then(function(a,b,c){
+        //        debugger;
+        //    });
+        //    debugger;
+        //   //  return all.splice(0, number);
+        //}
 
         this.getStats = function (params){
             return endpoints.indicatorresult.get(params);
