@@ -87,12 +87,21 @@
 
 .Button--centered {
   display: block;
-  width:60%;
   margin: 10px auto;
 }
 
+.Button--centered--60 {
+  width: 60%;
+}
+
+.Button--centered--80 {
+  width: 80%;
+}
+
 .Button--large {
-  padding: 20px 50px;
+  border-width: 2px;
+  padding: 10px 40px;
+  font-size: 16px;
 }
 
 .Button--wide {
@@ -113,4 +122,9 @@
   padding: 5px 10px;
   font-weight: 400;
   letter-spacing: normal;
+}
+
+.Button--green {
+  border-color: @ndr-green;
+  color: @ndr-green;
 }

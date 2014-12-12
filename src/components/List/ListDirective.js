@@ -2,9 +2,6 @@ angular.module('ndrApp')
     .directive('list', [function() {
 
         function link(scope, element, attrs) {
-            if ( attrs.readmore !== undefined ) {
-                scope.readmore = '/#/' + attrs.readmore;
-            }
         }
 
         return {

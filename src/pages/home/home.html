@@ -33,7 +33,10 @@
     <div class="col-md-4">
       <div class="Panel Intro--equalHeights">
         <h3 class="Panel-title">Nyheter</h3>
-        <div list model="model.listModelNews" readmore="nyheter"></div>
+        <div list model="model.listModelNews"></div>
+        <div class="List-readmore">
+          <a href="/#/nyheter" class="Button Button--default Button--large Button--centered Button--centered--80">Se alla nyheter</a>
+        </div>
       </div>
     </div>
   </div> <!-- end row -->
@@ -46,8 +49,10 @@
 
       </div>
       <div class="Panel clearfix">
-        <h3 class="Panel-title about-ndr col-md-10 u-noLeftPadding u-noRightPadding">Nationella Diabetesregistret <strong>kartlägger och utvecklar</strong> diabetesvårdens kvalitet.</h3>
-        <div class="col-md-2"><a href="/#/om-ndr" class="Button Button--default about-ndr-button ">Läs mer om NDR</a></div>
+        <h3 class="Panel-title about-ndr u-noLeftPadding u-noRightPadding" style="float: left;">Nationella Diabetesregistret <strong>kartlägger och utvecklar</strong> diabetesvårdens kvalitet.</h3>
+        <div style="text-align: right; float: right;">
+          <a href="/#/om-ndr" class="Button Button--large Button--default Button--green">Läs mer om NDR</a>
+        </div>
       </div>
     </div>
   </div>
@@ -65,7 +70,7 @@
     <div class="col-md-4">
       <div class="Panel u-equalHeight">
         <h3 class="Panel-title">Publikationer</h3>
-        <div list model="{data: [
+        <div list model="{ data: [
           {
             title: 'Risk Prediction of Cardiovascular Disease in Type 2 Diabetes',
             link: 'http://www.google.se'
