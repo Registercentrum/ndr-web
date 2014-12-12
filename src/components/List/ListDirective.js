@@ -4,8 +4,6 @@ angular.module('ndrApp')
         function link(scope, element, attrs) {
             if ( attrs.readmore !== undefined ) {
                 scope.readmore = '/#/' + attrs.readmore;
-            } else {
-                scope.readmore = false;
             }
         }
 
