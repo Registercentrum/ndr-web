@@ -147,6 +147,14 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             })
 
 
+            /* Temporary (?) pages */
+
+
+            .state('meddiabetes', {
+                url: "for-dig-med-diabetes",
+                templateUrl: templateURL + "Article/article.html",
+                controller : "genericBlah"
+            })
 
             /* Generic pages */
 
