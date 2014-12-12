@@ -127,4 +127,11 @@
 .Button--green {
   border-color: @ndr-green;
   color: @ndr-green;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: rgba(red(@ndr-green), green(@ndr-green), blue(@ndr-green),0.2);
+    color: @ndr-green;
+  }
 }
