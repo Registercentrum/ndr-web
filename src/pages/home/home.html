@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-md-8">
-      <div class="Panel Intro u-equalHeights">
+      <div class="Panel Intro Intro--equalHeights">
         <div class="clearfix">
           <div class="Intro-backgroundImage"></div>
           <div class="Intro-image col-md-3">
@@ -31,7 +31,7 @@
     </div>
 
     <div class="col-md-4">
-      <div class="Panel u-equalHeights">
+      <div class="Panel Intro--equalHeights">
         <h3 class="Panel-title">Nyheter</h3>
         <div list model="model.listModelNews" readmore="nyheter"></div>
       </div>
@@ -54,18 +54,17 @@
 
 
   <div class="row col-wrap">
-
-    <div class="col-md-4 u-equalHeight">
-      <div class="Panel">
+    <div class="col-md-4">
+      <div class="Panel u-equalHeight">
         <img style="width: 100%" src="" alt="Årsrapport" />
         <a ui-sref="om" class="Button Button--default Button--wide">Ladda ned NDR:s årsrapport</a>
       </div>
     </div>
 
 
-    <div class="col-md-4 u-equalHeight">
-      <div class="Panel">
-        <h3>Publikationer</h3>
+    <div class="col-md-4">
+      <div class="Panel u-equalHeight">
+        <h3 class="Panel-title">Publikationer</h3>
         <div list model="{data: [
           {
             title: 'Risk Prediction of Cardiovascular Disease in Type 2 Diabetes',
@@ -80,9 +79,9 @@
     </div>
 
 
-    <div class="col-md-4 u-equalHeight">
-      <div class="Panel">
-        <h3>Länkar</h3>
+    <div class="col-md-4">
+      <div class="Panel u-equalHeight">
+        <h3 class="Panel-title">Länkar</h3>
 
         <div list model="{data: [
           {
