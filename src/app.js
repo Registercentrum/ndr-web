@@ -42,7 +42,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 }
             })
 
-            .state('patient', {
+            .state('main.patient', {
                 url: "/for-dig-med-diabetes",
                 //controller : "Controller",
                 templateUrl: "src/pages/Patient/patient.html"
@@ -50,13 +50,13 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             /* Statistics */
 
-            .state('statistics', {
+            .state('main.statistics', {
                 url: "/statistik",
                 templateUrl: "src/pages/Statistics/statistics.html"
                 //controller: "StatisticsController"
             })
 
-            .state('compare', {
+            .state('main.compare', {
                 url: "/knappen",
                 templateUrl: "src/pages/Statistics/statistics.compare.html"
             })
@@ -82,12 +82,11 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
 
 
-            .state('research', {
+            .state('main.research', {
                 url: "/forskning",
                 templateUrl: "src/pages/Research/research.html",
                 controller : "ResearchController"
             })
-
 
 
             .state('news', {
@@ -103,13 +102,13 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             })
 
 
-            .state('improvement', {
-                url: "/forskning",
-                templateUrl: templateURL + "research/research.html",
-                controller : "ResearchController"
+            .state('main.improvement', {
+                url: "/forbattringsprojekt",
+                templateUrl: "src/pages/Improvement/improvement.html"
+               // controller : "ResearchController"
             })
 
-            .state('about', {
+            .state('main.about', {
                 url: "/om-ndr",
                 templateUrl: "src/pages/About/about.html"
                 //controller : "ResearchController"
@@ -176,4 +175,15 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                     }*/
                 }
             })
+     })
+    .run(function($rootScope, $location) {
+
+        $rootScope.$on('$viewContentLoaded', function () {
+
+
+            jQuery('.u-equalHeight').matchHeight(true);
+            jQuery('.Intro--equalHeights').matchHeight(false);
+
+
+        });
     })

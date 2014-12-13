@@ -83,6 +83,14 @@
 .Button--white {
   border: 2px solid @ndr-white;
   color: @ndr-white;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: rgba(red(@ndr-white), green(@ndr-white), blue(@ndr-white),0.2);
+    color: @ndr-white;
+  }
+
 }
 
 .Button--centered {
@@ -102,6 +110,7 @@
   border-width: 2px;
   padding: 10px 40px;
   font-size: 16px;
+  font-weight: 500;
 }
 
 .Button--wide {

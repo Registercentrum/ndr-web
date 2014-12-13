@@ -16,9 +16,6 @@ angular.module("ndrApp")
                 data : data
             }
 
-            jQuery('.u-equalHeight').matchHeight(true);
-            jQuery('.Intro--equalHeights').matchHeight(false);
-
         })
 
 
