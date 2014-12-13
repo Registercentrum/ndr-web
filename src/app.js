@@ -180,10 +180,17 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
         $rootScope.$on('$viewContentLoaded', function () {
 
+             var interval = setInterval(function(){
+                 if (document.readyState == "complete") {
 
-            jQuery('.u-equalHeight').matchHeight(true);
-            jQuery('.Intro--equalHeights').matchHeight(false);
+                     window.scrollTo(0, 0);
+                     clearInterval(interval);
 
+                     jQuery('.u-equalHeight').matchHeight(true);
+                     jQuery('.Intro--equalHeights').matchHeight(false);
+
+                 }
+             },100);
 
         });
     })
