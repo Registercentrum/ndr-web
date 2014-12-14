@@ -2,7 +2,10 @@ angular.module("ndrApp")
     .controller('HomeController', ['$scope', 'dataService', function($scope, dataService) {
 
         $scope.model = {
-            listModelNews : {}
+            listModelNews : {},
+            autocompleteModel : {
+                selected : undefined,
+            }
         }
 
         dataService.getList("news").then(function (data){
