@@ -32,7 +32,7 @@ angular.module("ndrApp")
                 var o = {
                     name : obj.unit.name,
                     color : obj.unit.levelID != id ? "#D4D4D4" : "#FFCC01",
-                    y : obj.stat.r
+                    y : obj.stat.r,
                 }
 
                 series.push(o)

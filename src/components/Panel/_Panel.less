@@ -39,6 +39,13 @@
   background-color: @ndr-white;
   border-radius: @panel-border-radius;
   padding: @panel-body-padding;
+
+  .Icon{
+    padding-left:40px;
+    padding-top:30px;
+    width:80%;
+  }
+
 }
 
 // Using h2, h3, h4 etc overrides styling where it shouldn't be overridden.
@@ -46,6 +53,16 @@
   &:extend(.Heading);
   margin: 0px 0 20px 0px;
   font-size: 25px;
+}
+
+.Panel--pink-text {
+  color: @ndr-pink;
+}
+.Panel--blue-text {
+  color: @ndr-blue;
+}
+.Panel--yellow-text {
+  color: @ndr-yellow;
 }
 
 .Panel--green {

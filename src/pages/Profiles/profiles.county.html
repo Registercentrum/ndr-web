@@ -15,27 +15,30 @@
 
         <div class="col-md-3">
             <div class="Panel u-equalHeight">
-                <h1 class="Panel-title">Personer med diabetes</h1>
-                <div class="column-chart" model="model.data.hba1c"></div>
+
+                <h1 class="Panel-title Panel--blue-text">{{ "6000" }} personer med diabetes</h1>
+                <img class="Icon" src="images/icons/icon_people.png" alt=""/>
+
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="Panel u-equalHeight">
                 <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
-                <div class="column-chart" model="model.data.hba1c"></div>
+                <img class="Icon" src="images/icons/icon_unit.png" alt=""/>
+
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="Panel u-equalHeight">
+            <div class="Panel Panel--pink-text u-equalHeight">
                 <h1 class="Panel-title">Trend HbA1c</h1>
                 <div line-chart model="model.data.trendhba1c"></div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="Panel u-equalHeight">
+            <div class="Panel Panel--yellow-text u-equalHeight">
                 <h1 class="Panel-title">Jämförelse HbA1c</h1>
                 <div column-chart model="model.data.hba1c"></div>
 
@@ -100,9 +103,30 @@
 </div>
 
 
+<!-- Enheter -->
 
 
-<h2>Key Debug</h2>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Panel">
+
+                <h1>Vårdenheter</h1>
+                <p>Landstingets vårdenheter</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--
+
+            <h2>Key Debug</h2>
 <pre>
                     {{ model.data.keyIndicators | json }}
                 </pre>
@@ -111,3 +135,4 @@
 <pre>
                     {{ data.indicators | json }}
                 </pre>
+-->

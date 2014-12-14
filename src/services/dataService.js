@@ -63,12 +63,15 @@ angular.module('ndrApp')
             var preparedGeoList = [];
 
             _.each(self.data.units, function(obj, key){
-                var o = {
-                    type : "unit",
-                    name : obj.name,
-                    id : "unit_" + obj.unitID
+
+                if(obj.isActive) {
+                    var o = {
+                        type: "unit",
+                        name: obj.name,
+                        id: "unit_" + obj.unitID
+                    }
+                    preparedGeoList.push(o);
                 }
-                preparedGeoList.push(o);
             })
 
             _.each(self.data.counties, function(obj, key){

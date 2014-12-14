@@ -18,7 +18,7 @@ angular.module('ndrApp')
                             type: 'area',
                             height : 130,
                             marginTop : 20,
-                            marginBottom : 10,
+                            marginBottom : 30,
                             marginLeft : 35,
                             marginRight: 5,
                             spacingLeft : 30
@@ -32,19 +32,21 @@ angular.module('ndrApp')
 
 
                             type: 'datetime',
-                            dateTimeLabelFormats: { // don't display the dummy year
-                                month: '%e. %b',
+                           /* dateTimeLabelFormats: { // don't display the dummy year
+                                //month: '%e. %b',
                                 year: '%b'
+                            },*/
+
+                            dateTimeLabelFormats: {
+                                year: '%Y'
                             },
-
-
 
                             lineWidth: 0,
                             gridLineWidth: 0,
                             minorGridLineWidth: 0,
-                            lineColor: 'transparent',
+                            lineColor: '#eee',
                             labels: {
-                                enabled: false
+                                //enabled: false
                             },
                             minorTickLength: 0,
                             tickLength: 0
@@ -53,12 +55,12 @@ angular.module('ndrApp')
 
                         yAxis: {
                            gridLineWidth: 1,
-                           gridLineColor : "white",
+                           gridLineColor : "#eee",
                            lineWidth: 0,
 
                             minorGridLineWidth: 0,
-                            min : 50,
-                            max : 70,
+                            min : 55,
+                            max : 80,
 
                             title: {
                                 text: '',
@@ -80,6 +82,21 @@ angular.module('ndrApp')
                             bar: {
                                 dataLabels: {
                                     enabled: true
+                                }
+                            },
+                            area : {
+
+                                fillColor : {
+                                    linearGradient: {
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 0,
+                                        y2: 1
+                                    },
+                                    stops: [
+                                        [0, Highcharts.Color("#E14274").setOpacity(0.5).get('rgba')],
+                                        [1, Highcharts.Color("#E14274").setOpacity(0).get('rgba')]
+                                    ]
                                 }
                             }
                         },
@@ -103,7 +120,7 @@ angular.module('ndrApp')
                             color : "#E14274",
                             name: 'a',
                             data : [{x: 1, y:10}, {x: 3, y:5}]
-                    
+
                         }]
                     });
 

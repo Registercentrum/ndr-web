@@ -16,7 +16,7 @@ angular.module('ndrApp')
                 var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'column',
-                            height : 120,
+                            height : 130,
                             marginTop : 5,
                             marginBottom : 30
                         },
@@ -27,7 +27,7 @@ angular.module('ndrApp')
                             minorTickLength: 0,
                             tickLength: 0,
                             gridLineWidth: 0,
-                            gridLineColor : "white",
+                            gridLineColor : "#eee",
                             lineWidth: 0,
 
 
@@ -36,11 +36,19 @@ angular.module('ndrApp')
                             },
                             type : "category",
 
+                            labels: {
+                                formatter: function(a){
+                                    if(this.value == scope.selected){
+                                        return this.value;
+                                    }
+                                }
+                            }
+
 
                         },
                        yAxis: {
                            gridLineWidth: 0,
-                           gridLineColor : "white",
+                           gridLineColor : "#eee",
                            lineWidth: 0,
                            min : 60,
                            max : 70,
@@ -75,6 +83,8 @@ angular.module('ndrApp')
                         credits: {
                             enabled: false
                         },
+
+
                         series: [{
                             color : "#ccc",
                             name: 'Amount',
@@ -97,6 +107,9 @@ angular.module('ndrApp')
 
                 scope.$watch('model', function(model) {
                     console.log("Reloading Column Chart", model);
+
+                    if(typeof model != "undefined")
+                    scope.selected = _.findWhere(model, {color : "#FFCC01"}).name;
                     chart.highcharts().series[0].setData(model)
                 }, true);
             }
