@@ -75,8 +75,11 @@ angular.module('ndrApp')
 
 
                         },
-                        tooltip: {
-                            valueSuffix: ''
+                         tooltip: {
+                            formatter: function() {
+                                var time = Highcharts.dateFormat('%Y', new Date(this.x))
+                                return time + ': <b>' +  this.y + '</b>';
+                            }
                         },
                         plotOptions: {
                             bar: {
@@ -118,7 +121,7 @@ angular.module('ndrApp')
                         series: [{
                             dashStyle: "ShortDot",
                             color : "#E14274",
-                            name: 'a',
+                            name: 'Värde',
                             data : [{x: 1, y:10}, {x: 3, y:5}]
 
                         }]

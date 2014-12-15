@@ -59,7 +59,11 @@ angular.module('ndrApp')
                             },
                         },
                         tooltip: {
-                            valueSuffix: ''
+                            formatter: function() {
+
+                                var time = Highcharts.dateFormat('%Y', new Date(this.x))
+                                return this.key + ': <b>' +  this.y + '</b>';
+                            }
                         },
                         plotOptions: {
                             bar: {
