@@ -15,10 +15,9 @@
 
         <div class="col-md-3">
             <div class="Panel Panel--blue u-equalHeight">
-
-                <h1 class="Panel-title">{{ model.data.noPatients }} personer med diabetes</h1>
+                <h1 class="Panel-title">{{ model.data.noPatients }} personer</h1>
+                <p style="position: absolute; top:60px;padding: 0px 50px 0 0;font-size: 12px">med diabetes under senaste 12 månaderna</p>
                 <img class="Icon" src="images/icons/icon_people.png" alt=""/>
-
             </div>
         </div>
 
@@ -26,7 +25,6 @@
             <div class="Panel u-equalHeight">
                 <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
                 <img class="Icon" src="images/icons/icon_unit.png" alt=""/>
-
             </div>
         </div>
 
@@ -58,7 +56,12 @@
 
             <div class="Panel">
 
-                <h1 class="Panel-title">Nyckelindikatorer</h1>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="pull-left Panel-title">Nyckelindikatorer </h1>
+                        <div class="pull-right">Filter</div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-md-5">
@@ -88,7 +91,7 @@
                     </div>
 
                     <div class="col-md-7">
-                        <div line-chart-key model="model.data.trendhba1c"></div>
+                        <div line-chart-key model="keyIndicatorModel.data"></div>
                     </div>
 
                 </div>

@@ -70,6 +70,9 @@ angular.module('ndrApp')
                                 dataLabels: {
                                     enabled: true
                                 }
+                            },
+                            series : {
+                                pointWidth: 6
                             }
                         },
                         legend: {
@@ -93,17 +96,7 @@ angular.module('ndrApp')
                             color : "#ccc",
                             name: 'Amount',
                             data: [
-                                {
-                                    name : "Domestic",
-                                    color : "#D03928",
-                                    stroke : "none",
-                                    y : 1
-                                },
-                                {
-                                    name : "International",
-                                    color : "#B4BCBE",
-                                    y : 2.5
-                                }
+
                             ]
                         }]
                     });

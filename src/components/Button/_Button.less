@@ -144,3 +144,60 @@
     color: @ndr-green;
   }
 }
+
+
+
+/* Daniel testing variation of button for County profile */
+
+.IndicatorButton {
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: @btn-font-weight;
+  font-size: 14px;
+  text-align: left;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 8px 30px;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  border-radius: 3px;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  .user-select(none);
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      .tab-focus();
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    text-decoration: none;
+    background-color: rgba(red(@ndr-blue), green(@ndr-blue), blue(@ndr-blue),0.2);
+    color: @ndr-blue;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: @cursor-disabled;
+    pointer-events: none; // Future-proof disabling of clicks
+    .opacity(.65);
+    .box-shadow(none);
+  }
+}

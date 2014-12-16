@@ -1,18 +1,29 @@
 angular.module("ndrApp")
     .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
 
-
         var id = $stateParams.id;
         var autocompleteSelected = "county_" + id;
 
         $scope.model = {
-            county : _.findWhere(dataService.data.counties,  {code : id}),
-            id : id,
-            data : {},
-            autocompleteModel : {
-                selected : autocompleteSelected,
-            }
+            county: _.findWhere(dataService.data.counties, {code: id}),
+            id: id,
+            data: {},
+            autocompleteModel: {
+                selected: autocompleteSelected
+            },
+            selectedKeyIndicator: 101,
         }
+
+        $scope.keyIndicatorModel = {
+            data : undefined
+        }
+
+        $scope.$watch('model', function (newValue, oldValue){
+
+            console.log("geet");
+            getSelectedKeyIndicator();
+
+        }, true)
 
 
         dataService.getOne("county", id).then(function (data){
@@ -22,7 +33,7 @@ angular.module("ndrApp")
 
 
         // GET DATA FOR BAR CHART
-        var query = queryFactory({});
+        var query = queryFactory({fromYear: 2013, toYear : 2014, indicatorID: 101});
         dataService.getStats(query).then(function (data){
 
             var series = [];
@@ -33,13 +44,17 @@ angular.module("ndrApp")
                     name : obj.unit.name,
                     color : obj.unit.levelID != id ? "#D4D4D4" : "#FFCC01",
                     y : obj.stat.r,
+                    cRep : obj.stat.cRep,
                 }
 
                 series.push(o)
             })
             
             $scope.model.data.hba1c = series;
+
         })
+
+
 
         // GET DATA FOR TREND CHART
         var query = queryFactory({countyCode : id, interval : "y", fromYear: 2000, toYear : 2015, indicatorID: 101});
@@ -49,19 +64,77 @@ angular.module("ndrApp")
 
             _.each(data.statSet[0].intervalSet, function(obj, key){
 
+                console.log(obj);
+
                 var o = {
                    // name : obj.unit.name,
                    // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
                     x : new Date(obj.Interval),
-                    y : obj.stat.r
+                    y : obj.stat.r,
+                    cRep : obj.stat.cRep,
                 }
 
                 series.push(o)
             })
 
+            $scope.model.data.noPatients = _.last(series).cRep;
             $scope.model.data.trendhba1c = series;
-
         })
+
+
+        function getSelectedKeyIndicator(){
+
+            var selectedIndicator = $scope.model.selectedKeyIndicator;
+
+            var promises = [];
+
+            var queryCountry = queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y"});
+            var queryGeo    = queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y"});
+
+            promises.push(dataService.getStats(queryCountry));
+            promises.push(dataService.getStats(queryGeo));
+
+            $q.all(promises).then(function (data) {
+
+                var seriesCountry = [];
+                var seriesGeo = [];
+
+
+                _.each(data[0].statSet[0].intervalSet, function(obj, key){
+
+                    var o = {
+                        color : "#D4D4D4",
+                        x : new Date(obj.Interval),
+                        y : obj.stat.r,
+                        cRep : obj.stat.cRep
+                    }
+                    seriesCountry.push(o)
+                })
+
+                _.each(data[1].statSet[0].intervalSet, function(obj, key){
+                    var o = {
+                        color : "#F1AD0F",
+                        x : new Date(obj.Interval),
+                        y : obj.stat.r,
+                        cRep : obj.stat.cRep
+                    }
+                    seriesGeo.push(o)
+                })
+
+                $scope.keyIndicatorModel.data = [
+                    {
+                        name : "Riket",
+                        data : seriesCountry
+                    },
+                    {
+                        name: "Åmål",
+                        data: seriesGeo
+                    }
+                ]
+
+            })
+
+        }
 
 
         
@@ -116,6 +189,7 @@ angular.module("ndrApp")
                     })[0]
 
                     obj.precalculated.name = riket.indicator.name;
+                    obj.precalculated.id = riket.indicator.id;
 
                     obj.precalculated.riket = riket.statSet[0].stat.r;
                     obj.precalculated.geo = geo.statSet[0].stat.r;

@@ -12,31 +12,36 @@ angular.module('ndrApp')
             // set up the isolate scope so that we don't clobber parent scope
             link: function(scope, element, attrs) {
 
-                var chart = jQuery(".chart-container", element).highcharts({
+
+                scope.$watch('model', function(model) {
+
+                    var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'spline',
-                            height : 430,
-                            marginTop : 20,
-                            marginBottom : 10,
+                            height : 470,
+                            marginTop : 60,
+                            marginBottom : 30,
                             marginLeft : 45,
-                            marginRight: 5,
-                            spacingLeft : 30
+                            marginRight: 45,
+                            spacingLeft : 30,
                         },
                         title: {
                             text: ''
                         },
 
                         xAxis: {
+
                             type: 'datetime',
-                            dateTimeLabelFormats: { // don't display the dummy year
-                                month: '%e. %b',
-                                year: '%b'
+
+                            dateTimeLabelFormats: {
+                                month: '%Y',
+                                year: '%Y'
                             },
 
                             lineWidth: 1,
                             gridLineWidth: 0,
                             minorGridLineWidth: 0,
-                           // lineColor: 'transparent',
+                            // lineColor: 'transparent',
                             labels: {
                                 enabled: true
                             },
@@ -46,6 +51,7 @@ angular.module('ndrApp')
                         },
 
                         yAxis: {
+                            "opposite": true,
                             gridLineWidth: 1,
                             gridLineColor : "white",
                             lineWidth: 0,
@@ -56,7 +62,7 @@ angular.module('ndrApp')
                                 align: 'high'
                             },
                             labels: {
-                                align : "right",
+                                align : "left",
                                 //x : 20,
                                 //y : -8,
 
@@ -64,7 +70,10 @@ angular.module('ndrApp')
                         },
 
                         tooltip: {
-                            valueSuffix: ''
+                            formatter: function() {
+                                var time = Highcharts.dateFormat('%Y', new Date(this.x))
+                                return time + ': <b>' +  this.y + '</b>';
+                            }
                         },
                         plotOptions: {
                             bar: {
@@ -88,19 +97,10 @@ angular.module('ndrApp')
                         credits: {
                             enabled: false
                         },
-                        series: [{
-                            //dashStyle: "ShortDot",
-                            color : "#FFCC01",
-                            name: 'a',
-                            data : [{x: 1, y:10}, {x: 3, y:5}]
-                    
-                        }]
+                        series: scope.model
                     });
 
 
-                scope.$watch('model', function(model) {
-
-                    chart.highcharts().series[0].setData(model)
 
                 }, true);
             }
