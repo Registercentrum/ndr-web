@@ -58,7 +58,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.compare', {
                 url: "/knappen",
-                templateUrl: "src/pages/Statistics/statistics.compare.html"
+                templateUrl: "src/pages/Compare/compare.html"
             })
 
 
@@ -136,20 +136,20 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.account.report', {
                 url: "/rapportera",
-                templateUrl: "src/pages/Account/report.html",
+                templateUrl: "src/pages/Account/Report/report.html",
                 controller : "ReportController"
             })
 
 
             .state('main.account.patients', {
                 url: "/patienter",
-                templateUrl: "src/pages/Account/patients.html",
+                templateUrl: "src/pages/Account/Patients/patients.html",
                 controller : "PatientsController"
             })
 
             .state('main.account.patient', {
                 url: "/patient/:patientID",
-                templateUrl: "src/pages/Account/patient_profile.html",
+                templateUrl: "src/pages/Account/Patients/patient_profile.html",
                 controller : "PatientController"
             })
 
