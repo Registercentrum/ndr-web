@@ -59,7 +59,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="pull-left Panel-title">Nyckelindikatorer </h1>
-                        <div class="pull-right">Filter</div>
+                        <div class="pull-right">
+                            <select class="form-control" name="" id="">
+                                <option value="">Både kvinnor och män</option>
+                                <option value="">Under uppbyggnad</option>
+                            </select>
+                          <!--  <select class="form-control" name="" id="">
+                                <option value="">Både kvinnor och män</option>
+                            </select>-->
+                        </div>
                     </div>
                 </div>
 
@@ -79,7 +87,7 @@
 
                             <tbody>
                                 <tr ng-repeat="indicator in model.data.keyIndicators">
-                                    <td>{{indicator.precalculated.name}}</td>
+                                    <td style="cursor: pointer" ng-click="model.selectedKeyIndicator = indicator.precalculated.id" ng-class="indicator.precalculated.id == model.selectedKeyIndicator ? 'bold' : ''">{{indicator.precalculated.name}}</td>
                                     <td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>
                                     <td class="text-center">{{indicator.precalculated.geo}}</td>
                                     <td class="text-center">{{indicator.precalculated.riket}}</td>

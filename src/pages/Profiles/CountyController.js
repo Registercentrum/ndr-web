@@ -11,19 +11,16 @@ angular.module("ndrApp")
             autocompleteModel: {
                 selected: autocompleteSelected
             },
-            selectedKeyIndicator: 101,
+            selectedKeyIndicator: 201,
         }
 
         $scope.keyIndicatorModel = {
             data : undefined
         }
 
-        $scope.$watch('model', function (newValue, oldValue){
-
-            console.log("geet");
+        $scope.$watch('model.selectedKeyIndicator', function (newValue, oldValue){
             getSelectedKeyIndicator();
-
-        }, true)
+        })
 
 
         dataService.getOne("county", id).then(function (data){
@@ -88,8 +85,8 @@ angular.module("ndrApp")
 
             var promises = [];
 
-            var queryCountry = queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y"});
-            var queryGeo    = queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y"});
+            var queryCountry = queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014 });
+            var queryGeo    = queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014 });
 
             promises.push(dataService.getStats(queryCountry));
             promises.push(dataService.getStats(queryGeo));
@@ -103,7 +100,8 @@ angular.module("ndrApp")
                 _.each(data[0].statSet[0].intervalSet, function(obj, key){
 
                     var o = {
-                        color : "#D4D4D4",
+                        color : "#999",
+
                         x : new Date(obj.Interval),
                         y : obj.stat.r,
                         cRep : obj.stat.cRep
@@ -124,10 +122,13 @@ angular.module("ndrApp")
                 $scope.keyIndicatorModel.data = [
                     {
                         name : "Riket",
+                        color: "#ccc",
                         data : seriesCountry
                     },
                     {
-                        name: "Åmål",
+                        name: "Vald",
+                        lineWidth: 4,
+                        color : "#FFEAA8",
                         data: seriesGeo
                     }
                 ]

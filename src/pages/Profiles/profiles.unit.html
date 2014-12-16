@@ -1,12 +1,47 @@
 <div class="container">
     <div class="row">
 
-        <h1 class="Page-title">Unit template</h1>
-
         <div class="col-md-12">
-            <div class="Autocomplete Autocomplete--bare" selectize="config" options='model.autocompleteList' ng-model="model.selectedGeo"></div>
+            <h1>Enhets-sidan håller på att utvecklas baserat på mallen för landsting</h1>
+            <h1 class="Page-title"><div model="model.autocompleteModel" autocomplete></div></h1>
+
         </div>
     </div>
 </div>
 
 
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="Panel Panel--blue u-equalHeight">
+                <h1 class="Panel-title">{{ model.data.noPatients }} personer</h1>
+                <p style="position: absolute; top:60px;padding: 0px 50px 0 0;font-size: 12px">med diabetes under senaste 12 månaderna</p>
+                <img class="Icon" src="images/icons/icon_people.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel u-equalHeight">
+                <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
+                <img class="Icon" src="images/icons/icon_unit.png" alt=""/>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel Panel--pink-text u-equalHeight">
+                <h1 class="Panel-title">Trend HbA1c</h1>
+                <div line-chart model="model.data.trendhba1c"></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel Panel--yellow-text u-equalHeight">
+                <h1 class="Panel-title">Jämförelse HbA1c</h1>
+                <div column-chart model="model.data.hba1c"></div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

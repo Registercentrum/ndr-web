@@ -1,6 +1,7 @@
 angular.module("ndrApp")
     .controller('HomeController', ['$scope', 'dataService', function($scope, dataService) {
 
+
         $scope.model = {
             listModelNews : {},
             autocompleteModel : {
@@ -53,4 +54,6 @@ angular.module("ndrApp")
             }
         }
 
-}]);
+
+
+    }]);
