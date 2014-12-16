@@ -11,7 +11,7 @@ angular.module("ndrApp")
             data = data.splice(0,3);
 
             angular.forEach(data, function(item) {
-                item.link = '/#/nyheter/' + item.newsID;
+                item.link = '#/nyheter/' + item.newsID;
             });
 
             $scope.model.listModelNews = {
