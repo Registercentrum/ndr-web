@@ -118,7 +118,15 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.account', {
                 url: "/inloggad",
-                templateUrl: "src/pages/Account/account.html"
+                templateUrl: "src/pages/Account/account.html",
+                controller : "AccountController",
+
+                resolve: {
+                    config: function(accountService){
+                        return accountService.bootstrap();
+                    }
+                }
+
             })
 
             .state('main.account.home', {
@@ -128,8 +136,8 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.account.report', {
                 url: "/rapportera",
-                templateUrl: "src/pages/Account/patients.html",
-                controller : "PatientsController"
+                templateUrl: "src/pages/Account/report.html",
+                controller : "ReportController"
             })
 
 
@@ -141,7 +149,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.account.patient', {
                 url: "/patient/:patientID",
-                templateUrl: templateURL + "account/patient_profile.html",
+                templateUrl: "src/pages/Account/patient_profile.html",
                 controller : "PatientController"
             })
 

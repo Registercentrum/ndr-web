@@ -1,20 +1,15 @@
 angular.module("ndrApp")
     .controller('PatientController', function ($scope, $http, $stateParams, $state) {
 
-
         $scope.patient = {};
 
         $scope.patientID = $stateParams.patientID;
 
 
-        /* Fetch contacts */
-        var url = "https://ndr.registercentrum.se/api/Subject?AccountID=6";
-
-
         $http({
             method: 'POST',
-            url: url,
-            data : { SubjectKey: $scope.patientID }
+            url: "https://ndr.registercentrum.se/api/Subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13,
+            data : { socialNumber: $scope.patientID }
         })
             .success(function(data, status, headers, config) {
                 console.log("Retrieved Patient", data);

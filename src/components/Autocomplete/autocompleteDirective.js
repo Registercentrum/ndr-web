@@ -11,8 +11,10 @@ angular.module('ndrApp')
 
                 var preparedGeoList = dataService.data.preparedGeoList;
 
+                $scope.model = $scope.model || {}
+
                 $scope.options = preparedGeoList;
-                $scope.selected = $scope.model.selected;
+                $scope.selected = $scope.model.selected || undefined;
                 
                 $scope.$watch('selected', function (newVal, oldVal){
                     console.log("Changed Autocomplete:",  $scope.selected);

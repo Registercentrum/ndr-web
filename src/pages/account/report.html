@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="Page-title">Rapportera</h1>
+
+        <div class="Panel">
+
+            <form role="search" name="subjectForm" novalidate="">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="socialnumber" placeholder="skriv in personnummer" required="">
+                    <button class="btn btn-primary" style="width: 79px;" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
+                </div>
+
+            </form>
+
+        </div>
+
+
+         <pre>
+
+        {{ serverError }}
+        {{  accountModel | json  }}
+        </pre>
+
+
+    </div>
+
+</div>
+
+
