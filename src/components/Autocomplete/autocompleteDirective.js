@@ -34,7 +34,7 @@ angular.module('ndrApp')
 
                 })
 
-                $scope.class =  "Autocomplete--bare";
+               // $scope.class =  "Autocomplete--bare";
 
                 $scope.config = {
 
@@ -67,12 +67,11 @@ angular.module('ndrApp')
             },
 
             restrict : 'A',
-            template : '<div class="Autocomplete Autocomplete--bare Autocomplete--large" ng-class=\"class\" selectize="config" options="options" ng-model="selected"></div>',
+            template : '<div ng-class=\"class\" selectize="config" options="options" ng-model="selected"></div>',
             link: link,
 
             scope: {
-                model: "=",
-                type: "="
+                model: "="
             }
         }
 

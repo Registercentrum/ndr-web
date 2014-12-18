@@ -22,8 +22,6 @@
 @selectize-color-optgroup: @selectize-color-dropdown;
 @selectize-color-optgroup-text: @selectize-color-text;
 
-
-
 @selectize-width-item-border: 0;
 @selectize-max-height-dropdown: 200px;
 
@@ -41,24 +39,55 @@
 @selectize-arrow-offset: 5px;
 
 
+.selectize-control.single .selectize-input:after {
+  content: '';
+  display: none;
+}
+
 .Autocomplete {
-  width: 300px;
+  z-index: 999;
 
   .selectize-input {
     border-radius: 2px;
+
+    .item {
+      padding: 5px 20px 5px 5px;
+      display: inline-block;
+      width: auto;
+      position: relative;
+
+      &:after {
+        content: ' ';
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        margin-top: -3px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 5px 5px 0 5px;
+        border-color: #000 transparent transparent transparent;
+      }
+    }
+
+    &.focus.not-full .item:after {
+      display: none;
+    }
   }
 }
 
-.Autocomplete--bare {
+
+.Autocomplete.Autocomplete--bare {
+
   .selectize-input {
     border: none !important;
     background-color: transparent;
     box-shadow: none !important;
-  }
 
-  .selectize-input.input-active {
-    border: none !important;
-    background-color: transparent;
+    &.dropdown-active {
+      background-color: #fff;
+    }
   }
 
   .selectize-input:after{
@@ -70,29 +99,60 @@
   }
 }
 
-.Autocomplete.Autocomplete--large {
-
-  @padding-horizontal: 15px;
-
+.Autocomplete.Autocomplete--white {
   .selectize-input {
-    font-size: 36px;
-    font-weight: 500;
-    padding: 20px @padding-horizontal;
+    background-color: #fff;
+    border-color: #ddd;
   }
 
   .selectize-dropdown {
-    font-size: 14px;
-    font-weight: 300;
+    border-color: #ddd;
 
-    [data-selectable] {
-      padding: 8px 24px;
+    .option.selected {
+      background-color: #fafafa;
+      color: #666;
     }
 
-    .optgroup-header{
-      padding-left:14px;
-      margin: 10px 0 5px 0px;
+    .option:hover,
+    .option.selected:hover {
+      background-color: #fafafa;
+      color: #333;
+    }
+  }
+
+
+}
+
+.Autocomplete.Autocomplete--large {
+
+  .selectize-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    input {
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+
+    .item {
+      font-size: 36px;
+      font-weight: 300;
+      padding: 10px 30px 10px 5px;
+
+    }
+  }
+
+  .selectize-dropdown {
+
+    [data-selectable] {
+      padding: 8px;
+    }
+
+    .optgroup .option {
+      padding-left: 20px;
     }
 
   }
 
 }
+
