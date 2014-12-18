@@ -4,7 +4,7 @@
 
         <div class="List-item-inner">
 
-            <p class="List-item-category"><span ng-repeat="category in item.categories">{{ category.name }} </span></p>
+            <p class="List-item-category"> {{ item.categoryNames.join(', ') }}</p>
 
             <h3 class="List-item-title">
                 <a href="{{ item.link }}" class="List-item-link">{{ item.title }}</a>

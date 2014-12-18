@@ -5,7 +5,7 @@ angular.module("ndrApp")
         $scope.model = {
             listModelNews : {},
             autocompleteModel : {
-                selected : undefined,
+                selected : undefined
             }
         }
 
@@ -14,6 +14,10 @@ angular.module("ndrApp")
 
             angular.forEach(data, function(item) {
                 item.link = "#/nyheter/" + item.newsID;
+                item.categoryNames = [];
+                angular.forEach(item.categories, function(category){
+                    item.categoryNames.push(category.name);
+                });
             });
 
             $scope.model.listModelNews = {
