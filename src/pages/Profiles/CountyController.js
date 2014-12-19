@@ -111,7 +111,7 @@ angular.module("ndrApp")
 
                 _.each(data[1].statSet[0].intervalSet, function(obj, key){
                     var o = {
-                        color : "#F1AD0F",
+                        color : "#74BAD8",
                         x : new Date(obj.Interval),
                         y : obj.stat.r,
                         cRep : obj.stat.cRep
@@ -127,8 +127,8 @@ angular.module("ndrApp")
                     },
                     {
                         name: "Vald",
-                        lineWidth: 4,
-                        color : "#FFEAA8",
+                        lineWidth: 3,
+                        color : "#74BAD8",
                         data: seriesGeo
                     }
                 ]
