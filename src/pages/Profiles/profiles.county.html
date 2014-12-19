@@ -76,23 +76,24 @@
                 <div class="row">
                     <div class="col-md-5">
 
-                        <table class="Table">
+                        <table class="Table TableIndicators">
 
                             <thead>
-                                <tr>
-                                    <td>Indikator</td>
-                                    <td class="text-center">Status</td>
-                                    <td class="text-center">{{ model.county.name }}</td>
-                                    <td class="text-center">Riket</td>
+                                <tr class="TableIndicators-thead">
+                                    <td class="TableIndicators-thead-title TableIndicators-thead-status">Indikator</td>
+                                    <!--<td class="TableIndicators-thead-title">Status</td>-->
+                                    <td class="TableIndicators-thead-title TableIndicators-thead-county">{{ model.county.name }}</td>
+                                    <td class="TableIndicators-thead-title TableIndicators-thead-country">Riket</td>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="indicator in model.data.keyIndicators">
-                                    <td style="cursor: pointer" ng-click="model.selectedKeyIndicator = indicator.precalculated.id" ng-class="indicator.precalculated.id == model.selectedKeyIndicator ? 'bold' : ''">{{indicator.precalculated.name}}</td>
-                                    <td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>
-                                    <td class="text-center">{{indicator.precalculated.geo}}</td>
-                                    <td class="text-center">{{indicator.precalculated.riket}}</td>
+                                <tr ng-repeat="indicator in model.data.keyIndicators" ng-click="model.selectedKeyIndicator = indicator.precalculated.id" class="TableIndicators-row"  ng-class="indicator.precalculated.id == model.selectedKeyIndicator ? 'selected' : ''">
+                                    <td class="TableIndicators-row-status {{indicator.precalculated.status}}" ng-class="{last: $last}">{{indicator.precalculated.name}}</td>
+                                    <!--<td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>-->
+                                    <td class="TableIndicators-row-county">{{indicator.precalculated.geo}}</td>
+                                    <td class="TableIndicators-row-country"><div class="TableIndicators-row-country-innerWrapper">{{indicator.precalculated.riket}}</div></td>
+
                                 </tr>
                             </tbody>
 

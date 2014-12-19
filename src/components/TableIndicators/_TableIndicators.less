@@ -1,0 +1,91 @@
+.TableIndicators-row-status {
+  cursor: pointer;
+  width: 60%;
+  border-bottom: 1px solid #eee;
+
+  &.last {
+    border-bottom-color: transparent;
+  }
+
+  &:before {
+    content: ' ';
+    display: inline-block;
+    padding: 8px;
+    border-radius: 100%;
+    margin-right: 12px;
+    margin-bottom: -4px;
+    border: 1px solid transparent;
+  }
+}
+
+.TableIndicators-row-status.worse {
+   &:before {
+     background: @ndr-pink;
+   }
+}
+
+.TableIndicators-row-status.better {
+  &:before {
+    background: @ndr-green;
+  }
+}
+
+.TableIndicators-row-status.equal {
+  &:before {
+    background: @ndr-yellow;
+  }
+}
+
+.TableIndicators-row-county,
+.TableIndicators-row-country,
+.TableIndicators-thead-county,
+.TableIndicators-thead-country {
+  text-align: center;
+  width: 20%;
+}
+
+.TableIndicators-row-county {
+  background-color: lighten(@ndr-blue, 20%);
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
+}
+
+.TableIndicators-row-country {
+  background-color: #eee;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
+}
+
+
+
+// SELECTED
+
+.TableIndicators-row.selected {
+  background-color: lighten(#eee, 1%);
+}
+
+.TableIndicators-row.selected .TableIndicators-row-country-innerWrapper {
+  position: relative;
+  box-sizing: border-box;
+
+  &:after { // arrow
+    box-sizing: border-box;
+    left: calc(100% + 15px);
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(221, 221, 221, 0);
+    border-left-color: #eee;
+    border-width: 20px;
+    margin-top: -20px;
+  }
+}
+
+.TableIndicators-row.selected .TableIndicators-row-status:before {
+  border: 1px solid #888;
+}
