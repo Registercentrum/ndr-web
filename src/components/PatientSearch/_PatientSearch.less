@@ -1,0 +1,40 @@
+.PatientSearch {
+  display: inline-block;
+  border: 1px solid #000;
+  border-radius: 3px;
+  background: #fff;
+}
+
+.PatientSearch-icon {
+  display: inline-block;
+  margin: -1px 0 6px 10px;
+}
+
+.PatientSearch-input {
+  border: none;
+  background: transparent;
+  width: 300px;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: #888;
+  width: 100px;
+
+  @media all and (min-width: 760px) {
+    min-width: 250px;
+  }
+
+  @media all and (min-width: 900px) {
+    min-width: 300px;
+  }
+
+  &:focus {
+    color: #000;
+  }
+}
+
+.PatientSearch-searchButton {
+  background: #000;
+  border: none;
+  color: #fff;
+  padding: 7px 15px;
+}
