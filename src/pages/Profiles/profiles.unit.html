@@ -37,14 +37,22 @@
             </div>
         </div>
 
-       <!-- <div class="col-md-3">
-            <div class="Panel Panel--yellow-text u-equalHeight">
-                <h1 class="Panel-title">Jämförelse HbA1c</h1>
-                <div column-chart model="model.data.hba1c"></div>
+        <div class="col-md-6">
+            <div class="Panel u-equalHeight">
+                <h1 class="Panel-title">Om vårdenheten</h1>
+
+                <div>
+                    {{ model.geo.name }}
+                </div>
+                <div>
+                    {{ model.geo.street }}
+
+                </div>
+                <div> {{ model.geo.postalCode }} {{ model.geo.postalLocation }} </div>
+
 
             </div>
         </div>
--->
     </div>
 </div>
 
