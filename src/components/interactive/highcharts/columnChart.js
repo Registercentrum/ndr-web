@@ -18,7 +18,9 @@ angular.module('ndrApp')
                             type: 'column',
                             height : 130,
                             marginTop : 5,
-                            marginBottom : 30
+                            spacingRight:10,
+                            spacingLeft:10,
+                            spacingBottom : 5
                         },
                         title: {
                             text: ''
@@ -50,7 +52,7 @@ angular.module('ndrApp')
                            gridLineWidth: 0,
                            gridLineColor : "#eee",
                            lineWidth: 0,
-                           min : 60,
+                           min : 50,
                            max : 70,
 
                             title: {

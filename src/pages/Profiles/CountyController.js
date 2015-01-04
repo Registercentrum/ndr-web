@@ -25,6 +25,8 @@ angular.module("ndrApp")
         dataService.getStats(query).then(function (data){
 
             var series = [];
+
+
             
             _.each(data.statSet, function(obj, key){
 
@@ -37,7 +39,7 @@ angular.module("ndrApp")
 
                 series.push(o)
             })
-            
+
             $scope.model.data.hba1c = series;
 
         })
