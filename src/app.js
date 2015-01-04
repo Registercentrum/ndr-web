@@ -75,7 +75,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             })
 
             .state('main.profiles.unit', {
-                controller : "CountyController",
+                controller : "UnitController",
                 url: "/enhet/:id",
                 templateUrl: "src/pages/Profiles/profiles.unit.html"
             })

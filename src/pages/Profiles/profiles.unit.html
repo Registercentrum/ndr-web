@@ -2,8 +2,10 @@
     <div class="row">
 
         <div class="col-md-12">
-            <h1>Enhets-sidan håller på att utvecklas baserat på mallen för landsting</h1>
-            <h1 class="Page-title"><div model="model.autocompleteModel" autocomplete></div></h1>
+
+            <h1 class="Page-title Autocomplete Autocomplete--bare Autocomplete--large">
+                <div model="model.autocompleteModel" autocomplete></div>
+            </h1>
 
         </div>
     </div>
@@ -21,13 +23,13 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+       <!-- <div class="col-md-3">
             <div class="Panel u-equalHeight">
                 <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
                 <img class="Icon" src="images/icons/icon_unit.png" alt=""/>
             </div>
         </div>
-
+-->
         <div class="col-md-3">
             <div class="Panel Panel--pink-text u-equalHeight">
                 <h1 class="Panel-title">Trend HbA1c</h1>
@@ -35,13 +37,72 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+       <!-- <div class="col-md-3">
             <div class="Panel Panel--yellow-text u-equalHeight">
                 <h1 class="Panel-title">Jämförelse HbA1c</h1>
                 <div column-chart model="model.data.hba1c"></div>
 
             </div>
         </div>
-
+-->
     </div>
 </div>
+
+
+<!-- Nyckelindikatorer -->
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Panel">
+
+                <div key-indicators id="model.id" geo="model.geo" geo-type="'unit'"></div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Enheter -->
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Panel">
+
+                <h1>Vårdenheter</h1>
+                <p>Landstingets vårdenheter</p>
+
+                <table class="Table">
+
+                    <tr ng-repeat="unit in model.county.units">
+                        <td>{{ unit.name }}</td>
+                        <td><div class="Button Button--default">Visa</div></td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--
+
+<h2>Key Debug</h2>
+<pre>
+    {{ model | json }}
+</pre>
+
+-->

@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="pull-left Panel-title">Nyckelindikatorer </h1>
+        <div class="pull-right">
+
+            <select ng-model="model.sex" class="form-control pull-left" style="width: 200px">
+                <option value="0">Både kvinnor och män</option>
+                <option value="1">Kvinnor</option>
+                <option value="2">Män</option>
+            </select>
+
+            <select ng-model="model.diabetesTypeCode" class="form-control pull-left"  style="margin-left:20px;width: 200px">
+                <option value="">Diabetes, typ 1 och 2</option>
+                <option value="1">Diabetes, typ 1</option>
+                <option value="2">Diabetes, typ 2</option>
+            </select>
+
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+
+        <table class="Table TableIndicators">
+
+            <thead>
+            <tr class="TableIndicators-thead">
+                <td class="TableIndicators-thead-title TableIndicators-thead-status">Indikator</td>
+                <!--<td class="TableIndicators-thead-title">Status</td>-->
+                <td class="TableIndicators-thead-title TableIndicators-thead-county">{{ model.geo.name }}</td>
+                <td class="TableIndicators-thead-title TableIndicators-thead-country">Riket</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="indicator in data.keyIndicators" ng-click="model.selectedKeyIndicator = indicator.precalculated.id" class="TableIndicators-row"  ng-class="indicator.precalculated.id == model.selectedKeyIndicator ? 'selected' : ''">
+                <td class="TableIndicators-row-status {{indicator.precalculated.status}}" ng-class="{last: $last}">{{indicator.precalculated.name}}</td>
+                <!--<td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>-->
+                <td class="TableIndicators-row-county">{{indicator.precalculated.geo}}</td>
+                <td class="TableIndicators-row-country"><div class="TableIndicators-row-country-innerWrapper">{{indicator.precalculated.riket}}</div></td>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="col-md-7">
+        <div line-chart-key model="data.keyIndicator"></div>
+    </div>
+
+</div>

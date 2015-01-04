@@ -1,13 +1,13 @@
 angular.module("ndrApp")
-    .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
+    .controller('UnitController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
 
         var id = parseFloat($stateParams.id);
-        var autocompleteSelected = "county_" + id;
+        var autocompleteSelected = "unit_" + id;
 
 
         $scope.model = {
-            county: _.findWhere(dataService.data.counties, {code: id}),
-            geo : _.findWhere(dataService.data.counties, {code: id}),
+            unit: _.findWhere(dataService.data.units, {unitID: id}),
+            geo : _.findWhere(dataService.data.units, {unitID: id}),
             id: id,
             data: {},
             autocompleteModel: {
@@ -15,12 +15,11 @@ angular.module("ndrApp")
             }
         }
 
-        dataService.getOne("county", id).then(function (data){
-            $scope.model.county = data;
-            $scope.model.data.noUnits = $scope.model.county.units.length;
+        dataService.getOne("unit", id).then(function (data){
+            $scope.model.unit = data;
         })
 
-        // GET DATA FOR BAR CHART
+    /*    // GET DATA FOR BAR CHART
         var query = dataService.queryFactory({fromYear: 2013, toYear : 2014, indicatorID: 101});
         dataService.getStats(query).then(function (data){
 
@@ -40,12 +39,12 @@ angular.module("ndrApp")
             
             $scope.model.data.hba1c = series;
 
-        })
+        })*/
 
 
 
         // GET DATA FOR TREND CHART
-        var query = dataService.queryFactory({countyCode : id, interval : "y", fromYear: 2000, toYear : 2014, indicatorID: 101});
+        var query = dataService.queryFactory({unitID : id, level : 2, interval : "y", fromYear: 2000, toYear : 2014, indicatorID: 101});
         dataService.getStats(query).then(function (data){
 
             var series = [];

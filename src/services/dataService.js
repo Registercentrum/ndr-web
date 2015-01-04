@@ -13,7 +13,6 @@ angular.module('ndrApp')
             indicators : [],
 
             preparedGeoList : []
-
         }
 
         /* RESTANGULAR CONFIG */
@@ -84,6 +83,33 @@ angular.module('ndrApp')
             })
 
             self.data.preparedGeoList = preparedGeoList;
+        }
+
+        this.queryFactory = function(params){
+
+            var defaults = {
+                level: 1,
+                countyCode: 0,
+                unitID: 0,
+                indicatorID: 101,
+                fromYear: 2013,
+                fromQuartal: 0,
+                fromMonth: 0,
+                toYear: 2014,
+                toQuartal: 0,
+                toMonth: 0,
+                diabetesTypeCode: null,
+                sex: null,
+                unitTypeID: 0,
+                fromAge: 0,
+                toAge: 0,
+                interval: null,
+                recalculate: false,
+                outdatedDays: 14
+                //dTH :
+            }
+
+            return angular.extend(defaults, params)
 
         }
 
@@ -1229,9 +1255,8 @@ angular.module('ndrApp')
 
                     self.prepareGeoList();
 
+
                 })
-
-
             }
 
             return p;
