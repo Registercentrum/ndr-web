@@ -1226,6 +1226,8 @@ angular.module('ndrApp')
                 }
             ];
 
+            var units = _.where(units, {isActive : true})
+
             if(!useStaticUnits){
 
                 var p = $q.all([

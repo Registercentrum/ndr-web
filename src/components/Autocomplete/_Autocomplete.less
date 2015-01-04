@@ -25,8 +25,8 @@
 @selectize-width-item-border: 0;
 @selectize-max-height-dropdown: 200px;
 
-@selectize-padding-x: 8px;
-@selectize-padding-y: 8px;
+@selectize-padding-x: 10px;
+@selectize-padding-y: 13px;
 @selectize-padding-item-x: 6px;
 @selectize-padding-item-y: 2px;
 @selectize-padding-dropdown-item-x: @selectize-padding-x;
@@ -103,6 +103,23 @@
   .selectize-input {
     background-color: #fff;
     border-color: #ddd;
+
+    &:before{
+      content: "\f002";
+      font-family: FontAwesome;
+      font-size: 21px;
+      color: @ndr-blue;
+      margin-right: 10px;
+      font-weight: normal;
+      font-style: normal;
+      display: inline-block;
+      text-decoration: inherit;
+    }
+
+    &.input-active:before{
+      content : ""
+    }
+
   }
 
   .selectize-dropdown {
@@ -124,8 +141,8 @@
 .Autocomplete.Autocomplete--large {
 
   .selectize-input {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 
     input {
       padding-top: 10px !important;
