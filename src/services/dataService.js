@@ -40,6 +40,8 @@ angular.module('ndrApp')
         }
 
         this.getOne = function (type, id){
+
+            console.log(Restangular.one(type, id).get());
             return Restangular.one(type, id).get();
         }
 
