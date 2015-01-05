@@ -89,6 +89,14 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             })
 
 
+
+            .state('main.research.article', {
+                url: "/forskning/:id",
+                templateUrl: "src/components/Article/article.html",
+                controller : "ResearchItemController"
+            })
+
+
             .state('news', {
                 url: "/nyheter",
                 templateUrl: "src/pages/News/news.html",

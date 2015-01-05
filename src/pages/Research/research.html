@@ -1,75 +1,81 @@
-
+<!--  "id": 2,
+"name": "Hypertension in diabetes: trends in clinical control in repeated large-scale national surveys from Sweden",
+"laymansDescription": "Studie av blodtrycksnivåer under det sena 1990-talet hos patienter med typ 1- och typ 2-diabetes, talande för en långsam successiv förbättring.",
+"firstAuthor": "Nilsson PM",
+"lastAuthor": "Cederholm J",
+"otherAuthor": "Gudbjörnsdottir S, Eliasson B",
+"dateOfSubmission": null,
+"dateOfPublication": "2003-01-01T00:00:00",
+"magazine": "J Hum Hypertens",
+"issue": "2003;17",
+"pages": "37-44",
+"status": {
+"id": 5,
+"text": "Publicerat"
+},
+"ethicsApprovalStatus": {
+"id": 2,
+"text": "Ej relevant"
+},
+"image": null,
+"pubMedURL": null,
+"route": "researchproject",
+"reqParams": null,
+"fromServer": true,
+"parentResource": null,
+"restangularCollection": false
+},
+{-->
 
 <div class="container">
 
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="Page-title">Forskning</h1>
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="Page-title">Forskning</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="Panel">
+      <h2 class="Panel-title">Publikationer</h2>
+
+      <article ng-repeat="publication in publications" class="Research clearfix">
+        <img src="http://fillmurray.com/220/220" class="Research-image col-md-4 u-noLeftPadding">
+
+        <div class="Research-text col-md-8 u-noRightPadding">
+        <p class="Research-text-date">{{publication.dateOfPublication | date: 'mediumDate' }}</p><!--/*'d MMMM, yyyy'*/ -->
+          <h3 class="Research-text-title">
+            <a href="/#/forskning/{{ publication.id }}" class="Research-text-title-link">{{ publication.name }}</a>
+          </h3>
+          <p class="Research-text-description">
+          {{ publication.laymansDescription }}
+          </p>
+          <p class="Research-text-authors">
+            Authors:
+            {{ publication.firstAuthor }},
+            {{ publication.otherAuthor }},
+            {{ publication.lastAuthor }}
+          </p>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-9">
-            <div class="Panel">
-
-                <article ng-repeat="publication in publications">
-
-                    <!--  "id": 2,
-    "name": "Hypertension in diabetes: trends in clinical control in repeated large-scale national surveys from Sweden",
-    "laymansDescription": "Studie av blodtrycksnivåer under det sena 1990-talet hos patienter med typ 1- och typ 2-diabetes, talande för en långsam successiv förbättring.",
-    "firstAuthor": "Nilsson PM",
-    "lastAuthor": "Cederholm J",
-    "otherAuthor": "Gudbjörnsdottir S, Eliasson B",
-    "dateOfSubmission": null,
-    "dateOfPublication": "2003-01-01T00:00:00",
-    "magazine": "J Hum Hypertens",
-    "issue": "2003;17",
-    "pages": "37-44",
-    "status": {
-      "id": 5,
-      "text": "Publicerat"
-    },
-    "ethicsApprovalStatus": {
-      "id": 2,
-      "text": "Ej relevant"
-    },
-    "image": null,
-    "pubMedURL": null,
-    "route": "researchproject",
-    "reqParams": null,
-    "fromServer": true,
-    "parentResource": null,
-    "restangularCollection": false
-  },
-  {-->
-                    <h5>{{publication.dateOfPublication | date: 'mediumDate' }}</h5><!--/*'d MMMM, yyyy'*/ -->
-                    <h3>
-                        {{ publication.name }}
-                    </h3>
-                    <p>
-                        {{ publication.laymansDescription }}
-                    </p>
-
-                </article>
+      </article>
 
 
-                <pre>
-                    {{ publications | json }}
-                </pre>
-
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="Panel">
-
-                <h3>Info kommer</h3>
-            </div>
-
-        </div>
+    <!--<pre>-->
+    <!--{{ publications | json }}-->
+    <!--</pre>-->
 
     </div>
+  </div>
 
-
+  <div class="col-md-3">
+    <div class="Panel">
+      <h3 class="Panel-title">Info kommer</h3>
+    </div>
+  </div>
 
 </div>
+
+
+
+</div><!-- end container -->
