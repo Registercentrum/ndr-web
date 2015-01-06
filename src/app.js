@@ -189,7 +189,8 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                     else{
                         return fallback;
                     }*/
-                }
+                },
+                controller: 'FilterUnitsController'
             })
      })
     .run(function($rootScope, $location) {

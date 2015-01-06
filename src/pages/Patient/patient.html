@@ -27,7 +27,18 @@
                 <h2 class="Heading--h2 u-noTopMargin">Diabetesvården där du bor</h2>
                 <p class="lead">Knappa in ditt postnummer för att hitta länkar till diabetesvården där du bor.</p>
 
-                <input type="text" class="form-control" style="width: 200px;margin-top: 20px" placeholder="Ditt postnummer"/>
+                <input type="text" class="form-control" ng-model="unit" style="width: 300px;margin-top: 20px" placeholder="Ditt postnummer"/>
+
+                <div class="">
+                    <ul class="">
+
+                        <li ng-repeat="unit in units | filter:unit">
+                            {{ unit.name }}
+                        </li>
+
+                    </ul>
+
+                </div>
             </div>
 
             <div class="Panel">
