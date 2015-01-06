@@ -43,11 +43,6 @@ angular.module('ndrApp')
             return Restangular.one(type, id).get();
         }
 
-        this.getFilteredList = function (type, filters) {
-
-
-            return R
-        }
 
         //this.getSome = function(type, number){
         //    var all = endpoints[type].getList();

@@ -44,7 +44,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.patient', {
                 url: "/for-dig-med-diabetes",
-                //controller : "Controller",
+                controller: 'FilterUnitsController',
                 templateUrl: "src/pages/Patient/patient.html"
             })
 
@@ -87,8 +87,6 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 templateUrl: "src/pages/Research/research.html",
                 controller : "ResearchController"
             })
-
-
 
             .state('researchItem', {
                 url: "/forskning/:id",
@@ -161,16 +159,6 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 controller : "PatientController"
             })
 
-
-            /* Temporary (?) pages */
-
-
-            .state('meddiabetes', {
-                url: "for-dig-med-diabetes",
-                templateUrl: templateURL + "Article/article.html",
-                controller : "genericBlah"
-            })
-
             /* Generic pages */
 
             .state('page', {
@@ -189,8 +177,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                     else{
                         return fallback;
                     }*/
-                },
-                controller: 'FilterUnitsController'
+                }
             })
      })
     .run(function($rootScope, $location) {
