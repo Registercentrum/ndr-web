@@ -17,11 +17,12 @@
     "angular": "1.2.6",
     "angular-loading-bar": "*",
     "angular-ui-router": "*",
-    "angular-sanitize" : "1.2.*",
+    "angular-sanitize": "1.2.*",
     "highcharts": "*",
     "d3": "*",
     "underscore": "*",
     "angular-selectize2": "0.6",
-    "jquery": "~1.x"
+    "jquery": "~1.x",
+    "angular-datatables": "~0.3.0"
   }
 }

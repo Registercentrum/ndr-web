@@ -1,20 +1,46 @@
-<div class="container">
+<div class="row">
 
-    <h1 class="Page-title">Översikt</h1>
+    <div class="col-md-12">
 
-    <div class="row">
+        <h1 class="Page-title">Översikt</h1>
+
+    </div>
+
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-6">
 
         <div class="Panel">
 
             <p>Här kommer det info som berör dig/ditt konto</p>
 
+            <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
 
-               <pre>
-                    {{ serverError }}
-                    {{ accountModel | json  }}
-                </pre>
+            <pre>
+
+                {{ serverError }}
+                {{ accountModel | json  }}
+            </pre>
 
         </div>
 
     </div>
+
+    <div class="col-md-6">
+
+        <div class="Panel">
+
+            <p>Genvägar</p>
+
+            <p>
+                Meddelanden etc.
+            </p>
+
+        </div>
+
+    </div>
+
 </div>

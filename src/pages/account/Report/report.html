@@ -4,14 +4,45 @@
 
         <div class="Panel">
 
+            <div class="PatientSearch">
+                <span class="PatientSearch-icon">
+                    <img src="/images/icons/icon_search.svg" class="PatientSearch-icon-img">
+                </span>
+                <input class="PatientSearch-input" ng-model="socialnumber" type="search" value="11" placeholder="Skriv in personnummer">
+                <button class="PatientSearch-searchButton" ng-click="getSubject(true)">Sök</button>
+            </div>
+
+        <!--
             <form role="search" name="subjectForm" novalidate="">
                 <div class="input-group">
                     <input type="text" class="form-control" ng-model="socialnumber" placeholder="skriv in personnummer" required="">
                     <button class="btn btn-primary" style="width: 79px;" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
                 </div>
 
-            </form>
+            </form>-->
 
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+        <div class="col-md-12">
+            <div class="PatientHeader clearfix">
+                <div class="PatientHeader-personNumber col-md-8 u-noLeftPadding">
+                    19121212-1212
+                </div>
+                <div class="PatientHeader-navigation col-md-4 u-noRightPadding">
+                    <input type="text">
+                    <button class="Button Button--info">Visa profil</button>
+                </div>
+            </div>
+            <div class="Panel">
+
+                Formulär
+
+            </div>
         </div>
 
 

@@ -1,10 +1,9 @@
 angular.module("ndrApp")
-    .controller('ReportController', function ($scope, $http, $stateParams, $state) {
+    .controller('ReportController', function ($scope, $http, $stateParams, $state, List) {
 
         console.log("ReportController: Init",  $scope.accountModel);
         
         $scope.getSubject = function(newSocialnumber) {
-            
 
             newSocialnumber = newSocialnumber || false;
             var self = $scope;
@@ -47,3 +46,27 @@ angular.module("ndrApp")
 
 
     })
+
+/*
+ndrApp.service('List', function($http) {
+
+    this.lists = null;
+
+    this.init = function() {
+
+        var server = Server.getServer();
+        var self = this;
+
+        $http.get(server.baseURL + '/api/List?APIKey=' + server.APIKey).success(function(data) {
+            self.lists = data
+        });
+    }
+
+    this.getLists = function() {
+        return this.lists;
+    }
+    this.getList = function(listName) {
+        return this.lists[listName];
+    }
+
+});*/
