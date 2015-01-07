@@ -1,0 +1,33 @@
+.FilterDropdown {
+  &:extend(.Autocomplete);
+
+  .selectize-input,
+  &.selectize-dropdown {
+    border-color: @ndr-semidark;
+  }
+
+  .item {
+//    position: relative;
+//    display: block;
+
+    &:after {
+      content: '\f107';
+      font-family: FontAwesome;
+      line-height: 0.33;
+      font-size: 27px;
+      background-image: none;
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 33px;
+      margin-top: -3px;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .dropdown-active .item:after {
+    content: '\f106';
+    margin-top: -5px;
+  }
+}
