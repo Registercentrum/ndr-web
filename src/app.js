@@ -1,4 +1,5 @@
 'use strict';
+
 angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables', 'rzModule'])
 
     // The routing system
@@ -28,8 +29,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             .state('main.home', {
                 controller : "HomeController",
                 url: "/",
-                templateUrl: "src/pages/Home/home.html",
-
+                templateUrl: "src/pages/Home/home.html"
             })
 
             .state('main.guidelines', {
