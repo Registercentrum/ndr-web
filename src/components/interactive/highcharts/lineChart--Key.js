@@ -66,6 +66,10 @@ angular.module('ndrApp')
                                 //x : 20,
                                 //y : -8,
 
+                                formatter: function () {
+                                    return  this.value + '%';
+
+                                }
                             }
                         },
 
