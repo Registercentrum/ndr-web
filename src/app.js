@@ -1,5 +1,5 @@
 'use strict';
-angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables'])
+angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables', 'ui-rangeSlider'])
 
     // The routing system
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -28,8 +28,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             .state('main.home', {
                 controller : "HomeController",
                 url: "/",
-                templateUrl: "src/pages/Home/home.html",
-
+                templateUrl: "src/pages/Home/home.html"
             })
 
             .state('main.guidelines', {
