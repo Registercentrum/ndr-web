@@ -1,22 +1,138 @@
 <div class="row">
     <div class="col-md-12">
 
+<!--
         <a class="Button Button--default" href="#/inloggad/patienter">Tillbaka</a>
+-->
 
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-12">
-        <h1 class="Page-title">Patient</h1>
+        <h1 class="Page-title">Patientprofil</h1>
+
+        <div class="PatientHeader clearfix">
+            <div class="PatientHeader-personNumber col-md-8 u-noLeftPadding">
+                <i class="fa fa-user"></i>  {{ subject.socialNumber }}
+            </div>
+            <div class="PatientHeader-navigation col-md-4 u-noRightPadding text-right">
+                <a href="#/inloggad/patient/{{ subject.socialNumber }}" type="submit" class="Button Button--info Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
         <div class="Panel Panel--blue">
-            <div>
-                <h2>Patient data </h2>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <table class="Table--patient table table-condensed">
+                        <tr><td>Personnummer</td><td>{{ subject.socialNumber }}</td></tr>
+                        <tr><td>Ålder</td><td>{{ 78 }}</td></tr>
+                        <tr><td>Typ</td><td>{{ subject.diabetesType.text }}</td></tr>
+                        <tr><td>Debutår</td><td>{{ subject.yearOfOnset }}</td></tr>
+                    </table>
+                </div>
+                <div class="col-md-2">
+                    <h4>Längd</h4>
+
+                    <h4>Vikt</h4>
+
+                </div>
+
+                <div class="col-md-6">
+                    <h4>HbA1c</h4>
+                    <div class="" line-chart=""></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="Panel Panel--green u-equalHeight">
+            <h4>Sjukdomar och behandlingar</h4>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+
+        <div class="Panel Panel--green u-equalHeight">
+            <h4>Blodtryck</h4>
+            <div column-chart=""></div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="Panel Panel--purple u-equalHeight">
+            <h4>Fysisk aktivitet</h4>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+
+        <div class="Panel Panel u-equalHeight">
+            <h4>Kolesterol</h4>
+            <div column-chart=""></div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+
+        <div class="Panel">
+            <h4>Njurar</h4>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="Panel ">
+            <h4>Ögon</h4>
+
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="Panel ">
+            <h4>Fötter</h4>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<div class="Panel">
+            <h2>Patient data </h2>
                 <pre>
-                    {{ patient | json }}
+                    {{ subject | json }}
                 </pre>
 
-            </div>
+
+
+
         </div>
 
 

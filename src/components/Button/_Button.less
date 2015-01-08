@@ -93,6 +93,20 @@
 
 }
 
+.Button--dark {
+  //border: 2px solid @ndr-dark;
+  color: @ndr-white;
+  background: @ndr-dark;
+  border:none;
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: rgba(red(@ndr-dark), green(@ndr-dark), blue(@ndr-dark),0.2);
+    color: @ndr-dark;
+  }
+
+}
+
 .Button--centered {
   display: block;
   margin: 10px auto;
