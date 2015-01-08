@@ -42,12 +42,12 @@ angular.module('ndrApp')
         };
         $scope.toggleMin();
 
-        $scope.open = function($event) {
+       /* $scope.open = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
 
             $scope.opened = true;
-        };
+        };*/
 
         $scope.dateOptions = {
             formatYear: 'yy',

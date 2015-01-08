@@ -29,13 +29,13 @@
                           <span class="input-group-addon">
                             <button type="button" class="FilterDatePopup-button" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
                           </span>
-                            <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                            <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="dt1" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
 
                           <span class="input-group-addon">
                             <button type="button" class="FilterDatePopup-button" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
                           </span>
 
-                             <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                             <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="dt2" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,14 @@
                 </div>
                 <div class="MultiFilter-row-filterKnobs">
 
-                    <input type="number" ng-model="selectedFilters.hbMin" />
+                    <!--<rzslider
+                            rz-slider-floor="0"
+                            rz-slider-ceil="200"
+                            rz-slider-model="selectedFilters.min"
+                            rz-slider-high="selectedFilters.max"></rzslider>-->
+
+                    <input class="form-control" style="float:left; width:20%" type="number" placeholder="min" ng-model="selectedFilters.hbMin" />
+                    <input class="form-control" style="float:left; width:20%" type="number" placeholder="max" ng-model="selectedFilters.hbMax" />
 
                 </div>
             </div>
@@ -70,6 +77,9 @@
                     Valbar
                 </div>
                 <div class="MultiFilter-row-filterKnobs">
+                    <select name="" id="" class="form-control" style="width: 50%">
+                        <option value="">Välj filter</option>
+                    </select>
                 </div>
             </div>
 
@@ -88,7 +98,7 @@
 
 
         <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered row-border hover">
-            <thead>
+            <thead style="font-weight: 700">
             <tr>
                 <td>Personnummer</td>
                 <td>Senaste besök</td>
@@ -97,13 +107,13 @@
                 <td>Val</td>
             </tr>
             </thead>
-            <tbody >
+            <tbody>
 
                 <tr ng-repeat="subject in model.subjectList">
                     <td>{{ subject[0].subject.socialNumber }}</td>
                     <td>{{ subject[0].lastUpdatedAt | date:'yyyy-MM-dd' }} </td>
-                    <td>{{ subject[0].hba1c }}</td>
                     <td>{{ subject[0].bpDiastolic }}</td>
+                    <td>{{ subject[0].hba1c }}</td>
 
                     <td><a href="#/inloggad/patient/{{ subject[0].subject.socialNumber }}" class="Button Button--info">Visa</a></td>
                 </tr>

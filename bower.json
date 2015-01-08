@@ -14,7 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.2.6",
+    "angular": "1.2.8",
     "angular-loading-bar": "*",
     "angular-ui-router": "*",
     "angular-sanitize": "1.2.*",
@@ -23,6 +23,11 @@
     "underscore": "*",
     "angular-selectize2": "0.6",
     "jquery": "~1.x",
-    "angular-datatables": "~0.3.0"
+    "angular-datatables": "~0.3.0",
+    "venturocket-angular-slider": "~0.3.2",
+    "angularjs-slider": "~0.1.6"
+  },
+  "resolutions": {
+    "angular": "~1.2.*"
   }
 }

@@ -1,11 +1,11 @@
 /*!
- * angular-datatables - v0.2.1
+ * angular-datatables - v0.3.0
  * https://github.com/l-lin/angular-datatables
  * License: MIT
  */
 (function (window, document, $, angular) {
   /*!
- * angular-datatables - v0.2.1
+ * angular-datatables - v0.3.0
  * https://github.com/l-lin/angular-datatables
  * License: MIT
  */
@@ -354,13 +354,16 @@
   'use strict';
   angular.module('datatables.directive', [
     'datatables.renderer',
-    'datatables.options'
+    'datatables.options',
+    'datatables.util'
   ]).directive('datatable', [
+    '$q',
     'DT_DEFAULT_OPTIONS',
     'DTBootstrap',
     'DTRendererFactory',
     'DTRendererService',
-    function (DT_DEFAULT_OPTIONS, DTBootstrap, DTRendererFactory, DTRendererService) {
+    'DTPropertyUtil',
+    function ($q, DT_DEFAULT_OPTIONS, DTBootstrap, DTRendererFactory, DTRendererService, DTPropertyUtil) {
       return {
         restrict: 'A',
         scope: {
@@ -378,7 +381,7 @@
                 // Do not rerender if we want to reload. There are already
                 // some watchers in the renderers.
                 if (!newDTOptions.reload || newDTOptions.sAjaxSource !== oldDTOptions.sAjaxSource) {
-                  ctrl.render($elem, ctrl.buildOptions(), _staticHTML);
+                  ctrl.render($elem, ctrl.buildOptionsPromise(), _staticHTML);
                 } else {
                   // The reload attribute is set to false here in order
                   // to recall this watcher again
@@ -387,7 +390,7 @@
               }
             }, true);
             ctrl.showLoading($elem);
-            ctrl.render($elem, ctrl.buildOptions(), _staticHTML);
+            ctrl.render($elem, ctrl.buildOptionsPromise(), _staticHTML);
           };
         },
         controller: [
@@ -397,37 +400,53 @@
             this.showLoading = function ($elem) {
               DTRendererService.showLoading($elem);
             };
-            this.buildOptions = function () {
+            this.buildOptionsPromise = function () {
+              var defer = $q.defer();
               // Build options
-              var options;
-              if (angular.isDefined($scope.dtOptions)) {
-                options = {};
-                angular.extend(options, $scope.dtOptions);
-                // Set the columns
-                if (angular.isArray($scope.dtColumns)) {
-                  options.aoColumns = $scope.dtColumns;
+              $q.all([
+                $q.when($scope.dtOptions),
+                $q.when($scope.dtColumns),
+                $q.when($scope.dtColumnDefs)
+              ]).then(function (results) {
+                var dtOptions = results[0], dtColumns = results[1], dtColumnDefs = results[2];
+                // Since Angular 1.3, the promise throws a "Maximum call stack size exceeded" when cloning
+                // See https://github.com/l-lin/angular-datatables/issues/110
+                DTPropertyUtil.deleteProperty(dtOptions, '$promise');
+                DTPropertyUtil.deleteProperty(dtColumns, '$promise');
+                DTPropertyUtil.deleteProperty(dtColumnDefs, '$promise');
+                var options;
+                if (angular.isDefined($scope.dtOptions)) {
+                  options = {};
+                  angular.extend(options, dtOptions);
+                  // Set the columns
+                  if (angular.isArray(dtColumns)) {
+                    options.aoColumns = dtColumns;
+                  }
+                  // Set the column defs
+                  if (angular.isArray(dtColumnDefs)) {
+                    options.aoColumnDefs = dtColumnDefs;
+                  }
+                  // Integrate bootstrap (or not)
+                  if (options.integrateBootstrap) {
+                    DTBootstrap.integrate(options);
+                  } else {
+                    DTBootstrap.deIntegrate();
+                  }
                 }
-                // Set the column defs
-                if (angular.isArray($scope.dtColumnDefs)) {
-                  options.aoColumnDefs = $scope.dtColumnDefs;
-                }
-                // Integrate bootstrap (or not)
-                if (options.integrateBootstrap) {
-                  DTBootstrap.integrate(options);
-                } else {
-                  DTBootstrap.deIntegrate();
-                }
-              }
-              return options;
+                defer.resolve(options);
+              });
+              return defer.promise;
             };
-            this.render = function ($elem, options, staticHTML) {
-              var isNgDisplay = $scope.datatable && $scope.datatable === 'ng';
-              // Render dataTable
-              if (_renderer) {
-                _renderer.withOptions(options).render($scope, $elem, staticHTML);
-              } else {
-                _renderer = DTRendererFactory.fromOptions(options, isNgDisplay).render($scope, $elem, staticHTML);
-              }
+            this.render = function ($elem, optionsPromise, staticHTML) {
+              optionsPromise.then(function (options) {
+                var isNgDisplay = $scope.datatable && $scope.datatable === 'ng';
+                // Render dataTable
+                if (_renderer) {
+                  _renderer.withOptions(options).render($scope, $elem, staticHTML);
+                } else {
+                  _renderer = DTRendererFactory.fromOptions(options, isNgDisplay).render($scope, $elem, staticHTML);
+                }
+              });
             };
           }
         ]
@@ -996,6 +1015,10 @@
             // Reloading data call the "render()" function again, so it
             // might $watch again. So this flag is here to prevent that!
             _watcherInitialized = false, _render = function (options, $elem, data, $scope) {
+              // Since Angular 1.3, the promise renderer is throwing "Maximum call stack size exceeded"
+              // By removing the $promise attribute, we avoid an infinite loop when jquery is cloning the data
+              // See https://github.com/l-lin/angular-datatables/issues/110
+              delete data.$promise;
               options.aaData = data;
               // Add $timeout to be sure that angular has finished rendering before calling datatables
               $timeout(function () {
@@ -1015,7 +1038,12 @@
           renderer.name = 'DTPromiseRenderer';
           renderer.options = options;
           renderer.render = function ($scope, $elem) {
-            var _this = this, _loadedPromise = null, _whenLoaded = function (data) {
+            var _this = this, _loadedPromise = null, _whenLoaded = function (result) {
+                var data = result;
+                // In case the data is nested in an object
+                if (_this.options.sAjaxDataProp) {
+                  data = result[_this.options.sAjaxDataProp];
+                }
                 _render(_this.options, $elem, data, $scope);
                 _loadedPromise = null;
               }, _startLoading = function (fnPromise) {
@@ -1159,6 +1187,11 @@
           result = angular.copy(target);
         }
         return result;
+      },
+      deleteProperty: function (obj, propertyName) {
+        if (angular.isObject(obj)) {
+          delete obj[propertyName];
+        }
       }
     };
   });

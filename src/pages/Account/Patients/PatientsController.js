@@ -2,6 +2,15 @@ angular.module("ndrApp")
     .controller('PatientsController', function ($scope, $http, $stateParams, $state, DTOptionsBuilder, DTColumnDefBuilder) {
 
         console.log("PatientsController: Init");
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.dt1.opened = true;
+        };
+
+        $scope.dt1 = new Date("2013-01-01");
+        $scope.dt2 = new Date();
 
         $scope.dtOptions = {
             paginate: false,
@@ -96,7 +105,9 @@ angular.module("ndrApp")
         }
 
         $scope.selectedFilters = {
-            diabetesTypes: "4"
+            diabetesTypes: undefined,
+            hbMin : 0,
+            hbMax : 200,
         }
 
         $scope.model = {
@@ -122,13 +133,15 @@ angular.module("ndrApp")
 
             if("hbMin" in selectedFilters){
                 contacts = _.filter(contacts, function (d){
-                    return d.hba1c > selectedFilters.hbMin;
+                    return d.hba1c > selectedFilters.hbMin && d.hba1c < selectedFilters.hbMax;
                 })
             }
 
-            var subjects = _.toArray(_.groupBy($scope.model.contacts, function(contact){
+            var subjects = _.toArray(_.groupBy(contacts, function(contact){
                 return contact.subject.subjectID
             }));
+
+            console.log("subjects", subjects);
 
             $scope.model.subjectList = subjects;
         }
@@ -137,7 +150,7 @@ angular.module("ndrApp")
 
         $http.get("https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=2012-03-26&AccountID=" + $scope.accountModel.activeAccount.accountID)
             .success(function(data) {
-
+                console.log("Loaded Contacts", data);
                 $scope.model.allContacts = data;
 
             })

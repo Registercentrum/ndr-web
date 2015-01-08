@@ -54,7 +54,7 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
       }
 
       function setDirty(){
-        modelCtrl.$setViewValue(modelCtrl.$modelValue);
+        modelCtrl.$setViewValue(angular.copy(modelCtrl.$modelValue));
       }
 
       function updateClasses(){
@@ -62,7 +62,7 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
       }
 
       function updateValidity(){
-        modelCtrl.$setValidity('required', !config.required || scope.ngModel.length)
+        modelCtrl.$setValidity('required', !config.required || scope.ngModel.length !== 0 ? true : false)
         updateClasses();
       }
 
@@ -102,7 +102,7 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
         });
 
         if(needOptionRefresh)
-          selectize.refreshOptions(false);
+          updateSelectizeValue(scope.ngModel); //allow the model value to be set before the options are loaded
       }
 
       function updateSelectizeValue(value, prev){
@@ -153,6 +153,15 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
       scope.$watchCollection('options', updateSelectizeOptions);
       scope.$watch('ngModel', updateSelectizeValue, true);
       scope.$watch('ngDisabled', toggle);
+
+      element.on('$destroy', function() {
+          if (selectize) {
+              selectize.destroy();
+              element = null;
+          }
+      });
+
+
     }
   };
 }]);
