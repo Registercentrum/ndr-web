@@ -2,12 +2,20 @@
   display: inline-block;
   border: 1px solid @ndr-dark;
   border-radius: 3px;
-  background: #fff;
+  background: #ffffff;
 }
 
 .PatientSearch-icon {
-  display: inline-block;
+  display: block;
+  width: 20px;
+  height: 20px;
   margin: -1px 0 6px 10px;
+  
+  img {
+    display: none;
+  }
+
+  &:extend(.grunticon-icon_heart);
 }
 
 .PatientSearch-input {

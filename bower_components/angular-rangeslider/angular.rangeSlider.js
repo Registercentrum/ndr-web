@@ -438,6 +438,7 @@
                     }
 
                     function handleMove(index) {
+                        debugger;
 
                         var $handle = handles[index];
 
@@ -633,13 +634,14 @@
                     $slider
                     // disable selection
                         .bind('selectstart' + eventNamespace, function(event) {
+
                             return false;
                         })
                         // stop propagation
                         .bind('click', function(event) {
                             event.stopPropagation();
                         });
-
+    console.log($slider);
                     // bind events to each handle
                     handleMove(0);
                     handleMove(1);

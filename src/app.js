@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables', 'rzModule'])
 
     // The routing system
@@ -128,9 +127,9 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 controller : "AccountController",
 
                 resolve: {
-                    config: function(accountService){
-                        return accountService.bootstrap();
-                    }
+                    // config: function(accountService){
+                    //     return accountService.bootstrap();
+                    // }
                 }
 
             })
