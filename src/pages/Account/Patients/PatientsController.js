@@ -2,19 +2,46 @@ angular.module("ndrApp")
     .controller('PatientsController', function ($scope, $http, $stateParams, $state, DTOptionsBuilder, DTColumnDefBuilder) {
 
         console.log("PatientsController: Init");
-        $scope.open = function($event) {
+
+        /* Date picker options */
+        $scope.datePickers = {
+            from : {
+                date : new Date("2013-01-01"),
+                opened : false,
+            },
+            to : {
+                date : new Date(),
+                opened : false,
+            }
+        }
+
+        $scope.today = function() {
+            $scope.dt = new Date();
+        };
+        $scope.today();
+
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+        //$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        //$scope.format = $scope.formats[0];
+
+
+        $scope.open = function($event, picker) {
             $event.preventDefault();
             $event.stopPropagation();
-
-            $scope.dt1.opened = true;
+            $scope.datePickers[picker].opened = true;
         };
 
-        $scope.dt1 = new Date("2013-01-01");
-        $scope.dt2 = new Date();
+        /* Table options */
 
         $scope.dtOptions = {
             paginate: false,
             bFilter : false,
+            bRetrieve : true,
+            // bDestroy : false,
             language : {
                 "sEmptyTable": "Tabellen innehåller ingen data",
                 "sInfo": "Visar _START_ till _END_ av totalt _TOTAL_ rader",
@@ -41,16 +68,11 @@ angular.module("ndrApp")
 
         };
 
-        /*$scope.dtOptions = DTOptionsBuilder.newOptions()
-            .withPaginationType('full_numbers')
-            .withDisplayLength()
-            .withDOM('pitrfl')*/
-
         $scope.dtColumnDefs = [
             DTColumnDefBuilder.newColumnDef(4).notSortable(),
-       /*     DTColumnDefBuilder.newColumnDef(1).notVisible(),
-            DTColumnDefBuilder.newColumnDef(2)*/
         ];
+
+        /* Filters */
 
         $scope.allFilters = {
             diabetesTypes: [
@@ -77,9 +99,15 @@ angular.module("ndrApp")
             ]
         }
 
+        /* Active filters */
+
         $scope.activeFilters = {
-            diabetesTypes: {
-                options :  [
+            diabetesTypes: [
+                    {
+                        id: 0,
+                        text: "Alla typer"
+                    },
+
                     {
                         id: 1,
                         text: "Typ 1 diabetes (inkl LADA)"
@@ -100,60 +128,125 @@ angular.module("ndrApp")
                         id: 5,
                         text: "Prediabetes"
                     }
-                ],
-            }
+                ]
         }
 
         $scope.selectedFilters = {
-            diabetesTypes: undefined,
+            diabetesTypes: 0,
             hbMin : 0,
             hbMax : 200,
         }
 
         $scope.model = {
-            allContacts : undefined,
-            subjectList : undefined
+            allSubjects : undefined,
+            filteredSubjects : undefined
         }
+
+
+        $scope.$watch("datePickers.to.date", function (){
+            loadSubjects();
+        })
+
+        $scope.$watch("datePickers.from.date", function (){
+            loadSubjects();
+        })
 
 
         $scope.$watch("selectedFilters", function (){
             filter();
         }, true)
 
-        $scope.$watch("model.allContacts", function (){
+        $scope.$watch("model.allSubjects", function (){
             filter();
         }, true)
+
 
         function filter(){
 
             console.log("Changed Filters");
 
             var selectedFilters = $scope.selectedFilters;
-            var contacts = angular.copy($scope.model.allContacts);
+            var subjects = angular.copy($scope.model.allSubjects);
 
             if("hbMin" in selectedFilters){
-                contacts = _.filter(contacts, function (d){
-                    return d.hba1c > selectedFilters.hbMin && d.hba1c < selectedFilters.hbMax;
+                subjects = _.filter(subjects, function (d){
+                    return d.aggregatedProfile.hba1c > selectedFilters.hbMin && d.aggregatedProfile.hba1c < selectedFilters.hbMax;
                 })
             }
 
-            var subjects = _.toArray(_.groupBy(contacts, function(contact){
+            if("diabetesTypes" in selectedFilters && selectedFilters.diabetesTypes != 0){
+
+                subjects = _.filter(subjects, function (d){
+
+                    console.log(d.aggregatedProfile.subject);
+                    
+                    if(d.aggregatedProfile.subject.diabetesType == null){ return false }
+
+                    return d.aggregatedProfile.subject.diabetesType.id == selectedFilters.diabetesTypes;
+                })
+            }
+
+            /*var subjects = _.toArray(_.groupBy(contacts, function(contact){
                 return contact.subject.subjectID
-            }));
+            }));*/
 
-            console.log("subjects", subjects);
+            $scope.model.filteredSubjects = subjects;
+            $scope.model.filteredSubjectsLength = subjects.length;
 
-            $scope.model.subjectList = subjects;
+            console.log("Filtered subjects", subjects.length, subjects);
+
         }
 
 
+        /* Load data when period changes */
 
-        $http.get("https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=2012-03-26&AccountID=" + $scope.accountModel.activeAccount.accountID)
-            .success(function(data) {
+        function loadSubjects (){
+
+            var dateFrom = moment($scope.datePickers.from.date).format("YYYY-MM-DD")
+            var dateTo = moment($scope.datePickers.to.date).format("YYYY-MM-DD")
+
+
+             $http.get("https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=" + dateFrom +  "&dateTo=" + dateTo + "&AccountID=" + $scope.accountModel.activeAccount.accountID)
+                .success(function(data) {
                 console.log("Loaded Contacts", data);
-                $scope.model.allContacts = data;
+
+                var subjects = [];
+
+                var subjectsArray = _.toArray(_.groupBy(data, function(contact){
+                    return contact.subject.socialNumber
+                }));
+
+                _.each(subjectsArray, function(contactsArray, key){
+                    var o = {
+                        contacts : contactsArray,
+                        aggregatedProfile : _.last(contactsArray)
+
+                    };
+
+                    angular.extend(o, _.last(contactsArray).subject)
+
+                    if( contactsArray.length > 1) {
+
+                        for (var i = contactsArray.length-2; i >= 0; i--) {
+
+                            _.each(o.aggregatedProfile, function (obj, key) {
+                                if (obj == null) {
+
+                                    obj = contactsArray[i][key];
+
+                                }
+                            })
+
+                        }
+                    }
+                    subjects.push(o)
+                })
+                console.log("Loaded Subjects", subjects.length, subjects);
+
+                $scope.model.allSubjects = subjects;
+                $scope.model.allSubjectsLength = subjects.length;
 
             })
 
-
+        }
     })

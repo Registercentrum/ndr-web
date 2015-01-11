@@ -125,13 +125,11 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 url: "/inloggad",
                 templateUrl: "src/pages/Account/account.html",
                 controller : "AccountController",
-
                 resolve: {
-                    // config: function(accountService){
-                    //     return accountService.bootstrap();
-                    // }
+                    config: function(accountService){
+                         return accountService.bootstrap();
+                    }
                 }
-
             })
 
             .state('main.account.home', {
