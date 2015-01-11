@@ -1,12 +1,3 @@
-.NavbarVertical {
-
-  li.active > a, li.active > a:hover, li.active > a:focus{
-    border-radius: 4px;
-    background: @ndr-semidark;
-  }
-
-}
-
 .NavbarVertical-item-link {
   background-position: center;
   background-color: @ndr-yellow;
@@ -15,6 +6,16 @@
   height: 140px;
   text-align: center;
   width: 80%;
+}
+
+.NavbarVertical {
+
+  .active > .NavbarVertical-item-link, .active > .NavbarVertical-item-link:hover, .active > .NavbarVertical-item-link:focus{
+    border-radius: 4px;
+    background: #eee;
+    color: @ndr-semidark;
+  }
+
 }
 
 .NavbarVertical-item-icon {
