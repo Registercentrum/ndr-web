@@ -25,7 +25,8 @@
     "jquery": "~1.x",
     "angular-datatables": "~0.3.0",
     "venturocket-angular-slider": "~0.3.2",
-    "angularjs-slider": "~0.1.6"
+    "angularjs-slider": "~0.1.6",
+    "moment": "~2.9.0"
   },
   "resolutions": {
     "angular": "~1.2.*"

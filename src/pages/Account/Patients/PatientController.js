@@ -6,6 +6,17 @@ angular.module("ndrApp")
         $scope.subjectID = $stateParams.patientID;
 
 
+        $scope.printDiv = function(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
         $http({
             method: 'POST',
             url: "https://ndr.registercentrum.se/api/Subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13,

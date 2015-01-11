@@ -13,17 +13,22 @@
         <h1 class="Page-title">Patientprofil</h1>
 
         <div class="PatientHeader clearfix">
-            <div class="PatientHeader-personNumber col-md-8 u-noLeftPadding">
+            <div class="PatientHeader-personNumber col-md-5 u-noLeftPadding">
                 <i class="fa fa-user"></i>  {{ subject.socialNumber }}
             </div>
-            <div class="PatientHeader-navigation col-md-4 u-noRightPadding text-right">
-                <a href="#/inloggad/patient/{{ subject.socialNumber }}" type="submit" class="Button Button--info Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
+            <div class="PatientHeader-navigation col-md-7 u-noRightPadding">
+
+               <!-- <select name="" class="form-control pull-right" id="" style="width: 250px">
+                    <option value="">Visa / komplettera besök</option>
+                </select>-->
+                
+                <a href="#/inloggad/patient/{{ subject.socialNumber }}" ng-click="printDiv('printableArea')" class="pull-right Button Button--info Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row" id="printableArea">
     <div class="col-md-12">
 
         <div class="Panel Panel--blue">
@@ -40,7 +45,7 @@
                 </div>
                 <div class="col-md-2">
                     <h4>Längd</h4>
-
+                    {{ subject }}
                     <h4>Vikt</h4>
 
                 </div>
