@@ -1,18 +1,43 @@
 .NavbarVertical {
 
-  li > a{
-    border-radius: 4px;
-    background: @ndr-yellow;
-    color : @ndr-dark;
-    height:140px;
-    text-align: center;
-    padding-top: 30px;
-    width:80%;
-  }
-
   li.active > a, li.active > a:hover, li.active > a:focus{
     border-radius: 4px;
     background: @ndr-semidark;
   }
 
+}
+
+.NavbarVertical-item-link {
+  background-position: center;
+  background-color: @ndr-yellow;
+  border-radius: 4px;
+  color: @ndr-dark;
+  height: 140px;
+  text-align: center;
+  width: 80%;
+}
+
+.NavbarVertical-item-icon {
+  display: block;
+  height: 70px;
+  background-position: center;
+  margin-top: 14px;
+}
+
+.NavbarVertical-item-icon--overview {
+  .Grunticon('icon_heart');
+}
+
+.NavbarVertical-item-icon--report {
+  .Grunticon('icon_pen');
+}
+
+.NavbarVertical-item-icon--patients {
+  .Grunticon('icon_user');
+}
+
+.NavbarVertical-item-link-name {
+  display: block;
+  font-size: 20px;
+  font-weight: 300;
 }

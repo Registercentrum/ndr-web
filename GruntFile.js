@@ -11,6 +11,7 @@ module.exports = function(grunt) {
                     //'images/grunticon/_grunticon-fallback.less',
                     'less/_variables.less',
                     'less/_styles.less',
+                    'less/_mixins.less',
                     'src/components/*/*.less',
                     'src/pages/*/*.less'
                 ],

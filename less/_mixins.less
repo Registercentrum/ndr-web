@@ -1,11 +1,13 @@
 .Grunticon(@iconName) {
 
   .modernizr-svg & {
-    .grunticon-@{iconName};
+    background-image: url('../images/svgmin/@{iconName}.svg');
+    background-repeat: no-repeat;
   }
 
   .no-modernizr-svg & {
-    background-image: url();
+    background-image: url('../images/grunticon/png/@{iconName}.png');
+    background-repeat: no-repeat;
   }
 
 }
