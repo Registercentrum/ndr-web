@@ -2,36 +2,67 @@ angular.module("ndrApp")
     .controller('PatientController', function ($scope, $http, $stateParams, $state) {
 
         $scope.subject = {};
-
         $scope.subjectID = $stateParams.patientID;
 
-
-        $scope.printDiv = function(divName) {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
+        $scope.model = {
+            data : {}
         }
+
+        $scope.$watch("subject", function (){
+            getHba1cTrend();
+        }, true)
+
+        function getHba1cTrend(){
+
+            var series = [];
+
+            _.each($scope.subject.contacts, function(obj, key){
+
+                console.log(obj);
+
+                var o = {
+                    // name : obj.unit.name,
+                    // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
+                    x : new Date(obj.contactDate),
+                    y : obj.hba1c,
+                }
+
+                series.push(o)
+            })
+
+            $scope.model.data.lineChartHba1c = series;
+
+        }
+
 
         $http({
             method: 'POST',
             url: "https://ndr.registercentrum.se/api/Subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13,
             data : { socialNumber: $scope.subjectID }
         })
-            .success(function(data, status, headers, config) {
-                console.log("Retrieved subject", data);
-                $scope.subject = data;
+        .success(function(data, status, headers, config) {
+            console.log("Retrieved subject", data);
+            $scope.subject = data;
 
-            })
-            .error(function(data, status, headers, config) {
-                //$log.error('Could not retrieve data from ' + url);
-            });
+        })
+        .error(function(data, status, headers, config) {
+            //$log.error('Could not retrieve data from ' + url);
+        });
 
 
+
+
+        /*      $scope.printDiv = function(divName) {
+         var printContents = document.getElementById(divName).innerHTML;
+         var originalContents = document.body.innerHTML;
+
+         document.body.innerHTML = printContents;
+
+         window.print();
+
+         document.body.innerHTML = originalContents;
+         }
+         */
 
         /*
 

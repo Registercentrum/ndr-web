@@ -12,6 +12,16 @@
     <div class="col-md-12">
         <h1 class="Page-title">Patientprofil</h1>
 
+           <!-- <div class="PatientSearch pull-right">
+                    <span class="PatientSearch-icon">
+                        <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
+                    </span>
+                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
+                       ng-pattern="pnrRegex">
+                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
+            </div>-->
+
+
         <div class="PatientHeader clearfix">
             <div class="PatientHeader-personNumber col-md-5 u-noLeftPadding">
                 <i class="fa fa-user"></i>  {{ subject.socialNumber }}
@@ -45,14 +55,14 @@
                 </div>
                 <div class="col-md-2">
                     <h4>Längd</h4>
-                    {{ subject }}
+
                     <h4>Vikt</h4>
 
                 </div>
 
                 <div class="col-md-6">
                     <h4>HbA1c</h4>
-                    <div class="" line-chart=""></div>
+                    <div class="" line-chart-patient-hba1c model="model.data.lineChartHba1c"></div>
                 </div>
             </div>
 
