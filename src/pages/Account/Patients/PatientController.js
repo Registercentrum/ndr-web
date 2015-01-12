@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('PatientController', function ($scope, $http, $stateParams, $state) {
 
-        $scope.subject = {};
+        $scope.subject = undefined;
         $scope.subjectID = $stateParams.patientID;
 
         $scope.model = {
@@ -14,23 +14,38 @@ angular.module("ndrApp")
 
         function getHba1cTrend(){
 
+            if(!$scope.subject) return false;
+
+            var contacts = angular.copy($scope.subject.contacts).sort(function (a,b){
+                return new Date(a.contactDate) - new Date(b.contactDate);
+            })
+
             var series = [];
+            var seriesBloodPressure = [];
 
-            _.each($scope.subject.contacts, function(obj, key){
+            _.each(contacts, function(obj, key){
 
-                console.log(obj);
+                var oBloodPressure = {
+                    x : new Date(obj.contactDate),
+                    y : obj.bpSystolic,
+                }
 
                 var o = {
-                    // name : obj.unit.name,
-                    // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
                     x : new Date(obj.contactDate),
                     y : obj.hba1c,
                 }
 
+                seriesBloodPressure.push(oBloodPressure)
                 series.push(o)
+
             })
 
+           /* series.sort(function (a,b){
+                return b.x - a.x;
+            })*/
+
             $scope.model.data.lineChartHba1c = series;
+            $scope.model.data.lineChartBloodPressure = seriesBloodPressure;
 
         }
 
@@ -49,6 +64,11 @@ angular.module("ndrApp")
             //$log.error('Could not retrieve data from ' + url);
         });
 
+
+        $scope.calculateAge = function(birthDate) {
+
+            return moment().diff(birthDate, 'years');
+        };
 
 
 

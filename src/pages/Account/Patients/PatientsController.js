@@ -77,7 +77,7 @@ angular.module("ndrApp")
         function format ( d ) {
             //console.log("Format", d);
             return '<td>Här kommer alla besök för ' + d[1] + ' listas.</td>' +
-                    '<td>test.</td>';
+                    '<td></td>';
 
                 ;
         }

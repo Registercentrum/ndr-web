@@ -15,13 +15,17 @@ angular.module('ndrApp')
 
                 var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
-                            type: 'area',
+                            type: 'spline',
                             height : 130,
                             marginTop : 20,
                             marginBottom : 30,
                             marginLeft : 35,
                             marginRight: 5,
-                            spacingLeft : 30
+                            spacingLeft : 30,
+
+                            style : {
+                                color: "white"
+                            }
                         },
                         title: {
                             text: ''
@@ -42,11 +46,14 @@ angular.module('ndrApp')
                             },
 
                             lineWidth: 0,
-                            gridLineWidth: 0,
+                            gridLineWidth: 0.5,
                             minorGridLineWidth: 0,
                             lineColor: '#eee',
                             labels: {
-                                //enabled: false
+                                style: {
+                                    color: 'white',
+                                    fontSize : '10px'
+                                }
                             },
                             minorTickLength: 0,
                             tickLength: 0
@@ -54,7 +61,7 @@ angular.module('ndrApp')
                         },
 
                         yAxis: {
-                           gridLineWidth: 1,
+                           gridLineWidth: 0.5,
                            gridLineColor : "#eee",
                            lineWidth: 0,
 
@@ -68,12 +75,12 @@ angular.module('ndrApp')
                             },
                             labels: {
                                 align : "right",
-                                //x : 20,
-                                //y : -8,
 
+                                style: {
+                                    color: 'white',
+                                    fontSize : '10px'
+                                }
                             }
-
-
                         },
                          tooltip: {
                             formatter: function() {
