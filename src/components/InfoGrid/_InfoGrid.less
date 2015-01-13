@@ -1,53 +1,85 @@
+@InfoGrid-medium: 600px;
+@InfoGrid-large: 900px;
+
 .InfoGrid {
   overflow: hidden;
   box-sizing: border-box;
-}
 
-.Panel.InfoGrid {
-  padding: 0;
+  &.Panel {
+    padding: 0;
+  }
 }
 
 .InfoGrid-cell {
   padding: 20px;
-/*  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;*/
+  border-bottom: 1px solid #fff;
+}
 
-  & + & {
-    border-top: 1px solid white;
+@media (min-width: @InfoGrid-medium) {
+  .InfoGrid-cell {
+    border-bottom: none;
   }
 }
 
-.InfoGrid-cellGroup {
-  border-left: 1px solid white;
+@media (min-width: @InfoGrid-medium) and (max-width: (@InfoGrid-large - 1)) {
+
+  .InfoGrid-cellGroup {
+    overflow: hidden;
+    clear: both;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
+
+    .InfoGrid-cell {
+      width: 50%;
+      float: left;
+
+      &:first-child {
+        border-right: 1px solid white;
+      }
+    }
+  }
 }
 
-.InfoGrid-wrapper--width30 {
-  box-sizing: border-box;
-  width: 30%;
-  float: left;
-}
+@media (min-width: @InfoGrid-large) {
+  .InfoGrid-cellGroup .InfoGrid-cell {
+    border-top: 1px solid white;
 
-.InfoGrid-wrapper--width70 {
-  box-sizing: border-box;
-  width: 70%;
-  clear: none;
-  float: left;
-}
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .InfoGrid-cellGroup {
+    border-left: 1px solid white;
+  }
+
+  .InfoGrid-wrapper--width30 {
+    box-sizing: border-box;
+    width: 30%;
+    float: left;
+  }
+
+  .InfoGrid-wrapper--width70 {
+    box-sizing: border-box;
+    width: 70%;
+    float: left;
+  }
 
 
-.InfoGrid-cell-inner {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.InfoGrid-cellWrapper {
-  border-bottom: 1px solid #ffffff;
-  overflow: hidden;
-  border-right: 1px solid white;
+  .InfoGrid-cellWrapper {
+    overflow: hidden;
+    border-bottom: 1px solid #ffffff;
+    border-right: 1px solid white;
 
 
-  &:last-child {
-    border-bottom: none;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .InfoGrid-cell-inner {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
