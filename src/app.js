@@ -47,6 +47,12 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 templateUrl: "src/pages/Patient/patient.html"
             })
 
+            .state('main.contribute', {
+                url: "/du-bidrar",
+                //controller: 'FilterUnitsController',
+                templateUrl: "src/pages/Patient/contribute.html"
+            })
+
             /* Statistics */
 
             .state('main.statistics', {
@@ -92,6 +98,8 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 templateUrl: "src/components/Article/article.html",
                 controller : "ResearchItemController"
             })
+
+
 
 
             .state('news', {

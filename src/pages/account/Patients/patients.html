@@ -28,15 +28,17 @@
                 </div>
                 <div class="MultiFilter-row-filterKnobs">
                     <div class="FilterDatePopup">
-                        <div class="input-group FilterDatePopup-group FilterDatePopup-group--80">
-                          <span class="input-group-addon">
-                            <button type="button" class="FilterDatePopup-button" ng-click="open($event, 'from')"><i class="fa fa-calendar"></i></button>
-                          </span>
+                        <div class="input-group FilterDatePopup-group FilterDatePopup-group--60">
+                            <span class="input-group-addon">
+                                <button type="button" class="FilterDatePopup-button" ng-click="open($event, 'from')"><i class="fa fa-calendar"></i></button>
+                            </span>
+
                             <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="datePickers.from.date" is-open="datePickers.from.opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
 
-                          <span class="input-group-addon">
-                            <button type="button" class="FilterDatePopup-button" ng-click="open($event, 'to')"><i class="fa fa-calendar"></i></button>
-                          </span>
+
+                             <span class="input-group-addon">
+                               <button type="button" class="FilterDatePopup-button" ng-click="open($event, 'to')"><i class="fa fa-calendar"></i></button>
+                             </span>
 
                              <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="datePickers.to.date" is-open="datePickers.to.opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                         </div>
@@ -100,25 +102,31 @@
         </div>
 
 
-        <table datatable="ng" dt-options="dtOptions"  dt-column-defs="dtColumnDefs" class="table table-striped table-bordered row-border hover">
+        <table id="Table--patients" datatable="ng" dt-options="dtOptions"  dt-column-defs="dtColumnDefs" class="table table-striped table-bordered row-border hover">
             <thead style="font-weight: 700">
             <tr>
+                <td>Mer</td>
                 <td>Personnummer</td>
                 <td>Senaste besök</td>
                 <td>Blodtryck</td>
                 <td>HbA1c</td>
-                <td>Val</td>
+                <td>Funktioner</td>
             </tr>
             </thead>
             <tbody>
 
                 <tr ng-repeat="subject in model.filteredSubjects">
+
+                    <td class="details-control">
+                        <i class="fa fa-plus-circle fa-1x"></i>
+                    </td>
+
                     <td>{{ subject.aggregatedProfile.subject.socialNumber }}</td>
-                    <td>{{ subject.aggregatedProfile.lastUpdatedAt | date:'yyyy-MM-dd' }} </td>
+                    <td>{{ subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd' }} </td>
                     <td>{{ subject.aggregatedProfile.bpDiastolic }}</td>
                     <td>{{ subject.aggregatedProfile.hba1c }}</td>
 
-                    <td><a href="#/inloggad/patient/{{ subject.socialNumber }}" class="Button Button--info">Visa</a></td>
+                    <td><a href="#/inloggad/patient/{{ subject.socialNumber }}" class="Button Button--info Button--small">Visa</a></td>
                 </tr>
             </tbody>
         </table>

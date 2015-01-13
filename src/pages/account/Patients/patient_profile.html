@@ -12,6 +12,16 @@
     <div class="col-md-12">
         <h1 class="Page-title">Patientprofil</h1>
 
+           <!-- <div class="PatientSearch pull-right">
+                    <span class="PatientSearch-icon">
+                        <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
+                    </span>
+                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
+                       ng-pattern="pnrRegex">
+                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
+            </div>-->
+
+
         <div class="PatientHeader clearfix">
             <div class="PatientHeader-personNumber col-md-5 u-noLeftPadding">
                 <i class="fa fa-user"></i>  {{ subject.socialNumber }}
@@ -21,8 +31,12 @@
                <!-- <select name="" class="form-control pull-right" id="" style="width: 250px">
                     <option value="">Visa / komplettera besök</option>
                 </select>-->
-                
+
                 <a href="#/inloggad/patient/{{ subject.socialNumber }}" ng-click="printDiv('printableArea')" class="pull-right Button Button--info Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
+
+                <a style="margin-right: 10px" href="#/inloggad/patient/{{ subject.socialNumber }}" class="pull-right Button Button--info Button--dark" ng-click=""><i class="fa fa-plus-circle"></i> Nytt besök</a>
+
+
             </div>
         </div>
     </div>
@@ -36,23 +50,29 @@
             <div class="row">
 
                 <div class="col-md-4">
-                    <table class="Table--patient table table-condensed">
-                        <tr><td>Personnummer</td><td>{{ subject.socialNumber }}</td></tr>
-                        <tr><td>Ålder</td><td>{{ 78 }}</td></tr>
-                        <tr><td>Typ</td><td>{{ subject.diabetesType.text }}</td></tr>
-                        <tr><td>Debutår</td><td>{{ subject.yearOfOnset }}</td></tr>
-                    </table>
+
+                    <p>
+                        <b>{{ subject.socialNumber }}</b><br/>
+                        {{ "Kvinna, " + calculateAge(subject.dateOfBirth) }} år gammal <br/>
+                        {{ subject.diabetesType.text }} <br/>
+                        Debutår: {{ subject.yearOfOnset }}
+                    </p>
+
+
                 </div>
                 <div class="col-md-2">
-                    <h4>Längd</h4>
-                    {{ subject }}
-                    <h4>Vikt</h4>
+                    <h4>{{ "175 cm" }}</h4>
+                    <p>Längd</p>
+
+                    <h4>{{ "67 kg" }}</h4>
+
+                    <p>Vikt</p>
 
                 </div>
 
                 <div class="col-md-6">
                     <h4>HbA1c</h4>
-                    <div class="" line-chart=""></div>
+                    <div class="" line-chart-patient-hba1c model="model.data.lineChartHba1c"></div>
                 </div>
             </div>
 
@@ -65,6 +85,12 @@
 
         <div class="Panel Panel--green u-equalHeight">
             <h4>Sjukdomar och behandlingar</h4>
+
+            <table class="table">
+                <tr><td>Aspirin</td><td>{{ subject.aspirin.text }}</td></tr>
+                <tr><td>Waran</td><td>{{ subject.waran.text }}</td></tr>
+            </table>
+
         </div>
     </div>
 
@@ -73,27 +99,36 @@
 
         <div class="Panel Panel--green u-equalHeight">
             <h4>Blodtryck</h4>
-            <div column-chart=""></div>
-
+            <div class="" line-chart-patient-hba1c model="model.data.lineChartBloodPressure"></div>
         </div>
     </div>
 
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
 
         <div class="Panel Panel--purple u-equalHeight">
             <h4>Fysisk aktivitet</h4>
+            <div column-chart=""></div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="Panel Panel--purple u-equalHeight">
+            <h4>Rökning</h4>
+            <div column-chart=""></div>
         </div>
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-md-4">
 
-        <div class="Panel Panel u-equalHeight">
+        <div class="Panel Panel--purple u-equalHeight">
             <h4>Kolesterol</h4>
             <div column-chart=""></div>
+
 
         </div>
     </div>
@@ -104,21 +139,36 @@
 <div class="row">
     <div class="col-md-4">
 
-        <div class="Panel">
-            <h4>Njurar</h4>
+        <div class="Panel u-equalHeight">
+            <h4><img src="images/grunticon/png/icon_kidney.png" style="width:20px;margin-right: 10px" alt=""/> Njurar</h4>
+
+            <table class="table">
+                <tr><td>Undersökning</td><td>{{  }}</td></tr>
+                <tr><td>Något annat</td><td>{{ }}</td></tr>
+            </table>
+
+
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="Panel ">
-            <h4>Ögon</h4>
-
+        <div class="Panel u-equalHeight">
+            <h4><img src="images/grunticon/png/icon_eye.png" style="width:25px;margin-right: 10px" alt=""/>Ögon</h4>
+            <table class="table">
+                <tr><td>Undersökning</td><td>{{  }}</td></tr>
+                <tr><td>Något annat</td><td>{{ }}</td></tr>
+            </table>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="Panel ">
-            <h4>Fötter</h4>
+        <div class="Panel u-equalHeight">
+            <h4><img src="images/grunticon/png/icon_foot.png" style="width:15px;margin-right: 10px" alt=""/>Fötter</h4>
+            <table class="table">
+                <tr><td>Fotundersökning</td><td>{{  }}</td></tr>
+                <tr><td>Något annat</td><td>{{ }}</td></tr>
+            </table>
+
 
         </div>
     </div>
@@ -130,7 +180,13 @@
 
 
 <div class="Panel">
-            <h2>Patient data </h2>
+
+    <h2>Model</h2>
+     <pre>
+        {{ model.data | json }}
+    </pre>
+
+    <h2>Patient data </h2>
                 <pre>
                     {{ subject | json }}
                 </pre>
@@ -142,6 +198,8 @@
 
 
          <pre>
+
+
 
         {{ serverError }}
         {{  accountModel | json  }}

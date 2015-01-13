@@ -57,15 +57,27 @@
         <div class="col-md-12">
 
             <div class="PatientHeader clearfix">
-                <div class="PatientHeader-personNumber col-md-8 u-noLeftPadding">
+                <div class="PatientHeader-personNumber col-md-6 u-noLeftPadding">
                     {{ subject.socialNumber }}
                 </div>
-                <div class="PatientHeader-navigation col-md-4 u-noRightPadding text-right">
-                    <a href="#/inloggad/patient/{{ subject.socialNumber }}" type="submit" class="Button Button--info" ng-click="">Gå till profil</a>
+
+                <div class="col-md-6">
+                    <form id="contactSelect" class="form-horizontal pull-left" role="form" >
+                        <select style="width:220px" ng-model="contactToUpdate" class="form-control" ng-change="setContact(contactToUpdate)" ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts">
+                            <option value="">Visa/komplettera besök</option>
+                        </select>
+                    </form>
+
+                    <div class="PatientHeader-navigation u-noRightPadding pull-right">
+                        <a href="#/inloggad/patient/{{ subject.socialNumber }}" type="submit" class="Button Button--info" ng-click="">Gå till profil</a>
+                    </div>
                 </div>
+
             </div>
 
             <div class="Panel">
+
+                <h3>Rapportera nytt besök</h3>
 
                 <div ng-show="accountModel.activeAccount != null">
 
@@ -87,16 +99,7 @@
                         </div>-->
                         <div class="row">
                             <div class="col-md-6">
-                                <form id="contactSelect" class="form-horizontal" role="form" >
-                                    <div class="form-group">
-                                        <label for="contactDate" class="col-md-6 control-label">Välj datum</label>
-                                        <div class="col-md-6">
-                                            <select ng-model="contactToUpdate" class="form-control" ng-change="setContact(contactToUpdate)" ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts">
-                                                <option value="">-- Nytt datum --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </form>
+
                             </div>
                             <div class="col-md-6">
                                 <p>
