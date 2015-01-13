@@ -45,17 +45,61 @@
 <div class="row" id="printableArea">
     <div class="col-md-12">
 
-        <div class="Panel Panel--blue InfoGrid">
+        <div class="Panel Panel--blue InfoGrid clearfix">
 
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
-            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-equalHeightsGroup4 InfoGrid-wrapper--width70">
+
+                <div class="InfoGrid-cellWrapper">
+
+                    <div class="InfoGrid-cell InfoGrid-wrapper--width70 InfoGrid-equalHeightsGroup1">
+                        <div class="InfoGrid-cell-inner">
+                            [ INFOGRID CELL: PERSON ]
+                            <b>{{ subject.socialNumber }}</b>
+                            <br>
+                            {{ "Kvinna, " + calculateAge(subject.dateOfBirth) }} år gammal
+                        </div>
+                    </div>
+
+                    <div class="InfoGrid-wrapper--width30 InfoGrid-equalHeightsGroup1 InfoGrid-cellGroup">
+                        <div class="InfoGrid-cell">Typ: {{ subject.diabetesType.text }}</div>
+                        <div class="InfoGrid-cell">Debutår: {{ subject.yearOfOnset }} </div>
+                    </div>
+                </div>
+
+                <div class="InfoGrid-cellWrapper">
+                    <div class="InfoGrid-cell InfoGrid-equalHeightsGroup2 InfoGrid-wrapper--width70">
+                        <div class="InfoGrid-cell-inner">
+                            <div class="" line-chart-patient-hba1c model="model.data.lineChartHba1c"></div>
+                            [ INFOGRID CELL: BLOOD SUGAR LEVELS ]
+                        </div>
+                    </div>
+
+                    <div class="InfoGrid-equalHeightsGroup2 InfoGrid-wrapper--width30 InfoGrid-cellGroup">
+                        <div class="InfoGrid-cell">[ INFOGRID CELL: BLOOD PRESSURE]</div>
+                        <div class="InfoGrid-cell">[ INFOGRID CELL: EXERCISE ]</div>
+                    </div>
+                </div>
+
+                <div class="InfoGrid-cellWrapper">
+                    <div class="InfoGrid-cell InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width70">
+                        <div class="InfoGrid-cell-inner">
+                            [ INFOGRID CELL: BMI ]
+                        </div>
+                    </div>
+                    <div class="InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width30 InfoGrid-cellGroup">
+                        <div class="InfoGrid-cell">[ INFOGRID CELL: {{ "67 kg" }} ]</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="InfoGrid-cell InfoGrid-equalHeightsGroup4 InfoGrid-wrapper--width30">
+                <div class="InfoGrid-cell-inner">
+                    {{ "175 cm" }}
+                </div>
+            </div>
+
 
 
 

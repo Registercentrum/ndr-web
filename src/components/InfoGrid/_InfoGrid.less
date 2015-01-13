@@ -1,5 +1,53 @@
-.InfoGrid-grid {
+.InfoGrid {
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.Panel.InfoGrid {
+  padding: 0;
+}
+
+.InfoGrid-cell {
   padding: 20px;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+/*  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;*/
+
+  & + & {
+    border-top: 1px solid white;
+  }
+}
+
+.InfoGrid-cellGroup {
+  border-left: 1px solid white;
+}
+
+.InfoGrid-wrapper--width30 {
+  box-sizing: border-box;
+  width: 30%;
+  float: left;
+}
+
+.InfoGrid-wrapper--width70 {
+  box-sizing: border-box;
+  width: 70%;
+  clear: none;
+  float: left;
+}
+
+
+.InfoGrid-cell-inner {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.InfoGrid-cellWrapper {
+  border-bottom: 1px solid #ffffff;
+  overflow: hidden;
+  border-right: 1px solid white;
+
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
