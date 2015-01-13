@@ -45,36 +45,19 @@
 <div class="row" id="printableArea">
     <div class="col-md-12">
 
-        <div class="Panel Panel--blue">
+        <div class="Panel Panel--blue InfoGrid">
 
-            <div class="row">
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
+            <div class="InfoGrid-cell"></div>
 
-                <div class="col-md-4">
 
-                    <p>
-                        <b>{{ subject.socialNumber }}</b><br/>
-                        {{ "Kvinna, " + calculateAge(subject.dateOfBirth) }} år gammal <br/>
-                        {{ subject.diabetesType.text }} <br/>
-                        Debutår: {{ subject.yearOfOnset }}
-                    </p>
-
-
-                </div>
-                <div class="col-md-2">
-                    <h4>{{ "175 cm" }}</h4>
-                    <p>Längd</p>
-
-                    <h4>{{ "67 kg" }}</h4>
-
-                    <p>Vikt</p>
-
-                </div>
-
-                <div class="col-md-6">
-                    <h4>HbA1c</h4>
-                    <div class="" line-chart-patient-hba1c model="model.data.lineChartHba1c"></div>
-                </div>
-            </div>
 
         </div>
     </div>
