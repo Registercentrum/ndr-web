@@ -31,6 +31,5 @@
   },
   "_source": "git://github.com/rzajac/angularjs-slider.git",
   "_target": "~0.1.6",
-  "_originalSource": "angularjs-slider",
-  "_direct": true
+  "_originalSource": "angularjs-slider"
 }
