@@ -4,8 +4,14 @@ angular.module("ndrApp")
 
         dataService.getOne("researchproject", $stateParams.id).then(function (data){
 
-            console.log('data: ', data);
-            $scope.publications = data;
+            //$scope.log('data: ', data);
+
+            $scope.article = {
+                title: data.name,
+                createdAt: data.dateOfPublication,
+                body: data.laymansDescription,
+                author: data.firstAuthor + ', ' + data.otherAuthor + ', ' + data.lastAuthor
+            };
         })
 
 
