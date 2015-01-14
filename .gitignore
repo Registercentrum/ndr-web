@@ -4,3 +4,4 @@ node_modules/*
 css/*.css
 css/*.map
 less/_concatenated-styles.less
+bower_components/*
