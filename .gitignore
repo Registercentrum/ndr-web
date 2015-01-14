@@ -1,6 +1,8 @@
 .idea/*
 codekit-config.json
 node_modules/*
+bower_components/
 css/*.css
 css/*.map
 less/_concatenated-styles.less
+bower_components/*
