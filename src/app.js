@@ -95,8 +95,8 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('researchItem', {
                 url: "/forskning/:id",
-                templateUrl: "src/components/Article/article.html",
-                controller : "ResearchItemController"
+                templateUrl: "src/components/Publication/Publication.html",
+                controller : "PublicationController"
             })
 
 
@@ -197,6 +197,13 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
                      jQuery('.u-equalHeight').matchHeight(true);
                      jQuery('.Intro--equalHeights').matchHeight(false);
+                        console.log(jQuery(window).width());
+                     if ( jQuery(window).width() >= 700 ) {
+                         jQuery('.InfoGrid-equalHeightsGroup1').matchHeight(false);
+                         jQuery('.InfoGrid-equalHeightsGroup2').matchHeight(false);
+                         jQuery('.InfoGrid-equalHeightsGroup3').matchHeight(false);
+                         jQuery('.InfoGrid-equalHeightsGroup4').matchHeight(false);
+                     }
 
                  }
              },100);
