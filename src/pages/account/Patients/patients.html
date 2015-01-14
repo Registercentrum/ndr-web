@@ -77,12 +77,29 @@
                 </div>
             </div>
 
+            <div class="MultiFilter-row" ng-repeat="(key, filters) in selectedAdditionalFilters">
+                <div class="MultiFilter-row-label">
+                    {{ key }}
+                </div>
+                <div class="MultiFilter-row-filterKnobs" ng-if="filters.length > 2">
+                    <select ng-options="filter.id as filter.text for filter in filters" ng-model="selectedFilters.additional[key]" name="" id="" class="form-control pull-left" style="width: 50%">
+                        <option value="">Välj {{ key }}</option>
+                    </select>
+                    <button class="Button Button--warning Button--mini pull-right" ng-click="removeAdditionalFIlter(key)">x</button>
+                </div>
+                <div class="MultiFilter-row-filterKnobs form-inline" ng-if="filters.length === 2">
+                    <span class="radio"><label><input type="radio" ng-model="selectedFilters.additional[key]" value= "{{ filters[0].id }}"> {{ filters[0].text }}</label></span>
+                    <span class="radio"><label><input type="radio" ng-model="selectedFilters.additional[key]" value= "{{ filters[1].id }}"> {{ filters[1].text }}</label></span>
+                    <button class="Button Button--warning Button--mini pull-right" ng-click="removeAdditionalFIlter(key)">x</button>
+                </div>
+            </div>
+
             <div class="MultiFilter-row">
                 <div class="MultiFilter-row-label">
                     Valbar
                 </div>
                 <div class="MultiFilter-row-filterKnobs">
-                    <select name="" id="" class="form-control" style="width: 50%">
+                    <select ng-options="filter.id as filter.text for filter in additionalFilterTypes" ng-model="selectedAdditionalFilter" name="" id="" class="form-control" style="width: 50%">
                         <option value="">Välj filter</option>
                     </select>
                 </div>
