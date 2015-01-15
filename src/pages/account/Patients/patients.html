@@ -65,15 +65,25 @@
                 </div>
                 <div class="MultiFilter-row-filterKnobs">
 
-                    <!--<rzslider
+<!--                     <rzslider
                             rz-slider-floor="0"
                             rz-slider-ceil="200"
                             rz-slider-model="selectedFilters.min"
-                            rz-slider-high="selectedFilters.max"></rzslider>-->
+                            rz-slider-high="selectedFilters.max"></rzslider>
+ -->
 
-                    <input class="form-control" style="float:left; width:20%" type="number" placeholder="min" ng-model="selectedFilters.hbMin" />
+                        <div
+                            class="RangeSlider"
+                            slider
+                            ng-model="selectedFilters.hbMin"
+                            ng-model-range="selectedFilters.hbMax"
+                            floor="0"
+                            ceiling="200">
+                        </div>
+
+<!--                     <input class="form-control" style="float:left; width:20%" type="number" placeholder="min" ng-model="selectedFilters.hbMin" />
                     <input class="form-control" style="float:left; width:20%" type="number" placeholder="max" ng-model="selectedFilters.hbMax" />
-
+ -->
                 </div>
             </div>
 
@@ -121,13 +131,20 @@
                         <i class="fa fa-plus-circle fa-1x"></i>
                     </td>
 
-                    <td>{{ subject.aggregatedProfile.subject.socialNumber }}</td>
+                    <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
+                    <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"</td>
+                    <td once-text="subject.aggregatedProfile.bpDiastolic"</td>
+                    <td once-text="subject.aggregatedProfile.hba1c"</td>
+
+                    <td><a once-href="'#/inloggad/patient/' + subject.socialNumber" class="Button Button--info Button--small">Visa</a></td>
+
+<!--                     <td>{{ subject.aggregatedProfile.subject.socialNumber }}</td>
                     <td>{{ subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd' }} </td>
                     <td>{{ subject.aggregatedProfile.bpDiastolic }}</td>
                     <td>{{ subject.aggregatedProfile.hba1c }}</td>
 
                     <td><a href="#/inloggad/patient/{{ subject.socialNumber }}" class="Button Button--info Button--small">Visa</a></td>
-                </tr>
+ -->                </tr>
             </tbody>
         </table>
 
