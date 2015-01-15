@@ -185,11 +185,18 @@ angular.module('ndrApp')
                 filteredSubjects: undefined
             };
 
+            var debouncedFilter = _.debounce(function () {
+                $scope.$apply(function () {
+                    filter();    
+                })
+            }, 50);
 
             $scope.$watch('datePickers.to.date', loadSubjects);
             $scope.$watch('datePickers.from.date', loadSubjects);
 
-            $scope.$watch('selectedFilters', filter, true);
+            $scope.$watch('selectedFilters.hbMin', debouncedFilter, true);
+            $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
+            $scope.$watch('selectedFilters.diabetesTypes', filter, true);
             $scope.$watch('selectedFilters.additional', filter, true);
             $scope.$watch('model.allSubjects', filter, true);
 
@@ -216,18 +223,26 @@ angular.module('ndrApp')
                 }
 
                 // Check additional filters
-                _.each(selectedFilters.additional, function (id, key, list) {
+                _.each(selectedFilters.additional, function (filter, key, list) {
                     // get the proper key from the mappings
                     var prop = filterMappings[key];
 
                     // Don't filter if no option for this filter is selected
-                    if (id === null) return;
+                    // if (filter.value === null && filter.undef === false) return;
 
                     subjects = _.filter(subjects, function (subject) {
-                        // Sex sits directly on the subject, not on aggregatedProfile
-                        return prop === 'sex' ?
-                            subject[prop] && subject[prop].code === parseInt(id, 10) :
-                            subject.aggregatedProfile[prop] && subject.aggregatedProfile[prop].id === parseInt(id, 10);
+                        // prop may sit directly on the subject (sex) or on aggregatedProfile
+                        // if id is 'true' it means that option for searching undefined values is checked
+                        // so return only those that have null specified for this option
+                        
+                        if (filter.undef) {
+                            return subject[prop] === null || subject.aggregatedProfile[prop] === null;
+                        } else if (filter.value !== null && typeof filter.value !== 'undefined') {
+                            return (subject[prop] && subject[prop].code === parseInt(filter.value, 10)) ||
+                                   (subject.aggregatedProfile[prop] && subject.aggregatedProfile[prop].id === parseInt(filter.value, 10));
+                        } else {
+                            return true;
+                        }
                     });
                 });
 

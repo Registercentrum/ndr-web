@@ -1,7 +1,7 @@
 .RangeSlider {
   display: inline-block;
   position: relative;
-  height: 22px;
+  height: 10px;
   width: 100%;
   margin: 25px 5px 25px 5px;
   vertical-align: middle;
@@ -20,50 +20,53 @@
     // width: 100%;
     height: 100%;
     z-index: 0;
-    background: #F5F5F5;
-    -webkit-border-radius: 1em/1em;
-    border-radius: 1em/1em;
-    border: 1px solid #E3E3E3;
+    background: @gray-lighter;
+    border-radius: 3px;
   }
   span.bar.selection {
     width: 0%;
     z-index: 1;
-    background: #F5F5F5;
+    background: @ndr-blue;
   }
   span.pointer {
     cursor: pointer;
-    width: 20px;
-    height: 20px;
-    top: 1px;
+    width: 26px;
+    height: 26px;
+    top: -8px;
     background-color: #fff;
-    border: 1px solid #000;
+    border: 1px solid @gray-light;
     z-index: 2;
     -webkit-border-radius: 1em/1em;
     border-radius: 1em/1em;
   }
+  span.pointer:before {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border-right: 1px solid @gray;
+  }
   span.pointer:after {
     content: '';
-    background-color: #2C3B44;
-    width: 6px;
-    height: 6px;
     position: absolute;
-    top: 6px;
-    left: 6px;
-    -webkit-border-radius: 1em/1em;
-    border-radius: 1em/1em;
+    right: 7px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border-right: 1px solid @gray;
+    border-left: 1px solid @gray;
   }
-  span.pointer:hover:after {
-    background-color: #000;
-  }
-  span.pointer.active:after {
-    background-color: #FF5C17;
+  span.pointer:hover:before, span.pointer:hover:after,
+  span.pointer.active:before, span.pointer.active:after {
+    border-color: @ndr-blue;
   }
   span.bubble {
     cursor: default;
-    top: -20px;
+    top: -25px;
     padding: 1px 3px 1px 3px;
     font-size: 0.8em;
-    font-family: sans-serif;
   }
   span.bubble.selection {
     top: 15px;

@@ -2,12 +2,14 @@
 angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables', 'rzModule', 'vr.directives.slider', 'once'])
 
     // The routing system
-    .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $logProvider) {
 
         var templateURL = "templates/";
 
         // Default and fallback state
         $urlRouterProvider.otherwise("/");
+
+        $logProvider.debugEnabled(false);
 
         $stateProvider
             .state('main', {
