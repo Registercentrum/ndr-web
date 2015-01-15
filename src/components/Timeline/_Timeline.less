@@ -1,10 +1,58 @@
 .Timeline {
-  height: 130px;
   background-color: @ndr-darkgreen;
   color: #fff;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   text-align: center;
-  padding-top: 20px;
+  padding: 20px;
+
+  h5 {
+    margin-bottom: 0;
+  }
 }
 
+
+@media (min-width: 768px) {
+  .Timeline-inner {
+    padding-bottom: 25px;
+    background: @ndr-darkgreen url('../images/timeline_bg.png') bottom center repeat-x;
+  }
+
+  .Timeline-text {
+    display: block;
+    white-space: nowrap;
+
+    &:after {
+      content: '\f017';
+      font-family: FontAwesome;
+      display: block;
+      font-weight: 400;
+      position: absolute;
+      color: rgba(255,255,255,.8);
+      background-color: @ndr-darkgreen;
+      padding: 5px;
+      width: 25px;
+      left: 50%;
+      margin-left: -12px;
+    }
+  }
+
+  .Timeline-element--first {
+    .Timeline-text:after {
+      width: 50%;
+      text-align: right;
+      left: 10px;
+      margin-left: 0;
+    }
+  }
+
+  .Timeline-element--last {
+    .Timeline-text:after {
+      width: 50%;
+      text-align: left;
+      left: auto;
+      right: 10px;
+      margin-left: 0;
+    }
+  }
+}
