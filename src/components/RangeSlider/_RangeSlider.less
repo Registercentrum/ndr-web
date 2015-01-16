@@ -1,3 +1,19 @@
+/**
+ * Angular JS slider directive
+ *
+ * (c) Rafal Zajac <rzajac@gmail.com>
+ * http://github.com/rzajac/angularjs-slider
+ *
+ * Licensed under the MIT license
+ */
+
+@handleActiveColor: #67b700;
+@handleHoverColor: #67b700;
+@labelTextColor: #67b700;
+@handleBgColor: #fff;
+@handleInnerColor: #71818e;
+@limitLabelTextColor: @labelTextColor;
+
 .RangeSlider {
   display: inline-block;
   position: relative;
@@ -33,7 +49,7 @@
     width: 26px;
     height: 26px;
     top: -8px;
-    background-color: #fff;
+    background-color: @handleBgColor;
     border: 1px solid @gray-light;
     z-index: 2;
     -webkit-border-radius: 1em/1em;
@@ -46,7 +62,7 @@
     top: 7px;
     width: 5px;
     height: 10px;
-    border-right: 1px solid @gray;
+    border-right: 1px solid @handleInnerColor;
   }
   span.pointer:after {
     content: '';
@@ -55,8 +71,8 @@
     top: 7px;
     width: 5px;
     height: 10px;
-    border-right: 1px solid @gray;
-    border-left: 1px solid @gray;
+    border-right: 1px solid @handleInnerColor;
+    border-left: 1px solid @handleInnerColor;
   }
   span.pointer:hover:before, span.pointer:hover:after,
   span.pointer.active:before, span.pointer.active:after {
@@ -72,6 +88,6 @@
     top: 15px;
   }
   span.bubble.limit {
-    color: #808080;
+    color: @gray-light;
   }
 }

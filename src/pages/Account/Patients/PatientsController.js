@@ -1,7 +1,7 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$http', '$stateParams', '$state', '$log', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope, $http, $stateParams, $state, $log, DTOptionsBuilder, DTColumnDefBuilder) {
+        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        function ($scope, $http, $stateParams, $state, $log, $filter, DTOptionsBuilder, DTColumnDefBuilder) {
 
             // API for filters is not exactly consitent with the options sitting on the aggregatedProfile
             var filterMappings = {
@@ -22,13 +22,14 @@ angular.module('ndrApp')
             $log.debug('PatientsController: Init');
 
             /* Date picker options */
+            $scope.format = 'dd MMM yyyy';
             $scope.datePickers = {
                 from: {
-                    date: new Date('2013-01-01'),
+                    date: $filter('date')(new Date('2013-01-01'), $scope.format),
                     opened: false,
                 },
                 to: {
-                    date: new Date(),
+                    date: $filter('date')(new Date(), $scope.format),
                     opened: false,
                 }
             };
@@ -38,13 +39,10 @@ angular.module('ndrApp')
             };
             $scope.today();
 
-
             $scope.dateOptions = {
                 formatYear: 'yy',
                 startingDay: 1
             };
-            //$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-            //$scope.format = $scope.formats[0];
 
             $scope.open = function ($event, picker) {
                 $event.preventDefault();

@@ -9,7 +9,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
         // Default and fallback state
         $urlRouterProvider.otherwise("/");
 
-        $logProvider.debugEnabled(false);
+        $logProvider.debugEnabled(true);
 
         $stateProvider
             .state('main', {
