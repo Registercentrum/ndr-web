@@ -1,108 +1,167 @@
 <div class="row">
     <div class="col-md-12">
         <h1 class="Page-title">Söklista</h1>
-        <p>
-            Välj besöksperiod och andra sökkriterier. En patient visas i tabellen om ...
-        </p>
+        <p>Välj besöksperiod och andra sökkriterier. En patient visas i tabellen om…</p>
 
         <div class="MultiFilter">
-
             <div class="MultiFilter-row MultiFilter-row--header">
-                <div class="MultiFilter-row-label">
-                    Antal matchande patienter:
-                </div>
-                <div class="MultiFilter-row-filterKnobs">
-                    <div class="col-sm-7 u-noLeftPadding Progressbar">
-                        <progressbar value="( model.filteredSubjectsLength * 100 ) / model.allSubjectsLength" max="100"></progressbar>
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">
+                        Antal matchande patienter:
                     </div>
-
-                    <div class="col-sm-2 u-noLeftPadding">{{ model.filteredSubjectsLength + " av " + model.allSubjectsLength }}</div>
-
-
+                    <div class="MultiFilter-row-filterKnobs col-sm-9">
+                        <div class="col-sm-7 u-noLeftPadding Progressbar">
+                            <progressbar value="( model.filteredSubjectsLength * 100 ) / model.allSubjectsLength" max="100"></progressbar>
+                        </div>
+                        <div class="col-sm-2 u-noLeftPadding">{{ model.filteredSubjectsLength + " av " + model.allSubjectsLength }}</div>
+                    </div>
                 </div>
             </div>
 
             <div class="MultiFilter-row">
-                <div class="MultiFilter-row-label">
-                    Besöksperiod
-                </div>
-                <div class="MultiFilter-row-filterKnobs">
-                    <div class="FilterDatePopup">
-                        <div class="input-group FilterDatePopup-group FilterDatePopup-group--60">
-                            <span class="input-group-addon">
-                                <button type="button" class="FilterDatePopup-button" ng-click="open($event, 'from')"><i class="fa fa-calendar"></i></button>
-                            </span>
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">Besöksperiod</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                        <div class="FilterDatePopup">
+                            <div class="input-group FilterDatePopup-group">
+                                <span class="input-group-addon">
+                                    <button
+                                        type="button"
+                                        class="FilterDatePopup-button"
+                                        ng-click="open($event, 'from')">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                                <input
+                                    type="text"
+                                    class="FilterDatePopup-input form-control"
+                                    datepicker-popup="{{ format }}"
+                                    ng-model="datePickers.from.date"
+                                    is-open="datePickers.from.opened"
+                                    min-date="minDate"
+                                    max-date="'2015-06-22'"
+                                    datepicker-options="dateOptions"
+                                    date-disabled="disabled(date, mode)"
+                                    ng-required="true"
+                                    close-text="Close">
 
-                            <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="datePickers.from.date" is-open="datePickers.from.opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-
-
-                             <span class="input-group-addon">
-                               <button type="button" class="FilterDatePopup-button" ng-click="open($event, 'to')"><i class="fa fa-calendar"></i></button>
-                             </span>
-
-                             <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="datePickers.to.date" is-open="datePickers.to.opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                 <span class="input-group-addon">
+                                   <button
+                                        type="button"
+                                        class="FilterDatePopup-button"
+                                        ng-click="open($event, 'to')">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                 </span>
+                                 <input
+                                    type="text"
+                                    class="FilterDatePopup-input form-control"
+                                    datepicker-popup="{{ format }}"
+                                    ng-model="datePickers.to.date"
+                                    is-open="datePickers.to.opened"
+                                    min-date="minDate"
+                                    max-date="'2015-06-22'"
+                                    datepicker-options="dateOptions"
+                                    date-disabled="disabled(date, mode)"
+                                    ng-required="true"
+                                    close-text="Close">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="MultiFilter-row">
-                <div class="MultiFilter-row-label">
-                    Diabetestyp
-                </div>
-                <div class="MultiFilter-row-filterKnobs">
-                    <select ng-options="type.id as type.text for type in activeFilters.diabetesTypes" name="" class="form-control" ng-model="selectedFilters.diabetesTypes" id="" style="width:50%">
-                       <!-- <option value="{{ item.id }}" ng-repeat="item in activeFilters.diabetesTypes.options">
-                            {{ item.text }}
-                        </option>-->
-                    </select>
-                </div>
-            </div>
-
-            <div class="MultiFilter-row">
-                <div class="MultiFilter-row-label">
-                    HbA1c
-                </div>
-                <div class="MultiFilter-row-filterKnobs">
-
-                    <!--<rzslider
-                            rz-slider-floor="0"
-                            rz-slider-ceil="200"
-                            rz-slider-model="selectedFilters.min"
-                            rz-slider-high="selectedFilters.max"></rzslider>-->
-
-                    <input class="form-control" style="float:left; width:20%" type="number" placeholder="min" ng-model="selectedFilters.hbMin" />
-                    <input class="form-control" style="float:left; width:20%" type="number" placeholder="max" ng-model="selectedFilters.hbMax" />
-
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">Diabetestyp</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                        <select
+                            ng-options="type.id as type.text for type in activeFilters.diabetesTypes"
+                            class="form-control"
+                            ng-model="selectedFilters.diabetesTypes"
+                            name=""
+                            id="">
+                        </select>
+                    </div>
                 </div>
             </div>
 
             <div class="MultiFilter-row">
-                <div class="MultiFilter-row-label">
-                    Valbar
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">HbA1c</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                        <div
+                            slider
+                            ng-model="selectedFilters.hbMin"
+                            ng-model-range="selectedFilters.hbMax"
+                            floor="0"
+                            ceiling="200"
+                            class="RangeSlider">
+                        </div>
+                    </div>
+                    <div class="col-sm-3 form-inline">
+                        <input class="form-control" type="number" placeholder="min" ng-model="selectedFilters.hbMin">
+                        <input class="form-control" type="number" placeholder="max" ng-model="selectedFilters.hbMax">
+                    </div>
                 </div>
-                <div class="MultiFilter-row-filterKnobs">
-                    <select name="" id="" class="form-control" style="width: 50%">
-                        <option value="">Välj filter</option>
-                    </select>
+            </div>
+
+            <!-- Additional filtering -->
+            <div class="MultiFilter-row" ng-repeat="(key, filters) in selectedAdditionalFilters">
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">{{ key }}</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                        <!-- If there are more than two options, display them as a select -->
+                        <select
+                            ng-if="filters.length > 2"
+                            ng-options="filter.id as filter.text for filter in filters"
+                            ng-model="selectedFilters.additional[key].value"
+                            ng-disabled="selectedFilters.additional[key].undef"
+                            class="form-control pull-left">
+                            <option value="">Välj {{ key }}</option>
+                        </select>
+
+                        <!-- If there are just two options, display them as radio buttons -->
+                        <div class="form-inline" ng-if="filters.length === 2">
+                            <span class="radio" ng-repeat="filter in filters">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        ng-model="selectedFilters.additional[key].value"
+                                        ng-disabled="selectedFilters.additional[key].undef"
+                                        value="{{ filter.id }}">
+                                        {{ filter.text }}
+                                    </label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 form-inline">
+                        <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters.additional[key].undef"> saknar värde</label></span>
+                        <i class="fa fa-minus-circle fa-1x text-danger" ng-click="removeAdditionalFIlter(key)"></i>
+                    </div>
                 </div>
             </div>
 
             <div class="MultiFilter-row">
-                <div class="MultiFilter-row-label">
-                    Debug
-                </div>
-                <div class="MultiFilter-row-filterKnobs">
-                    {{ selectedFilters }}
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">Valbar</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                        <select ng-options="filter.id as filter.text for filter in additionalFilterTypes" ng-model="selectedAdditionalFilter" name="" id="" class="form-control">
+                            <option value="">Välj filter</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-
-
+            <div class="MultiFilter-row">
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">Debug</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-9">{{ selectedFilters }}</div>
+                </div>
+            </div>
         </div>
 
-
-        <table id="Table--patients" datatable="ng" dt-options="dtOptions"  dt-column-defs="dtColumnDefs" class="table table-striped table-bordered row-border hover">
+        <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered row-border hover">
             <thead style="font-weight: 700">
             <tr>
                 <td>Mer</td>
@@ -116,36 +175,21 @@
             <tbody>
 
                 <tr ng-repeat="subject in model.filteredSubjects">
-
-                    <td class="details-control">
-                        <i class="fa fa-plus-circle fa-1x"></i>
-                    </td>
-
-                    <td>{{ subject.aggregatedProfile.subject.socialNumber }}</td>
-                    <td>{{ subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd' }} </td>
-                    <td>{{ subject.aggregatedProfile.bpDiastolic }}</td>
-                    <td>{{ subject.aggregatedProfile.hba1c }}</td>
-
-                    <td><a href="#/inloggad/patient/{{ subject.socialNumber }}" class="Button Button--info Button--small">Visa</a></td>
+                    <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
+                    <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
+                    <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"</td>
+                    <td once-text="subject.aggregatedProfile.bpDiastolic"</td>
+                    <td once-text="subject.aggregatedProfile.hba1c"</td>
+                    <td><a once-href="'#/inloggad/patient/' + subject.socialNumber" class="Button Button--info Button--small">Visa</a></td>
                 </tr>
             </tbody>
         </table>
 
-
-
          <pre>
-
-<!--
-            {{  model  | json  }}
--->
-
-
+            <!-- {{  model  | json  }} -->
             {{  activeFilters  | json  }}
-
-
             {{  model.filteredSubjects  | json  }}
         </pre>
-
     </div>
 </div>
 
