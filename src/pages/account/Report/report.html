@@ -82,7 +82,7 @@
         <div ng-show="subject != null" >
           <form name="contactForm" class="Report-form form-horizontal" role="form" novalidate>
 
-            <div> <!-- ng-show="accountModel.activeAccount != null" -->
+            <div ng-show="accountModel.activeAccount != null">
                 <div class="row">
                   <h3 class="Panel-title Report-title col-md-4">Rapportera nytt besök</h3>
 
@@ -822,11 +822,11 @@
   </div>
 
 
-       <pre>
+       <!--<pre>-->
 
-      {{ serverError }}
-      {{  accountModel | json  }}
-      </pre>
+      <!--{{ serverError }}-->
+      <!--{{  accountModel | json  }}-->
+      <!--</pre>-->
 
 
   </div>
