@@ -3,30 +3,27 @@
     <h1 class="Page-title">För dig med diabetes</h1>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
 
-            <div class="Panel Panel--green">
+            <div class="Panel">
                 <h2 class="Heading--h2 u-noTopMargin">Du bidrar till en bättre vård</h2>
                 <p class="lead">Genom att vara med i nationella kvalitetsregister bidrar du till att förbättra vården.</p>
+
+                <img src="images/img_patient.png" alt=""/>
+
                 <a href="#/du-bidrar" class="Button Button--default Button--large Button--centered--60 Button--white Button--centered">Läs mer</a>
 
             </div>
 
-            <div class="Panel Panel--blue">
-                <h2 class="Heading--h2 u-noTopMargin">Nya sätt att delta och förbättra diabetsvården</h2>
-                <p class="lead">Genom Patientrapporterade utfallsmått (PROM) kan patientens upplevelse mätas för att utveckla vården.</p>
-                <div class="Button Button--default Button--large Button--centered--60 Button--white Button--centered">Läs mer</div>
 
-            </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="Panel Panel--purple">
-                <h2 class="Heading--h2 u-noTopMargin">Diabetesvården där du bor</h2>
-                <p class="lead">Knappa in ditt postnummer för att hitta länkar till diabetesvården där du bor.</p>
+                <h2 class="Heading--h3-sidebar u-noTopMargin">Diabetesvården där du bor</h2>
+                <p>Knappa in ditt postnummer för att hitta statistik och annan information om diabetesvården där du bor:</p>
 
                 <input type="text" class="form-control" ng-model="unit.postalCode" style="width: 300px;margin-top: 20px" placeholder="Ditt postnummer"/>
-
                 <div class="PostalCodeSearch">
                     <ul class="PostalCodeSearch-list" ng-show="unit.postalCode">
                         <li ng-repeat="unit in units | filter:unit" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">
@@ -41,8 +38,15 @@
                 </div>
             </div>
 
+            <div class="Panel Panel--blue">
+                <h2 class="Heading--h3-sidebar u-noTopMargin">Nya sätt att delta och förbättra diabetsvården</h2>
+                <p >Genom patienenkäter (PROM) kan patientens upplevelse mätas för att utveckla vården.</p>
+                <div class="Button Button--default  Button--centered--60 Button--white Button--centered">Läs mer</div>
+
+            </div>
+
             <div class="Panel">
-                <h2 class="Heading--h2 u-noTopMargin">Länkar</h2>
+                <h2 class="Heading--h3-sidebar u-noTopMargin">Länkar</h2>
 
                 <article class="">
                     <h4><a href="http://www.diabetes.se/" target="_blank">Diabetesförbundet</a></h4>

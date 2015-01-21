@@ -93,7 +93,7 @@ angular.module('ndrApp')
                 countyCode: 0,
                 unitID: 0,
                 indicatorID: 101,
-                fromYear: 2013,
+                fromYear: 2014,
                 fromQuartal: 0,
                 fromMonth: 0,
                 toYear: 2014,

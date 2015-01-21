@@ -88,7 +88,9 @@ angular.module('ndrApp')
             function getKeyIndicators(){
 
                 var indicators = dataService.data.indicators.byType.target;
-                var toInclude = [201,204,207,206,209,214,211,203,212,216,202,309];
+                var toInclude = [201,221,207,222,209,214,211,203,212,213,216,202,309];
+
+                var highIsBetter = [201, 207, 222, 209,203,212,213]
 
                 var promises = [];
 
@@ -102,9 +104,6 @@ angular.module('ndrApp')
 
                         promises.push(dataService.getStats(query));
                     }
-
-
-
                 })
 
                 _.each(indicators, function(obj, key){
@@ -154,8 +153,17 @@ angular.module('ndrApp')
 
                         //console.log(obj.precalculated.geo < lKonf, obj.precalculated.geo, lKonf);
 
-                        if(obj.precalculated.geo < lKonf) obj.precalculated.status = "better";
-                        if(obj.precalculated.geo > uKonf) obj.precalculated.status = "worse";
+                        if(_.indexOf(highIsBetter, obj.precalculated.id) == -1){
+                            if(obj.precalculated.geo < lKonf) obj.precalculated.status = "better";
+                            if(obj.precalculated.geo > uKonf) obj.precalculated.status = "worse";
+                        }
+
+                        else{
+                            if(obj.precalculated.geo < lKonf) obj.precalculated.status = "worse";
+                            if(obj.precalculated.geo > uKonf) obj.precalculated.status = "better";
+                        }
+
+
 
                     })
 

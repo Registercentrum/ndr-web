@@ -22,7 +22,7 @@ angular.module('ndrApp')
                             marginTop : 60,
                             marginBottom : 30,
                             marginLeft : 45,
-                            marginRight: 45,
+                            marginRight: 50,
                             spacingLeft : 30,
                         },
                         title: {
@@ -84,6 +84,19 @@ angular.module('ndrApp')
                                 dataLabels: {
                                     enabled: true
                                 }
+                            },
+                            spline: {
+                                dataLabels: {
+                                    style: {
+                                        fontSize: '12px'
+                                    },
+                                    enabled: true,
+                                   /* formatter: function() {
+                                        return '<b>' +  this.series.name + '</b>';
+                                    }*/
+                                },
+
+
                             }
                         },
                         legend: {
