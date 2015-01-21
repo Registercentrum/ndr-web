@@ -2,23 +2,6 @@ angular.module('ndrApp')
     .controller('PatientsController', [
         '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         function ($scope, $http, $stateParams, $state, $log, $filter, DTOptionsBuilder, DTColumnDefBuilder) {
-
-            // API for filters is not exactly consitent with the options sitting on the aggregatedProfile
-            var filterMappings = {
-                diagnosisWorseSeeingEye : 'diagnosisWorseSeeingEye',
-                treatments              : 'treatment',
-                insulinMethods          : 'insulinMethod',
-                // pumps                   : 'pump',
-                pumpIndications         : 'pumpIndication',
-                pumpClosureReasons      : 'pumpClosureReason',
-                sex                     : 'sex',
-                physicalActivity        : 'physicalActivity',
-                hypoglycemiaSevere      : 'hypoglycemiaSevere',
-                // ynMicroscopicProteinuria: 'microscopicProteinuria',
-                footRiscCategory        : 'footRiscCategory',
-                smokingHabits           : 'smokingHabit'
-            };
-
             $log.debug('PatientsController: Init');
 
             /* Date picker options */
@@ -88,14 +71,27 @@ angular.module('ndrApp')
                 DTColumnDefBuilder.newColumnDef(5).notSortable()
             ];
 
-            function format (d) {
-                //$log.debug('Format', d);
-                return '<td>Här kommer alla besök för ' + d[1] + ' listas.</td>' + '<td></td>';
+            function format (visits) {
+                var template = [];
+                _.forEach(visits, function (visit) {
+                    var tmp = [
+                            '<tr class="visit-detail">',
+                                '<td colspan="2"></td>',
+                                '<td>' + $filter('date')(new Date(visit.contactDate), 'yyyy-MM-dd') + '</td>',
+                                '<td>' + ((visit.bpDiastolic === null) ? '-' : visit.bpDiastolic) + '</td>',
+                                '<td>' + ((visit.hba1c === null) ? '-' : visit.hba1c) + '</td>',
+                                '<td></td>',
+                            '</tr>'
+                        ].join('');
+                    template.push(tmp);
+                });
+                return $(template.join(''));
             }
 
             $scope.$on('event:dataTableLoaded', function (event, loadedDT) {
                 var dt = loadedDT.DataTable,
-                    detailRows = [];
+                    detailRows = [],
+                    visits;
 
                 $('#Table--patients tbody').on('click', 'tr td:first-child', function () {
                     var tr = $(this).closest('tr'),
@@ -110,8 +106,10 @@ angular.module('ndrApp')
                         detailRows.splice(idx, 1);
                     } else {
                         tr.addClass('details');
-                        row.child(format(row.data())).show();
-
+                        // find all the visits aka contacts for this patient
+                        visits = _.find($scope.model.filteredSubjects, {socialNumber: row.data()[1]}).contacts;
+                        // render them as child rows
+                        row.child(format(visits)).show();
                         // Add to the 'open' array
                         if (idx === -1) {
                             detailRows.push(tr.attr('id'));
@@ -128,10 +126,10 @@ angular.module('ndrApp')
             });
 
 
-            // Filters, copied from the API
-            $scope.additionalFilters = {"diagnosisWorseSeeingEye":[{"id":2,"text":"Simplex retinopati"},{"id":3,"text":"PPDR"},{"id":4,"text":"KSM"},{"id":5,"text":"PDR"}],"treatments":[{"id":1,"text":"Enbart kost"},{"id":2,"text":"Tabletter"},{"id":3,"text":"Insulin"},{"id":4,"text":"Tabl. och insulin"},{"id":5,"text":"Okänd"},{"id":6,"text":"Injektion (GLP-1 analog)"},{"id":8,"text":"Inj. GLP-1 + tabletter"},{"id":9,"text":"Inj. GLP-1 + insulin"},{"id":10,"text":"Inj. GLP-1 + tabl och insulin"}],"insulinMethods":[{"id":1,"text":"Injektion"},{"id":2,"text":"Insulinpump"}],"pumps":[{"id":1,"text":"AccuChek Combo"},{"id":2,"text":"AccuChek D-Tron"},{"id":3,"text":"AccuChek Spirit"},{"id":4,"text":"Animas 1200"},{"id":5,"text":"Animas 2010"},{"id":6,"text":"Animas 2012"},{"id":7,"text":"Animas 2020"},{"id":8,"text":"Animas Vibe"},{"id":9,"text":"Cozmo"},{"id":10,"text":"Dana R"},{"id":11,"text":"Dana IIS"},{"id":12,"text":"Minimed 504"},{"id":13,"text":"Minimed 508"},{"id":14,"text":"Omnipod"},{"id":15,"text":"Paradigm 511"},{"id":16,"text":"Paradigm 512"},{"id":17,"text":"Paradigm 515"},{"id":18,"text":"Paradigm 522"},{"id":19,"text":"Paradigm 523"},{"id":20,"text":"Paradigm VEO 554"},{"id":21,"text":"Paradigm 712"},{"id":22,"text":"Paradigm 722"},{"id":23,"text":"Paradigm VEO 754"},{"id":24,"text":"Paradigm VEO (Använd alt ovan)"},{"id":25,"text":"Paradigm 715"}],"pumpIndications":[{"id":1,"text":"Glukossvängningar"},{"id":2,"text":"Högt HbA1c (ej inom patientens målområde)"},{"id":3,"text":"Frekventa hypoglykemier"},{"id":4,"text":"Fysisk aktivitet"},{"id":5,"text":"Gryningsfenomen"},{"id":6,"text":"”unawareness”"},{"id":7,"text":"Patientens önskemål"},{"id":8,"text":"Förenklad glukosbehandling (barnklinik)"}],"pumpClosureReasons":[{"id":1,"text":"Bristande följsamhet/handhavande"},{"id":2,"text":"Patientens Önskemål"}],"sex":[{"id":1,"text":"Man"},{"id":2,"text":"Kvinna"}],"physicalActivity":[{"id":1,"text":"Aldrig    "},{"id":2,"text":"<1 ggr/vecka"},{"id":3,"text":"Regelbundet 1-2 ggr/vecka"},{"id":4,"text":"Regelbundet 3-5 ggr/vecka"},{"id":5,"text":"Dagligen"}],"hypoglycemiaSevere":[{"id":1,"text":"Ingen"},{"id":2,"text":"1-2"},{"id":3,"text":"3-5"},{"id":4,"text":">5"}],"ynMicroscopicProteinuria":[{"id":1,"text":"Ja"},{"id":0,"text":"Nej"},{"id":2,"text":"Normaliserat värde"}],"footRiscCategory":[{"id":1,"text":"Frisk fot"},{"id":2,"text":"Neuropati, angiopati"},{"id":3,"text":"Tidigare diabetssår"},{"id":4,"text":"Pågående allvarlig fotsjukdom"}],"smokingHabits":[{"id":1,"text":"Aldrig varit rökare"},{"id":2,"text":"Röker dagligen"},{"id":3,"text":"Röker, men ej dagligen"},{"id":4,"text":"Slutat röka"}]};
+            // Filters, copied from the API, augmented with display texts
+            $scope.additionalFilters = {"diagnosisWorseSeeingEye": { "options": [{"id":2,"text":"Simplex retinopati"},{"id":3,"text":"PPDR"},{"id":4,"text":"KSM"},{"id":5,"text":"PDR"}], "text": "Diagnosis Worse Seeing Eye"},"treatment": { "options": [{"id":1,"text":"Enbart kost"},{"id":2,"text":"Tabletter"},{"id":3,"text":"Insulin"},{"id":4,"text":"Tabl. och insulin"},{"id":5,"text":"Okänd"},{"id":6,"text":"Injektion (GLP-1 analog)"},{"id":8,"text":"Inj. GLP-1 + tabletter"},{"id":9,"text":"Inj. GLP-1 + insulin"},{"id":10,"text":"Inj. GLP-1 + tabl och insulin"}], "text": "Treatment"},"insulinMethod": { "options": [{"id":1,"text":"Injektion"},{"id":2,"text":"Insulinpump"}], "text": "Insulin Method"},"pump": { "options": [{"id":1,"text":"AccuChek Combo"},{"id":2,"text":"AccuChek D-Tron"},{"id":3,"text":"AccuChek Spirit"},{"id":4,"text":"Animas 1200"},{"id":5,"text":"Animas 2010"},{"id":6,"text":"Animas 2012"},{"id":7,"text":"Animas 2020"},{"id":8,"text":"Animas Vibe"},{"id":9,"text":"Cozmo"},{"id":10,"text":"Dana R"},{"id":11,"text":"Dana IIS"},{"id":12,"text":"Minimed 504"},{"id":13,"text":"Minimed 508"},{"id":14,"text":"Omnipod"},{"id":15,"text":"Paradigm 511"},{"id":16,"text":"Paradigm 512"},{"id":17,"text":"Paradigm 515"},{"id":18,"text":"Paradigm 522"},{"id":19,"text":"Paradigm 523"},{"id":20,"text":"Paradigm VEO 554"},{"id":21,"text":"Paradigm 712"},{"id":22,"text":"Paradigm 722"},{"id":23,"text":"Paradigm VEO 754"},{"id":24,"text":"Paradigm VEO (Använd alt ovan)"},{"id":25,"text":"Paradigm 715"}], "text": "Pump"},"pumpIndication": { "options": [{"id":1,"text":"Glukossvängningar"},{"id":2,"text":"Högt HbA1c (ej inom patientens målområde)"},{"id":3,"text":"Frekventa hypoglykemier"},{"id":4,"text":"Fysisk aktivitet"},{"id":5,"text":"Gryningsfenomen"},{"id":6,"text":"”unawareness”"},{"id":7,"text":"Patientens önskemål"},{"id":8,"text":"Förenklad glukosbehandling (barnklinik)"}], "text": "Pump Indication"},"pumpClosureReason": { "options": [{"id":1,"text":"Bristande följsamhet/handhavande"},{"id":2,"text":"Patientens Önskemål"}], "text": "Pump Closure Reason"},"sex": { "options": [{"id":1,"text":"Man"},{"id":2,"text":"Kvinna"}], "text": "Sex"},"physicalActivity": { "options": [{"id":1,"text":"Aldrig    "},{"id":2,"text":"<1 ggr/vecka"},{"id":3,"text":"Regelbundet 1-2 ggr/vecka"},{"id":4,"text":"Regelbundet 3-5 ggr/vecka"},{"id":5,"text":"Dagligen"}], "text": "Physical Activity"},"hypoglycemiaSevere": { "options": [{"id":1,"text":"Ingen"},{"id":2,"text":"1-2"},{"id":3,"text":"3-5"},{"id":4,"text":">5"}], "text": "Hypoglycemia Severe"},"microscopicProteinuria": { "options": [{"id":1,"text":"Ja"},{"id":0,"text":"Nej"},{"id":2,"text":"Normaliserat värde"}], "text": "Microscopic Proteinuria"},"waran": { "options": [{"id":1,"text":"Ja"},{"id":0,"text":"Nej"}], "text": "Waran"},"footRiscCategory": { "options": [{"id":1,"text":"Frisk fot"},{"id":2,"text":"Neuropati, angiopati"},{"id":3,"text":"Tidigare diabetssår"},{"id":4,"text":"Pågående allvarlig fotsjukdom"}], "text": "Foot Risc Category"},"smokingHabit": { "options": [{"id":1,"text":"Aldrig varit rökare"},{"id":2,"text":"Röker dagligen"},{"id":3,"text":"Röker, men ej dagligen"},{"id":4,"text":"Slutat röka"}], "text": "Smoking Habit"}};
             // Get filter types with ids
-            $scope.additionalFilterTypes = _.map(Object.keys($scope.additionalFilters), function (filter, index, array) { return {text: filter, id: filter }; });
+            $scope.additionalFilterTypes = _.map($scope.additionalFilters, function (filter, index) { return {text: filter.text, id: index }; });
 
             $scope.selectedAdditionalFilter = null;
             $scope.selectedAdditionalFilters = {};
@@ -221,23 +219,19 @@ angular.module('ndrApp')
                 }
 
                 // Check additional filters
-                _.each(selectedFilters.additional, function (filter, key, list) {
-                    // get the proper key from the mappings
-                    var prop = filterMappings[key];
-
-                    // Don't filter if no option for this filter is selected
-                    // if (filter.value === null && filter.undef === false) return;
-
+                _.each(selectedFilters.additional, function (filter, prop, list) {
                     subjects = _.filter(subjects, function (subject) {
-                        // prop may sit directly on the subject (sex) or on aggregatedProfile
-                        // if id is 'true' it means that option for searching undefined values is checked
+                        var value;
+                        // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
-                        
                         if (filter.undef) {
                             return subject[prop] === null || subject.aggregatedProfile[prop] === null;
                         } else if (filter.value !== null && typeof filter.value !== 'undefined') {
-                            return (subject[prop] && subject[prop].code === parseInt(filter.value, 10)) ||
-                                   (subject.aggregatedProfile[prop] && subject.aggregatedProfile[prop].id === parseInt(filter.value, 10));
+                            value = parseInt(filter.value, 10);
+                            // prop may sit directly on the subject (sex) or on aggregatedProfile
+                            // also, it can have 'code' or 'id' as the prop name, so check for both
+                            return (subject[prop] && (subject[prop].id === value || subject[prop].code === value)) ||
+                                   (subject.aggregatedProfile[prop] && (subject.aggregatedProfile[prop].id === value || subject.aggregatedProfile[prop].code === value));
                         } else {
                             return true;
                         }
@@ -252,58 +246,49 @@ angular.module('ndrApp')
                 $scope.model.filteredSubjectsLength = subjects.length;
 
                 $log.debug('Filtered subjects', subjects.length, subjects);
-
             }
 
 
             // Load data when period changes
             function loadSubjects () {
+                var from = moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                    to   = moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
+                    url  = 'https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + from +  '&dateTo=' + to + '&AccountID=' + $scope.accountModel.activeAccount.accountID;
 
-                var dateFrom = moment($scope.datePickers.from.date).format('YYYY-MM-DD')
-                var dateTo = moment($scope.datePickers.to.date).format('YYYY-MM-DD')
+                 $http.get(url)
+                    .success(function (data) {
+                        $log.debug('Loaded Contacts', data);
 
+                        var subjects = []
+                            subjectsArray = _.toArray(_.groupBy(data, function (contact){
+                                return contact.subject.socialNumber;
+                            }));
 
-                 $http.get('https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + dateFrom +  '&dateTo=' + dateTo + '&AccountID=' + $scope.accountModel.activeAccount.accountID)
-                    .success(function(data) {
-                    $log.debug('Loaded Contacts', data);
+                        _.each(subjectsArray, function (contactsArray, key){
+                            var o = {
+                                contacts : contactsArray,
+                                aggregatedProfile : _.clone(_.first(contactsArray))
+                            };
 
-                    var subjects = [];
+                            angular.extend(o, _.last(contactsArray).subject);
 
-                    var subjectsArray = _.toArray(_.groupBy(data, function(contact){
-                        return contact.subject.socialNumber
-                    }));
-
-                    _.each(subjectsArray, function(contactsArray, key){
-                        var o = {
-                            contacts : contactsArray,
-                            aggregatedProfile : _.last(contactsArray)
-
-                        };
-
-                        angular.extend(o, _.last(contactsArray).subject)
-
-                        if(contactsArray.length > 1) {
-
-                            for (var i = contactsArray.length-2; i >= 0; i--) {
-
+                            if (contactsArray.length > 1) {
                                 _.each(o.aggregatedProfile, function (obj, key) {
-                                    if (obj == null) {
-
-                                        obj = contactsArray[i][key];
-
+                                    for (var i = 1, l = contactsArray.length; i < l; i++) {
+                                        if (obj == null && contactsArray[i][key] !== null) {
+                                            o.aggregatedProfile[key] = contactsArray[i][key];
+                                            break;
+                                        }
                                     }
-                                })
-
+                                });
                             }
-                        }
-                        subjects.push(o)
-                    })
-                    $log.debug('Loaded Subjects', subjects.length, subjects);
+                            subjects.push(o)
+                        });
 
-                    $scope.model.allSubjects = subjects;
-                    $scope.model.allSubjectsLength = subjects.length;
+                        $log.debug('Loaded Subjects', subjects.length, subjects);
 
-                })
-
+                        $scope.model.allSubjects = subjects;
+                        $scope.model.allSubjectsLength = subjects.length;
+                    });
             }
-        }])
+        }]);

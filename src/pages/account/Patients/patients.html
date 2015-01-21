@@ -107,30 +107,30 @@
             </div>
 
             <!-- Additional filtering -->
-            <div class="MultiFilter-row" ng-repeat="(key, filters) in selectedAdditionalFilters">
+            <div class="MultiFilter-row" ng-repeat="(key, filter) in selectedAdditionalFilters">
                 <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">{{ key }}</div>
+                    <div class="MultiFilter-row-label col-sm-3">{{ filter.text }}</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
                         <!-- If there are more than two options, display them as a select -->
                         <select
-                            ng-if="filters.length > 2"
-                            ng-options="filter.id as filter.text for filter in filters"
+                            ng-if="filter.options.length > 2"
+                            ng-options="option.id as option.text for option in filter.options"
                             ng-model="selectedFilters.additional[key].value"
                             ng-disabled="selectedFilters.additional[key].undef"
                             class="form-control pull-left">
-                            <option value="">Välj {{ key }}</option>
+                            <option value="">Välj {{ filter.text }}</option>
                         </select>
 
                         <!-- If there are just two options, display them as radio buttons -->
-                        <div class="form-inline" ng-if="filters.length === 2">
-                            <span class="radio" ng-repeat="filter in filters">
+                        <div class="form-inline" ng-if="filter.options.length === 2">
+                            <span class="radio" ng-repeat="option in filter.options">
                                 <label>
                                     <input
                                         type="radio"
                                         ng-model="selectedFilters.additional[key].value"
                                         ng-disabled="selectedFilters.additional[key].undef"
-                                        value="{{ filter.id }}">
-                                        {{ filter.text }}
+                                        value="{{ option.id }}">
+                                        {{ option.text }}
                                     </label>
                             </span>
                         </div>
@@ -153,42 +153,43 @@
                 </div>
             </div>
 
-            <div class="MultiFilter-row">
+<!--             <div class="MultiFilter-row">
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Debug</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-9">{{ selectedFilters }}</div>
                 </div>
             </div>
+ -->        </div>
+
+        <div class="table-responsive">
+            <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" width="100%" class="table responsive table-striped table-bordered row-border hover">
+                <thead>
+                    <tr>
+                        <td>Mer</td>
+                        <td>Personnummer</td>
+                        <td>Senaste besök</td>
+                        <td>Blodtryck</td>
+                        <td>HbA1c</td>
+                        <td>Funktioner</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="subject in model.filteredSubjects">
+                        <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
+                        <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
+                        <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"</td>
+                        <td once-text="subject.aggregatedProfile.bpDiastolic"</td>
+                        <td once-text="subject.aggregatedProfile.hba1c"</td>
+                        <td><a once-href="'#/inloggad/patient/' + subject.socialNumber" class="Button Button--info Button--small">Visa</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-        <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered row-border hover">
-            <thead style="font-weight: 700">
-            <tr>
-                <td>Mer</td>
-                <td>Personnummer</td>
-                <td>Senaste besök</td>
-                <td>Blodtryck</td>
-                <td>HbA1c</td>
-                <td>Funktioner</td>
-            </tr>
-            </thead>
-            <tbody>
-
-                <tr ng-repeat="subject in model.filteredSubjects">
-                    <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
-                    <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
-                    <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"</td>
-                    <td once-text="subject.aggregatedProfile.bpDiastolic"</td>
-                    <td once-text="subject.aggregatedProfile.hba1c"</td>
-                    <td><a once-href="'#/inloggad/patient/' + subject.socialNumber" class="Button Button--info Button--small">Visa</a></td>
-                </tr>
-            </tbody>
-        </table>
 
          <pre>
             <!-- {{  model  | json  }} -->
-            {{  activeFilters  | json  }}
-            {{  model.filteredSubjects  | json  }}
+            <!-- {{  activeFilters  | json  }} -->
+            <!-- {{  model.filteredSubjects  | json  }} -->
         </pre>
     </div>
 </div>
