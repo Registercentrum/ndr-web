@@ -51,9 +51,8 @@ angular.module("ndrApp")
 
 
         $http({
-            method: 'POST',
-            url: "https://ndr.registercentrum.se/api/Subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13,
-            data : { socialNumber: $scope.subjectID }
+            method: 'GET',
+            url: "https://ndr.registercentrum.se/api/Subject/" + $scope.subjectID + "?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13
         })
         .success(function(data, status, headers, config) {
             console.log("Retrieved subject", data);
