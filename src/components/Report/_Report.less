@@ -1,0 +1,62 @@
+.Report-form {
+  counter-reset: report;
+}
+
+.Report-formGroup {
+  padding: 20px 0;
+  position: relative;
+  border-bottom: 1px solid #eee;
+  counter-reset: item;
+
+
+  &:before {
+    counter-increment: report; /* Increment the section counter*/
+//    content: counter(report);
+    position: absolute;
+    top: 20px;
+    left: 10px;
+  }
+
+  &:after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+
+  &:nth-child(2n+1) {
+    background-color: rgba(225, 210, 200, 0.3)
+  }
+}
+
+.Report-formGroup-form {
+  padding-bottom: 10px;
+}
+
+.Report-formGroup-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: normal;
+
+  &:before {
+    counter-increment: item; /* Increment the section counter*/
+    content:  counter(report) counter(item, lower-latin) ". ";
+  }
+}
+
+.Report-patientMeta {
+  margin-top: 5px;
+}
+
+.Report-submitWrapper {
+  padding: 10px 0;
+  text-align: right;
+}
+
+
+
+
+
+
+
+
+
