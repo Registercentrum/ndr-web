@@ -19,6 +19,19 @@
     clear: both;
     height: 0;
   }
+
+  .checkbox, .radio {
+    margin-right: 5px;
+  }
+
+  .form-inline input {
+    max-width: 45%;
+    box-sizing: border-box;
+  }
+
+  i {
+    cursor: pointer;
+  }
 }
 
 .MultiFilter-row--header {
@@ -26,16 +39,6 @@
   padding: 20px;
 }
 
-@media all and (min-width: 768px) {
-  .MultiFilter-row-label {
-    box-sizing: border-box;
-    width: 30%;
-    float: left;
-  }
-
-  .MultiFilter-row-filterKnobs {
-    box-sizing: border-box;
-    width: 70%;
-    float: right;
-  }
+.MultiFilter-row-filterKnobs {
+  position: relative;
 }

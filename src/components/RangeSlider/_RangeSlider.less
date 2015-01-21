@@ -1,0 +1,93 @@
+/**
+ * Angular JS slider directive
+ *
+ * (c) Rafal Zajac <rzajac@gmail.com>
+ * http://github.com/rzajac/angularjs-slider
+ *
+ * Licensed under the MIT license
+ */
+
+@handleActiveColor: #67b700;
+@handleHoverColor: #67b700;
+@labelTextColor: #67b700;
+@handleBgColor: #fff;
+@handleInnerColor: #71818e;
+@limitLabelTextColor: @labelTextColor;
+
+.RangeSlider {
+  display: inline-block;
+  position: relative;
+  height: 10px;
+  width: 100%;
+  margin: 25px 5px 25px 5px;
+  vertical-align: middle;
+
+  span {
+    white-space: nowrap;
+    position: absolute;
+    display: inline-block;
+  }
+  span.base {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+  span.bar {
+    // width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: @gray-lighter;
+    border-radius: 3px;
+  }
+  span.bar.selection {
+    width: 0%;
+    z-index: 1;
+    background: @ndr-blue;
+  }
+  span.pointer {
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    top: -8px;
+    background-color: @handleBgColor;
+    border: 1px solid @gray-light;
+    z-index: 2;
+    -webkit-border-radius: 1em/1em;
+    border-radius: 1em/1em;
+  }
+  span.pointer:before {
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border-right: 1px solid @handleInnerColor;
+  }
+  span.pointer:after {
+    content: '';
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    width: 5px;
+    height: 10px;
+    border-right: 1px solid @handleInnerColor;
+    border-left: 1px solid @handleInnerColor;
+  }
+  span.pointer:hover:before, span.pointer:hover:after,
+  span.pointer.active:before, span.pointer.active:after {
+    border-color: @ndr-blue;
+  }
+  span.bubble {
+    cursor: default;
+    top: -25px;
+    padding: 1px 3px 1px 3px;
+    font-size: 0.8em;
+  }
+  span.bubble.selection {
+    top: 15px;
+  }
+  span.bubble.limit {
+    color: @gray-light;
+  }
+}
