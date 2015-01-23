@@ -59,8 +59,8 @@ angular.module('ndrApp')
                            lineWidth: 0,
 
                             minorGridLineWidth: 0,
-                            min : 55,
-                            max : 80,
+                            min : 50,
+                            max : 60,
 
                             title: {
                                 text: '',

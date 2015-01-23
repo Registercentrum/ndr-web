@@ -22,6 +22,7 @@ angular.module("ndrApp")
 
             var series = [];
             var seriesBloodPressure = [];
+            var seriesCholesterol = [];
 
             _.each(contacts, function(obj, key){
 
@@ -35,8 +36,19 @@ angular.module("ndrApp")
                     y : obj.hba1c,
                 }
 
+                var oCholesterol = {
+                    x : new Date(obj.contactDate),
+                    y : obj.cholesterol,
+                }
+
+                if(oCholesterol.y)
+                    seriesCholesterol.push(oCholesterol)
+
+                if(oBloodPressure.y)
                 seriesBloodPressure.push(oBloodPressure)
-                series.push(o)
+
+                if(o.y)
+                    series.push(o)
 
             })
 
@@ -46,6 +58,7 @@ angular.module("ndrApp")
 
             $scope.model.data.lineChartHba1c = series;
             $scope.model.data.lineChartBloodPressure = seriesBloodPressure;
+            $scope.model.data.lineChartCholesterol = seriesCholesterol;
 
         }
 

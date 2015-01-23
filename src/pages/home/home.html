@@ -34,7 +34,84 @@
     <div class="col-md-4">
       <div class="Panel Intro--equalHeights">
         <h3 class="Panel-title">Nyheter</h3>
-        <div list model="model.listModelNews"></div>
+        <!--<div list model="model.listModelNews"></div>-->
+
+        <ul class="List">
+
+
+          <li class="List-item ng-scope">
+
+          <div class="List-item-inner">
+
+
+            <h3 class="List-item-title">
+              <a href="#/nyheter/8" class="List-item-link ng-binding">Så blev Sverige bäst i EU på diabetesvård</a>
+            </h3>
+
+          </div>
+
+        </li>
+          <li class="List-item ng-scope">
+
+          <div class="List-item-inner">
+
+            <h3 class="List-item-title">
+              <a href="#/nyheter/1" class="List-item-link ng-binding">NDR lanserar ny hemsida</a>
+            </h3>
+
+          </div>
+
+        </li>
+          <li class="List-item ng-scope">
+
+          <div class="List-item-inner">
+
+            <p class="List-item-category ng-binding"> </p>
+
+            <h3 class="List-item-title">
+              <a href="#/nyheter/2" class="List-item-link ng-binding">Hur är diabetesvården på din vårdcentral? Kolla själv. Nu är data öppna.</a>
+            </h3>
+
+          </div>
+
+
+        </li><!-- end ngRepeat: item in model.data -->
+
+          <li class="List-item ng-scope">
+
+            <div class="List-item-inner">
+
+              <p class="List-item-category ng-binding">Forskning </p>
+
+              <h3 class="List-item-title">
+                <a href="#/nyheter/2" class="List-item-link ng-binding">Många fler unga har typ 1-diabetes än vad som tidigare beräknats</a>
+              </h3>
+
+            </div>
+
+
+          </li><!-- end ngRepeat: item in model.data -->
+          <li class="List-item ng-scope">
+
+            <div class="List-item-inner">
+
+              <p class="List-item-category ng-binding">Forskning </p>
+
+              <h3 class="List-item-title">
+                <a href="#/nyheter/2" class="List-item-link ng-binding">Ökad dödlighet vid diabetes även vid välreglerat blodsocker</a>
+              </h3>
+
+            </div>
+
+
+          </li><!-- end ngRepeat: item in model.data -->
+
+
+
+
+
+        </ul>
+
         <div class="List-readmore">
           <a href="#/nyheter" class="Button Button--default Button--large Button--centered Button--centered--80">Se alla nyheter</a>
         </div>
@@ -106,19 +183,19 @@
             link: 'http://diabetolognytt.se'
           },
           {
-            title: 'Tidningen Diabetesnålen',
-            link: 'http://diabetesnalen.se'
-
-<!--
-            Svensk Förening för Diabetelogi (SFD): http://diabetolognytt.se/
-Svensk Förening för Sjuksköterskor i Diabetesvård (SFSD): http://www.swenurse.se/diabetesnurse/
-Svenska Diabetesförbundet: http://www.diabetes.se/
-SWEDIABKIDS (Barndiabetesregistret): https://swediabkids.ndr.nu/
-Nationella Diabetesregistrets riskmotorer: www.ndr.nu/risk
-Nationella Diabetesregistrets utdataverktyg ”Knappen”: www.ndr.nu/knappen-->
-
-
+            title: 'SFSD',
+            link: 'http://www.swenurse.se/diabetesnurse/'
+          },
+          {
+            title: 'Svenska Diabetesförbundet',
+            link: 'http://www.diabetes.se'
+          },
+          {
+            title: 'SWEDIABKIDS (Barndiabetesregistret)',
+            link: 'http://swediabkids.ndr.nu/'
           }
+
+
         ]}"></div>
 
       </div>

@@ -53,41 +53,56 @@
 
                     <div class="InfoGrid-cell InfoGrid-wrapper--width70 InfoGrid-equalHeightsGroup1">
                         <div class="InfoGrid-cell-inner">
-                            [ INFOGRID CELL: PERSON ]
+
                             <b>{{ subject.socialNumber }}</b>
                             <br>
-                            {{ "Kvinna, " + calculateAge(subject.dateOfBirth) }} år gammal
+                            {{ "Man, " + calculateAge(subject.dateOfBirth) }} år gammal
+                            <br/>
+                            Typ: {{ subject.diabetesType.text }}
+                            <br/>
+                            Debutår: {{ subject.yearOfOnset }}
                         </div>
                     </div>
 
                     <div class="InfoGrid-wrapper--width30 InfoGrid-equalHeightsGroup1 InfoGrid-cellGroup">
-                        <div class="InfoGrid-cell">Typ: {{ subject.diabetesType.text }}</div>
-                        <div class="InfoGrid-cell">Debutår: {{ subject.yearOfOnset }} </div>
+                        <div class="InfoGrid-cell"></div>
+                        <div class="InfoGrid-cell"> </div>
                     </div>
                 </div>
 
                 <div class="InfoGrid-cellWrapper">
                     <div class="InfoGrid-cell InfoGrid-equalHeightsGroup2 InfoGrid-wrapper--width70">
                         <div class="InfoGrid-cell-inner">
+                            <h4>HbA1c trend</h4>
                             <div class="" line-chart-patient-hba1c model="model.data.lineChartHba1c"></div>
-                            [ INFOGRID CELL: BLOOD SUGAR LEVELS ]
+
                         </div>
                     </div>
 
                     <div class="InfoGrid-equalHeightsGroup2 InfoGrid-wrapper--width30 InfoGrid-cellGroup">
-                        <div class="InfoGrid-cell">[ INFOGRID CELL: BLOOD PRESSURE ]</div>
-                        <div class="InfoGrid-cell">[ INFOGRID CELL: EXERCISE ]</div>
+                        <div class="InfoGrid-cell"><!--[ INFOGRID CELL: BLOOD PRESSURE ]--></div>
+                        <div class="InfoGrid-cell"><!--[ INFOGRID CELL: EXERCISE ]--></div>
                     </div>
                 </div>
 
                 <div class="InfoGrid-cellWrapper">
                     <div class="InfoGrid-cell InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width70">
                         <div class="InfoGrid-cell-inner">
-                            [ INFOGRID CELL: BMI ]
+                                <div class="text-center pull-left" style="width:200px">
+                                    <h2>22,5</h2>
+                                    <h4>BMI</h4>
+                                </div>
+
+                            <div class="text-center pull-left" style="width:200px">
+                                <h2>78 kg</h2>
+                                <h4>Vikt</h4>
+                            </div>
+
+
                         </div>
                     </div>
                     <div class="InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width30 InfoGrid-cellGroup">
-                        <div class="InfoGrid-cell">[ INFOGRID CELL: {{ "67 kg" }} ]</div>
+                        <div class="InfoGrid-cell"><!--[ INFOGRID CELL: {{ "67 kg" }} ]--></div>
                     </div>
                 </div>
 
@@ -96,7 +111,7 @@
 
             <div class="InfoGrid-cell InfoGrid-equalHeightsGroup4 InfoGrid-wrapper--width30">
                 <div class="InfoGrid-cell-inner">
-                    {{ "175 cm" }}
+                   <h4>Fysisk aktivetet m.m.</h4>
                 </div>
             </div>
 
@@ -154,7 +169,8 @@
 
         <div class="Panel Panel--purple u-equalHeight">
             <h4>Kolesterol</h4>
-            <div column-chart=""></div>
+            <div class="" line-chart-patient-hba1c model="model.data.lineChartCholesterol"></div>
+
 
 
         </div>
@@ -170,8 +186,8 @@
             <h4><img src="images/grunticon/png/icon_kidney.png" style="width:20px;margin-right: 10px" alt=""/> Njurar</h4>
 
             <table class="table">
-                <tr><td>Undersökning</td><td>{{  }}</td></tr>
-                <tr><td>Något annat</td><td>{{ }}</td></tr>
+                <tr><td>Platshållare</td><td>{{  }}</td></tr>
+                <tr><td>Platshållare</td><td>{{ }}</td></tr>
             </table>
 
 
@@ -182,8 +198,8 @@
         <div class="Panel u-equalHeight">
             <h4><img src="images/grunticon/png/icon_eye.png" style="width:25px;margin-right: 10px" alt=""/>Ögon</h4>
             <table class="table">
-                <tr><td>Undersökning</td><td>{{  }}</td></tr>
-                <tr><td>Något annat</td><td>{{ }}</td></tr>
+                <tr><td>Synnedsättning pga diabetes</td><td>{{  }}</td></tr>
+                <tr><td>Datum för senaste ögonbottenundersökning</td><td>{{ }}</td></tr>
             </table>
         </div>
     </div>
@@ -192,8 +208,8 @@
         <div class="Panel u-equalHeight">
             <h4><img src="images/grunticon/png/icon_foot.png" style="width:15px;margin-right: 10px" alt=""/>Fötter</h4>
             <table class="table">
-                <tr><td>Fotundersökning</td><td>{{  }}</td></tr>
-                <tr><td>Något annat</td><td>{{ }}</td></tr>
+                <tr><td>Datum för senaste fotundersökning</td><td>{{  }}</td></tr>
+                <tr><td>Riskkategori</td><td>{{ }}</td></tr>
             </table>
 
 
@@ -207,11 +223,14 @@
 
 
 <div class="Panel">
+    <h2>Tabell - samtliga besök</h2>
+</div>
 
-    <h2>Model</h2>
-     <pre>
+<div class="Panel">
+    <!--<h2>Model</h2>
+    &lt;!&ndash; <pre>
         {{ model.data | json }}
-    </pre>
+    </pre>&ndash;&gt;
 
     <h2>Patient data </h2>
                 <pre>
@@ -232,6 +251,6 @@
         {{  accountModel | json  }}
         </pre>
 
-    </div>
+    </div>-->
 </div>
 

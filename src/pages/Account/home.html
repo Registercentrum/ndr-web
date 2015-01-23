@@ -9,7 +9,10 @@
             <div class="col-md-12">
 
                 <div class="Panel">
-                    <h3>Nyckelindikatorer för din enhet</h3>
+
+                    <div key-indicators id="13" geo="'unit'"></div>
+
+
                 </div>
             </div>
         </div>
@@ -28,13 +31,13 @@
 
             <p>Här kommer det info som berör dig/ditt konto</p>
 
-            <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
+           <!-- <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
 
             <pre>
 
                 {{ serverError }}
                 {{ accountModel | json  }}
-            </pre>
+            </pre>-->
 
         </div>
 
@@ -44,10 +47,13 @@
 
         <div class="Panel Panel--blue">
 
-            <p>Genvägar</p>
+            <h3>Genvägar</h3>
 
             <p>
-                Meddelanden etc.
+                Rapportera
+            </p>
+            <p>
+                Patientprofil
             </p>
 
         </div>
