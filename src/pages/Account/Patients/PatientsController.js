@@ -1,8 +1,10 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope, $http, $stateParams, $state, $log, $filter, DTOptionsBuilder, DTColumnDefBuilder) {
+        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        function ($scope, $http, $stateParams, $state, $log, $filter, dataService, DTOptionsBuilder, DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
+
+            var contactAttributeIDs = [107, 109, 110, 115, 121];
 
             /* Date picker options */
             $scope.format = 'dd MMM yyyy';
@@ -126,17 +128,29 @@ angular.module('ndrApp')
             });
 
 
-            // Filters, copied from the API, augmented with display texts
-            $scope.additionalFilters = {"diagnosisWorseSeeingEye": { "options": [{"id":2,"text":"Simplex retinopati"},{"id":3,"text":"PPDR"},{"id":4,"text":"KSM"},{"id":5,"text":"PDR"}], "text": "Diagnos på sämsta ögat"},"treatment": { "options": [{"id":1,"text":"Enbart kost"},{"id":2,"text":"Tabletter"},{"id":3,"text":"Insulin"},{"id":4,"text":"Tabl. och insulin"},{"id":5,"text":"Okänd"},{"id":6,"text":"Injektion (GLP-1 analog)"},{"id":8,"text":"Inj. GLP-1 + tabletter"},{"id":9,"text":"Inj. GLP-1 + insulin"},{"id":10,"text":"Inj. GLP-1 + tabl och insulin"}], "text": "Behandling"},"insulinMethod": { "options": [{"id":1,"text":"Injektion"},{"id":2,"text":"Insulinpump"}], "text": "Insulin Method"},"pump": { "options": [{"id":1,"text":"AccuChek Combo"},{"id":2,"text":"AccuChek D-Tron"},{"id":3,"text":"AccuChek Spirit"},{"id":4,"text":"Animas 1200"},{"id":5,"text":"Animas 2010"},{"id":6,"text":"Animas 2012"},{"id":7,"text":"Animas 2020"},{"id":8,"text":"Animas Vibe"},{"id":9,"text":"Cozmo"},{"id":10,"text":"Dana R"},{"id":11,"text":"Dana IIS"},{"id":12,"text":"Minimed 504"},{"id":13,"text":"Minimed 508"},{"id":14,"text":"Omnipod"},{"id":15,"text":"Paradigm 511"},{"id":16,"text":"Paradigm 512"},{"id":17,"text":"Paradigm 515"},{"id":18,"text":"Paradigm 522"},{"id":19,"text":"Paradigm 523"},{"id":20,"text":"Paradigm VEO 554"},{"id":21,"text":"Paradigm 712"},{"id":22,"text":"Paradigm 722"},{"id":23,"text":"Paradigm VEO 754"},{"id":24,"text":"Paradigm VEO (Använd alt ovan)"},{"id":25,"text":"Paradigm 715"}], "text": "Pump"},"pumpIndication": { "options": [{"id":1,"text":"Glukossvängningar"},{"id":2,"text":"Högt HbA1c (ej inom patientens målområde)"},{"id":3,"text":"Frekventa hypoglykemier"},{"id":4,"text":"Fysisk aktivitet"},{"id":5,"text":"Gryningsfenomen"},{"id":6,"text":"”unawareness”"},{"id":7,"text":"Patientens önskemål"},{"id":8,"text":"Förenklad glukosbehandling (barnklinik)"}], "text": "Pump Indication"},"pumpClosureReason": { "options": [{"id":1,"text":"Bristande följsamhet/handhavande"},{"id":2,"text":"Patientens Önskemål"}], "text": "Pump Closure Reason"},"sex": { "options": [{"id":1,"text":"Man"},{"id":2,"text":"Kvinna"}], "text": "Kön"},"physicalActivity": { "options": [{"id":1,"text":"Aldrig    "},{"id":2,"text":"<1 ggr/vecka"},{"id":3,"text":"Regelbundet 1-2 ggr/vecka"},{"id":4,"text":"Regelbundet 3-5 ggr/vecka"},{"id":5,"text":"Dagligen"}], "text": "Physical Activity"},"hypoglycemiaSevere": { "options": [{"id":1,"text":"Ingen"},{"id":2,"text":"1-2"},{"id":3,"text":"3-5"},{"id":4,"text":">5"}], "text": "Hypoglycemia Severe"},"microscopicProteinuria": { "options": [{"id":1,"text":"Ja"},{"id":0,"text":"Nej"},{"id":2,"text":"Normaliserat värde"}], "text": "Microscopic Proteinuria"},"waran": { "options": [{"id":1,"text":"Ja"},{"id":0,"text":"Nej"}], "text": "Waran"},"footRiscCategory": { "options": [{"id":1,"text":"Frisk fot"},{"id":2,"text":"Neuropati, angiopati"},{"id":3,"text":"Tidigare diabetssår"},{"id":4,"text":"Pågående allvarlig fotsjukdom"}], "text": "Foot Risc Category"},"smokingHabit": { "options": [{"id":1,"text":"Aldrig varit rökare"},{"id":2,"text":"Röker dagligen"},{"id":3,"text":"Röker, men ej dagligen"},{"id":4,"text":"Slutat röka"}], "text": "Smoking Habit"}};
-            // Get filter types with ids
-            $scope.additionalFilterTypes = _.map($scope.additionalFilters, function (filter, index) { return {text: filter.text, id: index }; });
+            $scope.additionalFilters = [];
+            dataService.getContactAttributes(contactAttributeIDs)
+                .then(function (data) {
+                    $scope.additionalFilters = data;
+                    _.each(data, function (filter, index) {
+                        $scope.selectedFilters.additional[filter.contactAttributeID] = {};
+                        // Setup min and max for range slider
+                        if (filter.minValue !== null && filter.maxValue !== null) {
+                            $scope.selectedFilters.additional[filter.contactAttributeID].min = filter.minValue;
+                            $scope.selectedFilters.additional[filter.contactAttributeID].max = filter.maxValue;
+                            $scope.selectedFilters.additional[filter.contactAttributeID].range = [filter.minValue, filter.maxValue];
+                        }
+                    });
+                    console.log($scope.selectedFilters.additional);
+                });
 
             $scope.selectedAdditionalFilter = null;
             $scope.selectedAdditionalFilters = {};
 
             $scope.$watch('selectedAdditionalFilter', function (newVal, oldVal) {
                 if (newVal !== null) {
-                    $scope.selectedAdditionalFilters[newVal] = $scope.additionalFilters[newVal];
+                    var filter = _.find($scope.additionalFilters, {contactAttributeID: newVal});
+                    $scope.selectedAdditionalFilters[newVal] = filter;
                     $scope.selectedAdditionalFilter = null;
                 }
             });
@@ -175,11 +189,6 @@ angular.module('ndrApp')
                 hbMax        : 200,
                 additional   : {}
             };
-
-            _.each($scope.additionalFilterTypes, function (filter, index) {
-                console.log(index);
-                $scope.selectedFilters.additional[filter.id] = {};
-            });
 
             $scope.model = {
                 allSubjects     : undefined,
@@ -227,16 +236,29 @@ angular.module('ndrApp')
                 _.each(selectedFilters.additional, function (filter, prop, list) {
                     subjects = _.filter(subjects, function (subject) {
                         var value;
+
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
-                            return subject[prop] === null || subject.aggregatedProfile[prop] === null;
+                            return _.isNull(subject[prop]) || _.isNull(subject.aggregatedProfile[prop]);
+
+                        // Handle range filtering
+                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max) && (filter.min > filter.range[0] || filter.max < filter.range[1])) {
+
+                            // prop may sit directly on the subject (sex) or on aggregatedProfile
+                            // also, it can have 'code' or 'id' as the prop name, so check for both
+                            return (_.isNumber(subject[prop]) && (subject[prop] > filter.min && subject[prop] < max)) ||
+                                (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] > min && subject.aggregatedProfile[prop] < max));
+
+                        // Handle value filtering
                         } else if (filter.value !== null && typeof filter.value !== 'undefined') {
                             value = parseInt(filter.value, 10);
                             // prop may sit directly on the subject (sex) or on aggregatedProfile
                             // also, it can have 'code' or 'id' as the prop name, so check for both
                             return (subject[prop] && (subject[prop].id === value || subject[prop].code === value)) ||
                                 (subject.aggregatedProfile[prop] && (subject.aggregatedProfile[prop].id === value || subject.aggregatedProfile[prop].code === value));
+
+                        // Nothing to filter
                         } else {
                             return true;
                         }

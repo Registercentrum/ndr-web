@@ -30,9 +30,23 @@ angular.module('ndrApp')
             indicatorresult         :    Restangular.one('indicatorresult'),
             indicator               :    Restangular.one('indicator'),
             researchproject         :    Restangular.all('researchproject'),
+            contactAttributes       :    Restangular.one('ContactAttribute')
             //contact                 :    Resta
         }
 
+        this.getContactAttributes = function (ids) {
+            return endpoints.contactAttributes.get()
+                .then(function (data) {
+                    if (ids) {
+                        return _.filter(data, (function (d) { return _.indexOf(ids, d.contactAttributeID) !== -1; }));
+                    } else {
+                        return _.filter(data, (function (d) { return _.indexOf(d, 'contactAttributeID'); }));
+                    }
+                })
+                .catch(function (error) {
+                    return error;
+                });
+        }
 
         /* METHODS - returns promises */
         this.getList = function (type){

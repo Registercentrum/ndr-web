@@ -109,32 +109,44 @@
             <!-- Additional filtering -->
             <div class="MultiFilter-row" ng-repeat="(key, filter) in selectedAdditionalFilters">
                 <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">{{ filter.text }}</div>
+                    <div class="MultiFilter-row-label col-sm-3">{{ filter.question }}</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
 
-                        <!-- If there are more than two options, display them as a select -->
-                        <select
-                                ng-if="filter.options.length > 2"
-                                ng-options="option.id as option.text for option in filter.options"
-                                ng-model="selectedFilters.additional[key].value"
-                                ng-disabled="selectedFilters.additional[key].undef"
-                                class="form-control pull-left">
-                            <option value="">Välj {{ filter.text }}</option>
-                        </select>
+                        <!-- If there are min and max values, display as range slider -->
+                        <div
+                            slider
+                            ng-if="filter.minValue !== null && filter.maxValue !== null"
+                            ng-model="selectedFilters.additional[key].min"
+                            ng-model-range="selectedFilters.additional[key].max"
+                            ng-disabled="selectedFilters.additional[key].undef"
+                            floor="{{filter.minValue}}"
+                            ceiling="{{filter.maxValue}}"
+                            class="RangeSlider">
+                        </div>
 
-                        <!-- If there are just two options, display them as radio buttons -->
-                        <div class="form-inline" ng-if="filter.options.length === 2">
-                            <span class="radio" ng-repeat="option in filter.options">
+                        <!-- If domain is enumerable and there are just two options, display them as radio buttons -->
+                        <div class="form-inline" ng-if="filter.domain.isEnumerated && filter.domain.domainValues.length === 2">
+                            <span class="radio" ng-repeat="option in filter.domain.domainValues">
                                 <label>
                                     <input
-                                            type="radio"
-                                            ng-model="selectedFilters.additional[key].value"
-                                            ng-disabled="selectedFilters.additional[key].undef"
-                                            value="{{ option.id }}">
+                                        type="radio"
+                                        ng-model="selectedFilters.additional[key].value"
+                                        ng-disabled="selectedFilters.additional[key].undef"
+                                        value="{{ option.code }}">
                                     {{ option.text }}
                                 </label>
                             </span>
                         </div>
+
+                        <!-- If domain is enumerable and have more than two options, display them as a select -->
+                        <select
+                            ng-if="filter.domain.isEnumerated && filter.domain.domainValues.length > 2"
+                            ng-options="option.code as option.text for option in filter.domain.domainValues"
+                            ng-model="selectedFilters.additional[key].value"
+                            ng-disabled="selectedFilters.additional[key].undef"
+                            class="form-control pull-left">
+                            <option value="">Välj {{ filter.question }}</option>
+                        </select>
 
                     </div>
                     <div class="col-sm-3 form-inline">
@@ -148,7 +160,7 @@
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Valbar</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select ng-options="filter.id as filter.text for filter in additionalFilterTypes" ng-model="selectedAdditionalFilter" name="" id="" class="form-control">
+                        <select ng-options="filter.contactAttributeID as filter.question for filter in additionalFilters" ng-model="selectedAdditionalFilter" name="" id="" class="form-control">
                             <option value="">Välj filter</option>
                         </select>
                     </div>
