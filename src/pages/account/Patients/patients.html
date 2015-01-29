@@ -1,8 +1,21 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-5">
         <h1 class="Page-title">Söklista</h1>
         <p>Välj besöksperiod och andra sökkriterier.</p>
-
+    </div>
+    <form class="col-md-7 pull-right" role="search" name="subjectForm" novalidate>
+      <div class="PatientSearch">
+        <div class="PatientSearch-inner">
+              <span class="PatientSearch-icon">
+                <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
+              </span>
+          <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
+                 ng-pattern="pnrRegex">
+          <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button><button class="PatientSearch-reportButton">Rapportera</button>
+        </div>
+      </div>
+    </form>
+  <div class="col-md-12">
         <div class="MultiFilter">
             <div class="MultiFilter-row MultiFilter-row--header">
                 <div class="row">

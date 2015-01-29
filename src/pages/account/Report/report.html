@@ -1,53 +1,20 @@
 <div class="row Report">
-  <div class="col-md-12">
+  <div class="col-md-5">
     <h1 class="Page-title">Rapportera</h1>
-
-
-    <script type="text/ng-template" id="myModalContent.html">
-       <!-- <div class="modal-header">
-            &lt;!&ndash;<h3 class="modal-title">I'm a modal!</h3>&ndash;&gt;
-      </div> -->
-      <div class="modal-body text-center">
-        <a class="pull-right" ng-click="cancel()"><i style="color:#333" class="fa fa-close"></i></a>
-
-        <h3>Sparat</h3>
-        <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
-
-        <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="cancel()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
-        <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Rapportera för en annan patient</a>
-      </div>
-      <!--  <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>-->
-    </script>
-
-
-    <div class="Panel">
-
-      <form class="" role="search" name="subjectForm" novalidate>
-        <div class="PatientSearch">
-          <span class="PatientSearch-icon">
-            <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
-          </span>
-          <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-                 ng-pattern="pnrRegex">
-          <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
-        </div>
-      </form>
-
-
-     <!--   <form class="navbar-form navbar-left" role="search" name="subjectForm" novalidate>
-            <div class="input-group">
-                <span class="input-group-addon" >Personnummer</span>
-                <input type="text" class="form-control" ng-model="socialnumber" placeholder="skriv in personnummer"  required
-                       ng-pattern="pnrRegex" />
-            </div>
-            <button class="btn btn-primary" style="width: 120px;" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
-        </form>-->
-
-    </div>
   </div>
+
+  <form class="col-md-7" role="search" name="subjectForm" novalidate>
+    <div class="PatientSearch">
+      <div class="PatientSearch-inner">
+            <span class="PatientSearch-icon">
+              <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
+            </span>
+        <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
+               ng-pattern="pnrRegex">
+        <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button><button class="PatientSearch-reportButton">Rapportera</button>
+      </div>
+    </div>
+  </form>
 
 </div>
 
@@ -833,4 +800,21 @@
 
 </div>
 
+<script type="text/ng-template" id="myModalContent.html">
+  <!-- <div class="modal-header">
+       &lt;!&ndash;<h3 class="modal-title">I'm a modal!</h3>&ndash;&gt;
+ </div> -->
+  <div class="modal-body text-center">
+    <a class="pull-right" ng-click="cancel()"><i style="color:#333" class="fa fa-close"></i></a>
 
+    <h3>Sparat</h3>
+    <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
+
+    <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="cancel()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
+    <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Rapportera för en annan patient</a>
+  </div>
+  <!--  <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>-->
+</script>
