@@ -61,7 +61,7 @@
       </div>
 
       <div class="col-md-6">
-        <form id="contactSelect" class="form-horizontal pull-left" role="form" >
+        <form id="contactSelect" class="PatientHeader-showVisit form-horizontal pull-left" role="form" >
           <select style="width:220px" ng-model="contactToUpdate" class="form-control" ng-change="setContact(contactToUpdate)" ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts">
               <option value="">Visa/komplettera besök</option>
           </select>
@@ -124,7 +124,7 @@
                              ng-model-options="{ updateOn: 'Blur' }"
                              ng-class="{ 'has-no-error' : !contactForm.contactDate.$invalid && contactModel.contactDate != null}"
                              required placeholder="ÅÅÅÅ-MM-DD" />
-                      <p class="help-block" ng-show="contactForm.contactDate.$error.checkDate">Det finns redan ett besök på detta datum! Uppdatera detta besök eller välj ett nytt datum.</p>
+                      <p class="Report-formItemHelp help-block" ng-show="contactForm.contactDate.$error.checkDate">Det finns redan ett besök på detta datum! Uppdatera detta besök eller välj ett nytt datum.</p>
                     </div>
                   </div>
                 </div>
@@ -138,7 +138,7 @@
                          ng-model="contactModel.yearOfOnset"
                          ng-class="{ 'has-no-error' : contactModel.yearOfOnset != null}"
                          placeholder="Debutår">
-                  <p ng-show="contactForm.yearOfOnset.$pristine && contactModel.yearOfOnset != null && contactModel.yearOfOnset == subject.yearOfOnset && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.yearOfOnset.$pristine && contactModel.yearOfOnset != null && contactModel.yearOfOnset == subject.yearOfOnset && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
 
                 </div>
               </div>
@@ -155,7 +155,7 @@
                           ng-options="type.id as type.text for type in lists.diabetesTypes" >
                     <option value="">-- välj diabetestyp --</option>
                   </select>
-                  <p ng-show="contactForm.diabetesTypeID.$pristine && subject.diabetesType != null && contactModel.diabetesTypeID != null && contactModel.diabetesTypeID == subject.diabetesType.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.diabetesTypeID.$pristine && subject.diabetesType != null && contactModel.diabetesTypeID != null && contactModel.diabetesTypeID == subject.diabetesType.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                 </div>
               </div>
 
@@ -164,14 +164,14 @@
                 <div class="col-md-12">
                   <div class="Report-formGroup-form ">
                     <label class="Report-formGroup-label" for="treatmentID" class="">Diabetesbehandling</label>
-                    <p ng-show="contactForm.treatmentID.$pristine && contactModel.treatmentID == contactModel.treatmentID && contactToUpdate == null" class="help-block iteration"></p>
+                    <p ng-show="contactForm.treatmentID.$pristine && contactModel.treatmentID == contactModel.treatmentID && contactToUpdate == null" class="Report-formItemHelp help-block iteration"></p>
                     <select name="treatmentID" class="form-control"
                             ng-model="contactModel.treatmentID"
                             ng-class="{ 'has-no-error' : contactModel.treatmentID != null}"
                             ng-options="type.id as type.text for type in lists.treatments" >
                       <option value="">-- välj behandling --</option>
                     </select>
-                    <p ng-show="contactForm.treatmentID.$pristine && contactModel.treatmentID != null && contactModel.treatmentID == lastContact.treatment.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                    <p ng-show="contactForm.treatmentID.$pristine && contactModel.treatmentID != null && contactModel.treatmentID == lastContact.treatment.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div><!-- end Report-formGroup-form -->
                 </div>
 
@@ -186,7 +186,7 @@
                                 ng-options="type.id as type.text for type in lists.insulinMethods" >
                           <option value="">-- välj metod att ge insulin --</option>
                         </select>
-                        <p ng-show="contactForm.insulinMethodID.$pristine && contactModel.insulinMethodID != null && contactModel.insulinMethodID == lastContact.insulinMethod.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                        <p ng-show="contactForm.insulinMethodID.$pristine && contactModel.insulinMethodID != null && contactModel.insulinMethodID == lastContact.insulinMethod.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                       </div><!-- end Report-formGroup-form -->
                     </div>
 
@@ -200,7 +200,7 @@
                                   ng-options="type.id as type.text for type in lists.pumpIndications" >
                             <option value="">-- välj pumpindikation --</option>
                           </select>
-                          <p ng-show="contactForm.pumpIndicationID.$pristine && contactModel.pumpIndicationID != null && contactModel.pumpIndicationID == lastContact.pumpIndication.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                          <p ng-show="contactForm.pumpIndicationID.$pristine && contactModel.pumpIndicationID != null && contactModel.pumpIndicationID == lastContact.pumpIndication.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                         </div><!-- end Report-formGroup-form -->
                       </div>
                       <br><br>
@@ -214,7 +214,7 @@
                                   ng-options="type.id as type.text for type in lists.pumps" >
                             <option value="">-- välj pumpmodell --</option>
                           </select>
-                          <p ng-show="contactForm.pumpOngoingID.$pristine && contactModel.pumpOngoingID != null && contactModel.pumpOngoingID == lastContact.pumpOngoing.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                          <p ng-show="contactForm.pumpOngoingID.$pristine && contactModel.pumpOngoingID != null && contactModel.pumpOngoingID == lastContact.pumpOngoing.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                         </div>
                       </div>
 
@@ -226,7 +226,7 @@
                                    ng-model="contactModel.pumpOngoingSerial"
                                    ng-class="{ 'has-no-error' : contactModel.pumpOngoingSerial != null}"
                                    ng-model-options="{ updateOn: 'blur' }">
-                            <p ng-show="contactForm.pumpOngoingSerial.$pristine && contactModel.pumpOngoingSerial != null && contactModel.pumpOngoingSerial == lastContact.pumpOngoingSerial && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                            <p ng-show="contactForm.pumpOngoingSerial.$pristine && contactModel.pumpOngoingSerial != null && contactModel.pumpOngoingSerial == lastContact.pumpOngoingSerial && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                           </div>
                         </div><!-- end Report-formGroup-form -->
                       </div>
@@ -305,7 +305,7 @@
                               ng-options="type.id as type.text for type in lists.pumpClosureReasons" >
                         <option value="">-- välj alternativ --</option>
                       </select>
-                      <p ng-show="contactForm.pumpClosureReasonID.$pristine && contactModel.pumpClosureReasonID != null && contactModel.pumpClosureReasonID == lastContact.pumpClosureReason.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.pumpClosureReasonID.$pristine && contactModel.pumpClosureReasonID != null && contactModel.pumpClosureReasonID == lastContact.pumpClosureReason.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                     </div>
                   </div><!-- end Report-formGroup-form -->
                 </div>
@@ -323,7 +323,7 @@
                                ng-Debounce="500"
                                ng-model="contactModel.hba1c"
                                ng-class="{ 'has-no-error' : !contactForm.hba1c.$invalid && contactModel.hba1c != null}">
-                        <p ng-show="contactForm.hba1c.$error.min || contactForm.hba1c.$error.max" class="help-block">HbA1c kan anta ett värde mellan 21 och 177.</p>
+                        <p ng-show="contactForm.hba1c.$error.min || contactForm.hba1c.$error.max" class="Report-formItemHelp help-block">HbA1c kan anta ett värde mellan 21 och 177.</p>
                     </div>
                   </div>
               </div>
@@ -339,7 +339,7 @@
                            ng-class="{ 'has-no-error' : !contactForm.weight.$invalid && contactModel.weight != null}"
                            ng-change="tryCalculateBMI()"
                            ng-model-options="{ updateOn: 'blur' }">
-                    <p ng-show="contactForm.weight.$error.min || contactForm.weight.$error.max" class="help-block">Vikt kan anta ett värde mellan 1 och 350.</p>
+                    <p ng-show="contactForm.weight.$error.min || contactForm.weight.$error.max" class="Report-formItemHelp help-block">Vikt kan anta ett värde mellan 1 och 350.</p>
                   </div>
                   </div>
 
@@ -352,8 +352,8 @@
                            ng-change="tryCalculateBMI()"
                            ng-class="{ 'has-no-error' : !contactForm.height.$invalid && contactModel.height != null}"
                            ng-model-options="{ updateOn: 'blur' }">
-                    <p ng-show="contactForm.height.$error.min || contactForm.height.$error.max" class="help-block">Längd kan anta ett värde mellan 60 och 220.</p>
-                    <p ng-show="contactForm.height.$pristine && contactModel.height != null && contactModel.height == lastContact.height && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                    <p ng-show="contactForm.height.$error.min || contactForm.height.$error.max" class="Report-formItemHelp help-block">Längd kan anta ett värde mellan 60 och 220.</p>
+                    <p ng-show="contactForm.height.$pristine && contactModel.height != null && contactModel.height == lastContact.height && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
                   </div>
 
@@ -365,7 +365,7 @@
                            decimals="0"
                            ng-class="{ 'has-no-error' : !contactForm.waist.$invalid && contactModel.waist != null}"
                            ng-model-options="{ updateOn: 'blur' }">
-                    <p ng-show="contactForm.waist.$error.min || contactForm.waist.$error.max" class="help-block">Midjeomfång kan anta ett värde mellan 40 och 250.</p>
+                    <p ng-show="contactForm.waist.$error.min || contactForm.waist.$error.max" class="Report-formItemHelp help-block">Midjeomfång kan anta ett värde mellan 40 och 250.</p>
                   </div>
                   </div>
 
@@ -377,7 +377,7 @@
                            decimals="0"
                            ng-class="{ 'has-no-error' : !contactForm.bmi.$invalid && contactModel.bmi != null}"
                            ng-model-options="{ updateOn: 'blur' }">
-                    <p ng-show="contactForm.bmi.$error.min || contactForm.bmi.$error.max" class="help-block">BMI kan anta ett värde mellan 15 och 62.</p>
+                    <p ng-show="contactForm.bmi.$error.min || contactForm.bmi.$error.max" class="Report-formItemHelp help-block">BMI kan anta ett värde mellan 15 och 62.</p>
                   </div>
                   <!--<div class="col-md-3">
                       <button ng-click="calculateBMI()" class="btn btn-default btn-block" >Beräkna BMI</button>
@@ -397,7 +397,7 @@
                              decimals="0"
                              ng-class="{ 'has-no-error' : !contactForm.bpSystolic.$invalid && contactModel.bpSystolic != null}"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.bpSystolic.$error.min || contactForm.bpSystolic.$error.max" class="help-block">Systoliskt blodtryck kan anta ett värde mellan 50 och 250.</p>
+                      <p ng-show="contactForm.bpSystolic.$error.min || contactForm.bpSystolic.$error.max" class="Report-formItemHelp help-block">Systoliskt blodtryck kan anta ett värde mellan 50 och 250.</p>
                     </div>
                   </div><!-- end  Report-formGroup-form -->
                   </div>
@@ -410,7 +410,7 @@
                              decimals="0"
                              ng-class="{ 'has-no-error' : !contactForm.bpDiastolic.$invalid && contactModel.bpDiastolic != null}"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.bpDiastolic.$error.min || contactForm.bpDiastolic.$error.max" class="help-block">Diastoliskt blodtryck kan anta ett värde mellan 40 och 250.</p>
+                      <p ng-show="contactForm.bpDiastolic.$error.min || contactForm.bpDiastolic.$error.max" class="Report-formItemHelp help-block">Diastoliskt blodtryck kan anta ett värde mellan 40 och 250.</p>
                     </div>
                 </div><!-- end  Report-formGroup-form -->
                 </div><!-- end col-md-5 -->
@@ -427,7 +427,7 @@
                            ng-options="type.code as type.text for type in lists.yn" >
                     <option value="">-- Ja / Nej --</option>
                   </select>
-                  <p ng-show="contactForm.antihypertensivesCode.$pristine && contactModel.antihypertensivesCode != null && contactModel.antihypertensivesCode == lastContact.antihypertensives.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.antihypertensivesCode.$pristine && contactModel.antihypertensivesCode != null && contactModel.antihypertensivesCode == lastContact.antihypertensives.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                 </div>
               </div>
 
@@ -441,7 +441,7 @@
                           ng-options="type.code as type.text for type in lists.yn" >
                     <option value="">-- Ja / Nej --</option>
                   </select>
-                  <p ng-show="contactForm.lipidLoweringDrugsCode.$pristine && contactModel.lipidLoweringDrugsCode != null && contactModel.lipidLoweringDrugsCode == lastContact.lipidLoweringDrugs.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.lipidLoweringDrugsCode.$pristine && contactModel.lipidLoweringDrugsCode != null && contactModel.lipidLoweringDrugsCode == lastContact.lipidLoweringDrugs.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                 </div>
 
               </div>
@@ -473,7 +473,7 @@
                             ng-options="type.id as type.text for type in lists.smokingHabits" >
                         <option value="">-- välj rökvanor --</option>
                     </select>
-                    <p ng-show="contactForm.smokingHabitID.$pristine && contactModel.smokingHabitID != null && contactModel.smokingHabitID == lastContact.smokingHabit.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                    <p ng-show="contactForm.smokingHabitID.$pristine && contactModel.smokingHabitID != null && contactModel.smokingHabitID == lastContact.smokingHabit.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
 
                   <label class="Report-formGroup-label" for="smokingEndYear" class="">Slutat År</label>
                   <input type="number" min="1980" max="2015" class="form-control"
@@ -503,7 +503,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.aspirinCode.$pristine && contactModel.aspirinCode != null && contactModel.aspirinCode == lastContact.aspirin.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.aspirinCode.$pristine && contactModel.aspirinCode != null && contactModel.aspirinCode == lastContact.aspirin.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -514,7 +514,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.waranCode.$pristine && contactModel.waranCode != null && contactModel.waranCode == lastContact.waran.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.waranCode.$pristine && contactModel.waranCode != null && contactModel.waranCode == lastContact.waran.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -533,7 +533,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.macroscopicProteinuriaCode.$pristine && contactModel.macroscopicProteinuriaCode != null && contactModel.macroscopicProteinuriaCode == lastContact.macroscopicProteinuria.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.macroscopicProteinuriaCode.$pristine && contactModel.macroscopicProteinuriaCode != null && contactModel.macroscopicProteinuriaCode == lastContact.macroscopicProteinuria.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -544,7 +544,7 @@
                               ng-options="type.code as type.text for type in lists.ynMicroscopicProteinuria" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.microscopicProteinuriaCode.$pristine && contactModel.microscopicProteinuriaCode != null && contactModel.microscopicProteinuriaCode == lastContact.microscopicProteinuria.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.microscopicProteinuriaCode.$pristine && contactModel.microscopicProteinuriaCode != null && contactModel.microscopicProteinuriaCode == lastContact.microscopicProteinuria.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -563,7 +563,7 @@
                              ng-class="{ 'has-no-error' : !contactForm.serumCreatinine.$invalid && contactModel.serumCreatinine != null}"
                              ng-change="tryCalculateGFR()"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.serumCreatinine.$error.min || contactForm.serumCreatinine.$error.max" class="help-block">Kreatinin kan anta ett värde mellan 10 och 1500.</p>
+                      <p ng-show="contactForm.serumCreatinine.$error.min || contactForm.serumCreatinine.$error.max" class="Report-formItemHelp help-block">Kreatinin kan anta ett värde mellan 10 och 1500.</p>
                   </div>
 
                   <div class="col-md-5" ng-class="{ 'has-error' : contactForm.gfr.$invalid && !contactForm.gfr.$pristine }">
@@ -585,7 +585,7 @@
                              decimals="1"
                              ng-class="{ 'has-no-error' : !contactForm.cholesterol.$invalid && contactModel.cholesterol != null}"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.cholesterol.$error.min || contactForm.cholesterol.$error.max" class="help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
+                      <p ng-show="contactForm.cholesterol.$error.min || contactForm.cholesterol.$error.max" class="Report-formItemHelp help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
                   </div>
 
                   <div class="col-md-5" ng-class="{ 'has-error' : contactForm.triglyceride.$invalid && !contactForm.triglyceride.$pristine }">
@@ -595,7 +595,7 @@
                              decimals="1"
                              ng-class="{ 'has-no-error' : !contactForm.triglyceride.$invalid && contactModel.triglyceride != null}"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.triglyceride.$error.min || contactForm.triglyceride.$error.max" class="help-block">Triglycerider kan anta ett värde mellan 0,1 och 40.</p>
+                      <p ng-show="contactForm.triglyceride.$error.min || contactForm.triglyceride.$error.max" class="Report-formItemHelp help-block">Triglycerider kan anta ett värde mellan 0,1 och 40.</p>
                   </div>
 
               </div>
@@ -612,7 +612,7 @@
                              decimals="1"
                              ng-class="{ 'has-no-error' : !contactForm.hdl.$invalid && contactModel.hdl != null}"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.hdl.$error.min || contactForm.hdl.$error.max" class="help-block">HDL kan anta ett värde mellan 0,1 och 5.</p>
+                      <p ng-show="contactForm.hdl.$error.min || contactForm.hdl.$error.max" class="Report-formItemHelp help-block">HDL kan anta ett värde mellan 0,1 och 5.</p>
                   </div>
 
                   <div class="col-md-5" ng-class="{ 'has-error' : contactForm.ldl.$invalid && !contactForm.ldl.$pristine }">
@@ -622,7 +622,7 @@
                              decimals="1"
                              ng-class="{ 'has-no-error' : !contactForm.ldl.$invalid && contactModel.ldl != null}"
                              ng-model-options="{ updateOn: 'blur' }">
-                      <p ng-show="contactForm.ldl.$error.min || contactForm.ldl.$error.max" class="help-block">LDL kan anta ett värde mellan 0,5 och 10.</p>
+                      <p ng-show="contactForm.ldl.$error.min || contactForm.ldl.$error.max" class="Report-formItemHelp help-block">LDL kan anta ett värde mellan 0,5 och 10.</p>
                   </div>
                   <div class="col-md-10">
                     <div class="Report-submitWrapper">
@@ -647,7 +647,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.ischemicHeartDiseaseCode.$pristine && contactModel.ischemicHeartDiseaseCode != null && contactModel.ischemicHeartDiseaseCode == lastContact.ischemicHeartDisease.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.ischemicHeartDiseaseCode.$pristine && contactModel.ischemicHeartDiseaseCode != null && contactModel.ischemicHeartDiseaseCode == lastContact.ischemicHeartDisease.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -658,7 +658,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.cerebrovascularDiseaseCode.$pristine && contactModel.cerebrovascularDiseaseCode != null && contactModel.cerebrovascularDiseaseCode == lastContact.cerebrovascularDisease.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.cerebrovascularDiseaseCode.$pristine && contactModel.cerebrovascularDiseaseCode != null && contactModel.cerebrovascularDiseaseCode == lastContact.cerebrovascularDisease.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -678,7 +678,7 @@
                              ng-model="contactModel.fundusExaminationDate"
                              ng-class="{ 'has-no-error' : !contactForm.fundusExaminationDate.$invalid && contactModel.fundusExaminationDate != null}"
                              placeholder="Undersökningsdatum">
-                      <p ng-show="contactForm.fundusExaminationDate.$pristine && contactModel.fundusExaminationDate != null && contactModel.fundusExaminationDate == lastContact.fundusExaminationDate.split('T')[0] && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.fundusExaminationDate.$pristine && contactModel.fundusExaminationDate != null && contactModel.fundusExaminationDate == lastContact.fundusExaminationDate.split('T')[0] && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                 </div>
@@ -696,7 +696,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.diabeticRetinopathyCode.$pristine && contactModel.diabeticRetinopathyCode != null && contactModel.diabeticRetinopathyCode == lastContact.diabeticRetinopathy.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.diabeticRetinopathyCode.$pristine && contactModel.diabeticRetinopathyCode != null && contactModel.diabeticRetinopathyCode == lastContact.diabeticRetinopathy.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -707,7 +707,7 @@
                               ng-options="type.id as type.text for type in lists.diagnosisWorseSeeingEye" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.diagnosisWorseSeeingEyeID.$pristine && contactModel.diagnosisWorseSeeingEyeID != null && contactModel.diagnosisWorseSeeingEyeID == lastContact.diagnosisWorseSeeingEye.id && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.diagnosisWorseSeeingEyeID.$pristine && contactModel.diagnosisWorseSeeingEyeID != null && contactModel.diagnosisWorseSeeingEyeID == lastContact.diagnosisWorseSeeingEye.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
               </div>
 
@@ -725,7 +725,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.visualLossCode.$pristine && contactModel.visualLossCode != null && contactModel.visualLossCode == lastContact.visualLoss.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.visualLossCode.$pristine && contactModel.visualLossCode != null && contactModel.visualLossCode == lastContact.visualLoss.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -736,7 +736,7 @@
                               ng-options="type.code as type.text for type in lists.yn" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.laserTreatmentCode.$pristine && contactModel.laserTreatmentCode != null && contactModel.laserTreatmentCode == lastContact.laserTreatment.code && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.laserTreatmentCode.$pristine && contactModel.laserTreatmentCode != null && contactModel.laserTreatmentCode == lastContact.laserTreatment.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -752,7 +752,7 @@
                              ng-model="contactModel.footExaminationDate"
                              ng-class="{ 'has-no-error' : !contactForm.footExaminationDate.$invalid && contactModel.footExaminationDate != null}"
                              placeholder="Undersökningsdatum">
-                      <p ng-show="contactForm.footExaminationDate.$pristine && contactModel.footExaminationDate != null && contactModel.footExaminationDate == lastContact.footExaminationDate.split('T')[0] && contactToUpdate == null" class="help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.footExaminationDate.$pristine && contactModel.footExaminationDate != null && contactModel.footExaminationDate == lastContact.footExaminationDate.split('T')[0] && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
 
