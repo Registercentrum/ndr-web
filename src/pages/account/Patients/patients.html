@@ -107,7 +107,7 @@
             </div>
 
             <!-- Additional filtering -->
-            <div class="MultiFilter-row" ng-repeat="(key, filter) in selectedAdditionalFilters">
+            <div class="MultiFilter-row" ng-repeat="(key, filter) in chosenAdditionalFilters">
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">{{ filter.question }}</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
@@ -151,7 +151,7 @@
                     </div>
                     <div class="col-sm-3 form-inline">
                         <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters.additional[key].undef"> saknar värde</label></span>
-                        <i class="fa fa-minus-circle fa-1x text-danger" ng-click="removeAdditionalFIlter(key)"></i>
+                        <i class="fa fa-minus-circle fa-1x text-danger" ng-click="removeChosenFIlter(key)"></i>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,7 @@
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Valbar</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select ng-options="filter.contactAttributeID as filter.question for filter in additionalFilters" ng-model="selectedAdditionalFilter" name="" id="" class="form-control">
+                        <select ng-options="filter.contactAttributeID as filter.question for filter in additionalFilters" ng-model="chosenAdditionalFilter" name="" id="" class="form-control">
                             <option value="">Välj filter</option>
                         </select>
                     </div>

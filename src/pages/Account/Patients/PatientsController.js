@@ -36,6 +36,11 @@ angular.module('ndrApp')
             };
 
 
+
+            // -------------------------------------------------------------------
+            // DATA TABLES
+            // -------------------------------------------------------------------
+
             // Table options
             $scope.dtOptions = {
                 paginate : false,
@@ -73,10 +78,10 @@ angular.module('ndrApp')
                 DTColumnDefBuilder.newColumnDef(5).notSortable()
             ];
 
+            // Template function for additional visit rows in the table
             function format (visits) {
-                var template = [];
-                _.forEach(visits, function (visit) {
-                    var tmp = [
+                return _.map(visits, function (visit) {
+                    return [
                         '<tr class="visit-detail">',
                         '<td colspan="2"></td>',
                         '<td>' + $filter('date')(new Date(visit.contactDate), 'yyyy-MM-dd') + '</td>',
@@ -85,9 +90,7 @@ angular.module('ndrApp')
                         '<td></td>',
                         '</tr>'
                     ].join('');
-                    template.push(tmp);
-                });
-                return $(template.join(''));
+                }).join('');
             }
 
             $scope.$on('event:dataTableLoaded', function (event, loadedDT) {
@@ -111,7 +114,7 @@ angular.module('ndrApp')
                         // find all the visits aka contacts for this patient
                         visits = _.find($scope.model.filteredSubjects, {socialNumber: row.data()[1]}).contacts;
                         // render them as child rows
-                        row.child(format(visits)).show();
+                        row.child($(format(visits))).show();
                         // Add to the 'open' array
                         if (idx === -1) {
                             detailRows.push(tr.attr('id'));
@@ -128,35 +131,106 @@ angular.module('ndrApp')
             });
 
 
+
+            // -------------------------------------------------------------------
+            // LOADING SUBJECTS
+            // -------------------------------------------------------------------
+            $scope.model = {
+                allSubjects     : undefined,
+                filteredSubjects: undefined
+            };
+
+            // Load data when period changes
+            function loadSubjects () {
+                var from = moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                    to   = moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
+                    url  = 'https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + from +  '&dateTo=' + to + '&AccountID=' + $scope.accountModel.activeAccount.accountID;
+
+                $http.get(url)
+                    .success(function (data) {
+                        $log.debug('Loaded Contacts', data);
+
+                        var subjects = []
+                        subjectsArray = _.toArray(_.groupBy(data, function (contact){
+                            return contact.subject.socialNumber;
+                        }));
+
+                        _.each(subjectsArray, function (contactsArray, key){
+                            var o = {
+                                contacts : contactsArray,
+                                aggregatedProfile : _.clone(_.first(contactsArray))
+                            };
+
+                            angular.extend(o, _.last(contactsArray).subject);
+
+                            if (contactsArray.length > 1) {
+                                _.each(o.aggregatedProfile, function (obj, key) {
+                                    for (var i = 1, l = contactsArray.length; i < l; i++) {
+                                        if (obj == null && contactsArray[i][key] !== null) {
+                                            o.aggregatedProfile[key] = contactsArray[i][key];
+                                            break;
+                                        }
+                                    }
+                                });
+                            }
+                            subjects.push(o)
+                        });
+
+                        $log.debug('Loaded Subjects', subjects.length, subjects);
+
+                        $scope.model.allSubjects = subjects;
+                        $scope.model.allSubjectsLength = subjects.length;
+                    });
+            }
+
+            $scope.$watch('datePickers.to.date', loadSubjects);
+            $scope.$watch('datePickers.from.date', loadSubjects);
+
+
+            // -------------------------------------------------------------------
+            // FILTERING
+            // -------------------------------------------------------------------
+
+            // Fill additional filters from the API request for cancatct attributes
             $scope.additionalFilters = [];
             dataService.getContactAttributes(contactAttributeIDs)
                 .then(function (data) {
+
+                    // Fill the filters
                     $scope.additionalFilters = data;
+
                     _.each(data, function (filter, index) {
+                        // Make placeholder objects in the selectedFilters.additional
                         $scope.selectedFilters.additional[filter.contactAttributeID] = {};
+
                         // Setup min and max for range slider
-                        if (filter.minValue !== null && filter.maxValue !== null) {
+                        // We need that for setting up the range slider directive
+                        // .range is need to know if something was acutally selected and there is need for filtering
+                        if (_.isNumber(filter.minValue) && _.isNumber(filter.maxValue)) {
                             $scope.selectedFilters.additional[filter.contactAttributeID].min = filter.minValue;
                             $scope.selectedFilters.additional[filter.contactAttributeID].max = filter.maxValue;
                             $scope.selectedFilters.additional[filter.contactAttributeID].range = [filter.minValue, filter.maxValue];
                         }
                     });
-                    console.log($scope.selectedFilters.additional);
                 });
 
-            $scope.selectedAdditionalFilter = null;
-            $scope.selectedAdditionalFilters = {};
+            // Combination of those two is used to populate the list of chosen additional filters
+            $scope.chosenAdditionalFilter = null;
+            $scope.chosenAdditionalFilters = {};
 
-            $scope.$watch('selectedAdditionalFilter', function (newVal, oldVal) {
+            // Whenever the filter is chosen from the list of available filters
+            // update the list of chosen filters
+            $scope.$watch('chosenAdditionalFilter', function (newVal, oldVal) {
                 if (newVal !== null) {
                     var filter = _.find($scope.additionalFilters, {contactAttributeID: newVal});
-                    $scope.selectedAdditionalFilters[newVal] = filter;
-                    $scope.selectedAdditionalFilter = null;
+                    $scope.chosenAdditionalFilters[newVal] = filter;
+                    $scope.chosenAdditionalFilter = null;
                 }
             });
 
-            $scope.removeAdditionalFIlter = function (key) {
-                delete $scope.selectedAdditionalFilters[key];
+            // Chosen filters can be removed by the user
+            $scope.removeChosenFIlter = function (key) {
+                delete $scope.chosenAdditionalFilters[key];
                 delete $scope.selectedFilters.additional[key];
             };
 
@@ -190,29 +264,8 @@ angular.module('ndrApp')
                 additional   : {}
             };
 
-            $scope.model = {
-                allSubjects     : undefined,
-                filteredSubjects: undefined
-            };
-
-            var debouncedFilter = _.debounce(function () {
-                $scope.$apply(function () {
-                    filter();
-                })
-            }, 50);
-
-            $scope.$watch('datePickers.to.date', loadSubjects);
-            $scope.$watch('datePickers.from.date', loadSubjects);
-
-            $scope.$watch('selectedFilters.hbMin', debouncedFilter, true);
-            $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
-            $scope.$watch('selectedFilters.diabetesTypes', filter, true);
-            $scope.$watch('selectedFilters.additional', filter, true);
-            $scope.$watch('model.allSubjects', filter, true);
-
 
             function filter () {
-
                 $log.debug('Changed Filters');
 
                 var selectedFilters = $scope.selectedFilters,
@@ -275,47 +328,17 @@ angular.module('ndrApp')
                 $log.debug('Filtered subjects', subjects.length, subjects);
             }
 
+            var debouncedFilter = _.debounce(function () {
+                $scope.$apply(function () {
+                    filter();
+                })
+            }, 50);
 
-            // Load data when period changes
-            function loadSubjects () {
-                var from = moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
-                    to   = moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
-                    url  = 'https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + from +  '&dateTo=' + to + '&AccountID=' + $scope.accountModel.activeAccount.accountID;
 
-                $http.get(url)
-                    .success(function (data) {
-                        $log.debug('Loaded Contacts', data);
+            $scope.$watch('selectedFilters.hbMin', debouncedFilter, true);
+            $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
+            $scope.$watch('selectedFilters.diabetesTypes', filter, true);
+            $scope.$watch('selectedFilters.additional', filter, true);
+            $scope.$watch('model.allSubjects', filter, true);
 
-                        var subjects = []
-                        subjectsArray = _.toArray(_.groupBy(data, function (contact){
-                            return contact.subject.socialNumber;
-                        }));
-
-                        _.each(subjectsArray, function (contactsArray, key){
-                            var o = {
-                                contacts : contactsArray,
-                                aggregatedProfile : _.clone(_.first(contactsArray))
-                            };
-
-                            angular.extend(o, _.last(contactsArray).subject);
-
-                            if (contactsArray.length > 1) {
-                                _.each(o.aggregatedProfile, function (obj, key) {
-                                    for (var i = 1, l = contactsArray.length; i < l; i++) {
-                                        if (obj == null && contactsArray[i][key] !== null) {
-                                            o.aggregatedProfile[key] = contactsArray[i][key];
-                                            break;
-                                        }
-                                    }
-                                });
-                            }
-                            subjects.push(o)
-                        });
-
-                        $log.debug('Loaded Subjects', subjects.length, subjects);
-
-                        $scope.model.allSubjects = subjects;
-                        $scope.model.allSubjectsLength = subjects.length;
-                    });
-            }
         }]);
