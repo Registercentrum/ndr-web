@@ -34,11 +34,14 @@ angular.module('ndrApp')
             //contact                 :    Resta
         }
 
-        this.getContactAttributes = function (ids) {
+        this.getContactAttributes = function (names) {
             return endpoints.contactAttributes.get()
                 .then(function (data) {
-                    if (ids) {
-                        return _.filter(data, (function (d) { return _.indexOf(ids, d.contactAttributeID) !== -1; }));
+                    // Filter the data set by the column names…
+                    if (names) {
+                        return _.filter(data, (function (d) { return _.indexOf(names, d.columnName) !== -1; }));
+
+                    // …or just return the clean data set, without all the stuff from Restangular
                     } else {
                         return _.filter(data, (function (d) { return _.indexOf(d, 'contactAttributeID'); }));
                     }

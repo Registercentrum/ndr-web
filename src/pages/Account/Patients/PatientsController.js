@@ -4,7 +4,9 @@ angular.module('ndrApp')
         function ($scope, $http, $stateParams, $state, $log, $filter, dataService, DTOptionsBuilder, DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
-            var contactAttributeIDs = [107, 109, 110, 115, 121];
+            var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'];
+            // var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'];
+            var requiredFilters = ['diabetesType', 'hba1c'];
 
             /* Date picker options */
             $scope.format = 'dd MMM yyyy';
@@ -75,7 +77,7 @@ angular.module('ndrApp')
 
             $scope.dtColumnDefs = [
                 DTColumnDefBuilder.newColumnDef(0).notSortable(),
-                DTColumnDefBuilder.newColumnDef(5).notSortable()
+                DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
 
             // Template function for additional visit rows in the table
@@ -187,106 +189,82 @@ angular.module('ndrApp')
             $scope.$watch('datePickers.from.date', loadSubjects);
 
 
+
             // -------------------------------------------------------------------
             // FILTERING
             // -------------------------------------------------------------------
 
             // Fill additional filters from the API request for cancatct attributes
-            $scope.additionalFilters = [];
-            dataService.getContactAttributes(contactAttributeIDs)
-                .then(function (data) {
+            $scope.filters = [];
+            // dataService.getContactAttributes(filterNames)
+            dataService.getContactAttributes()
+                .then(function (filters) {
+                    var required;
 
-                    // Fill the filters
-                    $scope.additionalFilters = data;
+                    // Make placeholder objects for the rest of the filters in the selectedFilters.additional
+                    _.each(filters, function (filter, index) {
+                        // If the filter is required choose it instantly
+                        filter.isChosen = $scope.isRequired(filter.columnName);
 
-                    _.each(data, function (filter, index) {
-                        // Make placeholder objects in the selectedFilters.additional
-                        $scope.selectedFilters.additional[filter.contactAttributeID] = {};
+                        $scope.selectedFilters[filter.columnName] = {};
 
                         // Setup min and max for range slider
                         // We need that for setting up the range slider directive
-                        // .range is need to know if something was acutally selected and there is need for filtering
-                        if (_.isNumber(filter.minValue) && _.isNumber(filter.maxValue)) {
-                            $scope.selectedFilters.additional[filter.contactAttributeID].min = filter.minValue;
-                            $scope.selectedFilters.additional[filter.contactAttributeID].max = filter.maxValue;
-                            $scope.selectedFilters.additional[filter.contactAttributeID].range = [filter.minValue, filter.maxValue];
+                        // .range is need to determine if something was acutally selected and there is need for filtering
+                        if (_.isNumber(filter.maxValue)) {
+                            $scope.selectedFilters[filter.columnName].min = filter.minValue || 0;
+                            $scope.selectedFilters[filter.columnName].max = filter.maxValue;
+                            $scope.selectedFilters[filter.columnName].range = [filter.minValue || 0, filter.maxValue];
                         }
                     });
+
+                    // Make sure that required filters are always first in the list
+                    // Also make sure they are sorted alphabetically
+                    required = _.remove(filters, 'isChosen');
+                    filters = required.concat(_.sortBy(filters, 'question'));
+
+                    // Set the available filters
+                    $scope.filters = filters;
                 });
 
-            // Combination of those two is used to populate the list of chosen additional filters
-            $scope.chosenAdditionalFilter = null;
-            $scope.chosenAdditionalFilters = {};
+            // Used to update the list of chosen filters
+            $scope.chosenFilter = null;
 
             // Whenever the filter is chosen from the list of available filters
             // update the list of chosen filters
-            $scope.$watch('chosenAdditionalFilter', function (newVal, oldVal) {
-                if (newVal !== null) {
-                    var filter = _.find($scope.additionalFilters, {contactAttributeID: newVal});
-                    $scope.chosenAdditionalFilters[newVal] = filter;
-                    $scope.chosenAdditionalFilter = null;
+            $scope.$watch('chosenFilter', function (name) {
+                if (name !== null) {
+                    _.find($scope.filters, {columnName: name}).isChosen = true;
+                    $scope.chosenFilter = null;
                 }
             });
 
+            $scope.isDisplayed = function (name) {
+                return $scope.isRequired(name) || _.find($scope.filters, {columnName: name}).isChosen;
+            }
+
+            $scope.isRequired = function (name) {
+                return _.indexOf(requiredFilters, name) !== -1;
+            }
+
             // Chosen filters can be removed by the user
-            $scope.removeChosenFIlter = function (key) {
-                delete $scope.chosenAdditionalFilters[key];
-                delete $scope.selectedFilters.additional[key];
+            $scope.removeChosenFilter = function (name) {
+                _.find($scope.filters, {columnName: name}).isChosen = false;
             };
 
-            // Active filters
-            $scope.activeFilters = {
-                diabetesTypes: [{
-                    id: 0,
-                    text: 'Alla typer'
-                }, {
-                    id: 1,
-                    text: 'Typ 1 diabetes (inkl LADA)'
-                }, {
-                    id: 2,
-                    text: 'Typ 2 diabetes (inkl MODY)'
-                }, {
-                    id: 3,
-                    text: 'Sekundär diabetes (t ex pancreatit)'
-                }, {
-                    id: 4,
-                    text: 'Oklart'
-                }, {
-                    id: 5,
-                    text: 'Prediabetes'
-                }]
-            };
-
-            $scope.selectedFilters = {
-                diabetesTypes: 0,
-                hbMin        : 0,
-                hbMax        : 200,
-                additional   : {}
-            };
-
+            $scope.selectedFilters = {};
 
             function filter () {
+                // Check if there is anything to filter
+                if (!$scope.model.allSubjectsLength) return;
+
                 $log.debug('Changed Filters');
 
                 var selectedFilters = $scope.selectedFilters,
                     subjects        = angular.copy($scope.model.allSubjects);
 
-                if ('hbMin' in selectedFilters) {
-                    subjects = _.filter(subjects, function (d) {
-                        return d.aggregatedProfile.hba1c > selectedFilters.hbMin && d.aggregatedProfile.hba1c < selectedFilters.hbMax;
-                    });
-                }
-
-                if ('diabetesTypes' in selectedFilters && selectedFilters.diabetesTypes != 0) {
-                    subjects = _.filter(subjects, function (d) {
-                        $log.debug(d.aggregatedProfile.subject);
-                        if (d.aggregatedProfile.subject.diabetesType == null) return;
-                        return d.aggregatedProfile.subject.diabetesType.id == selectedFilters.diabetesTypes;
-                    });
-                }
-
                 // Check additional filters
-                _.each(selectedFilters.additional, function (filter, prop, list) {
+                _.each(selectedFilters, function (filter, prop, list) {
                     subjects = _.filter(subjects, function (subject) {
                         var value;
 
@@ -300,16 +278,15 @@ angular.module('ndrApp')
 
                             // prop may sit directly on the subject (sex) or on aggregatedProfile
                             // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return (_.isNumber(subject[prop]) && (subject[prop] > filter.min && subject[prop] < max)) ||
-                                (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] > min && subject.aggregatedProfile[prop] < max));
+                            return (_.isNumber(subject[prop]) && (subject[prop] >= filter.min && subject[prop] <= filter.max)) ||
+                                (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] >= filter.min && subject.aggregatedProfile[prop] <= filter.max));
 
                         // Handle value filtering
-                        } else if (filter.value !== null && typeof filter.value !== 'undefined') {
+                        } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
                             value = parseInt(filter.value, 10);
                             // prop may sit directly on the subject (sex) or on aggregatedProfile
                             // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return (subject[prop] && (subject[prop].id === value || subject[prop].code === value)) ||
-                                (subject.aggregatedProfile[prop] && (subject.aggregatedProfile[prop].id === value || subject.aggregatedProfile[prop].code === value));
+                            return subject[prop] === value || subject.aggregatedProfile[prop] === value;
 
                         // Nothing to filter
                         } else {
@@ -317,6 +294,7 @@ angular.module('ndrApp')
                         }
                     });
                 });
+
 
                 /*var subjects = _.toArray(_.groupBy(contacts, function(contact){
                  return contact.subject.subjectID
@@ -335,10 +313,10 @@ angular.module('ndrApp')
             }, 50);
 
 
-            $scope.$watch('selectedFilters.hbMin', debouncedFilter, true);
-            $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
-            $scope.$watch('selectedFilters.diabetesTypes', filter, true);
-            $scope.$watch('selectedFilters.additional', filter, true);
+            $scope.$watch('selectedFilters', debouncedFilter, true);
+            // $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
+            // $scope.$watch('selectedFilters.diabetesTypes', filter, true);
+            // $scope.$watch('selectedFilters.additional', filter, true);
             $scope.$watch('model.allSubjects', filter, true);
 
         }]);
