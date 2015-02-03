@@ -1,4 +1,4 @@
-angular.module("ndrApp")
+angular.module('ndrApp')
     .controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
 
     $scope.ok = function () {
@@ -10,8 +10,10 @@ angular.module("ndrApp")
     };
 });
 
-angular.module("ndrApp")
-    .controller('ReportController',["$scope", "$http", "$stateParams", "$state", "List", "$modal", function ($scope, $http, $stateParams, $state, List, $modal) {
+angular.module('ndrApp')
+    .controller('ReportController', [
+                 '$scope', '$http', '$stateParams', '$state', '$modal', 'List',
+        function ($scope,   $http,   $stateParams,   $state,   $modal,   List) {
 
         console.log("ReportController: Init",  $scope.accountModel);
 
@@ -22,7 +24,6 @@ angular.module("ndrApp")
         $scope.contactToUpdate = null;
         $scope.subject = null;
         $scope.serverSaveErrors = [];
-        $scope.pnrRegex = /\b(19\d{2}|20\d{2}|\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?\d{4}\b/;
         $scope.method = 'POST';
 
         var Account = $scope.accountModel;

@@ -1,7 +1,7 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope, $http, $stateParams, $state, $log, $filter, dataService, DTOptionsBuilder, DTColumnDefBuilder) {
+                 '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        function ($scope,   $http,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
             var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],

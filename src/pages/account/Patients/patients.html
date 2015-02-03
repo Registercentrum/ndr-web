@@ -10,7 +10,7 @@
                 <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
               </span>
           <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-                 ng-pattern="pnrRegex">
+                 ng-pattern="accountHelpers.pnrRegex">
           <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button><button class="PatientSearch-reportButton">Rapportera</button>
         </div>
       </div>

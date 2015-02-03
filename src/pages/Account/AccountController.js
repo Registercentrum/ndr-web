@@ -3,7 +3,7 @@ angular.module("ndrApp")
 
         console.log("AccountController: Init", accountService.accountModel.user);
 
-        $scope.accountModel = accountService.accountModel;
+        $scope.accountModel   = accountService.accountModel;
+        $scope.accountHelpers = accountService.helpers;
 
-
-    })
+    });

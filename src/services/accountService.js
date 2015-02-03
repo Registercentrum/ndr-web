@@ -12,7 +12,11 @@ angular.module('ndrApp')
             user : null,
             activeAccount : null,
             serverError : "",
-        }
+        };
+
+        this.helpers = {
+            pnrRegex: /\b(19\d{2}|20\d{2}|\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?\d{4}\b/
+        };
 
 
         /*        $scope.logOut = function() {
