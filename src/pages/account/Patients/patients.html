@@ -71,41 +71,6 @@
                 </div>
             </div>
 
-<!--             <div class="MultiFilter-row">
-                <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">Diabetestyp</div>
-                    <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select
-                                ng-options="type.id as type.text for type in activeFilters.diabetesTypes"
-                                class="form-control"
-                                ng-model="selectedFilters.diabetesTypes"
-                                name=""
-                                id="">
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="MultiFilter-row">
-                <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">HbA1c</div>
-                    <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <div
-                                slider
-                                ng-model="selectedFilters.hbMin"
-                                ng-model-range="selectedFilters.hbMax"
-                                floor="0"
-                                ceiling="200"
-                                class="RangeSlider">
-                        </div>
-                    </div>
-                    <div class="col-sm-3 form-inline">
-                        <input class="form-control" type="number" placeholder="min" ng-model="selectedFilters.hbMin">
-                        <input class="form-control" type="number" placeholder="max" ng-model="selectedFilters.hbMax">
-                    </div>
-                </div>
-            </div>
- -->
             <!-- Additional filtering -->
             <div class="MultiFilter-row" ng-repeat="(key, filter) in filters" ng-if="isDisplayed(filter.columnName)">
                 <div class="row">
@@ -167,13 +132,13 @@
                 </div>
             </div>
 
-            <!--             <div class="MultiFilter-row">
-                            <div class="row">
-                                <div class="MultiFilter-row-label col-sm-3">Debug</div>
-                                <div class="MultiFilter-row-filterKnobs col-sm-9">{{ selectedFilters }}</div>
-                            </div>
-                        </div>
-             -->        </div>
+            <!-- <div class="MultiFilter-row">
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">Debug</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-9">{{ selectedFilters }}</div>
+                </div>
+            </div> -->
+        </div>
 
         <div class="table-responsive">
             <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" width="100%" class="table responsive table-striped table-bordered row-border hover">

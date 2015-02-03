@@ -4,9 +4,8 @@ angular.module('ndrApp')
         function ($scope, $http, $stateParams, $state, $log, $filter, dataService, DTOptionsBuilder, DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
-            var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'];
-            // var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'];
-            var requiredFilters = ['diabetesType', 'hba1c'];
+            var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],
+                requiredFilters = ['diabetesType', 'hba1c'];
 
             /* Date picker options */
             $scope.format = 'dd MMM yyyy';
