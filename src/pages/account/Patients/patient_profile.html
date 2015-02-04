@@ -225,16 +225,16 @@
 <div class="Panel">
     <h2>Tabell - samtliga besök</h2>
     <div class="table-responsive">
-        <table class="table table-striped table-bordered row-border">
+        <table class="Table--fixed table table-striped table-bordered row-border hover visits-table">
             <thead>
                 <tr>
-                    <th></th>
-                    <th ng-repeat="date in model.data.table.contactDate">{{ date | date : 'dd MMM yyyy'}}</th>
+                    <th class="key"></th>
+                    <th ng-repeat="date in model.data.table['Besöksdatum']">{{ date | date : 'dd MMM yyyy'}}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="(key, contact) in model.data.table">
-                    <td>{{ key }}</td>
+                    <td class="key">{{ key }}</td>
                     <td ng-repeat="c in contact track by $index">{{ c }}</td>
                 </tr>
             </tbody>

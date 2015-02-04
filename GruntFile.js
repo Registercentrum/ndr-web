@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                     'less/_styles.less',
                     'less/_mixins.less',
                     'src/components/*/*.less',
-                    'src/pages/*/*.less'
+                    'src/pages/**/*.less'
                 ],
                 dest: 'less/_concatenated-styles.less'
             }
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
                     "src/components/*/*.less",
                     "src/components/*/*.html",
                     "src/pages/*/*.html",
-                    "src/pages/*/*.less",
+                    "src/pages/**/*.less",
                     "./less/*.less",
                     "bower_components/bootstrap/less/*.less"
                 ],

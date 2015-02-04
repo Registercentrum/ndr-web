@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('PatientController', [
-                 '$scope', '$http', '$stateParams', '$state', '$log', '$filter',
-        function ($scope,   $http,   $stateParams,   $state,   $log,   $filter) {
+                 '$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService',
+        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService) {
 
         $scope.subject = undefined;
         $scope.subjectID = $stateParams.patientID;
@@ -16,7 +16,9 @@ angular.module("ndrApp")
         $scope.$watch("subject", populateLatestData, true);
 
         function populateTableData () {
-            var contacts, keys, table = {};
+            var table = {},
+                exluded = ['contactID', 'insertedAt', 'lastUpdatedAt', 'unitID'],
+                contacts, keys;
 
             if (!$scope.subject) return false;
 
@@ -25,11 +27,35 @@ angular.module("ndrApp")
             // Get tha keys for the table
             keys = _.keys(contacts[0]);
 
+            // Filter exluded
+            keys = _.filter(keys, function (key) { return _.indexOf(exluded, key) === -1; });
+
             // Construct the table data
             _.each(keys, function (key) {
-                table[key] = [];
+                var attribute = _.find($scope.contactAttributes, {columnName: key}),
+                    label = attribute ? attribute.question : key;
+
+                table[label] = [];
                 _.each(contacts, function (contact) {
-                    table[key].push(contact[key]);
+                    var value = contact[key];
+
+                    if (_.isNull(value)) {
+                        value = '-';
+
+                    // If it's a date, format it in a nice way
+                    } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
+                        value = $filter('date')(new Date(value), 'yyyy-MM-dd');
+
+                    // Get proper label for the id value
+                    } else if (attribute && attribute.domain && attribute.domain.isEnumerated) {
+                        value = _.find(attribute.domain.domainValues, {code: value}).text;
+
+                    // If it's a boolean, return proper translation (ja-nej)
+                    } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
+                        value = value ? 'Ja' : 'Nej';
+                    }
+
+                    table[label].push(value);
                 });
             });
 
@@ -100,20 +126,25 @@ angular.module("ndrApp")
         };
 
 
-        $http({
-            method: 'GET',
-            url: "https://ndr.registercentrum.se/api/Subject/" + $scope.subjectID + "?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13
-        })
-        .success(function(data, status, headers, config) {
-            $log.debug("Retrieved subject", data);
+        // Make requests for the subject data and contactAttributes needed to display the labels in the table
+        $q.all([
+            dataService.getSubject($scope.subjectID).then(function (response) { return response; }),
+            dataService.getContactAttributes().then(function (response) { return response; })
+          ])
+          .then(function (values) {
+            var subject = values[0];
+
+            $log.debug("Retrieved subject", subject);
 
             // Sort the contacts by date in desc order
-            data.contacts = _.sortBy(data.contacts, 'contactDate').reverse();
-            $scope.subject = data;
-        })
-        .error(function(data, status, headers, config) {
-            //$log.error('Could not retrieve data from ' + url);
-        });
+            subject.contacts = _.sortBy(subject.contacts, 'contactDate').reverse();
+            $scope.subject = subject;
+
+            $scope.contactAttributes = values[1];
+          });
+
+
+
 
 
 

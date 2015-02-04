@@ -8,7 +8,7 @@ angular.module('ndrApp')
                 requiredFilters = ['diabetesType', 'hba1c'];
 
             /* Date picker options */
-            $scope.format = 'dd MMM yyyy';
+            $scope.format = 'yyyy-MM-dd';
             $scope.datePickers = {
                 from: {
                     date: $filter('date')(new Date('2013-01-01'), $scope.format),

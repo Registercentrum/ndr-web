@@ -39,15 +39,25 @@ angular.module('ndrApp')
                 .then(function (data) {
                     // Filter the data set by the column names…
                     if (names) {
-                        return _.filter(data, (function (d) { return _.indexOf(names, d.columnName) !== -1; }));
+                        return _.filter(data.plain(), (function (d) { return _.indexOf(names, d.columnName) !== -1; }));
 
                     // …or just return the clean data set, without all the stuff from Restangular
                     } else {
-                        return _.filter(data, (function (d) { return _.indexOf(d, 'contactAttributeID'); }));
+                        return data.plain();
                     }
                 })
                 .catch(function (error) {
                     return error;
+                });
+        }
+
+        this.getSubject = function (id) {
+            return Restangular.one('Subject', id).get({'AccountID': 13})
+                .then(function(subject) {
+                    return subject.plain();
+                })
+                .catch(function(error) {
+                    return error
                 });
         }
 
