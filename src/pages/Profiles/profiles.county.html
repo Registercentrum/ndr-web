@@ -82,9 +82,9 @@
                 <h1>Vårdenheter</h1>
                 <p>Landstingets vårdenheter</p>
 
-                <table class="Table">
+                <table class="table table-condensed table-striped">
 
-                    <tr ng-repeat="unit in model.county.units">
+                    <tr ng-repeat="unit in model.county.units | filter : { isActive :true }">
                         <td>{{ unit.name }}</td>
                         <td><a href="#/profil/enhet/{{ unit.unitID }}" class="Button Button--default">Visa</a></td>
                     </tr>
