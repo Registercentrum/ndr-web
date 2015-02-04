@@ -68,6 +68,10 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 templateUrl: "src/pages/Compare/compare.html"
             })
 
+            .state('main.risk', {
+                url: "/risk",
+                templateUrl: "src/pages/Risk/risk.html"
+            })
 
             .state('main.profiles', {
                 url: "/profil",
