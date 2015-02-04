@@ -249,6 +249,15 @@ angular.module('ndrApp')
             // Chosen filters can be removed by the user
             $scope.removeChosenFilter = function (name) {
                 _.find($scope.filters, {columnName: name}).isChosen = false;
+
+                // Reset the selected filters
+                // Reset range values
+                if ($scope.selectedFilters[name].range) {
+                    $scope.selectedFilters[name].min = $scope.selectedFilters[name].range[0];
+                    $scope.selectedFilters[name].max = $scope.selectedFilters[name].range[1];
+                } else {
+                    $scope.selectedFilters[name] = {}
+                }
             };
 
             $scope.selectedFilters = {};
