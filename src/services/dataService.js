@@ -46,7 +46,7 @@ angular.module('ndrApp')
                         return _.filter(data, (function (d) { return _.indexOf(d, 'contactAttributeID'); }));
                     }
                 })
-                .catch(function (error) {
+                ["catch"](function (error) {
                     return error;
                 });
         }
