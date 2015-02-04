@@ -1,5 +1,7 @@
 angular.module("ndrApp")
-    .controller('PatientController', function ($scope, $http, $stateParams, $state) {
+    .controller('PatientController', [
+                 '$scope', '$http', '$stateParams', '$state', '$log',
+        function ($scope,   $http,   $stateParams,   $state,   $log) {
 
         $scope.subject = undefined;
         $scope.subjectID = $stateParams.patientID;
@@ -8,47 +10,42 @@ angular.module("ndrApp")
             data : {}
         }
 
-        $scope.$watch("subject", function (){
-            getHba1cTrend();
-        }, true)
+        $scope.$watch("subject", getHba1cTrend, true);
 
-        function getHba1cTrend(){
+        function getHba1cTrend () {
+            var contacts, series, seriesBloodPressure, seriesCholesterol;
 
-            if(!$scope.subject) return false;
+            if (!$scope.subject) return false;
 
-            var contacts = angular.copy($scope.subject.contacts).sort(function (a,b){
+            contacts = angular.copy($scope.subject.contacts).sort(function (a,b) {
                 return new Date(a.contactDate) - new Date(b.contactDate);
-            })
+            });
 
-            var series = [];
-            var seriesBloodPressure = [];
-            var seriesCholesterol = [];
+            series              = [];
+            seriesBloodPressure = [];
+            seriesCholesterol   = [];
 
             _.each(contacts, function(obj, key){
+                var o, oBloodPressure, oCholesterol;
 
-                var oBloodPressure = {
-                    x : new Date(obj.contactDate),
-                    y : obj.bpSystolic,
-                }
-
-                var o = {
+                o = {
                     x : new Date(obj.contactDate),
                     y : obj.hba1c,
-                }
+                };
 
-                var oCholesterol = {
+                oBloodPressure = {
+                    x : new Date(obj.contactDate),
+                    y : obj.bpSystolic,
+                };
+
+                oCholesterol = {
                     x : new Date(obj.contactDate),
                     y : obj.cholesterol,
-                }
+                };
 
-                if(oCholesterol.y)
-                    seriesCholesterol.push(oCholesterol)
-
-                if(oBloodPressure.y)
-                seriesBloodPressure.push(oBloodPressure)
-
-                if(o.y)
-                    series.push(o)
+                if (o.y) series.push(o)
+                if (oBloodPressure.y) seriesBloodPressure.push(oBloodPressure)
+                if (oCholesterol.y) seriesCholesterol.push(oCholesterol)
 
             })
 
@@ -68,7 +65,7 @@ angular.module("ndrApp")
             url: "https://ndr.registercentrum.se/api/Subject/" + $scope.subjectID + "?APIKey=LkUtebH6B428KkPqAAsV&AccountID=" + 13
         })
         .success(function(data, status, headers, config) {
-            console.log("Retrieved subject", data);
+            $log.debug("Retrieved subject", data);
             $scope.subject = data;
 
         })
@@ -77,8 +74,7 @@ angular.module("ndrApp")
         });
 
 
-        $scope.calculateAge = function(birthDate) {
-
+        $scope.calculateAge = function (birthDate) {
             return moment().diff(birthDate, 'years');
         };
 
@@ -161,4 +157,4 @@ angular.module("ndrApp")
 
         
 
-    });
+    }]);

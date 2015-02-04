@@ -30,9 +30,26 @@ angular.module('ndrApp')
             indicatorresult         :    Restangular.one('indicatorresult'),
             indicator               :    Restangular.one('indicator'),
             researchproject         :    Restangular.all('researchproject'),
+            contactAttributes       :    Restangular.one('ContactAttribute')
             //contact                 :    Resta
         }
 
+        this.getContactAttributes = function (names) {
+            return endpoints.contactAttributes.get()
+                .then(function (data) {
+                    // Filter the data set by the column names…
+                    if (names) {
+                        return _.filter(data, (function (d) { return _.indexOf(names, d.columnName) !== -1; }));
+
+                    // …or just return the clean data set, without all the stuff from Restangular
+                    } else {
+                        return _.filter(data, (function (d) { return _.indexOf(d, 'contactAttributeID'); }));
+                    }
+                })
+                .catch(function (error) {
+                    return error;
+                });
+        }
 
         /* METHODS - returns promises */
         this.getList = function (type){

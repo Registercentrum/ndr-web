@@ -135,6 +135,7 @@ angular.module('ndrApp')
                         }
 
                         var riket = _.filter(obj, function (o){
+                            console.log(o);
                             return o.statSet[0].unit.name == "Riket";
                         })[0]
 

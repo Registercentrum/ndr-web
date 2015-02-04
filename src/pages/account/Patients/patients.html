@@ -10,7 +10,7 @@
                 <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
               </span>
           <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-                 ng-pattern="pnrRegex">
+                 ng-pattern="accountHelpers.pnrRegex">
           <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button><button class="PatientSearch-reportButton">Rapportera</button>
         </div>
       </div>
@@ -84,75 +84,52 @@
                 </div>
             </div>
 
-            <div class="MultiFilter-row">
-                <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">Diabetestyp</div>
-                    <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select
-                                ng-options="type.id as type.text for type in activeFilters.diabetesTypes"
-                                class="form-control"
-                                ng-model="selectedFilters.diabetesTypes"
-                                name=""
-                                id="">
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="MultiFilter-row">
-                <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">HbA1c</div>
-                    <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <div
-                                slider
-                                ng-model="selectedFilters.hbMin"
-                                ng-model-range="selectedFilters.hbMax"
-                                floor="0"
-                                ceiling="200"
-                                class="RangeSlider">
-                        </div>
-                    </div>
-                    <div class="col-sm-3 form-inline">
-                        <input class="form-control" type="number" placeholder="min" ng-model="selectedFilters.hbMin">
-                        <input class="form-control" type="number" placeholder="max" ng-model="selectedFilters.hbMax">
-                    </div>
-                </div>
-            </div>
-
             <!-- Additional filtering -->
-            <div class="MultiFilter-row" ng-repeat="(key, filter) in selectedAdditionalFilters">
+            <div class="MultiFilter-row" ng-repeat="(key, filter) in filters" ng-if="isDisplayed(filter.columnName)">
                 <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">{{ filter.text }}</div>
+                    <div class="MultiFilter-row-label col-sm-3">{{ filter.question }}</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
 
-                        <!-- If there are more than two options, display them as a select -->
-                        <select
-                                ng-if="filter.options.length > 2"
-                                ng-options="option.id as option.text for option in filter.options"
-                                ng-model="selectedFilters.additional[key].value"
-                                ng-disabled="selectedFilters.additional[key].undef"
-                                class="form-control pull-left">
-                            <option value="">Välj {{ filter.text }}</option>
-                        </select>
+                        <!-- If there is max value, display as range slider -->
+                        <div
+                            slider
+                            ng-if="filter.maxValue !== null"
+                            ng-model="selectedFilters[filter.columnName].min"
+                            ng-model-range="selectedFilters[filter.columnName].max"
+                            ng-disabled="selectedFilters[filter.columnName].undef"
+                            floor="{{ filter.minValue || 0 }}"
+                            ceiling="{{ filter.maxValue }}"
+                            class="RangeSlider">
+                        </div>
 
-                        <!-- If there are just two options, display them as radio buttons -->
-                        <div class="form-inline" ng-if="filter.options.length === 2">
-                            <span class="radio" ng-repeat="option in filter.options">
+                        <!-- If domain is enumerable and there are just two options, display them as radio buttons -->
+                        <div class="form-inline" ng-if="filter.domain.isEnumerated && filter.domain.domainValues.length === 2">
+                            <span class="radio" ng-repeat="option in filter.domain.domainValues">
                                 <label>
                                     <input
-                                            type="radio"
-                                            ng-model="selectedFilters.additional[key].value"
-                                            ng-disabled="selectedFilters.additional[key].undef"
-                                            value="{{ option.id }}">
+                                        type="radio"
+                                        ng-model="selectedFilters[filter.columnName].value"
+                                        ng-disabled="selectedFilters[filter.columnName].undef"
+                                        value="{{ option.code }}">
                                     {{ option.text }}
                                 </label>
                             </span>
                         </div>
 
+                        <!-- If domain is enumerable and have more than two options, display them as a select -->
+                        <select
+                            ng-if="filter.domain.isEnumerated && filter.domain.domainValues.length > 2"
+                            ng-options="option.code as option.text for option in filter.domain.domainValues"
+                            ng-model="selectedFilters[filter.columnName].value"
+                            ng-disabled="selectedFilters[filter.columnName].undef"
+                            class="form-control pull-left">
+                            <option value="">Välj {{ filter.question }}</option>
+                        </select>
+
                     </div>
                     <div class="col-sm-3 form-inline">
-                        <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters.additional[key].undef"> saknar värde</label></span>
-                        <i class="fa fa-minus-circle fa-1x text-danger" ng-click="removeAdditionalFIlter(key)"></i>
+                        <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters[filter.columnName].undef"> saknar värde</label></span>
+                        <i class="fa fa-minus-circle fa-1x text-danger" ng-click="removeChosenFilter(filter.columnName)" ng-if="!isRequired(filter.columnName)"></i>
                     </div>
                 </div>
             </div>
@@ -161,20 +138,20 @@
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Valbar</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select ng-options="filter.id as filter.text for filter in additionalFilterTypes" ng-model="selectedAdditionalFilter" name="" id="" class="form-control">
+                        <select ng-options="filter.columnName as filter.question for filter in filters | filter: {isChosen: false}" ng-model="chosenFilter" name="" id="" class="form-control">
                             <option value="">Välj filter</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <!--             <div class="MultiFilter-row">
-                            <div class="row">
-                                <div class="MultiFilter-row-label col-sm-3">Debug</div>
-                                <div class="MultiFilter-row-filterKnobs col-sm-9">{{ selectedFilters }}</div>
-                            </div>
-                        </div>
-             -->        </div>
+            <!-- <div class="MultiFilter-row">
+                <div class="row">
+                    <div class="MultiFilter-row-label col-sm-3">Debug</div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-9">{{ selectedFilters }}</div>
+                </div>
+            </div> -->
+        </div>
 
         <div class="table-responsive">
             <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" width="100%" class="table responsive table-striped table-bordered row-border hover">
@@ -183,7 +160,7 @@
                     <td>Mer</td>
                     <td>Personnummer</td>
                     <td>Senaste besök</td>
-                    <td>Blodtryck</td>
+                    <!-- <td>Blodtryck</td> -->
                     <td>HbA1c</td>
                     <td>Funktioner</td>
                 </tr>
@@ -193,7 +170,7 @@
                     <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
                     <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
                     <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"</td>
-                    <td once-text="subject.aggregatedProfile.bpDiastolic"</td>
+                    <!-- <td once-text="subject.aggregatedProfile.bpDiastolic"</td> -->
                     <td once-text="subject.aggregatedProfile.hba1c"</td>
                     <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
                 </tr>

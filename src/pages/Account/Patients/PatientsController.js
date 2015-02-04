@@ -1,8 +1,11 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope, $http, $stateParams, $state, $log, $filter, DTOptionsBuilder, DTColumnDefBuilder) {
+                 '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        function ($scope,   $http,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
+
+            var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],
+                requiredFilters = ['diabetesType', 'hba1c'];
 
             /* Date picker options */
             $scope.format = 'dd MMM yyyy';
@@ -33,6 +36,11 @@ angular.module('ndrApp')
                 $scope.datePickers[picker].opened = true;
             };
 
+
+
+            // -------------------------------------------------------------------
+            // DATA TABLES
+            // -------------------------------------------------------------------
 
             // Table options
             $scope.dtOptions = {
@@ -68,13 +76,13 @@ angular.module('ndrApp')
 
             $scope.dtColumnDefs = [
                 DTColumnDefBuilder.newColumnDef(0).notSortable(),
-                DTColumnDefBuilder.newColumnDef(5).notSortable()
+                DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
 
+            // Template function for additional visit rows in the table
             function format (visits) {
-                var template = [];
-                _.forEach(visits, function (visit) {
-                    var tmp = [
+                return _.map(visits, function (visit) {
+                    return [
                         '<tr class="visit-detail">',
                         '<td colspan="2"></td>',
                         '<td>' + $filter('date')(new Date(visit.contactDate), 'yyyy-MM-dd') + '</td>',
@@ -83,9 +91,7 @@ angular.module('ndrApp')
                         '<td></td>',
                         '</tr>'
                     ].join('');
-                    template.push(tmp);
-                });
-                return $(template.join(''));
+                }).join('');
             }
 
             $scope.$on('event:dataTableLoaded', function (event, loadedDT) {
@@ -109,7 +115,7 @@ angular.module('ndrApp')
                         // find all the visits aka contacts for this patient
                         visits = _.find($scope.model.filteredSubjects, {socialNumber: row.data()[1]}).contacts;
                         // render them as child rows
-                        row.child(format(visits)).show();
+                        row.child($(format(visits))).show();
                         // Add to the 'open' array
                         if (idx === -1) {
                             detailRows.push(tr.attr('id'));
@@ -126,133 +132,14 @@ angular.module('ndrApp')
             });
 
 
-            // Filters, copied from the API, augmented with display texts
-            $scope.additionalFilters = {"diagnosisWorseSeeingEye": { "options": [{"id":2,"text":"Simplex retinopati"},{"id":3,"text":"PPDR"},{"id":4,"text":"KSM"},{"id":5,"text":"PDR"}], "text": "Diagnos på sämsta ögat"},"treatment": { "options": [{"id":1,"text":"Enbart kost"},{"id":2,"text":"Tabletter"},{"id":3,"text":"Insulin"},{"id":4,"text":"Tabl. och insulin"},{"id":5,"text":"Okänd"},{"id":6,"text":"Injektion (GLP-1 analog)"},{"id":8,"text":"Inj. GLP-1 + tabletter"},{"id":9,"text":"Inj. GLP-1 + insulin"},{"id":10,"text":"Inj. GLP-1 + tabl och insulin"}], "text": "Behandling"},"insulinMethod": { "options": [{"id":1,"text":"Injektion"},{"id":2,"text":"Insulinpump"}], "text": "Insulin Method"},"pump": { "options": [{"id":1,"text":"AccuChek Combo"},{"id":2,"text":"AccuChek D-Tron"},{"id":3,"text":"AccuChek Spirit"},{"id":4,"text":"Animas 1200"},{"id":5,"text":"Animas 2010"},{"id":6,"text":"Animas 2012"},{"id":7,"text":"Animas 2020"},{"id":8,"text":"Animas Vibe"},{"id":9,"text":"Cozmo"},{"id":10,"text":"Dana R"},{"id":11,"text":"Dana IIS"},{"id":12,"text":"Minimed 504"},{"id":13,"text":"Minimed 508"},{"id":14,"text":"Omnipod"},{"id":15,"text":"Paradigm 511"},{"id":16,"text":"Paradigm 512"},{"id":17,"text":"Paradigm 515"},{"id":18,"text":"Paradigm 522"},{"id":19,"text":"Paradigm 523"},{"id":20,"text":"Paradigm VEO 554"},{"id":21,"text":"Paradigm 712"},{"id":22,"text":"Paradigm 722"},{"id":23,"text":"Paradigm VEO 754"},{"id":24,"text":"Paradigm VEO (Använd alt ovan)"},{"id":25,"text":"Paradigm 715"}], "text": "Pump"},"pumpIndication": { "options": [{"id":1,"text":"Glukossvängningar"},{"id":2,"text":"Högt HbA1c (ej inom patientens målområde)"},{"id":3,"text":"Frekventa hypoglykemier"},{"id":4,"text":"Fysisk aktivitet"},{"id":5,"text":"Gryningsfenomen"},{"id":6,"text":"”unawareness”"},{"id":7,"text":"Patientens önskemål"},{"id":8,"text":"Förenklad glukosbehandling (barnklinik)"}], "text": "Pump Indication"},"pumpClosureReason": { "options": [{"id":1,"text":"Bristande följsamhet/handhavande"},{"id":2,"text":"Patientens Önskemål"}], "text": "Pump Closure Reason"},"sex": { "options": [{"id":1,"text":"Man"},{"id":2,"text":"Kvinna"}], "text": "Kön"},"physicalActivity": { "options": [{"id":1,"text":"Aldrig    "},{"id":2,"text":"<1 ggr/vecka"},{"id":3,"text":"Regelbundet 1-2 ggr/vecka"},{"id":4,"text":"Regelbundet 3-5 ggr/vecka"},{"id":5,"text":"Dagligen"}], "text": "Physical Activity"},"hypoglycemiaSevere": { "options": [{"id":1,"text":"Ingen"},{"id":2,"text":"1-2"},{"id":3,"text":"3-5"},{"id":4,"text":">5"}], "text": "Hypoglycemia Severe"},"microscopicProteinuria": { "options": [{"id":1,"text":"Ja"},{"id":0,"text":"Nej"},{"id":2,"text":"Normaliserat värde"}], "text": "Microscopic Proteinuria"},"waran": { "options": [{"id":1,"text":"Ja"},{"id":0,"text":"Nej"}], "text": "Waran"},"footRiscCategory": { "options": [{"id":1,"text":"Frisk fot"},{"id":2,"text":"Neuropati, angiopati"},{"id":3,"text":"Tidigare diabetssår"},{"id":4,"text":"Pågående allvarlig fotsjukdom"}], "text": "Foot Risc Category"},"smokingHabit": { "options": [{"id":1,"text":"Aldrig varit rökare"},{"id":2,"text":"Röker dagligen"},{"id":3,"text":"Röker, men ej dagligen"},{"id":4,"text":"Slutat röka"}], "text": "Smoking Habit"}};
-            // Get filter types with ids
-            $scope.additionalFilterTypes = _.map($scope.additionalFilters, function (filter, index) { return {text: filter.text, id: index }; });
 
-            $scope.selectedAdditionalFilter = null;
-            $scope.selectedAdditionalFilters = {};
-
-            $scope.$watch('selectedAdditionalFilter', function (newVal, oldVal) {
-                if (newVal !== null) {
-                    $scope.selectedAdditionalFilters[newVal] = $scope.additionalFilters[newVal];
-                    $scope.selectedAdditionalFilter = null;
-                }
-            });
-
-            $scope.removeAdditionalFIlter = function (key) {
-                delete $scope.selectedAdditionalFilters[key];
-                delete $scope.selectedFilters.additional[key];
-            };
-
-            // Active filters
-            $scope.activeFilters = {
-                diabetesTypes: [{
-                    id: 0,
-                    text: 'Alla typer'
-                }, {
-                    id: 1,
-                    text: 'Typ 1 diabetes (inkl LADA)'
-                }, {
-                    id: 2,
-                    text: 'Typ 2 diabetes (inkl MODY)'
-                }, {
-                    id: 3,
-                    text: 'Sekundär diabetes (t ex pancreatit)'
-                }, {
-                    id: 4,
-                    text: 'Oklart'
-                }, {
-                    id: 5,
-                    text: 'Prediabetes'
-                }]
-            };
-
-            $scope.selectedFilters = {
-                diabetesTypes: 0,
-                hbMin        : 0,
-                hbMax        : 200,
-                additional   : {}
-            };
-
-            _.each($scope.additionalFilterTypes, function (filter, index) {
-                console.log(index);
-                $scope.selectedFilters.additional[filter.id] = {};
-            });
-
+            // -------------------------------------------------------------------
+            // LOADING SUBJECTS
+            // -------------------------------------------------------------------
             $scope.model = {
                 allSubjects     : undefined,
                 filteredSubjects: undefined
             };
-
-            var debouncedFilter = _.debounce(function () {
-                $scope.$apply(function () {
-                    filter();
-                })
-            }, 50);
-
-            $scope.$watch('datePickers.to.date', loadSubjects);
-            $scope.$watch('datePickers.from.date', loadSubjects);
-
-            $scope.$watch('selectedFilters.hbMin', debouncedFilter, true);
-            $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
-            $scope.$watch('selectedFilters.diabetesTypes', filter, true);
-            $scope.$watch('selectedFilters.additional', filter, true);
-            $scope.$watch('model.allSubjects', filter, true);
-
-
-            function filter () {
-
-                $log.debug('Changed Filters');
-
-                var selectedFilters = $scope.selectedFilters,
-                    subjects        = angular.copy($scope.model.allSubjects);
-
-                if ('hbMin' in selectedFilters) {
-                    subjects = _.filter(subjects, function (d) {
-                        return d.aggregatedProfile.hba1c > selectedFilters.hbMin && d.aggregatedProfile.hba1c < selectedFilters.hbMax;
-                    });
-                }
-
-                if ('diabetesTypes' in selectedFilters && selectedFilters.diabetesTypes != 0) {
-                    subjects = _.filter(subjects, function (d) {
-                        $log.debug(d.aggregatedProfile.subject);
-                        if (d.aggregatedProfile.subject.diabetesType == null) return;
-                        return d.aggregatedProfile.subject.diabetesType.id == selectedFilters.diabetesTypes;
-                    });
-                }
-
-                // Check additional filters
-                _.each(selectedFilters.additional, function (filter, prop, list) {
-                    subjects = _.filter(subjects, function (subject) {
-                        var value;
-                        // if filter.undef is true it means that option for searching undefined values is checked
-                        // so return only those that have null specified for this option
-                        if (filter.undef) {
-                            return subject[prop] === null || subject.aggregatedProfile[prop] === null;
-                        } else if (filter.value !== null && typeof filter.value !== 'undefined') {
-                            value = parseInt(filter.value, 10);
-                            // prop may sit directly on the subject (sex) or on aggregatedProfile
-                            // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return (subject[prop] && (subject[prop].id === value || subject[prop].code === value)) ||
-                                (subject.aggregatedProfile[prop] && (subject.aggregatedProfile[prop].id === value || subject.aggregatedProfile[prop].code === value));
-                        } else {
-                            return true;
-                        }
-                    });
-                });
-
-                /*var subjects = _.toArray(_.groupBy(contacts, function(contact){
-                 return contact.subject.subjectID
-                 }));*/
-
-                $scope.model.filteredSubjects = subjects;
-                $scope.model.filteredSubjectsLength = subjects.length;
-
-                $log.debug('Filtered subjects', subjects.length, subjects);
-            }
-
 
             // Load data when period changes
             function loadSubjects () {
@@ -296,4 +183,148 @@ angular.module('ndrApp')
                         $scope.model.allSubjectsLength = subjects.length;
                     });
             }
+
+            $scope.$watch('datePickers.to.date', loadSubjects);
+            $scope.$watch('datePickers.from.date', loadSubjects);
+
+
+
+            // -------------------------------------------------------------------
+            // FILTERING
+            // -------------------------------------------------------------------
+
+            // Fill additional filters from the API request for cancatct attributes
+            $scope.filters = [];
+            // dataService.getContactAttributes(filterNames)
+            dataService.getContactAttributes()
+                .then(function (filters) {
+                    var required;
+
+                    // Make placeholder objects for the rest of the filters in the selectedFilters.additional
+                    _.each(filters, function (filter, index) {
+                        // If the filter is required choose it instantly
+                        filter.isChosen = $scope.isRequired(filter.columnName);
+
+                        $scope.selectedFilters[filter.columnName] = {};
+
+                        // Setup min and max for range slider
+                        // We need that for setting up the range slider directive
+                        // .range is need to determine if something was acutally selected and there is need for filtering
+                        if (_.isNumber(filter.maxValue)) {
+                            $scope.selectedFilters[filter.columnName].min = filter.minValue || 0;
+                            $scope.selectedFilters[filter.columnName].max = filter.maxValue;
+                            $scope.selectedFilters[filter.columnName].range = [filter.minValue || 0, filter.maxValue];
+                        }
+                    });
+
+                    // Make sure that required filters are always first in the list
+                    // Also make sure they are sorted alphabetically
+                    required = _.remove(filters, 'isChosen');
+                    filters = required.concat(_.sortBy(filters, 'question'));
+
+                    // Set the available filters
+                    $scope.filters = filters;
+                });
+
+            // Used to update the list of chosen filters
+            $scope.chosenFilter = null;
+
+            // Whenever the filter is chosen from the list of available filters
+            // update the list of chosen filters
+            $scope.$watch('chosenFilter', function (name) {
+                if (name !== null) {
+                    _.find($scope.filters, {columnName: name}).isChosen = true;
+                    $scope.chosenFilter = null;
+                }
+            });
+
+            $scope.isDisplayed = function (name) {
+                return $scope.isRequired(name) || _.find($scope.filters, {columnName: name}).isChosen;
+            }
+
+            $scope.isRequired = function (name) {
+                return _.indexOf(requiredFilters, name) !== -1;
+            }
+
+            // Chosen filters can be removed by the user
+            $scope.removeChosenFilter = function (name) {
+                _.find($scope.filters, {columnName: name}).isChosen = false;
+
+                // Reset the selected filters
+                // Reset range values
+                if ($scope.selectedFilters[name].range) {
+                    $scope.selectedFilters[name].min = $scope.selectedFilters[name].range[0];
+                    $scope.selectedFilters[name].max = $scope.selectedFilters[name].range[1];
+                } else {
+                    $scope.selectedFilters[name] = {}
+                }
+            };
+
+            $scope.selectedFilters = {};
+
+            function filter () {
+                // Check if there is anything to filter
+                if (!$scope.model.allSubjectsLength) return;
+
+                $log.debug('Changed Filters');
+
+                var selectedFilters = $scope.selectedFilters,
+                    subjects        = angular.copy($scope.model.allSubjects);
+
+                // Check additional filters
+                _.each(selectedFilters, function (filter, prop, list) {
+                    subjects = _.filter(subjects, function (subject) {
+                        var value;
+
+                        // if filter.undef is true it means that option for searching undefined values is checked
+                        // so return only those that have null specified for this option
+                        if (filter.undef) {
+                            return _.isNull(subject[prop]) || _.isNull(subject.aggregatedProfile[prop]);
+
+                        // Handle range filtering
+                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max) && (filter.min > filter.range[0] || filter.max < filter.range[1])) {
+
+                            // prop may sit directly on the subject (sex) or on aggregatedProfile
+                            // also, it can have 'code' or 'id' as the prop name, so check for both
+                            return (_.isNumber(subject[prop]) && (subject[prop] >= filter.min && subject[prop] <= filter.max)) ||
+                                (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] >= filter.min && subject.aggregatedProfile[prop] <= filter.max));
+
+                        // Handle value filtering
+                        } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
+                            value = parseInt(filter.value, 10);
+                            // prop may sit directly on the subject (sex) or on aggregatedProfile
+                            // also, it can have 'code' or 'id' as the prop name, so check for both
+                            return subject[prop] === value || subject.aggregatedProfile[prop] === value;
+
+                        // Nothing to filter
+                        } else {
+                            return true;
+                        }
+                    });
+                });
+
+
+                /*var subjects = _.toArray(_.groupBy(contacts, function(contact){
+                 return contact.subject.subjectID
+                 }));*/
+
+                $scope.model.filteredSubjects = subjects;
+                $scope.model.filteredSubjectsLength = subjects.length;
+
+                $log.debug('Filtered subjects', subjects.length, subjects);
+            }
+
+            var debouncedFilter = _.debounce(function () {
+                $scope.$apply(function () {
+                    filter();
+                })
+            }, 50);
+
+
+            $scope.$watch('selectedFilters', debouncedFilter, true);
+            // $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
+            // $scope.$watch('selectedFilters.diabetesTypes', filter, true);
+            // $scope.$watch('selectedFilters.additional', filter, true);
+            $scope.$watch('model.allSubjects', filter, true);
+
         }]);
