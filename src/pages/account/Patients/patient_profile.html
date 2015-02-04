@@ -17,7 +17,7 @@
                         <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
                     </span>
                 <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-                       ng-pattern="pnrRegex">
+                       ng-pattern="accountHelpers.pnrRegex">
                 <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
             </div>-->
 
@@ -89,12 +89,12 @@
                     <div class="InfoGrid-cell InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width70">
                         <div class="InfoGrid-cell-inner">
                                 <div class="text-center pull-left" style="width:200px">
-                                    <h2>22,5</h2>
+                                    <h2 title="Dag av besöket {{ model.latest.bmi.date | date: 'dd MM yyyy' }}">{{ model.latest.bmi.value }}</h2>
                                     <h4>BMI</h4>
                                 </div>
 
                             <div class="text-center pull-left" style="width:200px">
-                                <h2>78 kg</h2>
+                                <h2 title="Dag av besöket {{ model.latest.weight.date | date: 'dd MM yyyy' }}">{{ model.latest.weight.value }} kg</h2>
                                 <h4>Vikt</h4>
                             </div>
 
@@ -224,6 +224,22 @@
 
 <div class="Panel">
     <h2>Tabell - samtliga besök</h2>
+    <div class="table-responsive">
+        <table class="Table--fixed table table-striped table-bordered row-border hover visits-table">
+            <thead>
+                <tr>
+                    <th class="key"></th>
+                    <th ng-repeat="date in model.data.table['Besöksdatum']">{{ date | date : 'dd MMM yyyy'}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, contact) in model.data.table">
+                    <td class="key">{{ key }}</td>
+                    <td ng-repeat="c in contact track by $index">{{ c }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="Panel">
