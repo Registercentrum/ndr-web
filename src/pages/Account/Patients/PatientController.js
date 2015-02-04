@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('PatientController', [
-                 '$scope', '$http', '$stateParams', '$state', '$log',
-        function ($scope,   $http,   $stateParams,   $state,   $log) {
+                 '$scope', '$http', '$stateParams', '$state', '$log', '$filter',
+        function ($scope,   $http,   $stateParams,   $state,   $log,   $filter) {
 
         $scope.subject = undefined;
         $scope.subjectID = $stateParams.patientID;
@@ -10,52 +10,87 @@ angular.module("ndrApp")
             data : {}
         }
 
-        $scope.$watch("subject", getHba1cTrend, true);
+        $scope.$watch("subject", populateSeriesData, true);
+        $scope.$watch("subject", populateTableData, true);
 
-        function getHba1cTrend () {
+        function populateTableData () {
+            var contacts, keys, table = {};
+
+            if (!$scope.subject) return false;
+
+            contacts = angular.copy($scope.subject.contacts).reverse().splice(0, 5);
+
+            // Get tha keys for the table
+            keys = _.keys(contacts[0]);
+
+            // Construct the table data
+            _.each(keys, function (key) {
+                table[key] = [];
+                _.each(contacts, function (contact) {
+                    table[key].push(contact[key]);
+                });
+            });
+
+            $scope.model.data.table = table;
+
+        }
+
+        function populateSeriesData () {
             var contacts, series, seriesBloodPressure, seriesCholesterol;
 
             if (!$scope.subject) return false;
 
-            contacts = angular.copy($scope.subject.contacts).sort(function (a,b) {
-                return new Date(a.contactDate) - new Date(b.contactDate);
-            });
+            // contacts = angular.copy($scope.subject.contacts).sort(function (a,b) {
+            //     return new Date(a.contactDate) - new Date(b.contactDate);
+            // });
 
-            series              = [];
-            seriesBloodPressure = [];
-            seriesCholesterol   = [];
 
-            _.each(contacts, function(obj, key){
-                var o, oBloodPressure, oCholesterol;
+            function getSeriesData (key) {
+                return _.map(contacts, function (obj) {
+                    if (_.isNumber(obj[key])) {
+                        return {
+                            x : new Date(obj.contactDate),
+                            y : obj[key]
+                        }
+                    }
+                });
+            }
 
-                o = {
-                    x : new Date(obj.contactDate),
-                    y : obj.hba1c,
-                };
+            $scope.model.data.lineChartHba1c = getSeriesData('hba1c');
+            $scope.model.data.lineChartBloodPressure = getSeriesData('bpSystolic');
+            $scope.model.data.lineChartCholesterol = getSeriesData('cholesterol');
+            // _.each(contacts, function(obj, key){
+            //     var o, oBloodPressure, oCholesterol;
 
-                oBloodPressure = {
-                    x : new Date(obj.contactDate),
-                    y : obj.bpSystolic,
-                };
+            //     o = {
+            //         x : new Date(obj.contactDate),
+            //         y : obj.hba1c,
+            //     };
 
-                oCholesterol = {
-                    x : new Date(obj.contactDate),
-                    y : obj.cholesterol,
-                };
+            //     oBloodPressure = {
+            //         x : new Date(obj.contactDate),
+            //         y : obj.bpSystolic,
+            //     };
 
-                if (o.y) series.push(o)
-                if (oBloodPressure.y) seriesBloodPressure.push(oBloodPressure)
-                if (oCholesterol.y) seriesCholesterol.push(oCholesterol)
+            //     oCholesterol = {
+            //         x : new Date(obj.contactDate),
+            //         y : obj.cholesterol,
+            //     };
 
-            })
+            //     if (o.y) series.push(o)
+            //     if (oBloodPressure.y) seriesBloodPressure.push(oBloodPressure)
+            //     if (oCholesterol.y) seriesCholesterol.push(oCholesterol)
+
+            // })
 
            /* series.sort(function (a,b){
                 return b.x - a.x;
             })*/
 
-            $scope.model.data.lineChartHba1c = series;
-            $scope.model.data.lineChartBloodPressure = seriesBloodPressure;
-            $scope.model.data.lineChartCholesterol = seriesCholesterol;
+            // $scope.model.data.lineChartHba1c = series;
+            // $scope.model.data.lineChartBloodPressure = seriesBloodPressure;
+            // $scope.model.data.lineChartCholesterol = seriesCholesterol;
+
 
         }
 
@@ -66,8 +101,10 @@ angular.module("ndrApp")
         })
         .success(function(data, status, headers, config) {
             $log.debug("Retrieved subject", data);
-            $scope.subject = data;
 
+            // Sort the contacts by date in desc order
+            data.contacts = _.sortBy(data.contacts, 'contactDate').reverse();
+            $scope.subject = data;
         })
         .error(function(data, status, headers, config) {
             //$log.error('Could not retrieve data from ' + url);
