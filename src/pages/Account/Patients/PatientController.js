@@ -7,18 +7,20 @@ angular.module("ndrApp")
         $scope.subjectID = $stateParams.patientID;
 
         $scope.model = {
-            data : {}
+            data : {},
+            latest: {}
         }
 
         $scope.$watch("subject", populateSeriesData, true);
         $scope.$watch("subject", populateTableData, true);
+        $scope.$watch("subject", populateLatestData, true);
 
         function populateTableData () {
             var contacts, keys, table = {};
 
             if (!$scope.subject) return false;
 
-            contacts = angular.copy($scope.subject.contacts).reverse().splice(0, 5);
+            contacts = angular.copy($scope.subject.contacts).splice(0, 5);
 
             // Get tha keys for the table
             keys = _.keys(contacts[0]);
@@ -36,63 +38,66 @@ angular.module("ndrApp")
         }
 
         function populateSeriesData () {
-            var contacts, series, seriesBloodPressure, seriesCholesterol;
-
             if (!$scope.subject) return false;
 
-            // contacts = angular.copy($scope.subject.contacts).sort(function (a,b) {
-            //     return new Date(a.contactDate) - new Date(b.contactDate);
-            // });
-
-
-            function getSeriesData (key) {
-                return _.map(contacts, function (obj) {
-                    if (_.isNumber(obj[key])) {
-                        return {
-                            x : new Date(obj.contactDate),
-                            y : obj[key]
-                        }
-                    }
-                });
-            }
-
-            $scope.model.data.lineChartHba1c = getSeriesData('hba1c');
-            $scope.model.data.lineChartBloodPressure = getSeriesData('bpSystolic');
-            $scope.model.data.lineChartCholesterol = getSeriesData('cholesterol');
-            // _.each(contacts, function(obj, key){
-            //     var o, oBloodPressure, oCholesterol;
-
-            //     o = {
-            //         x : new Date(obj.contactDate),
-            //         y : obj.hba1c,
-            //     };
-
-            //     oBloodPressure = {
-            //         x : new Date(obj.contactDate),
-            //         y : obj.bpSystolic,
-            //     };
-
-            //     oCholesterol = {
-            //         x : new Date(obj.contactDate),
-            //         y : obj.cholesterol,
-            //     };
-
-            //     if (o.y) series.push(o)
-            //     if (oBloodPressure.y) seriesBloodPressure.push(oBloodPressure)
-            //     if (oCholesterol.y) seriesCholesterol.push(oCholesterol)
-
-            // })
-
-           /* series.sort(function (a,b){
-                return b.x - a.x;
-            })*/
-
-            // $scope.model.data.lineChartHba1c = series;
-            // $scope.model.data.lineChartBloodPressure = seriesBloodPressure;
-            // $scope.model.data.lineChartCholesterol = seriesCholesterol;
-
-
+            $scope.model.data.lineChartHba1c         = getSeries('hba1c');
+            $scope.model.data.lineChartBloodPressure = getSeries('bpSystolic');
+            $scope.model.data.lineChartCholesterol   = getSeries('cholesterol');
         }
+
+
+        function populateLatestData () {
+            if (!$scope.subject) return false;
+
+            $scope.model.latest.bmi    = getLatestValue('bmi');
+            $scope.model.latest.weight = getLatestValue('weight');
+        }
+
+
+        /**
+         * Generate time series data for the charts for a specific key
+         * @param  {String} key What values are we looking for?
+         * @return {Array} Array of key:value objects
+         */
+        function getSeries (key) {
+            var series = [];
+
+            _.each($scope.subject.contacts, function (obj) {
+                if (_.isNumber(obj[key])) {
+                    series.push({
+                        x : new Date(obj.contactDate),
+                        y : obj[key]
+                    })
+                }
+            });
+
+            // Return them in ascending order, by date
+            return series.reverse();
+        }
+
+
+        /**
+         * Get the most recent value for the key
+         * @param  {String} key What are we looking for?
+         * @return {Object} A pair of value and the data
+         */
+        function getLatestValue (key) {
+            var visit = _.find($scope.subject.contacts, function (v) { return !_.isNull(v[key]); });
+
+            return visit ?
+                { value: visit[key], date: visit['contactDate'] } :
+                { value: '-', date: '-' };
+        }
+
+
+        /**
+         * Calculate the subject's age
+         * @param  {Date} birthDate Subject's birth date
+         * @return {Number} Subject's age in years
+         */
+        $scope.calculateAge = function (birthDate) {
+            return moment().diff(birthDate, 'years');
+        };
 
 
         $http({
@@ -109,11 +114,6 @@ angular.module("ndrApp")
         .error(function(data, status, headers, config) {
             //$log.error('Could not retrieve data from ' + url);
         });
-
-
-        $scope.calculateAge = function (birthDate) {
-            return moment().diff(birthDate, 'years');
-        };
 
 
 

@@ -89,12 +89,12 @@
                     <div class="InfoGrid-cell InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width70">
                         <div class="InfoGrid-cell-inner">
                                 <div class="text-center pull-left" style="width:200px">
-                                    <h2>22,5</h2>
+                                    <h2 title="Dag av besöket {{ model.latest.bmi.date | date: 'dd MM yyyy' }}">{{ model.latest.bmi.value }}</h2>
                                     <h4>BMI</h4>
                                 </div>
 
                             <div class="text-center pull-left" style="width:200px">
-                                <h2>78 kg</h2>
+                                <h2 title="Dag av besöket {{ model.latest.weight.date | date: 'dd MM yyyy' }}">{{ model.latest.weight.value }} kg</h2>
                                 <h4>Vikt</h4>
                             </div>
 
