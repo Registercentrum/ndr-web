@@ -32,14 +32,28 @@
     <link rel="stylesheet" href="css/ndr.css">
 
 
-
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js"></script>
+    <script type="text/javascript">
+        if (!Object.create) {
+            Object.create = (function(){
+                function F(){}
+
+                return function(o){
+                    if (arguments.length != 1) {
+                        throw new Error('Object.create implementation only accepts one parameter.');
+                    }
+                    F.prototype = o;
+                    return new F()
+                }
+            })()
+        }
+
+    </script>
     <![endif]-->
 
 

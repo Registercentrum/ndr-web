@@ -16,7 +16,7 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
                 // Make this state abstract so it can never be loaded directly
                 abstract: true,
-                template : "<ui-view/>",
+                template : "<div ui-view></div>",
 
                 // Centralize the resolution of common meta data (counties, units, indicators etc.)
                 resolve: {
