@@ -8,7 +8,8 @@ angular.module("ndrApp")
 
         $scope.model = {
             data : {},
-            latest: {}
+            latest: {},
+            mode : 'visual'
         }
 
         $scope.$watch("subject", populateSeriesData, true);
@@ -77,6 +78,17 @@ angular.module("ndrApp")
 
             $scope.model.latest.bmi    = getLatestValue('bmi');
             $scope.model.latest.weight = getLatestValue('weight');
+            $scope.model.latest.treatment = getLatestValue('treatment');
+
+            $scope.model.latest.footRiscCategory = getLatestValue('footRiscCategory');
+            $scope.model.latest.footExaminationDate = getLatestValue('footExaminationDate');
+
+            _.each($scope.contactAttributes, function(obj, key){
+                console.log("ob", obj, key);
+                $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
+            })
+
+
         }
 
 
@@ -110,9 +122,35 @@ angular.module("ndrApp")
         function getLatestValue (key) {
             var visit = _.find($scope.subject.contacts, function (v) { return !_.isNull(v[key]); });
 
+            var attribute = _.find($scope.contactAttributes, {columnName: key}),
+                label = attribute ? attribute.question : key;
+
+
+            if(key == "diabetesType") return { value: '-', date: '-', label : '-' };
+            if(typeof visit == "undefined") return { value: '-', date: '-', label : '-' };
+
+            var value;
+
+            if (_.isNull(visit[key])) {
+                value = '-';
+
+                // If it's a date, format it in a nice way
+            } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
+                value = $filter('date')(new Date(visit[key]), 'yyyy-MM-dd');
+
+                // Get proper label for the id value
+            } else if (attribute && attribute.domain && attribute.domain.isEnumerated) {
+                value = _.find(attribute.domain.domainValues, {code: visit[key]}).text;
+
+                // If it's a boolean, return proper translation (ja-nej)
+            } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
+                value = visit[key] ? 'Ja' : 'Nej';
+            }
+
+
             return visit ?
-                { value: visit[key], date: visit['contactDate'] } :
-                { value: '-', date: '-' };
+                { value: visit[key], date: visit['contactDate'], label : value } :
+                { value: '-', date: '-', label : value };
         }
 
 
@@ -123,6 +161,11 @@ angular.module("ndrApp")
          */
         $scope.calculateAge = function (birthDate) {
             return moment().diff(birthDate, 'years');
+        };
+
+        $scope.getDiabetesType = function (id) {
+            var attribute = _.find($scope.contactAttributes, {columnName: 'diabetesType'});
+            return _.find(attribute.domain.domainValues, {code: id}).text;
         };
 
 
@@ -138,6 +181,7 @@ angular.module("ndrApp")
 
             // Sort the contacts by date in desc order
             subject.contacts = _.sortBy(subject.contacts, 'contactDate').reverse();
+
             $scope.subject = subject;
 
             $scope.contactAttributes = values[1];

@@ -56,7 +56,7 @@ angular.module('ndrApp')
                 .then(function(subject) {
                     return subject.plain();
                 })
-                .catch(function(error) {
+                ["catch"](function(error) {
                     return error
                 });
         }
