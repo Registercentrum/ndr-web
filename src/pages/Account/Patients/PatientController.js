@@ -1,16 +1,29 @@
 angular.module("ndrApp")
     .controller('PatientController', [
-                 '$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService',
-        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService) {
+                 '$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout',
+        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout) {
 
         $scope.subject = undefined;
-        $scope.subjectID = $stateParams.patientID;
+        $scope.subjectID = false || $stateParams.patientID;
 
         $scope.model = {
-            data : {},
+            data : {
+                trend : {},
+                chart :  {
+                    gauge : {
+                        physicalActivity : {}
+                    }
+                }
+            },
             latest: {},
             mode : 'visual'
         }
+
+
+            $timeout(function (){
+                jQuery('.u-equalHeight').matchHeight(true);
+
+            },1000)
 
         $scope.$watch("subject", populateSeriesData, true);
         $scope.$watch("subject", populateTableData, true);
@@ -67,9 +80,17 @@ angular.module("ndrApp")
         function populateSeriesData () {
             if (!$scope.subject) return false;
 
-            $scope.model.data.lineChartHba1c         = getSeries('hba1c');
-            $scope.model.data.lineChartBloodPressure = getSeries('bpSystolic');
-            $scope.model.data.lineChartCholesterol   = getSeries('cholesterol');
+            $scope.model.data.trend.hba1c               = getSeries('hba1c');
+            $scope.model.data.trend.bpSystolic          = getSeries('bpSystolic');
+            $scope.model.data.trend.cholesterol         = getSeries('cholesterol');
+            $scope.model.data.trend.triglyceride        = getSeries('triglyceride');
+            $scope.model.data.trend.ldl                 = getSeries('ldl');
+            $scope.model.data.trend.hdl                 = getSeries('hdl');
+
+            $scope.model.data.chart.physicalActivity = getLatestValue('physicalActivity');
+            $scope.model.data.chart.smoking = getLatestValue('smoking');
+
+
         }
 
 
@@ -87,8 +108,6 @@ angular.module("ndrApp")
                 console.log("ob", obj, key);
                 $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
             })
-
-
         }
 
 
@@ -164,29 +183,42 @@ angular.module("ndrApp")
         };
 
         $scope.getDiabetesType = function (id) {
+            if(!$scope.contactAttributes) return false;
             var attribute = _.find($scope.contactAttributes, {columnName: 'diabetesType'});
             return _.find(attribute.domain.domainValues, {code: id}).text;
         };
 
 
         // Make requests for the subject data and contactAttributes needed to display the labels in the table
-        $q.all([
-            dataService.getSubject($scope.subjectID).then(function (response) { return response; }),
-            dataService.getContactAttributes().then(function (response) { return response; })
-          ])
-          .then(function (values) {
-            var subject = values[0];
 
-            $log.debug("Retrieved subject", subject);
+        function getPatient(id) {
 
-            // Sort the contacts by date in desc order
-            subject.contacts = _.sortBy(subject.contacts, 'contactDate').reverse();
+            $q.all([
+                dataService.getSubject(id).then(function (response) {
+                    return response;
+                }),
+                dataService.getContactAttributes().then(function (response) {
+                    return response;
+                })
+            ])
+                .then(function (values) {
+                    var subject = values[0];
 
-            $scope.subject = subject;
+                    $log.debug("Retrieved subject", subject);
 
-            $scope.contactAttributes = values[1];
-          });
+                    // Sort the contacts by date in desc order
+                    subject.contacts = _.sortBy(subject.contacts, 'contactDate').reverse();
 
+                    $scope.subject = subject;
+
+                    $scope.contactAttributes = values[1];
+                });
+
+        }
+
+            if($scope.subjectID){
+                getPatient($scope.subjectID)
+            }
 
 
 
@@ -270,3 +302,9 @@ angular.module("ndrApp")
         
 
     }]);
+
+angular.module("ndrApp")
+.controller('CarouselDemoCtrl', function ($scope) {
+    $scope.myInterval = 5000;
+
+});

@@ -1,6 +1,8 @@
 angular.module('ndrApp')
-    .controller('HeaderController', function () {
+    .controller('HeaderController', function ($scope, accountService) {
 
-        $('.dropdown-toggle').dropdownHover({});
+        $scope.accountService = accountService;
+
+        $scope.accountModel = accountService.accountModel;
 
 });

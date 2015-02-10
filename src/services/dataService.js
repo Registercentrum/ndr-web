@@ -3,7 +3,7 @@
 // Data Service
 
 angular.module('ndrApp')
-    .service('dataService', ['$q', '$http', 'Restangular', function($q, $http, Restangular) {
+    .service('dataService', ['$q', '$http', 'Restangular', 'accountService', function($q, $http, Restangular, accountService) {
 
         var self = this;
 
@@ -52,7 +52,7 @@ angular.module('ndrApp')
         }
 
         this.getSubject = function (id) {
-            return Restangular.one('Subject', id).get({'AccountID': 13})
+            return Restangular.one('Subject', id).get({'AccountID': accountService.accountModel.activeAccount.accountID})
                 .then(function(subject) {
                     return subject.plain();
                 })

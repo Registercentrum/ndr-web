@@ -1,4 +1,5 @@
 .Button {
+  line-height: inherit;
   display: inline-block;
   margin-bottom: 0; // For input.btn
   font-weight: @btn-font-weight;
@@ -100,9 +101,9 @@
   border:none;
   &:hover,
   &:focus,
-  &.focus {
-    background-color: rgba(red(@ndr-dark), green(@ndr-dark), blue(@ndr-dark),0.2);
-    color: @ndr-dark;
+  &.focus,&.active {
+    background-color: rgba(red(@ndr-dark), green(@ndr-dark), blue(@ndr-dark),0.8);
+    color: @ndr-white;
   }
 
 }
@@ -131,6 +132,12 @@
   display: block;
   width: 100%;
   box-sizing: border-box;
+}
+
+.Button--tight {
+  padding-left: 14px;
+  padding-right: 14px;
+  font-weight: 400;
 }
 
 .Button--small {

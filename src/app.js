@@ -133,6 +133,24 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 //controller : "ResearchController"
             })
 
+            .state('main.forms', {
+                url: "/blanketter",
+                templateUrl: "src/pages/Forms/forms.html"
+                //controller : "ResearchController"
+            })
+
+            .state('main.press', {
+                url: "/press",
+                templateUrl: "src/pages/Press/press.html"
+                //controller : "ResearchController"
+            })
+
+            .state('main.prom', {
+                url: "/prom",
+                templateUrl: "src/pages/Prom/prom.html"
+                //controller : "ResearchController"
+            })
+
             /* Logged in states */
 
             .state('main.account', {

@@ -16,7 +16,8 @@ angular.module('ndrApp')
                 var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'spline',
-                            height : 130,
+                            height : 160,
+                           // width : 200,
                             marginTop : 20,
                             marginBottom : 30,
                             marginLeft : 35,
@@ -105,7 +106,7 @@ angular.module('ndrApp')
                                     },
                                     stops: [
                                         [0, Highcharts.Color("#fff").setOpacity(0.5).get('rgba')],
-                                        [1, Highcharts.Color("lightblue").setOpacity(0).get('rgba')]
+                                        [1, Highcharts.Color("E14274").setOpacity(0).get('rgba')]
                                     ]
                                 }
                             }

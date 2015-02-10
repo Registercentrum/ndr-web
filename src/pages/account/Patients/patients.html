@@ -3,7 +3,7 @@
         <h1 class="Page-title">Söklista</h1>
         <p>Välj besöksperiod och andra sökkriterier.</p>
     </div>
-    <form class="col-md-7 pull-right" role="search" name="subjectForm" novalidate>
+    <form class="col-md-7 text-right pull-right" role="search" name="subjectForm" novalidate>
       <div class="PatientSearch">
         <div class="PatientSearch-inner">
               <span class="PatientSearch-icon">
@@ -162,27 +162,34 @@
                     <td>Senaste besök</td>
                     <!-- <td>Blodtryck</td> -->
                     <td>HbA1c</td>
+                    <!--<td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</td>-->
+
                     <td>Funktioner</td>
+
+                    <!--<td ng-repeat="f in filters | filter:{isChosen:true}">{{ f }}</td>-->
+
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="subject in model.filteredSubjects">
                     <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
                     <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
-                    <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"</td>
+                    <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
                     <!-- <td once-text="subject.aggregatedProfile.bpDiastolic"</td> -->
-                    <td once-text="subject.aggregatedProfile.hba1c"</td>
+                    <td once-text="subject.aggregatedProfile.hba1c"></td>
+                    <!--<td ng-repeat="f in filters | filter:{isChosen:true}">{{ subject.aggregatedProfile[f.columnName] }}</td>-->
+
                     <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-         <pre>
-            <!-- {{  model  | json  }} -->
-            <!-- {{  activeFilters  | json  }} -->
-            <!-- {{  model.filteredSubjects  | json  }} -->
-        </pre>
+        <!-- <pre>
+            &lt;!&ndash; {{  model  | json  }} &ndash;&gt;
+            &lt;!&ndash; {{  activeFilters  | json  }} &ndash;&gt;
+            &lt;!&ndash; {{  model.filteredSubjects  | json  }} &ndash;&gt;
+        </pre>-->
     </div>
 </div>
 

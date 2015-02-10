@@ -1,5 +1,5 @@
 <!-- Static navbar -->
-<div class="Navbar navbar navbar-default navbar-static-top" role="navigation" ng-controller="HeaderController">
+<div class="Navbar navbar navbar-default navbar-static-top" role="navigation" ng-controller="NavController">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -23,13 +23,9 @@
                     </ul>
                 </li>
                 <li ui-sref-active="active"><a ui-sref="main.patient"><i class="fa fa-user"></i> För dig med diabetes</a></li>
-
-
                 <li ui-sref-active="active"><a ui-sref="main.improvement"><i class="fa fa-lightbulb-o"></i> Förbättringsprojekt</a></li>
                 <li ui-sref-active="active"><a ui-sref="main.research"><i class="fa fa-flash"></i> Forskning</a></li>
-
                 <li ui-sref-active="active"><a ui-sref="main.about"><i class="fa fa-map-marker"></i> Om NDR</a></li>
-
 
                     <!--<li ui-sref-active="active"><a ui-sref="main.guidelines"><i class="fa fa-lightbulb-o"></i> Style guidelines</a></li>-->
                 <span ng-show="params.debug=='true'">

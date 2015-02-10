@@ -1,17 +1,20 @@
 <div class="row">
 
     <div class="col-md-5">
-        <h1 class="Page-title">Översikt</h1>
+        <h1 class="Page-title">Översikt  <span style="font-size: 15px">{{ accountModel.activeAccount.unit.name }}</span>    </h1>
+
+
     </div>
 
-    <form class="col-md-7 pull-right" role="search" name="subjectForm" novalidate>
+    <form class="col-md-7 text-right" role="search" name="subjectForm" novalidate>
         <div class="PatientSearch">
             <div class="PatientSearch-inner">
             <span class="PatientSearch-icon">
               <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
             </span>
-                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
-                <button class="PatientSearch-reportButton">Rapportera</button> <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Profil</button>
+                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
+                       ng-pattern="accountHelpers.pnrRegex">
+                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera</button><button style="border-left: 1px solid white;" class="PatientSearch-reportButton">Profil</button>
             </div>
         </div>
     </form>
@@ -21,10 +24,8 @@
 <div class="row">
 
     <div class="col-md-12">
-
         <div class="Panel">
-
-           <!-- <div key-indicators id="13" geo="'unit'"></div>-->
+            <div key-indicators id="accountModel.activeAccount.unit.unitID" geo-type="'unit'"></div>
         </div>
     </div>
 </div>
@@ -32,36 +33,38 @@
 
 <div class="row">
 
-    <div class="col-md-6">
-
-        <div class="Panel">
-
-            <p>Här kommer det info som berör dig/ditt konto</p>
-
-           <!-- <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
-
-            <pre>
-
-                {{ serverError }}
-                {{ accountModel | json  }}
-            </pre>-->
-
-        </div>
-
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="Panel Panel--blue">
 
             <h3>Genvägar</h3>
 
-            <p>
-                Rapportera
-            </p>
-            <p>
-                Patientprofil
-            </p>
+            <p></p>
+
+        </div>
+
+    </div>
+
+    <div>
+
+        <div class="col-md-6">
+
+            <div class="Panel">
+
+
+                <p>Här kommer det info som berör dig/ditt konto</p>
+
+                <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
+
+
+                <h3>Beta-information</h3>
+            <pre>
+
+                {{ serverError }}
+                {{ accountModel | json  }}
+            </pre>
+
+            </div>
 
         </div>
 

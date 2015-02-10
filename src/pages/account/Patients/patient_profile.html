@@ -1,16 +1,27 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-5">
         <h1 class="Page-title">Patientprofil</h1>
-
-       <!--     <div class="PatientSearch pull-right">
-                    <span class="PatientSearch-icon">
-                        <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
-                    </span>
+    </div>
+    <form class="col-md-7 text-right" role="search" name="subjectForm" novalidate>
+        <div class="PatientSearch">
+            <div class="PatientSearch-inner">
+        <span class="PatientSearch-icon">
+          <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
+        </span>
                 <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
                        ng-pattern="accountHelpers.pnrRegex">
-                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button>
+                <button style="border-left: 1px solid white;" class="PatientSearch-reportButton">Visa profil</button>
             </div>
--->
+        </div>
+    </form>
+</div>
+
+<div id="patient" ng-show="subject">
+
+
+<div class="row">
+
+    <div class="col-md-12">
 
         <div class="PatientHeader clearfix">
             <div class="PatientHeader-personNumber col-md-5 u-noLeftPadding">
@@ -18,33 +29,22 @@
             </div>
             <div class="PatientHeader-navigation col-md-7 u-noRightPadding">
 
-               <!-- <select name="" class="form-control pull-right" id="" style="width: 250px">
-                    <option value="">Visa / komplettera besök</option>
-                </select>-->
-
                 <div class="row">
-                    <!--<div class="col-md-6">
-                        <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="printDiv('printableArea')" class="pull-right Button Button--info Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
-                        <a style="margin-right: 10px" href="#/inloggad/patient/{{ subject.subjectID }}" class="pull-right Button Button--info Button--dark" ng-click=""><i class="fa fa-plus-circle"></i> Nytt besök</a>
-                    </div>-->
-
-                    <div class="col-md-6"></div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-12 text-right" style="margin-top: 10px;">
+                        <a class="Button--tight Button Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
+                        <a style="margin-right: 20px" href="#/inloggad/patient/{{ subject.subjectID }}" class="Button--tight Button Button--dark" ng-click=""><i class="fa fa-plus-circle"></i> Nytt besök</a>
 
                         <div class="btn-group" style="float:right">
-                            <label class="btn btn-info" ng-model="model.mode" btn-radio="'visual'" uncheckable><i class="fa fa-area-chart"></i> Profil</label>
-                            <label class="btn btn-info" ng-model="model.mode" btn-radio="'table'" uncheckable><i class="fa fa-table"></i> Tabell </label>
+                            <label class="btn Button--tight  Button Button--dark" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</label>
+                            <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </label>
                         </div>
-
                     </div>
-
                 </div>
-
-
 
             </div>
         </div>
+
+
     </div>
 </div>
 
@@ -54,133 +54,130 @@
     <div class="row" id="printableArea">
         <div class="col-md-12">
 
-            <div class="Panel Panel--blue InfoGrid clearfix">
+            <div class="Panel Panel--blue clearfix" style="padding: 0px">
 
                 <div class="Panel--profile col-md-4">
 
-                        test
-                </div>
-
-                <div class="Panel--profile col-md-4">
-
-                        test
-                </div>
-
-                <div class="Panel--profile col-md-4">
-
-                    test
-                </div>
-
-
-             <!--   <div class="InfoGrid-equalHeightsGroup4 InfoGrid-wrapper--width70">
-
-                    <div class="InfoGrid-cellWrapper">
-
-                        <div class="InfoGrid-cell InfoGrid-wrapper--width70 InfoGrid-equalHeightsGroup1">
-                            <div class="InfoGrid-cell-inner">
-
-                                <b>{{ subject.socialNumber }}</b>
-                                <br>
-                                {{ "Man, " + calculateAge(subject.dateOfBirth) }} år gammal
-                                <br/>
-                                Typ: {{ getDiabetesType(subject.diabetesType) }}
-                                <br/>
-                                Debutår: {{ subject.yearOfOnset }}
-                                <br/>
-                                Diabetesbehandling: {{ model.latest.treatment.label }}
-
-                            </div>
-                        </div>
-
-                        <div class="InfoGrid-wrapper--width30 InfoGrid-equalHeightsGroup1 InfoGrid-cellGroup">
-                            <div class="InfoGrid-cell"></div>
-                            <div class="InfoGrid-cell"> </div>
-                        </div>
-                    </div>
-
-                    <div class="InfoGrid-cellWrapper">
-                        <div class="InfoGrid-cell InfoGrid-equalHeightsGroup2 InfoGrid-wrapper--width70">
-                            <div class="InfoGrid-cell-inner">
-                                <h4>HbA1c trend</h4>
-                                <div class="" line-chart-patient-hba1c model="model.data.lineChartHba1c"></div>
-
-                            </div>
-                        </div>
-
-                        <div class="InfoGrid-equalHeightsGroup2 InfoGrid-wrapper--width30 InfoGrid-cellGroup">
-                            <div class="InfoGrid-cell">&lt;!&ndash;[ INFOGRID CELL: BLOOD PRESSURE ]&ndash;&gt;</div>
-                            <div class="InfoGrid-cell">&lt;!&ndash;[ INFOGRID CELL: EXERCISE ]&ndash;&gt;</div>
-                        </div>
-                    </div>
-
-                    <div class="InfoGrid-cellWrapper">
-                        <div class="InfoGrid-cell InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width70">
-                            <div class="InfoGrid-cell-inner">
-                                    <div class="text-center pull-left" style="width:200px">
-                                        <h2 title="Dag av besöket {{ model.latest.bmi.date | date: 'dd MM yyyy' }}">{{ model.latest.bmi.value }}</h2>
-                                        <h4>BMI</h4>
-                                    </div>
-
-                                <div class="text-center pull-left" style="width:200px">
-                                    <h2 title="Dag av besöket {{ model.latest.weight.date | date: 'dd MM yyyy' }}">{{ model.latest.weight.value }} kg</h2>
-                                    <h4>Vikt</h4>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <div class="InfoGrid-equalHeightsGroup3 InfoGrid-wrapper--width30 InfoGrid-cellGroup">
-                            <div class="InfoGrid-cell">&lt;!&ndash;[ INFOGRID CELL: {{ "67 kg" }} ]&ndash;&gt;</div>
-                        </div>
-                    </div>
+                    <b>{{ subject.socialNumber }}</b>
+                    <br>
+                    {{ "Man, " + calculateAge(subject.dateOfBirth) }} år gammal
+                    <br/>
+                    Typ: {{ getDiabetesType(subject.diabetesType) }}
+                    <br/>
+                    Debutår: {{ subject.yearOfOnset }}
+                    <br/>
+                    Diabetesbehandling: {{ model.latest.treatment.label }}
 
                 </div>
 
+                <div class="Panel--profile col-md-4 text-center">
 
-                <div class="InfoGrid-cell InfoGrid-equalHeightsGroup4 InfoGrid-wrapper--width30">
-                    <div class="InfoGrid-cell-inner">
-                       <h4>Fysisk aktivetet m.m.</h4>
+                    <div class="text-center" tooltip="{{ model.latest.bmi.date | date: 'shortDate' }}">
+                        <h3>{{ model.latest.bmi.value }}</h3>
+                        <h4>BMI
+                        </h4>
                     </div>
-                </div>-->
+
+                    <div class="text-center">
+                        <h3 title="Dag av besöket {{ model.latest.weight.date | date: 'dd MM yyyy' }}">{{ model.latest.weight.value }} kg</h3>
+                        <h4>Vikt</h4>
+                    </div>
 
 
 
+                </div>
+
+                <div class="Panel--profile Panel--profile-last col-md-4">
+
+                    <h4>HbA1c trend</h4>
+                    <div class="" line-chart-patient-hba1c model="model.data.trend.hba1c"></div>
+
+                </div>
 
             </div>
         </div>
     </div>
 
     <div class="row">
+
+
         <div class="col-md-6">
 
-            <div class="Panel Panel--green u-equalHeight">
-                <h4>Sjukdomar och behandlingar</h4>
+            <div class="Panel Panel--purple u-equalHeight">
+                <h4>Kolesterol</h4>
 
-                <table class="table">
-                    <tr><td>Aspirin</td><td>{{ subject.aspirin.text }}</td></tr>
-                    <tr><td>Waran</td><td>{{ subject.waran.text }}</td></tr>
-                </table>
+                <div style="width:100%">
+
+                <div ng-controller="CarouselDemoCtrl">
+                    <div>
+                        <carousel interval="myInterval">
+                            <slide>
+                                <div class="" line-chart-patient-hba1c model="model.data.trend.cholesterol"></div>
+                                <div class="carousel-caption">
+                                   Kolesterol
+                                </div>
+                            </slide>
+
+                            <slide>
+                                <div class="" line-chart-patient-hba1c model="model.data.trend.ldl"></div>
+                                <div class="carousel-caption">
+                                    LDL
+                                </div>
+                            </slide>
+
+                            <slide>
+                                <div class="" line-chart-patient-hba1c model="model.data.trend.hdl"></div>
+                                <div class="carousel-caption">
+                                    HDL
+                                </div>
+                            </slide>
+                        </carousel>
+                    </div>
+
+                </div>
+                </div>
+
+                <div> Behandlas med lipidsänkande läkemedel: {{ model.latest.lipidLoweringDrugs.label }}</div>
 
             </div>
         </div>
-
 
         <div class="col-md-6">
 
             <div class="Panel Panel--green u-equalHeight">
                 <h4>Blodtryck</h4>
-                <div class="" line-chart-patient-hba1c model="model.data.lineChartBloodPressure"></div>
+                <div class="" line-chart-patient-hba1c model="model.data.trend.bpSystolic"></div>
+                <div>Behandlas med blodtryckssänkande läkemedel: {{ model.latest.antihypertensives.label }}</div>
+
             </div>
         </div>
 
     </div>
 
     <div class="row">
+
         <div class="col-md-4">
 
-            <div class="Panel Panel--purple u-equalHeight">
+            <div class="Panel Panel--green u-equalHeight">
+                <h4>Hjärt-/kärlsjukdom</h4>
+
+                <table class="table">
+                    <tr><td tooltip="(någonsin, angina pectoris, genomgången hjärtinfarkt, PTCA, by-passkirurgi)">Ischemisk hjärtsjukdom
+                    </td><td>{{ model.latest.ischemicHeartDisease.label }}</td></tr>
+                    <tr><td>Cerebrovaskulär sjukdom</td><td>{{ model.latest.cerebrovascularDisease.label }}</td></tr>
+                    <tr><td>Behandlas med ASA</td><td>{{ model.latest.aspirin.label }}</td></tr>
+                    <tr><td>Waran</td><td>{{ model.latest.waran.label }}</td></tr>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="Panel u-equalHeight">
                 <h4>Fysisk aktivitet</h4>
-                <div column-chart=""></div>
+                <div gauge-chart model="model.data.chart.physicalActivity"></div>
+
             </div>
         </div>
 
@@ -188,21 +185,11 @@
 
             <div class="Panel Panel--purple u-equalHeight">
                 <h4>Rökning</h4>
-                <div column-chart=""></div>
+                {{ model.latest.smokingHabit.label }}
             </div>
         </div>
 
 
-        <div class="col-md-4">
-
-            <div class="Panel Panel--purple u-equalHeight">
-                <h4>Kolesterol</h4>
-                <div class="" line-chart-patient-hba1c model="model.data.lineChartCholesterol"></div>
-
-
-
-            </div>
-        </div>
 
     </div>
 
@@ -278,31 +265,19 @@
     </div>
 </div>
 
+</div>
+<script type="text/javascript">
+    jQuery('.u-equalHeight').matchHeight(true);
+</script>
+
+<!--
+
 <div class="Panel">
     <h2>Model</h2>
-     <pre>
+&lt;!&ndash;     <pre>
         {{ model.latest | json }}
-    </pre>
-<!--
-    <h2>Patient data </h2>
-                <pre>
-                    {{ subject | json }}
-                </pre>
+    </pre>&ndash;&gt;
 
-
-
-
-        </div>
-
-
-         <pre>
-
-
-
-        {{ serverError }}
-        {{  accountModel | json  }}
-        </pre>
-
-    </div>-->
 </div>
 
+-->

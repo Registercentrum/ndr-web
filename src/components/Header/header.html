@@ -1,5 +1,4 @@
-<div class="Header">
-
+<div class="Header" ng-controller="HeaderController">
 
     <div class="Header-extras">
 
@@ -15,7 +14,24 @@
                 <a style="margin-left: 10px" ui-sref="main.press" title="">Press</a>
                 <a style="margin-left: 10px" ui-sref="main.risk" title="">Riskmotor</a>
                 <a style="margin-left: 10px" ui-sref="main.forms" title="">Blanketter</a>
-                <a style="margin-left: 10px" ui-sref="main.account.home" title="">Logga in</a>
+
+                <a ng-show="!accountModel.activeAccount" style="margin-left: 10px" ui-sref="main.account.home" title="">Logga in</a>
+
+                <div ng-show="accountModel.activeAccount" class="dropdown" style="z-index: 5000;margin-left: 10px;display: inline-block; vertical-align: top">
+                    <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
+                        <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName }}
+                        <span class="caret"></span>
+                    </a>
+                    <div style="font-size: 11px"> {{ accountModel.activeAccount.unit.name }}</div>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li ng-repeat="account in accountModel.user.accounts" role="presentation"><a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="accountService.logOut()">Logga ut</a></li>
+
+                    </ul>
+                </div>
+
+               <!-- {{ accountModel  }}-->
+
             </div>
 
         </div>

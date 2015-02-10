@@ -3,9 +3,12 @@ angular.module('ndrApp')
 
         function link(scope, element, attrs) {
 
+            console.log("once", typeof scope.id, scope.id);
+            
+            if(!scope.id) return false;
+            
             var id = scope.id;
-            console.log("cc", scope.geoType);
-
+            
             scope.model = {
                 id : id,
                 geo : scope.geo,
@@ -14,6 +17,8 @@ angular.module('ndrApp')
                 unitTypeID : 0,
                 diabetesTypeCode : undefined,
             }
+            
+            console.log("ss", scope.model);
 
             scope.data = {
                 keyIndicator : undefined,
@@ -118,7 +123,7 @@ angular.module('ndrApp')
 
                     var keyIndicators = [];
 
-                    console.log("data", data);
+                    //console.log("data", data);
 
                     var byIndicator = _.groupBy(data, function (d){
                         return d.indicator.name;
@@ -135,7 +140,6 @@ angular.module('ndrApp')
                         }
 
                         var riket = _.filter(obj, function (o){
-                            console.log(o);
                             return o.statSet[0].unit.name == "Riket";
                         })[0]
 
