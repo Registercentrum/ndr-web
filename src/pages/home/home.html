@@ -2,26 +2,53 @@
 
   <div class="row">
     <div class="col-md-8">
-      <div class="Panel Intro Intro--equalHeights">
+      <div class="Panel Intro Intro--equalHeights" style="padding-bottom: 0px;margin-bottom: 0px">
         <div class="clearfix">
           <div class="Intro-backgroundImage"></div>
-          <div class="Intro-image col-md-3">
 
-          </div>
-          <div class="Intro-content col-md-9">
-            <h1 class="Intro-content-text" style="margin-top: 20px">
-              <span class="Intro-content-text-partial Intro-content-text-partial--heading">Från data till kunskap:</span><br>
-              <span class="Intro-content-text-partial">Hur jobbar Sveriges</span><br class="u-mobileHidden">
-              <span class="Intro-content-text-partial">landsting och vårdenheter</span><br class="u-mobileHidden">
-              <span class="Intro-content-text-partial">med diabetes?</span>
+          <div class="row">
 
+            <div class="Intro-image col-md-3">
 
-                <div class="" style="margin-top: 50px;">
-                   <div model="model.autocompleteModel" class="Autocomplete Autocomplete--large Autocomplete--white  Autocomplete--searchIcon" autocomplete></div>
+            </div>
+            <div class="Intro-content col-md-9">
+              <h1 class="Intro-content-text" style="margin-top: 20px">
+                <span class="Intro-content-text-partial Intro-content-text-partial--heading">Från data till kunskap:</span><br>
+                <span class="Intro-content-text-partial">Hur jobbar Sveriges</span><br class="u-mobileHidden">
+                <span class="Intro-content-text-partial">landsting och vårdenheter</span><br class="u-mobileHidden">
+                <span class="Intro-content-text-partial">med diabetes?</span>
+
+                  <div class="" style="margin-top: 50px;">
+
+                    <select model="{}" autocomplete class="Autocomplete Autocomplete--large Autocomplete--white Autocomplete--searchIcon"></select>
+
+                  </div>
+              </h1>
+
+            </div>
+
+          </div>  <!-- Row 1-->
+
+          <div class="row"  style="margin: -30px;padding-bottom: 0px;margin-bottom: 0px;margin-top: 25px">
+            <div class="col-md-12 Panel text-center" style="margin-bottom: 0px;border-radius:0px;padding:15px 10px;font-size: 13px">
+                <div class="col-md-4" style="color:#74BAD8">
+                    <h3>{{model.stats.indicatorSet[1].statSet[0].stat.cRep | number }}</h3>
+                    <p>personer med diabetes som registrerats i NDR senaste 12 mån</p>
                 </div>
 
-            </h1>
+                <div class="col-md-4" style="color:#278470">
+                  <h3>{{ model.stats.indicatorSet[1].statSet[0].stat.r + "%" }}</h3>
+                  <p>personer med typ 1-diabetes och senaste HbA1c >70 mmol/mol</p>
+                </div>
+
+              <div class="col-md-4" style="color:#E14274">
+                <h3>{{  model.stats.indicatorSet[0].statSet[0].stat.r + "%"  }}</h3>
+                <p>andel som röker, senaste 12 månaderna</p>
+              </div>
+
+            </div>
           </div>
+
         </div>
        <!-- <div class="Intro-promos Panel clearfix">
           <img src="/images/fp_statistics.png">
@@ -32,83 +59,8 @@
     <div class="col-md-4">
       <div class="Panel Intro--equalHeights">
         <h3 class="Panel-title">Nyheter</h3>
-        <!--<div list model="model.listModelNews"></div>-->
+        <div list model="model.listModelNews"></div>
 
-        <ul class="List">
-
-
-          <li class="List-item ng-scope">
-
-          <div class="List-item-inner">
-
-
-            <h3 class="List-item-title">
-              <a href="#/nyheter/8" class="List-item-link ng-binding">Så blev Sverige bäst i EU på diabetesvård</a>
-            </h3>
-
-          </div>
-
-        </li>
-          <li class="List-item ng-scope">
-
-          <div class="List-item-inner">
-
-            <h3 class="List-item-title">
-              <a href="#/nyheter/1" class="List-item-link ng-binding">NDR lanserar ny hemsida</a>
-            </h3>
-
-          </div>
-
-        </li>
-          <li class="List-item ng-scope">
-
-          <div class="List-item-inner">
-
-            <p class="List-item-category ng-binding"> </p>
-
-            <h3 class="List-item-title">
-              <a href="#/nyheter/2" class="List-item-link ng-binding">Hur är diabetesvården på din vårdcentral? Kolla själv. Nu är data öppna.</a>
-            </h3>
-
-          </div>
-
-
-        </li><!-- end ngRepeat: item in model.data -->
-
-          <li class="List-item ng-scope">
-
-            <div class="List-item-inner">
-
-              <p class="List-item-category ng-binding">Forskning </p>
-
-              <h3 class="List-item-title">
-                <a href="#/nyheter/2" class="List-item-link ng-binding">Många fler unga har typ 1-diabetes än vad som tidigare beräknats</a>
-              </h3>
-
-            </div>
-
-
-          </li><!-- end ngRepeat: item in model.data -->
-          <li class="List-item ng-scope">
-
-            <div class="List-item-inner">
-
-              <p class="List-item-category ng-binding">Forskning </p>
-
-              <h3 class="List-item-title">
-                <a href="#/nyheter/2" class="List-item-link ng-binding">Ökad dödlighet vid diabetes även vid välreglerat blodsocker</a>
-              </h3>
-
-            </div>
-
-
-          </li><!-- end ngRepeat: item in model.data -->
-
-
-
-
-
-        </ul>
 
         <div class="List-readmore">
           <a href="#/nyheter" class="Button Button--default Button--large Button--centered Button--centered--80">Se alla nyheter</a>
@@ -177,7 +129,7 @@
       <div class="Panel u-equalHeight" style="background: white url('images/annual_report.png');">
         <div class="spacer" style="height:200px;"></div>
 
-        <a ui-sref="om" class="Button Button--default Button--large  Button--white Button--centered">Ladda ned NDR:s årsrapport</a>
+        <a ui-sref="main.statistics" class="Button Button--default Button--large  Button--white Button--centered">Ladda ned NDR:s årsrapport</a>
       </div>
     </div>
 
@@ -213,7 +165,7 @@
             link: 'http://diabetolognytt.se'
           },
           {
-            title: 'SFSD',
+            title: 'Svensk Förening för Sjuksköterskor i Diabetesvård',
             link: 'http://www.swenurse.se/diabetesnurse/'
           },
           {
@@ -225,7 +177,6 @@
             link: 'http://swediabkids.ndr.nu/'
           }
 
-
         ]}"></div>
 
       </div>
@@ -234,7 +185,7 @@
   </div>
 
 
-  <div class="row">
+ <!-- <div class="row">
     <div class="col-md-12">
       <div class="Panel Twitter">
         <h1 class="Twitter-tweet">"Träffa oss på kvalitetsdagarna i Stockholm"</h1>
@@ -245,6 +196,6 @@
         <!--<div class="Button Button--default"><a ui-sref="om"></a></div>-->
       </div>
     </div>
-  </div>
+  </div>-->
 
 </div><!-- end container -->

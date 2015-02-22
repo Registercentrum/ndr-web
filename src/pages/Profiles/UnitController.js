@@ -19,28 +19,6 @@ angular.module("ndrApp")
             $scope.model.unit = data;
         })
 
-    /*    // GET DATA FOR BAR CHART
-        var query = dataService.queryFactory({fromYear: 2013, toYear : 2014, indicatorID: 101});
-        dataService.getStats(query).then(function (data){
-
-            var series = [];
-            
-            _.each(data.statSet, function(obj, key){
-
-                var o = {
-                    name : obj.unit.name,
-                    color : obj.unit.levelID != id ? "#D4D4D4" : "#FFCC01",
-                    y : obj.stat.r,
-                    cRep : obj.stat.cRep,
-                }
-
-                series.push(o)
-            })
-            
-            $scope.model.data.hba1c = series;
-
-        })*/
-
 
 
         // GET DATA FOR TREND CHART
@@ -67,10 +45,6 @@ angular.module("ndrApp")
             $scope.model.data.noPatients = _.last(series).cRep;
             $scope.model.data.trendhba1c = series;
         })
-
-
-
-
 
     }]);
 

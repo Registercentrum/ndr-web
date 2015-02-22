@@ -12,9 +12,8 @@
             <span class="PatientSearch-icon">
               <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
             </span>
-                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-                       ng-pattern="accountHelpers.pnrRegex">
-                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera</button><button style="border-left: 1px solid white;" class="PatientSearch-reportButton">Profil</button>
+                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
+                <button class="PatientSearch-searchButton" ng-click="gotoReport()" ng-disabled="!subjectForm.$valid">Rapportera</button><button ng-click="gotoProfile()" style="border-left: 1px solid white;" class="PatientSearch-reportButton">Diabetesprofil</button>
             </div>
         </div>
     </form>
@@ -25,7 +24,7 @@
 
     <div class="col-md-12">
         <div class="Panel">
-            <div key-indicators id="accountModel.activeAccount.unit.unitID" geo-type="'unit'"></div>
+            <div key-indicators light="true" id="accountModel.activeAccount.unit.unitID" geo-type="'unit'"></div>
         </div>
     </div>
 </div>

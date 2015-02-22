@@ -12,12 +12,13 @@
                 <a ui-sref="main.english" title="Start">In English</a>
                 <a style="margin-left: 10px" ui-sref="main.about" title="">Kontakt</a>
                 <a style="margin-left: 10px" ui-sref="main.press" title="">Press</a>
+                <a style="margin-left: 10px" ui-sref="main.compare" title="">Knappen</a>
                 <a style="margin-left: 10px" ui-sref="main.risk" title="">Riskmotor</a>
                 <a style="margin-left: 10px" ui-sref="main.forms" title="">Blanketter</a>
 
                 <a ng-show="!accountModel.activeAccount" style="margin-left: 10px" ui-sref="main.account.home" title="">Logga in</a>
 
-                <div ng-show="accountModel.activeAccount" class="dropdown" style="z-index: 5000;margin-left: 10px;display: inline-block; vertical-align: top">
+                <div ng-show="accountModel.activeAccount" class="dropdown btn btn-default" style="z-index: 5000;margin-left: 10px;display: inline-block; vertical-align: top">
                     <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
                         <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName }}
                         <span class="caret"></span>

@@ -39,15 +39,17 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat="indicator in data.keyIndicators" ng-click="model.selectedKeyIndicator = indicator.precalculated.id" class="TableIndicators-row"  ng-class="indicator.precalculated.id == model.selectedKeyIndicator ? 'selected' : ''">
-                <td class="TableIndicators-row-status {{indicator.precalculated.status}}" ng-class="{last: $last}">{{indicator.precalculated.name}}</td>
+            <tr ng-repeat="indicator in data.keyIndicators" ng-click="model.selectedKeyIndicator = indicator.id" class="TableIndicators-row"  ng-class="indicator.id == model.selectedKeyIndicator ? 'selected' : ''">
+                <td class="TableIndicators-row-status {{indicator.status}}" ng-class="{last: $last}">{{indicator.name}}</td>
                 <!--<td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>-->
-                <td class="TableIndicators-row-county">{{indicator.precalculated.geo}}%</td>
-                <td class="TableIndicators-row-country"><div class="TableIndicators-row-country-innerWrapper">{{indicator.precalculated.riket}}%</div></td>
-
+                <td class="TableIndicators-row-county">{{indicator.geo}}%</td>
+                <td class="TableIndicators-row-country"><div class="TableIndicators-row-country-innerWrapper">{{indicator.riket}}%</div></td>
             </tr>
             </tbody>
         </table>
+
+        <div ng-hide="data.keyIndicators" style="margin: 30px; font-size: 20px">Laddar <i  class="fa fa-spinner fa-spin"></i></div>
+
 
 
 

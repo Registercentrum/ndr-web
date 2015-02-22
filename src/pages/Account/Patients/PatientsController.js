@@ -7,11 +7,12 @@ angular.module('ndrApp')
             var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],
                 requiredFilters = ['diabetesType', 'hba1c'];
 
+            var dateOffset = (24*60*60*1000) * 365;
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
             $scope.datePickers = {
                 from: {
-                    date: $filter('date')(new Date('2013-01-01'), $scope.format),
+                    date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
                     opened: false,
                 },
                 to: {
@@ -44,11 +45,11 @@ angular.module('ndrApp')
 
             // Table options
             $scope.dtOptions = {
-                paginate : false,
+                paginate : true,
                 bFilter  : false,
                 bRetrieve: true,
                 order    : [[ 2, 'desc' ]],
-                // bDestroy : false,
+                bDestroy : false,
                 language: {
                     sEmptyTable    : 'Tabellen innehåller ingen data',
                     sInfo          : 'Visar _START_ till _END_ av totalt _TOTAL_ rader',
@@ -200,6 +201,11 @@ angular.module('ndrApp')
                 .then(function (filters) {
                     var required;
 
+                    console.log("FF", filters);
+                    filters = _.reject(filters, function (d){
+                        return d.columnName == "socialNumber" || d.columnName == "pumpOngoingSerial";
+                    })
+                    
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
                     _.each(filters, function (filter, index) {
                         // If the filter is required choose it instantly

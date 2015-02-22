@@ -3,18 +3,17 @@
     <h1 class="Page-title">Rapportera</h1>
   </div>
 
-  <form class="col-md-7 text-right" role="search" name="subjectForm" novalidate>
-    <div class="PatientSearch">
-      <div class="PatientSearch-inner">
+    <form class="col-md-7 text-right" role="search" name="subjectForm" novalidate>
+        <div class="PatientSearch">
+            <div class="PatientSearch-inner">
             <span class="PatientSearch-icon">
               <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
             </span>
-        <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-               ng-pattern="accountHelpers.pnrRegex">
-        <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera</button><button style="border-left: 1px solid white;" class="PatientSearch-reportButton">Profil</button>
-      </div>
-    </div>
-  </form>
+                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
+                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera</button>
+            </div>
+        </div>
+    </form>
 
 </div>
 

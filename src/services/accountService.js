@@ -31,9 +31,12 @@ angular.module('ndrApp')
 
         this.login = function(accountID) {
 
-
+            console.log("LOGGING IN");
+            
             return $http.get("https://ndr.registercentrum.se/api/User?APIKey=LkUtebH6B428KkPqAAsV")
                 .success(function(user) {
+
+                    console.log("SUCCESS");
 
                     self.accountModel.user = user;
                     
@@ -47,13 +50,18 @@ angular.module('ndrApp')
                         self.accountModel.activeAccount =  self.accountModel.tempAccount;
                     }
 
-
                 })
                 .error(function(data, status, headers, config) {
 
                     switch (status) {
                         case 0:
+                        case 400:
+                            console.log("Error parrticular");
+                            self.accountModel.serverError = 'Inget konto kunde hittas';
+                            break
                         case 401:
+                            console.log("not this er parrticular");
+
                             self.accountModel.serverError = 'Inget konto kunde hittas';
                             break;
                         default:
@@ -72,13 +80,14 @@ angular.module('ndrApp')
 
         this.bootstrap = function (){
             console.log("AccountService: Bootstrap");
-            var deferred = $q.defer();
 
             var accountID = undefined;
 
-            deferred.resolve(self.login(accountID));
-
-            return deferred.promise;
+            return self.login(accountID)
+                ["catch"](function (error) {
+                console.log("err", error);
+                return error;
+            });
         }
 
     }])

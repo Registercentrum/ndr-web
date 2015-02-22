@@ -1,7 +1,9 @@
 angular.module("ndrApp")
     .controller('PatientController', [
-                 '$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout',
-        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout) {
+                 '$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout', '$http',
+        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout, $http) {
+
+            var Account = $scope.accountModel;
 
         $scope.subject = undefined;
         $scope.subjectID = false || $stateParams.patientID;
@@ -188,6 +190,28 @@ angular.module("ndrApp")
             return _.find(attribute.domain.domainValues, {code: id}).text;
         };
 
+            $scope.socialnumber = undefined;
+
+
+        $scope.getSubject = function() {
+            console.log("Social", $scope.socialnumber);
+            newSocialnumber = $scope.socialnumber;
+            
+            $http({
+                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
+                method: "POST",
+                data: { socialNumber: newSocialnumber }
+            })
+                .success(function(data) {
+                   // self.subject = data;
+
+                    getPatient(data.subjectID)
+
+                })
+                .error(function(data, status, headers, config) {
+                    console.log("ERROR");
+                });
+        }
 
         // Make requests for the subject data and contactAttributes needed to display the labels in the table
 

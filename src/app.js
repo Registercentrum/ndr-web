@@ -22,16 +22,25 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                 resolve: {
                     config: function(dataService){
                         return dataService.bootstrap();
+                    },
+                    account: function(accountService){
+                        return accountService.bootstrap();
                     }
                 }
             })
 
+            /*.state('main.admin', {
+                controller : "AdminController",
+                url: "/",
+                templateUrl: "src/pages/Admin/admin.html"
+            })*/
 
             .state('main.home', {
                 controller : "HomeController",
                 url: "/",
                 templateUrl: "src/pages/Home/home.html"
             })
+
 
             .state('main.guidelines', {
                 url: "/guidelines",
@@ -60,6 +69,12 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
             .state('main.statistics', {
                 url: "/statistik",
                 templateUrl: "src/pages/Statistics/statistics.html"
+                //controller: "StatisticsController"
+            })
+
+            .state('main.statisticsAbout', {
+                url: "/om-statistiken",
+                templateUrl: "src/pages/Statistics/statisticsAbout.html"
                 //controller: "StatisticsController"
             })
 
@@ -166,11 +181,12 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
 
             .state('main.account.home', {
                 url: "/hem",
-                templateUrl: "src/pages/Account/home.html"
+                templateUrl: "src/pages/Account/home.html",
+                controller : "AccountHomeController"
             })
 
             .state('main.account.report', {
-                url: "/rapportera",
+                url: "/rapportera/:patientID",
                 templateUrl: "src/pages/Account/Report/report.html",
                 controller : "ReportController"
             })

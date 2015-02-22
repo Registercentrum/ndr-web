@@ -12,13 +12,16 @@ angular.module('ndrApp')
 
 angular.module('ndrApp')
     .controller('ReportController', [
-                 '$scope', '$http', '$stateParams', '$state', '$modal', 'List',
-        function ($scope,   $http,   $stateParams,   $state,   $modal,   List) {
+                 '$scope', '$http', '$stateParams', '$state', '$modal', 'List', 'dataService',
+        function ($scope,   $http,   $stateParams,   $state,   $modal,   List, dataService) {
 
         console.log("ReportController: Init",  $scope.accountModel);
 
+        $scope.subjectID = false || $stateParams.patientID;
 
-        $scope.socialnumber = '19121212-1212'; //fÃ¶r test
+
+
+       // $scope.socialnumber = '19121212-1212'; //fÃ¶r test
         $scope.view = 0;
         $scope.contactModel =  null;
         $scope.contactToUpdate = null;
@@ -32,6 +35,18 @@ angular.module('ndrApp')
             baseURL: 'https://ndr.registercentrum.se',
             APIKey: 'LkUtebH6B428KkPqAAsV'
         }
+
+        if($scope.subjectID){
+
+
+            dataService.getSubject($scope.subjectID).then(function (subject) {
+                $scope.socialnumber = subject.socialNumber;
+                $scope.getSubject(true);
+            })
+
+
+        }
+
 
         $scope.getSubject = function(newSocialnumber) {
 

@@ -1,12 +1,6 @@
 angular.module("ndrApp")
     .controller('HomeController', ['$scope', 'dataService', '$state', function($scope, dataService, $state) {
 
-        $scope.model = {
-            listModelNews : {},
-            autocompleteModel : {
-                selected : undefined
-            }
-        }
 
 
         /* Get data for stats */

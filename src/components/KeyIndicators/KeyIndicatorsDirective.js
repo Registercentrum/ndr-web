@@ -3,8 +3,6 @@ angular.module('ndrApp')
 
         function link(scope, element, attrs) {
 
-            console.log("once", typeof scope.id, scope.id);
-            
             if(!scope.id) return false;
             
             var id = scope.id;
@@ -17,8 +15,6 @@ angular.module('ndrApp')
                 unitTypeID : 0,
                 diabetesTypeCode : undefined,
             }
-            
-            console.log("ss", scope.model);
 
             scope.data = {
                 keyIndicator : undefined,
@@ -84,122 +80,77 @@ angular.module('ndrApp')
                             data: seriesGeo
                         }
                     ]
-
                 })
-
             }
-
 
             function getKeyIndicators(){
 
-                var indicators = dataService.data.indicators.byType.target;
-                var toInclude = [201,221,207,222,209,214,211,203,212,213,216,202,309];
-
-                var highIsBetter = [201, 207, 222, 209,203,212,213]
+                var toInclude = [201,221,207,222,209,214,211,203,223,216,202,309];
+                var highIsBetter = [201, 207, 222, 209, 203, 212, 213, 223]
 
                 var promises = [];
 
-                _.each(indicators, function(obj, key){
-                    if(_.indexOf(toInclude, obj.id) != -1){
-                        var query = dataService.queryFactory({countyCode : id, indicatorID: obj.id, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode: scope.model.diabetesTypeCode});
+                var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode: scope.model.diabetesTypeCode});
 
-                        if(scope.geoType == "unit"){
-                            query = dataService.queryFactory({unitID : id, level : 2, indicatorID: obj.id, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode: scope.model.diabetesTypeCode});
-                        }
+                if(scope.geoType == "unit"){
+                    query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode: scope.model.diabetesTypeCode});
+                }
 
-                        promises.push(dataService.getStats(query));
-                    }
-                })
+                promises.push(dataService.getStats(query));
 
-                _.each(indicators, function(obj, key){
-                    if(_.indexOf(toInclude, obj.id) != -1){
-                        var query = dataService.queryFactory({ level : 0, indicatorID: obj.id, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode : scope.model.diabetesTypeCode});
-                        promises.push(dataService.getStats(query));
-                    }
-                })
-
+                //RIKET
+                var query = dataService.queryFactory({ level : 0, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode : scope.model.diabetesTypeCode});
+                promises.push(dataService.getStats(query));
 
                 $q.all(promises).then(function (data){
 
+                    
+                    var geoData = data[0].indicatorSet;
+                    var countryData = data[1].indicatorSet;
+                    
+                    console.log("LOADED DATA", geoData, countryData);
+                    
                     var keyIndicators = [];
-
-                    //console.log("data", data);
-
-                    var byIndicator = _.groupBy(data, function (d){
-                        return d.indicator.name;
-                    });
-
-                    //loop through indicators and precalculate relevant info
-                    _.each(byIndicator, function(obj, key){
-
-                        obj.precalculated = {
-                            riket   : undefined,
-                            geo     : undefined,
+                    
+                    _.each(geoData, function(obj, key){
+                        
+                        console.log(obj);
+                        
+                        var o = {
+                            riket   : countryData[key].statSet[0].stat.r,
+                            geo     : obj.statSet[0].stat.r,
                             status  : "equal",
-                            name : undefined,
+                            name    : obj.indicator.name,
+                            id      : obj.indicator.id,
+                            lKonf   : countryData[key].statSet[0].stat.r,
+                            uKonf   : countryData[key].statSet[0].stat.uKonf
+
                         }
 
-                        var riket = _.filter(obj, function (o){
-                            return o.statSet[0].unit.name == "Riket";
-                        })[0]
 
-                        var geo = _.filter(obj, function (o){
-                            return o.statSet[0].unit.name != "Riket";
-                        })[0]
-
-                        obj.precalculated.name = riket.indicator.name;
-                        obj.precalculated.id = riket.indicator.id;
-
-                        obj.precalculated.riket = riket.statSet[0].stat.r;
-                        obj.precalculated.geo = geo.statSet[0].stat.r;
-
-                        var lKonf = riket.statSet[0].stat.lKonf;
-                        var uKonf = riket.statSet[0].stat.uKonf;
-
-                        //console.log(obj.precalculated.geo < lKonf, obj.precalculated.geo, lKonf);
-
-                        if(_.indexOf(highIsBetter, obj.precalculated.id) == -1){
-                            if(obj.precalculated.geo < lKonf) obj.precalculated.status = "better";
-                            if(obj.precalculated.geo > uKonf) obj.precalculated.status = "worse";
+                        if(_.indexOf(highIsBetter, o.id) == -1){
+                            if(o.geo < o.lKonf) o.status = "better";
+                            if(o.geo > o.uKonf) o.status = "worse";
                         }
 
                         else{
-                            if(obj.precalculated.geo < lKonf) obj.precalculated.status = "worse";
-                            if(obj.precalculated.geo > uKonf) obj.precalculated.status = "better";
+                            if(o.geo < o.lKonf) o.status = "worse";
+                            if(o.geo > o.uKonf) o.status = "better";
                         }
 
+                        keyIndicators.push(o)
 
-
+                        
                     })
 
-                    var sorted = [];
-
-                    _.each(byIndicator, function(obj, key){
-                        var id = obj.precalculated.id;
-                        var i = _.indexOf(toInclude, id)
-                        obj.sortOrder = i;
-                    })
-
-
-                    byIndicator = _.sortBy(byIndicator, function (a){
-                        return a.sortOrder
-                    })
-
-                    scope.data.keyIndicators = byIndicator;
-
+                    scope.data.keyIndicators = keyIndicators;
 
                 })
 
             }
 
             getKeyIndicators();
-
-
-
-
         }
-
-
 
 
         return {
@@ -211,7 +162,8 @@ angular.module('ndrApp')
             scope: {
                 id: "=",
                 geo: "=",
-                geoType : "="
+                geoType : "=",
+                light : "="
             }
         }
 

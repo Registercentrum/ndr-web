@@ -81,7 +81,9 @@ angular.module('ndrApp')
         //}
 
         this.getStats = function (params){
-            return endpoints.indicatorresult.get(params);
+            return endpoints.indicatorresult.get(params).then(function (data) {
+                return data.plain();
+            })
         }
 
         this.prepareGeoList = function (){
@@ -119,7 +121,7 @@ angular.module('ndrApp')
                 level: 1,
                 countyCode: 0,
                 unitID: 0,
-                indicatorID: 101,
+                indicatorID : null,
                 fromYear: 2014,
                 fromQuartal: 0,
                 fromMonth: 0,
@@ -1277,11 +1279,11 @@ angular.module('ndrApp')
 
             else{
                 var p = $q.all([
-                    endpoints.indicator.get()
+                    //endpoints.indicator.get()
                 ]).then(function (data){
                     self.data.units = units;
                     self.data.counties = counties;
-                    self.data.indicators = data[0];
+                    //self.data.indicators = data[0];
 
                     self.prepareGeoList();
 

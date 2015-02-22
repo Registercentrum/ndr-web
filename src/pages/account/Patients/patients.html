@@ -3,18 +3,7 @@
         <h1 class="Page-title">Söklista</h1>
         <p>Välj besöksperiod och andra sökkriterier.</p>
     </div>
-    <form class="col-md-7 text-right pull-right" role="search" name="subjectForm" novalidate>
-      <div class="PatientSearch">
-        <div class="PatientSearch-inner">
-              <span class="PatientSearch-icon">
-                <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
-              </span>
-          <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required
-                 ng-pattern="accountHelpers.pnrRegex">
-          <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Sök</button><button class="PatientSearch-reportButton">Rapportera</button>
-        </div>
-      </div>
-    </form>
+
   <div class="col-md-12">
         <div class="MultiFilter">
             <div class="MultiFilter-row MultiFilter-row--header">
@@ -126,6 +115,54 @@
                             <option value="">Välj {{ filter.question }}</option>
                         </select>
 
+                        <!-- If domain is "Date" -->
+                        <!--<div class="FilterDatePopup" ng-if="filter.domain.name == 'Date'">
+                            <div class="input-group FilterDatePopup-group">
+                                <span class="input-group-addon">
+                                    <button
+                                            type="button"
+                                            class="FilterDatePopup-button"
+                                            ng-click="open($event, 'from')">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                                <input
+                                        type="text"
+                                        class="FilterDatePopup-input form-control"
+                                        datepicker-popup="{{ format }}"
+                                        ng-model="datePickers.from.date"
+                                        is-open="datePickers.from.opened"
+                                        min-date="minDate"
+                                        max-date="'2015-06-22'"
+                                        datepicker-options="dateOptions"
+                                        date-disabled="disabled(date, mode)"
+                                        ng-required="true"
+                                        close-text="Close">
+
+                                 <span class="input-group-addon">
+                                   <button
+                                           type="button"
+                                           class="FilterDatePopup-button"
+                                           ng-click="open($event, 'to')">
+                                       <i class="fa fa-calendar"></i>
+                                   </button>
+                                 </span>
+                                <input
+                                        type="text"
+                                        class="FilterDatePopup-input form-control"
+                                        datepicker-popup="{{ format }}"
+                                        ng-model="datePickers.to.date"
+                                        is-open="datePickers.to.opened"
+                                        min-date="minDate"
+                                        max-date="'2015-06-22'"
+                                        datepicker-options="dateOptions"
+                                        date-disabled="disabled(date, mode)"
+                                        ng-required="true"
+                                        close-text="Close">
+                            </div>
+                        </div>-->
+
+
                     </div>
                     <div class="col-sm-3 form-inline">
                         <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters[filter.columnName].undef"> saknar värde</label></span>
@@ -184,7 +221,6 @@
                 </tbody>
             </table>
         </div>
-
         <!-- <pre>
             &lt;!&ndash; {{  model  | json  }} &ndash;&gt;
             &lt;!&ndash; {{  activeFilters  | json  }} &ndash;&gt;

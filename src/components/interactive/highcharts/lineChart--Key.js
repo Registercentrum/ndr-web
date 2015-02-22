@@ -12,8 +12,23 @@ angular.module('ndrApp')
             // set up the isolate scope so that we don't clobber parent scope
             link: function(scope, element, attrs) {
 
-
+                
                 scope.$watch('model', function(model) {
+
+
+                  /*  var extent1 = d3.extent(scope.model[0].data, function (d){
+                        return d.y;
+                    })
+
+                    var extent2 = d3.extent(scope.model[1].data, function (d){
+                        return d.y;
+                    })
+
+                    var yMin = d3.min([extent1[0], extent2[0]]);
+                    var yMax = d3.max([extent1[1], extent2[1]]);
+
+                    yMin = yMin * 0.8;
+                    yMax = yMax * 1.2;*/
 
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
@@ -56,7 +71,10 @@ angular.module('ndrApp')
                             gridLineColor : "white",
                             lineWidth: 0,
                             minorGridLineWidth: 0,
-
+                            maxPadding: 0.4,
+                            minPadding: 0.4,
+                            ceiling : 100,
+                           // min : 0,
                             title: {
                                 text: '',
                                 align: 'high'
