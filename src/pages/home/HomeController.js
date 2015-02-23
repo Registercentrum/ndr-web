@@ -10,6 +10,8 @@ angular.module("ndrApp")
 
 
         /* Get data for stats */
+
+
         var query = dataService.queryFactory({ID : [202,221], level : 0})
 
         dataService.getStats(query).then(function (data){

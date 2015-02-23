@@ -29,7 +29,7 @@
             <div class="PatientHeader-navigation col-md-7 u-noRightPadding">
 
                 <div class="row">
-                    <div class="col-md-12 text-right" style="margin-top: 10px;">
+                    <div class="col-md-12 text-right" style="margin-top: 0px;">
                         <a class="Button--tight Button Button--dark" ng-click=""><i class="fa fa-print"></i> Skriv ut</a>
                         <a style="margin-right: 20px" href="#/inloggad/patient/{{ subject.subjectID }}" class="Button--tight Button Button--dark" ng-click=""><i class="fa fa-plus-circle"></i> Nytt besök</a>
 
@@ -53,34 +53,67 @@
     <div class="row" id="printableArea">
         <div class="col-md-12">
 
-            <div class="Panel Panel--blue clearfix" style="padding: 0px">
+            <div class="Panel Panel--blue clearfix" style="padding: 0px; height:auto">
 
-                <div class="Panel--profile col-md-4">
+                <div class="Panel--profile col-md-4" style="line-height: 26px; font-size: 15px">
 
-                    <b>{{ subject.socialNumber }}</b>
-                    <br>
-                    {{ "Man, " + calculateAge(subject.dateOfBirth) }} år gammal
-                    <br/>
-                    Typ: {{ getDiabetesType(subject.diabetesType) }}
-                    <br/>
-                    Debutår: {{ subject.yearOfOnset }}
-                    <br/>
-                    Diabetesbehandling: {{ model.latest.treatment.label }}
+                   <!-- <b>{{ subject.socialNumber }}</b>-->
+
+                    <div>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</div>
+                    <div>{{ getDiabetesType(subject.diabetesType) }}</div>
+                    <div>Debutår: {{ subject.yearOfOnset }}</div>
+                    <div>Diabetesbehandling: {{ model.latest.treatment.label }}</div>
+
+                   <div ng-show="model.latest.treatment.label == 'Insulin'">
+                       Metod att ge insulin: {{ model.latest.insulinMethod.label }}
+                   </div>
+
+                    <div ng-show="model.latest.insulinMethod.label == 'Insulinpump'">
+                        Pågående pumpmodell: {{ model.latest.pumpOngoing.label }}
+                    </div>
 
                 </div>
 
                 <div class="Panel--profile col-md-4 text-center">
 
-                    <div class="text-center" tooltip="{{ model.latest.bmi.date | date: 'shortDate' }}">
-                        <h3>{{ model.latest.bmi.value }}</h3>
-                        <h4>BMI
-                        </h4>
+
+                    <div class="col-md-6">
+
+                        <div class="text-center" tooltip="{{ model.latest.bmi.date | date: 'shortDate' }}">
+
+
+                            <h4 class="Profile-latest-value" style="float:none;margin-bottom: 20px">{{ model.latest.bmi.value }}<br/>
+                                    <span class="unit">BMI</span></h4>
+
+                            <h4 class="Profile-latest-value"  style="float:none;margin-bottom: 20px">{{  model.latest.weight.value }}<br/>
+                                <span class="unit">kg</span></h4>
+
+
+                            <h4 class="Profile-latest-value" style="float:none">{{ model.latest.height.value }} <br/>
+                                <span class="unit">cm lång</span></h4>
+
+
+
+                        </div>
+
                     </div>
 
-                    <div class="text-center">
-                        <h3 title="Dag av besöket {{ model.latest.weight.date | date: 'dd MM yyyy' }}">{{ model.latest.weight.value }} kg</h3>
-                        <h4>Vikt</h4>
+                    <div class="col-md-6">
+
+                        <div class="text-center">
+                            <div>
+                                <i class="Profile-latest-value icon icon-silu" class="pull-right" style="color: #529BBB;font-size: 200px;"></i>
+                                <!--<h4 class="Profile-latest-value" style="float:none">{{  model.latest.waist.value }} <br/>
+                                    <span class="unit">midjemått cm</span></h4>-->
+                            </div>
+
+                            <div>
+
+                            </div>
+                        </div>
+
                     </div>
+
 
 
 
@@ -104,21 +137,22 @@
             <div class="Panel Panel--purple">
                 <h4>Kolesterol</h4>
 
+
                 <div class="col-sm-4" line-chart-patient-hba1c model="model.data.trend.cholesterol"></div>
                 <div class="col-sm-4" line-chart-patient-hba1c model="model.data.trend.ldl"></div>
                 <div class="col-sm-4" line-chart-patient-hba1c model="model.data.trend.hdl"></div>
 
-                <div> Behandlas med lipidsänkande läkemedel: {{ model.latest.lipidLoweringDrugs.label }}</div>
+                <div> Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>
 
             </div>
         </div>
 
         <div class="col-md-6">
 
-            <div class="Panel Panel--green">
+            <div class="Panel">
                 <h4 class="Profile-heading">Blodtryck</h4><h4 class="Profile-latest-value">{{model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} <span class="unit">mm Hg</span></h4>
-                <div class="" line-chart-patient-hba1c model="model.data.trend.bpSystolic"></div>
-                <div>Behandlas med blodtryckssänkande läkemedel: {{ model.latest.antihypertensives.label }}</div>
+                <div class="" line-chart-patient-bp model="model.data.trend.combinedBp"></div>
+                <div>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></div>
 
             </div>
         </div>
@@ -129,12 +163,11 @@
 
         <div class="col-md-4">
 
-            <div class="Panel Panel--green">
-                <h4 class="Profile-heading">Hjärt-/kärlsjukdom</h4><i class="Profile-latest-value icon icon-noun_4451_cc" class="pull-right" style="font-size: 40px;"></i>
+            <div class="Panel Panel--purple">
+                <h4 class="Profile-heading">Hjärt-/kärlsjukdom</h4><i class="Profile-latest-value icon icon-noun_4451_cc" class="pull-right" style="font-size: 50px;"></i>
 
                 <table class="table">
-                    <tr><td tooltip="(någonsin, angina pectoris, genomgången hjärtinfarkt, PTCA, by-passkirurgi)">Ischemisk hjärtsjukdom
-                    </td><td>{{ model.latest.ischemicHeartDisease.label }}</td></tr>
+                    <tr><td>Ischemisk hjärtsjukdom</td><td>{{ model.latest.ischemicHeartDisease.label }}</td></tr>
                     <tr><td>Cerebrovaskulär sjukdom</td><td>{{ model.latest.cerebrovascularDisease.label }}</td></tr>
                     <tr><td>Behandlas med ASA</td><td>{{ model.latest.aspirin.label }}</td></tr>
                     <tr><td>Waran</td><td>{{ model.latest.waran.label }}</td></tr>
@@ -146,9 +179,10 @@
         <div class="col-md-4">
 
             <div class="Panel">
-                <h4 class="Profile-heading">Fysisk aktivitet</h4><i class="Profile-latest-value icon icon-noun_79" class="pull-right" style="font-size: 30px;"></i>
+               <h4 class="Profile-heading">Fysisk aktivitet</h4>  <i class="Profile-latest-value icon icon-noun_79" class="" style="font-size: 30px;"></i>
+                <!--<div class="" column-chart="" model="model.data.physicalActive"></div>-->
 
-                <!--<div gauge-chart model="model.data.chart.physicalActivity"></div>-->
+                <div gauge-chart model="model.data.chart.physicalActivity"></div>
 
             </div>
         </div>
@@ -156,11 +190,9 @@
         <div class="col-md-4">
 
             <div class="Panel Panel--purple">
-                <h4 class="Profile-heading">Rökning</h4><i class="Profile-latest-value icon icon-noun_79" class="pull-right" style="font-size: 30px;"></i>
-                    <div>
-
-                        {{ model.latest.smokingHabit.label }}
-
+                <h4 class="Profile-heading">Rökning</h4>  <i class="Profile-latest-value icon icon-noun_100084_cc" style="font-size: 40px;"></i>
+                    <div style="margin-top: 80px">
+                        <h3 class="text-center">{{ model.latest.smokingHabit.label }}</h3>
                     </div>
             </div>
         </div>
@@ -172,9 +204,9 @@
     <div class="row">
 
         <div class="col-md-4">
-            <div class="Panel">
-                <h4><img src="images/grunticon/png/icon_foot.png" style="width:15px;margin-right: 10px" alt=""/>Fötter</h4>
-                <table class="table table-condensed table-striped">
+            <div class="Panel Panel--green">
+                <h4 class="Profile-heading">Fötter</h4>  <i class="Profile-latest-value icon icon-noun_4820_cc" class="" style="font-size: 55px;"></i>
+                <table class="table table-condensed">
                     <tr><td>Riskkategori</td><td>{{ model.latest.footRiscCategory.label }}</td></tr>
                     <tr><td>Senaste fotundersökning </td><td>{{ model.latest.footExaminationDate.label }}</td><td><i class="fa fa-exclamation"></i>
                     </td></tr>
@@ -186,9 +218,9 @@
 
         <div class="col-md-4">
 
-            <div class="Panel">
-                <h4><img src="images/grunticon/png/icon_eye.png" style="width:25px;margin-right: 10px" alt=""/>Ögon</h4>
-                <table class="table table-condensed table-striped">
+            <div class="Panel Panel--green">
+                <h4 class="Profile-heading">Ögon</h4>  <i class="Profile-latest-value icon fa fa-eye" class="" style="font-size: 30px;"></i>
+                <table class="table table-condensed">
                     <tr><td>Diabetesretinopati</td><td>{{ model.latest.diabeticRetinopathy.label }}</td></tr>
                     <tr><td>Diagnos på sämsta ögat</td><td>{{ model.latest.diagnosisWorseSeeingEye.label  }}</td></tr>
                     <tr><td>Laserbehandlad</td><td>{{ model.latest.laserTreatment.label}}</td></tr>
@@ -201,10 +233,10 @@
 
         <div class="col-md-4">
 
-            <div class="Panel">
-                <h4><img src="images/grunticon/png/icon_kidney.png" style="width:20px;margin-right: 10px" alt=""/> Njurar</h4>
+            <div class="Panel Panel--green">
+                <h4 class="Profile-heading">Njurar</h4>  <i class="Profile-latest-value icon icon-noun_17376_cc" class="" style="font-size: 40px;"></i>
 
-                <table class="table table-condensed table-striped">
+                <table class="table table-condensed">
                     <tr><td>Senaste S-Kreatininvärde</td><td>{{ model.latest.serumCreatinine.label }}</td></tr>
                     <tr><td>Makroalbuminuri</td><td>{{ model.latest.macroscopicProteinuria.label }}</td></tr>
                     <tr ng-hide="model.latest.macroscopicProteinuria.label == 'Ja'"><td>Mikroalbuminuri</td><td>{{ model.latest.microscopicProteinuria.label }}</td></tr>
@@ -242,18 +274,5 @@
 </div>
 
 </div>
-<script type="text/javascript">
-    jQuery('.u-equalHeight').matchHeight(true);
-</script>
 
-<!--
 
-<div class="Panel">
-    <h2>Model</h2>
-&lt;!&ndash;     <pre>
-        {{ model.latest | json }}
-    </pre>&ndash;&gt;
-
-</div>
-
--->

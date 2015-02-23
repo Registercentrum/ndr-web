@@ -98,7 +98,8 @@ angular.module('ndrApp')
                             color : "#ccc",
                             name: 'Amount',
                             data: [
-
+                                {name : "a", y : 100},
+                                {name : "b", y : 120}
                             ]
                         }]
                     });

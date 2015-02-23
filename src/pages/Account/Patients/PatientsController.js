@@ -38,49 +38,133 @@ angular.module('ndrApp')
             };
 
 
+            $scope.lookupName = function (filter, value){
 
-            // -------------------------------------------------------------------
-            // DATA TABLES
-            // -------------------------------------------------------------------
-
-            // Table options
-            $scope.dtOptions = {
-                paginate : true,
-                bFilter  : false,
-                bRetrieve: true,
-                order    : [[ 2, 'desc' ]],
-                bDestroy : false,
-                language: {
-                    sEmptyTable    : 'Tabellen innehåller ingen data',
-                    sInfo          : 'Visar _START_ till _END_ av totalt _TOTAL_ rader',
-                    sInfoEmpty     : 'Visar 0 till 0 av totalt 0 rader',
-                    sInfoFiltered  : '(filtrerade från totalt _MAX_ rader)',
-                    sInfoPostFix   : '',
-                    sInfoThousands : ' ',
-                    sLengthMenu    : 'Visa _MENU_ rader',
-                    sLoadingRecords: 'Laddar...',
-                    sProcessing    : 'Bearbetar...',
-                    sSearch        : 'Sök:',
-                    sZeroRecords   : 'Hittade inga matchande resultat',
-                    oPaginate: {
-                        sFirst   : 'Första',
-                        sLast    : 'Sista',
-                        sNext    : 'Nästa',
-                        sPrevious: 'Föregående'
-                    },
-                    oAria: {
-                        sSortAscending : ': aktivera för att sortera kolumnen i stigande ordning',
-                        sSortDescending: ': aktivera för att sortera kolumnen i fallande ordning'
-                    }
+                if(filter.domain.isEnumerated){
+                    return _.result(_.findWhere(filter.domain.domainValues, {code : value}), "text", "");
                 }
-            };
+                else{
+                    return value;
+                }
+            }
 
-            $scope.dtColumnDefs = [
-                DTColumnDefBuilder.newColumnDef(0).notSortable(),
-                DTColumnDefBuilder.newColumnDef(4).notSortable()
-            ];
+            /* DATA TABLE */
+            $scope.$watch("model.filteredSubjects", function (){
 
-            // Template function for additional visit rows in the table
+                function paged (valLists,pageSize)
+                {
+                    retVal = [];
+                    for (var i = 0; i < valLists.length; i++) {
+                        if (i % pageSize === 0) {
+                            retVal[Math.floor(i / pageSize)] = [valLists[i]];
+                        } else {
+                            retVal[Math.floor(i / pageSize)].push(valLists[i]);
+                        }
+                    }
+                    return retVal;
+                };
+
+                $scope.pageSize = 10;
+                $scope.allItems = $scope.model.filteredSubjects;
+                $scope.reverse = false;
+
+                $scope.filteredList = $scope.allItems;
+
+                $scope.currentPage = 0;
+                $scope.Header = ['','',''];
+
+
+                $scope.pagination = function () {
+                    $scope.ItemsByPage = paged( $scope.filteredList, $scope.pageSize );
+                };
+
+                $scope.setPage = function () {
+                    $scope.currentPage = this.n;
+                };
+
+                $scope.firstPage = function () {
+                    $scope.currentPage = 0;
+                };
+
+                $scope.lastPage = function () {
+                    $scope.currentPage = $scope.ItemsByPage.length - 1;
+                };
+
+                $scope.range = function (input, total) {
+                    var ret = [];
+                    if (!total) {
+                        total = input;
+                        input = 0;
+                    }
+                    for (var i = input; i < total; i++) {
+                        if (i != 0 && i != total - 1) {
+                            ret.push(i);
+                        }
+                    }
+                    return ret;
+                };
+
+                $scope.resetAll = function () {
+                    $scope.filteredList = $scope.allItems;
+                    //$scope.newEmpId = '';
+                    //$scope.newName = '';
+                    //$scope.newEmail = '';
+                    //$scope.searchText = '';
+
+                }
+
+                $scope.sort = function(sortBy){
+                    $scope.resetAll();
+
+                    $scope.columnToOrder = sortBy;
+
+                    //$Filter - Standard Service
+                    $scope.filteredList = $filter('orderBy')($scope.filteredList, $scope.columnToOrder, $scope.reverse);
+
+                    if($scope.reverse)
+                        iconName = 'glyphicon glyphicon-chevron-up';
+                    else
+                        iconName = 'glyphicon glyphicon-chevron-down';
+
+                    if(sortBy === 'EmpId')
+                    {
+                        $scope.Header[0] = iconName;
+                    }
+                    else if(sortBy === 'name')
+                    {
+                        $scope.Header[1] = iconName;
+                    }else {
+                        $scope.Header[2] = iconName;
+                    }
+
+                    $scope.reverse = !$scope.reverse;
+
+                    $scope.pagination();
+                };
+
+                //By Default sort ny Name
+                $scope.sort ('name');
+
+            }, true)
+
+
+            $scope.toggleDetail = function (d){
+               console.log("detail",d);
+            }
+
+
+
+       /*     $scope.resetAll = function () {
+                $scope.filteredList = $scope.allItems;
+                $scope.newEmpId = '';
+                $scope.newName = '';
+                $scope.newEmail = '';
+                $scope.searchText = '';
+
+            }*/
+
+
+        /*    // Template function for additional visit rows in the table
             function format (visits) {
                 return _.map(visits, function (visit) {
                     return [
@@ -130,7 +214,7 @@ angular.module('ndrApp')
                         $('#'+id+' td:first-child').trigger('click');
                     });
                 });
-            });
+            });*/
 
 
 

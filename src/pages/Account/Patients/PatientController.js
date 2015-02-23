@@ -82,19 +82,61 @@ angular.module("ndrApp")
         function populateSeriesData () {
             if (!$scope.subject) return false;
 
-            $scope.model.data.trend.hba1c               = getSeries('hba1c');
-            $scope.model.data.trend.bpSystolic          = getSeries('bpSystolic');
-            $scope.model.data.trend.cholesterol         = getSeries('cholesterol');
-            $scope.model.data.trend.triglyceride        = getSeries('triglyceride');
-            $scope.model.data.trend.ldl                 = getSeries('ldl');
-            $scope.model.data.trend.hdl                 = getSeries('hdl');
+            $scope.model.data.trend.hba1c = getSeries('hba1c');
+            $scope.model.data.trend.bpSystolic = getSeries('bpSystolic');
+            $scope.model.data.trend.bpDiastolic = getSeries('bpDiastolic');
+            $scope.model.data.trend.cholesterol = getSeries('cholesterol');
+            $scope.model.data.trend.triglyceride = getSeries('triglyceride');
+            $scope.model.data.trend.ldl = getSeries('ldl');
+            $scope.model.data.trend.hdl = getSeries('hdl');
 
             $scope.model.data.chart.physicalActivity = getLatestValue('physicalActivity');
             $scope.model.data.chart.smoking = getLatestValue('smoking');
 
 
-        }
+            $scope.model.data.trend.combinedBp = [
+                {
+                    //dashStyle: "ShortDot",
+                    color: 'rgba(89,153,218,1)',
 
+                    fillColor : {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(89,153,218,0.2)'],
+                            [1, 'rgba(89,153,218,0.2)']
+                        ]
+                    },
+
+                    name: 'Värde',
+                    data: $scope.model.data.trend.bpSystolic
+                },
+                {
+                    //dashStyle: "ShortDot",
+                    color: "rgba(26,188,156,1)",
+
+                    fillColor : {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(26,188,156,0.2)'],
+                            [1, 'rgba(26,188,156,0.2)'],
+                        ]
+                    },
+
+                    name: 'Värde',
+                    data: $scope.model.data.trend.bpDiastolic
+                },
+            ]
+        }
 
         function populateLatestData () {
             if (!$scope.subject) return false;
@@ -107,7 +149,6 @@ angular.module("ndrApp")
             $scope.model.latest.footExaminationDate = getLatestValue('footExaminationDate');
 
             _.each($scope.contactAttributes, function(obj, key){
-                console.log("ob", obj, key);
                 $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
             })
         }
@@ -147,13 +188,13 @@ angular.module("ndrApp")
                 label = attribute ? attribute.question : key;
 
 
-            if(key == "diabetesType") return { value: '-', date: '-', label : '-' };
-            if(typeof visit == "undefined") return { value: '-', date: '-', label : '-' };
+            if(key == "diabetesType") return { value: 'inget värde', date: 'inget värde', label : 'inget värde' };
+            if(typeof visit == "undefined") return { value: 'inget värde', date: 'inget värde', label : 'inget värde' };
 
             var value;
 
             if (_.isNull(visit[key])) {
-                value = '-';
+                value = 'inget värde';
 
                 // If it's a date, format it in a nice way
             } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
@@ -168,10 +209,9 @@ angular.module("ndrApp")
                 value = visit[key] ? 'Ja' : 'Nej';
             }
 
-
             return visit ?
                 { value: visit[key], date: visit['contactDate'], label : value } :
-                { value: '-', date: '-', label : value };
+                { value: 'inget värde', date: 'inget värde', label : value };
         }
 
 

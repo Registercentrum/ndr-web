@@ -1,5 +1,5 @@
 angular.module('ndrApp')
-    .directive('lineChartPatientHba1c', [function() {
+    .directive('lineChartPatientBp', [function() {
 
         return {
             restrict: 'A',
@@ -12,12 +12,15 @@ angular.module('ndrApp')
             // set up the isolate scope so that we don't clobber parent scope
             link: function(scope, element, attrs) {
 
+                scope.$watch('model', function(model) {
 
-                var chart = jQuery(".chart-container", element).highcharts({
+                    console.log("LINK", scope.model);
+
+                    var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'area',
                             height : 180,
-                           // width : 200,
+                            // width : 200,
                             marginTop : 20,
                             marginBottom : 30,
                             marginLeft : 35,
@@ -25,22 +28,16 @@ angular.module('ndrApp')
                             spacingLeft : 30,
 
                             style : {
-                                color: "white"
+                                color: "#666"
                             }
                         },
                         title: {
                             text: ''
                         },
 
-
                         xAxis: {
 
-
                             type: 'datetime',
-                           /* dateTimeLabelFormats: { // don't display the dummy year
-                                //month: '%e. %b',
-                                year: '%b'
-                            },*/
 
                             dateTimeLabelFormats: {
                                 year: '%Y'
@@ -52,7 +49,7 @@ angular.module('ndrApp')
                             lineColor: '#eee',
                             labels: {
                                 style: {
-                                    color: 'white',
+                                    color: '#666',
                                     fontSize : '10px'
                                 }
                             },
@@ -62,13 +59,13 @@ angular.module('ndrApp')
                         },
 
                         yAxis: {
-                           gridLineWidth: 0.5,
-                           gridLineColor : "#eee",
-                           lineWidth: 0,
+                            gridLineWidth: 0.5,
+                            gridLineColor : "#eee",
+                            lineWidth: 0,
 
                             minorGridLineWidth: 0,
                             /*min : 55,
-                            max : 80,*/
+                             max : 80,*/
 
                             title: {
                                 text: '',
@@ -78,49 +75,29 @@ angular.module('ndrApp')
                                 align : "right",
 
                                 style: {
-                                    color: 'white',
+                                    color: '#666',
                                     fontSize : '10px'
                                 }
                             }
                         },
-                         tooltip: {
+                        tooltip: {
                             formatter: function() {
                                 var time = Highcharts.dateFormat('%Y', new Date(this.x))
                                 return time + ': <b>' +  this.y + '</b>';
                             }
                         },
                         plotOptions: {
-                            bar: {
-                                dataLabels: {
-                                    enabled: true
-                                }
-                            },
-                            series : {
+
+                            series: {
+
                                 marker: {
-                                    //fillColor: '#5999DA',
+                                    fillColor: '#FFFFFF',
                                     lineWidth: 1,
-                                    radius : 2,
                                     lineColor: null // inherit from series
                                 }
-                            },
-
-                            area : {
-
-                                fillColor : {
-                                    linearGradient: {
-                                        x1: 0,
-                                        y1: 0,
-                                        x2: 0,
-                                        y2: 1
-                                    },
-                                    stops: [
-                                        [0, 'rgba(255,255,255,0.6)'],
-                                        [0.7, 'rgba(255,255,255,0.2)'],
-                                        [1, 'rgba(255,255,255,0)']
-
-                                    ]
-                                }
                             }
+
+
                         },
                         legend: {
                             enabled: false,
@@ -128,21 +105,9 @@ angular.module('ndrApp')
                         credits: {
                             enabled: false
                         },
-                        series: [{
-                            //dashStyle: "ShortDot",
-                            color : "white",
-                            name: 'Värde',
-                            data : [{x: 1, y:10}, {x: 3, y:5}]
-
-                        }]
+                        series: scope.model
                     });
 
-
-                scope.$watch('model', function(model) {
-
-                    console.log("Reload patient chart line");
-                    
-                    chart.highcharts().series[0].setData(model)
 
                 }, true);
             }
