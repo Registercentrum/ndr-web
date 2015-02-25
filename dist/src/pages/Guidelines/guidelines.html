@@ -1,0 +1,280 @@
+<div class="container">
+
+    <h1 class="Page-title">Guidelines</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="FilterDropdown" selectize="config" options='myOptions' ng-model="myModel"></div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="FilterDropdown" selectize="config" options='myOptions' ng-model="myModel"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div range-slider min="'20'" max="'80'" step="5"><!--model-min="min" model-max="max"--></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="MultiFilter">
+
+                <div class="MultiFilter-row MultiFilter-row--header">
+                    <div class="MultiFilter-row-label">
+                        Filter:
+                    </div>
+                    <div class="MultiFilter-row-filterKnobs">
+                        <div class="col-sm-8 u-noLeftPadding Progressbar">
+                            <progressbar value="55"></progressbar>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="MultiFilter-row">
+                    <div class="MultiFilter-row-label">
+                        Besöksperiod
+                    </div>
+                    <div class="MultiFilter-row-filterKnobs">
+                        <div class="FilterDatePopup">
+                            <div class="input-group FilterDatePopup-group FilterDatePopup-group--80">
+                              <span class="input-group-addon">
+                                <button type="button" class="FilterDatePopup-button" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                              </span>
+                              <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+
+                              <span class="input-group-addon">
+                                <button type="button" class="FilterDatePopup-button" ng-click="open($event)"><i class="fa fa-calendar"></i></button>
+                              </span>
+                                <input type="text" class="FilterDatePopup-input form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="MultiFilter-row">
+                    <div class="MultiFilter-row-label">
+                        FilterName
+                    </div>
+                    <div class="MultiFilter-row-filterKnobs">
+                        FilterKnobs
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="PatientSearch">
+                <span class="PatientSearch-icon">
+                    <img src="/images/svgmin/icon_search.svg" class="PatientSearch-icon-img">
+                </span>
+                <input class="PatientSearch-input" type="search" placeholder="Skriv in personnummer">
+                <button class="PatientSearch-searchButton">Sök</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="PatientHeader clearfix">
+                <div class="PatientHeader-personNumber col-md-8 u-noLeftPadding">
+                    19121212-1212
+                </div>
+                <div class="PatientHeader-navigation col-md-4 u-noRightPadding">
+                    <input type="text" />
+                    <button class="Button Button--info">Visa profil</button>
+                </div>
+            </div>
+            <div class="Panel">
+
+                Formulär
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="Panel">
+                <h1 class="Page-title">This is a heading with class Page-title</h1>
+
+                <br>
+                <h1>This is a naked H1 heading</h1>
+                <h2>This is a naked h2 heading</h2>
+                <h3>This is a naked h3 heading</h3>
+                <h4>This is a naked h4 heading</h4>
+                <h5>This is a naked h5 heading</h5>
+                <h6>This is a naked h6 heading</h6>
+
+                <h1 class="Page-title">Page Title <small>With Small Text</small></h1>
+                <div class="Page-bodyText">
+                <p>Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                <h2>H2 heading in body text</h2>
+                <p> Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Cras mattis consectetur purus sit amet fermentum.</p>
+                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="Panel Panel--purple">
+                <h1>Test</h1>
+                <p>Lorem ipsum</p>
+            </div>
+
+            <div class="Panel Panel--blue">
+                <h1>Test</h1>
+                <p>Lorem ipsum</p>
+            </div>
+
+            <div class="Panel Panel--green">
+                <h2 class="Heading--h2">Test Heading--h2</h2>
+
+                <p>Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                <p> Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Cras mattis consectetur purus sit amet fermentum.</p>
+                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+                <h3 class="Heading--h3">Heading--h3 heading for text</h3>
+                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+                    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+
+                <h4 class="Heading--h4">Fourth level heading--h4 for text</h4>
+                    <p> Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Cras mattis consectetur purus sit amet fermentum.</p>
+                    <p> Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam eget risus varius blandit sit amet non magna. Cras mattis consectetur purus sit amet fermentum.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Panel heading without title</div>
+                <div class="panel-body">
+
+                    <h1>This is an h1 heading</h1>
+                    <h2>This is an h2 heading</h2>
+                    <h3>This is an h3 heading</h3>
+                    <h4>This is an h4 heading</h4>
+                    <h5>This is an h5 heading</h5>
+                    <h6>This is an h6 heading</h6>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default" id="buttons">
+                <div class="panel-heading">Buttons</div>
+                <div class="panel-body" style="background-color: #eee">
+
+                    <p>
+                        <button type="button" class="Button Button--default">Default</button>
+                        <button type="button" class="Button Button--default Button--white Button--centered">White centered</button>
+                        <button type="button" class="Button Button--default Button--centered">Centered</button>
+                    </p>
+
+                    <p><button type="button" class="Button Button--info">Info button</button></p>
+                    <p><button type="button" class="Button Button--warning">Warning</button></p>
+                    <p><button type="button" class="Button Button--success">Success</button></p>
+                    <p><button type="button" class="Button Button--primary Button--large Button--wide">Primary large wide</button></p>
+                    <p><button type="button" class="Button Button--large">Large button</button></p>
+                    <p><button type="button" class="Button Button--small">Small button</button></p>
+                    <p><button type="button" class="Button Button--mini">Mini button</button></p>
+                    <p><button type="button" class="Button disabled">Disabled</button></p>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Autocomplete Autocomplete--bare" selectize="config" options='myOptions' ng-model="myModel"></div>
+            <div class="Autocomplete" selectize="config" options='myOptions' ng-model="myModel"></div>
+            <div class="Autocomplete Autocomplete--large Autocomplete--bare" selectize="config" options='myOptions' ng-model="myModel"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="Panel">
+                <h2>Tables</h2>
+
+                <table class="Table">
+
+                    <thead>
+                        <tr>
+                            <td>Namn</td>
+                            <td>Antal patienter</td>
+                            <td>Medelålder</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Wunderkraut</td>
+                            <td>26</td>
+                            <td>30</td>
+                            <td><button class="Button Button--info">Ändra</button></td>
+                        </tr>
+                        <tr>
+                            <td>Silvia Media</td>
+                            <td>3</td>
+                            <td>33</td>
+                            <td><button class="Button Button--info">Ändra</button></td>
+                        </tr>
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+

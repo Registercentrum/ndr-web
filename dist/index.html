@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" ng-app="ndrApp" id="ng-app">
+<head>
+
+    <!--[if lte IE 8]>
+    <script>
+        document.createElement('ng-include');
+        document.createElement('ng-pluralize');
+        document.createElement('ng-view');
+
+        // Optionally these for CSS
+        document.createElement('ng:include');
+        document.createElement('ng:pluralize');
+        document.createElement('ng:view');
+
+    </script>
+    <script src="http://cdnjs.cloudfare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
+    <![endif]-->
+
+    <title>Nationella Diabetesregistret</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,700">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="css/style.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js"></script>
+    <script>
+        if (!Object.create) {
+            Object.create = (function () {
+                function F () {}
+
+                return function (o) {
+                    if (arguments.length != 1) {
+                        throw new Error('Object.create implementation only accepts one parameter.');
+                    }
+                    F.prototype = o;
+                    return new F()
+                }
+            })()
+        }
+
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function(elt /*, from*/) {
+                var len = this.length >>> 0;
+                var from = Number(arguments[1]) || 0;
+                from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+                if (from < 0) from += len;
+                for (; from < len; from++) {
+                    if (from in this && this[from] === elt) return from;
+                }
+                return -1;
+            };
+        }
+    </script>
+    <![endif]-->
+</head>
+
+
+<body ng-controller="AppController">
+
+    <!-- Include the header on every page via a partial -->
+    <div ng-include="'src/components/Header/header.html'"></div>
+
+    <!-- Main content -->
+    <div ui-view> </div>
+
+    <!-- Include the footer on every page via a partial -->
+    <div class="page-footer" ng-include="'src/components/Footer/footer.html'"></div>
+
+
+    <script src="js/vendor.min.js"></script>
+
+    <script src="js/app.min.js"></script>
+</body>
+</html>

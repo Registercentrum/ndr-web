@@ -1,8 +1,8 @@
 angular.module('ndrApp')
-    .controller('HeaderController', function ($scope, accountService) {
-
-        $scope.accountService = accountService;
-
-        $scope.accountModel = accountService.accountModel;
-
-});
+  .controller('HeaderController', [
+             '$scope', 'accountService',
+    function ($scope,   accountService) {
+      $scope.accountService = accountService;
+      $scope.accountModel = accountService.accountModel;
+    }]);
+  

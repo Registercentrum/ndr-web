@@ -1,0 +1,108 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <h1 class="Page-title Autocomplete Autocomplete--bare Autocomplete--large">
+                <div model="model.autocompleteModel" autocomplete></div>
+            </h1>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="Panel Panel--blue u-equalHeight">
+                <h1 class="Panel-title">{{ model.data.noPatients }} personer</h1>
+                <p class="Panel-subline">med diabetes under senaste 12 månaderna</p>
+                <span class="Profile-item-icon Profile-item-icon--patients"></span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel u-equalHeight">
+                <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
+                <span class="Profile-item-icon Profile-item-icon--unit"></span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel Panel--pink-text u-equalHeight">
+                <h1 class="Panel-title">Trend HbA1c</h1>
+                <div line-chart model="model.data.trendhba1c"></div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="Panel Panel--yellow-text u-equalHeight">
+                <h1 class="Panel-title">Jämförelse HbA1c</h1>
+                <div column-chart model="model.data.hba1c"></div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Nyckelindikatorer -->
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Panel">
+
+                <div key-indicators id="model.id" geo="model.geo"></div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Enheter -->
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Panel">
+
+                <h1>Vårdenheter</h1>
+                <p>Landstingets vårdenheter</p>
+
+                <table class="table table-condensed table-striped">
+
+                    <tr ng-repeat="unit in model.county.units | filter : { isActive :true }">
+                        <td>{{ unit.name }}</td>
+                        <td><a href="#/profil/enhet/{{ unit.unitID }}" class="Button Button--default">Visa</a></td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--
+
+<h2>Key Debug</h2>
+<pre>
+    {{ model | json }}
+</pre>
+
+-->

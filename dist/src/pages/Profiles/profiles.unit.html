@@ -1,0 +1,86 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="Page-title Autocomplete Autocomplete--bare Autocomplete--large">
+                <select model="model.autocompleteModel" autocomplete class="Autocomplete Autocomplete--bare Autocomplete--large"></select>
+            </h1>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="Panel Panel--blue u-equalHeight">
+                <h1 class="Panel-title">{{ model.data.noPatients }} personer</h1>
+                <p style="position: absolute; top:60px;padding: 0px 50px 0 0;font-size: 12px">med diabetes under senaste 12 månaderna</p>
+                <span class="Profile-item-icon Profile-item-icon--patients"></span>
+            </div>
+        </div>
+
+       <!-- <div class="col-md-3">
+            <div class="Panel u-equalHeight">
+                <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
+                <img class="Icon" src="images/icons/icon_unit.png" alt=""/>
+            </div>
+        </div>
+-->
+        <div class="col-md-3">
+            <div class="Panel Panel--pink-text u-equalHeight">
+                <h1 class="Panel-title">Trend HbA1c</h1>
+                <div line-chart model="model.data.trendhba1c"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="Panel u-equalHeight">
+                <h1 class="Panel-title">Om vårdenheten</h1>
+
+                <div>
+                    {{ model.geo.name }}
+                </div>
+                <div>
+                    {{ model.geo.street }}
+
+                </div>
+                <div> {{ model.geo.postalCode }} {{ model.geo.postalLocation }} </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Nyckelindikatorer -->
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="Panel">
+
+                <div key-indicators id="model.id" geo="model.geo" geo-type="'unit'"></div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Enheter -->
+
+<!--
+
+<h2>Key Debug</h2>
+<pre>
+    {{ model | json }}
+</pre>
+
+-->

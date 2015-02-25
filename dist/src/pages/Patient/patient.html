@@ -1,0 +1,90 @@
+<div class="container">
+
+    <h1 class="Page-title">För dig med diabetes</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="Panel">
+                <h2 class="Heading--h2 u-noTopMargin">Du bidrar till en bättre vård</h2>
+                <img src="images/img_patient.png" class="pull-right" style="margin: 0px 0 40px 30px" alt=""/>
+
+                <p class=""> Kvalitetsregister bidrar till ny kunskap om bl.a. bästa behandlingsalternativ. I kvalitetsregistren samlas uppgifter om behandling och resultat för olika patientgrupper från hela landet. De kan därför användas för att jämföra vården mellan sjukhus, vårdcentraler.
+                    <br/>
+                    Genom ditt deltagande blir resultaten säkrare!
+
+                </p>
+
+
+                <h3>Du skyddas av sekretess</h3>
+                <p>
+                Dina uppgifter i kvalitetsregistret är sekretessskyddade och behandlas på samma sätt som journaluppgifter. Uppgifterna tas bort när de inte längre behövs.
+                </p>
+                <h3>Dina rättigheter som patient</h3>
+                <p>
+                Som patient har du rätt att få veta till vilka kategorier av mottagare som personuppgifterna kan komma att lämnas ut t.ex. att det kan bli aktuellt att uppgifterna lämnas ut för forskningsändamål. Du har också rätt att få veta om dina uppgifter är hämtade från någon annan källa än patientjournalen eller dig själv. Du kan även få dina uppgifter borttagna eller tacka nej till att bli registrerad.
+                </p>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="Panel Panel--purple">
+                <h2 class="Heading--h3-sidebar u-noTopMargin">Diabetesvården där du bor</h2>
+                <p>Knappa in ditt postnummer för att hitta statistik och annan information om diabetesvården där du bor:</p>
+
+                <input type="text" class="form-control" ng-model="unit.postalCode" style="width: 80%;margin-top: 20px" placeholder="Ditt postnummer"/>
+                <div class="PostalCodeSearch">
+                    <ul class="PostalCodeSearch-list" ng-show="unit.postalCode">
+                        <li ng-repeat="unit in units | filter:unit" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">
+
+                            <span class="PostalCodeSearch-list-item-index">{{ $index + 1 }}</span>
+                            <h5 class="PostalCodeSearch-list-item-title" ><a href="/#/profil/enhet/{{ unit.unitID }}">{{ unit.name }}</a></h5>
+<!--
+                            <a class="Button Button--small Button--centered Button--centered--60" href="/#/profil/enhet/{{ unit.unitID }}">Visa profil</a>
+-->
+
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="Panel Panel--blue">
+                <h2 class="Heading--h3-sidebar u-noTopMargin">Nya sätt att delta och förbättra diabetsvården</h2>
+                <p >Genom patienenkäter (PROM) kan patientens upplevelse mätas för att utveckla vården.</p>
+                <a href="#/prom" class="Button Button--default  Button--centered--60 Button--white Button--centered">Läs mer</a>
+
+            </div>
+
+            <div class="Panel">
+                <h2 class="Heading--h3-sidebar u-noTopMargin">Länkar</h2>
+
+                <article class="">
+                    <h4><a href="http://www.diabetes.se/" target="_blank">Diabetesförbundet</a></h4>
+                    <p>En ideell och partipolitiskt obunden organisation för diabetiker och deras anhöriga. Fakta om diabetes, debattforum samt kontaktinformation.</p>
+                </article>
+
+                <article class="">
+                    <h4><a href="www.swediabkids.se" target="_blank">SWEDIABKIDS</a></h4>
+                    <p>Nationellt kvalitetsregister för barn- och ungdomar med diabetes (SWEDIABKIDS) är en fortsättning på det kvalitetsarbete inom barndiabetes som startades i början av 1990-talet av Sektionen för endokrinologi och diabetes inom Svenska Barnläkarföreningen.</p>
+                </article>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
