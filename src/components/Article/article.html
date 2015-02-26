@@ -2,25 +2,27 @@
   <div class="row">
 
     <div class="col-md-12"><br>
-      <p class="Page-title"><a href="/#/nyheter">Nyheter</a> > nyhet</p>
+      <p class="Page-title" style="font-size: 20px"><a href="#/nyheter">Nyheter</a></p>
       </div>
 
     <div class="col-md-8">
       <div class="Panel clearfix">
 
-      <article class="col-md-8 pull-right">
+      <article class="col-md-9 pull-right">
 
         <h1 class="Article-title">{{ article.title }}</h1>
-        <p class="Article-date">{{ article.createdAt | date: 'longDate' }}</p>
         <div class="Article-body" ng-bind-html="article.body"></div>
 
       </article>
 
-        <aside class="col-md-4">
+        <aside class="col-md-3">
           <div class="Article-metadata">
 
-            <img class="Article-metadata-image" src="http://placehold.it/200&text=saknar%20bild">
+            <img class="Article-metadata-image" ng-src="{{article.image}}">
+            <!--http://placehold.it/200&text=saknar%20bild-->
             <span class="Article-metadata-author">{{ article.author }}</span>
+            <p class="Article-date">{{ article.createdAt | date: 'longDate' }}</p>
+
 
           </div>
         </aside>

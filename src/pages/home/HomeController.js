@@ -24,7 +24,7 @@ angular.module("ndrApp")
                 return new Date(b.publishedFrom) - new Date(a.publishedFrom);
             })
 
-            data = data.splice(0,3);
+            data = data.splice(0,4);
 
             angular.forEach(data, function(item) {
                 item.link = "#/nyheter/" + item.newsID;
