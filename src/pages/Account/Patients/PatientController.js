@@ -194,9 +194,9 @@ angular.module("ndrApp")
             var value;
 
             
-            console.log("VISIT", visit[key]);
+            console.log("VISIT", visit[key], _.isNull(visit[key]));
             
-            if (_.isNull(visit[key])) {
+            if (_.isNull(visit[key]) ||  _.isUndefined(visit[key])   ) {
                 value = 'inget värde';
 
                 // If it's a date, format it in a nice way

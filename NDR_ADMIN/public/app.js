@@ -70,6 +70,7 @@
                 new Field('newsID').label('ID').order(0),
                 new Field('title').map(truncate).order(1),
                 new Field('isInternal').label('Intern'),
+                new Field('publishedFrom').label('Datum').type('date')
 
                 // new Field() // template fields don't need a name in dashboard view
                 //     .type('template') // a field which uses a custom template
@@ -118,6 +119,7 @@
                 new Field('image').label('Bild'),
                 new Field('body').type('wysiwyg').label('Brödtext'),
                 new Field('excerpt').type('text').label('Sammanfattning'),
+                new Field('priority').label("Prioritet?"),
                 new Field('isInternal').type('boolean').label("Intern?")
             ]);
 

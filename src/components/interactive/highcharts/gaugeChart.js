@@ -48,9 +48,8 @@ angular.module('ndrApp')
                         // the value axis
                         yAxis: {
                             stops: [
-                                [0.1, '#DF5353'], // red
-                                [0.5, '#DDDF0D'], // yellow
-                                [1, '#55BF3B'] // green
+                           //     [0.5, '#ff0000'], // red
+                                [1, '#278470'] // green
                             ],
                             lineWidth: 0,
                             minorTickInterval: null,
@@ -96,7 +95,7 @@ angular.module('ndrApp')
 
                         series: [{
                             name: 'Speed',
-                            data: [50],
+                            data: [150],
                             dataLabels: {
                                 format: '<div style="text-align:center"><span style="font-size:16px;color:' +
                                 ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">' + scope.model.label +  '</span><br/>' +

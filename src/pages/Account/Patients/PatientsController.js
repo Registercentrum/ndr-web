@@ -285,7 +285,6 @@ angular.module('ndrApp')
                 .then(function (filters) {
                     var required;
 
-                    console.log("FF", filters);
                     filters = _.reject(filters, function (d){
                         return d.columnName == "socialNumber" || d.columnName == "pumpOngoingSerial";
                     })
