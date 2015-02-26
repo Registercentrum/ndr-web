@@ -30,7 +30,7 @@ angular.module('ndrApp')
 
                             style : {
                                 color: "#666"
-                            } 
+                            }
                         },
                         title: {
                             text: scope.title,
