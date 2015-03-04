@@ -55,7 +55,7 @@
 
             <div class="Panel Panel--blue clearfix" style="padding: 0px; height:auto">
 
-                <div class="Panel--profile col-md-4" style="line-height: 26px; font-size: 15px">
+                <div class="Panel--profile col-md-4" style="line-height: 26px; font-size: 15px;font-weight: 300">
 
                    <!-- <b>{{ subject.socialNumber }}</b>-->
 
@@ -77,20 +77,40 @@
                 <div class="Panel--profile col-md-4 text-center">
 
 
-                    <div class="col-md-6">
+                    <div class="col-md-7">
 
-                        <div class="text-center" tooltip="{{ model.latest.bmi.date | date: 'shortDate' }}">
+                        <div class="">
 
+                            <ul style="list-style-type: none; text-align: right; line-height: 40px;padding:0px">
 
-                            <h4 class="Profile-latest-value" style="float:none;margin-bottom: 20px">{{ model.latest.bmi.value }}<br/>
-                                    <span class="unit">BMI</span></h4>
+                                <li>
+                                    <i class="fa fa-dot-circle-o"></i> {{ model.latest.bmi.value }} <span class="unit">BMI</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-dot-circle-o"></i> {{model.latest.weight.value }} <span class="unit">kg</span>
+                                </li>
 
-                            <h4 class="Profile-latest-value"  style="float:none;margin-bottom: 20px">{{  model.latest.weight.value }}<br/>
+                                <li>
+                                    <i class="fa fa-dot-circle-o"></i> {{ model.latest.height.value }} <span class="unit">cm, längd</span>
+                                </li>
+
+                                <li>
+                                    <i class="fa fa-dot-circle-o"></i> {{ model.latest.waist.value }} <span class="unit">cm, midja</span>
+                                </li>
+
+                            </ul>
+
+<!--
+
+                            <h4 class="Profile-latest-value" style="float:none;margin-bottom: 20px">{{ model.latest.bmi.value }}
+                                   <i class="fa fa-heartfa-dot-circle-o"></i> </h4>
+
+                            <h4 class="Profile-latest-value"  style="margin-bottom: 20px">{{  model.latest.weight.value }}
                                 <span class="unit">kg</span></h4>
 
 
-                            <h4 class="Profile-latest-value" style="float:none">{{ model.latest.height.value }} <br/>
-                                <span class="unit">cm lång</span></h4>
+                            <h4 class="Profile-latest-value" style="">{{ model.latest.height.value }}
+                                <span class="unit">cm lång</span></h4>-->
 
 
 
@@ -98,11 +118,11 @@
 
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-5">
 
                         <div class="text-center">
                             <div>
-                                <i class="Profile-latest-value icon icon-silu" class="pull-right" style="color: #529BBB;font-size: 200px;"></i>
+                                <i class="Profile-latest-value icon icon-silu"  style="color: #529BBB;font-size: 200px;"></i>
                                 <!--<h4 class="Profile-latest-value" style="float:none">{{  model.latest.waist.value }} <br/>
                                     <span class="unit">midjemått cm</span></h4>-->
                             </div>
@@ -134,13 +154,12 @@
 
         <div class="col-md-6">
 
-            <div class="Panel Panel--purple">
+            <div class="Panel">
                 <h4>Kolesterol</h4>
 
-
-                <div class="col-sm-4" line-chart-patient-hba1c model="model.data.trend.cholesterol"></div>
-                <div class="col-sm-4" line-chart-patient-hba1c model="model.data.trend.ldl"></div>
-                <div class="col-sm-4" line-chart-patient-hba1c model="model.data.trend.hdl"></div>
+                <div class="col-sm-4" line-chart-patient-cholesterol title="'Kolesterol'" model="model.data.trend.cholesterol"></div>
+                <div class="col-sm-4" line-chart-patient-cholesterol title="'LDL'" model="model.data.trend.ldl"></div>
+                <div class="col-sm-4" line-chart-patient-cholesterol title="'HDL'" model="model.data.trend.hdl"></div>
 
                 <div> Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>
 
@@ -164,7 +183,7 @@
         <div class="col-md-4">
 
             <div class="Panel Panel--purple">
-                <h4 class="Profile-heading">Hjärt-/kärlsjukdom</h4><i class="Profile-latest-value icon icon-noun_4451_cc" class="pull-right" style="font-size: 50px;"></i>
+                <h4 class="Profile-heading">Hjärt-/kärlsjukdom</h4><i class="Profile-latest-value icon icon-heart" class="pull-right" style="font-size: 30px;"></i>
 
                 <table class="table">
                     <tr><td>Ischemisk hjärtsjukdom</td><td>{{ model.latest.ischemicHeartDisease.label }}</td></tr>
