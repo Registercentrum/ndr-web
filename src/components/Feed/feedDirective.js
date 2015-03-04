@@ -1,9 +1,9 @@
 angular.module('ndrApp')
-    .directive('feed', [function() {
+    .directive('feed', [function () {
 
         String.prototype.capitalize = function() {
             return this.charAt(0).toUpperCase() + this.slice(1);
-        }
+        };
 
 
         function link(scope, element, attrs) {
@@ -19,9 +19,9 @@ angular.module('ndrApp')
 
             link: link,
             scope: {
-                model: "=",
-                type: "="
+                model: '=',
+                type: '='
             }
-        }
+        };
 
     }]);

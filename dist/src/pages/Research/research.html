@@ -1,0 +1,98 @@
+<!--  "id": 2,
+"name": "Hypertension in diabetes: trends in clinical control in repeated large-scale national surveys from Sweden",
+"laymansDescription": "Studie av blodtrycksnivåer under det sena 1990-talet hos patienter med typ 1- och typ 2-diabetes, talande för en långsam successiv förbättring.",
+"firstAuthor": "Nilsson PM",
+"lastAuthor": "Cederholm J",
+"otherAuthor": "Gudbjörnsdottir S, Eliasson B",
+"dateOfSubmission": null,
+"dateOfPublication": "2003-01-01T00:00:00",
+"magazine": "J Hum Hypertens",
+"issue": "2003;17",
+"pages": "37-44",
+"status": {
+"id": 5,
+"text": "Publicerat"
+},
+"ethicsApprovalStatus": {
+"id": 2,
+"text": "Ej relevant"
+},
+"image": null,
+"pubMedURL": null,
+"route": "researchproject",
+"reqParams": null,
+"fromServer": true,
+"parentResource": null,
+"restangularCollection": false
+},
+{-->
+
+<div class="container">
+
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="Page-title">Forskning</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="Panel">
+      <h2 class="Panel-title">Publikationer</h2>
+
+      <article ng-repeat="publication in publications" class="Research clearfix">
+        <img src="images/placeholder_publ.png" style="width:100px;margin:25px 20px 0 20px" class="Research-image col-md-4 u-noLeftPadding">
+
+        <div class="Research-text col-md-8 u-noRightPadding">
+        <p class="Research-text-date">{{publication.dateOfPublication | date: 'mediumDate' }}</p><!--/*'d MMMM, yyyy'*/ -->
+          <h3 class="Research-text-title">
+            <a href="/#/forskning/{{ publication.id }}" class="Research-text-title-link">{{ publication.name }}</a>
+          </h3>
+          <p class="Research-text-description">
+          {{ publication.laymansDescription }}
+          </p>
+          <p class="Research-text-authors">
+            Authors:
+            {{ publication.firstAuthor }},
+            {{ publication.otherAuthor }},
+            {{ publication.lastAuthor }}
+          </p>
+        </div>
+      </article>
+
+
+    <!--<pre>-->
+    <!--{{ publications | json }}-->
+    <!--</pre>-->
+
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="Panel">
+      <h3 class="Panel-title">Kontakt</h3>
+      <p>Har du frågor som rör NDR och forskning?</p>
+      <p><a href="mailto:forskning@ndr.nu"><i class="fa fa-envelope-o"></i> forskning@ndr.nu</a></p>
+      <hr />
+      <p>Få nyheter om diabetesforskning!</p>
+      <p><a href="http://www.twitter.com/ndr" class="Button Button--default Button--centered">Följ NDR på Twitter</a></p>
+    </div>
+
+    <div class="Panel">
+      <h3 class="Panel-title">Nyheter forskning</h3>
+
+      <div list model="model.listModelResearch"></div>
+    </div>
+
+    <div class="Panel">
+      <h3 class="Panel-title">Pågående forskning</h3>
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+</div><!-- end container -->

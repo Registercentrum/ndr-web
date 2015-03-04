@@ -1,38 +1,78 @@
 module.exports = function(grunt) {
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
 
-        concat: {
+        useminPrepare: {
+            html: 'index.html',
             options: {
-            },
-            dist: {
-                src: [
-                    'images/grunticon/_grunticon-svg.less',
-                    //'images/grunticon/_grunticon-png.less',
-                    //'images/grunticon/_grunticon-fallback.less',
-                    'less/_variables.less',
-                    'less/_styles.less',
-                    'less/_mixins.less',
-                    'src/components/*/*.less',
-                    'src/pages/**/*.less'
-                ],
-                dest: 'less/_concatenated-styles.less'
+                dest: 'dist'
+            }
+        },
+
+        usemin:{
+            html:['dist/index.html']
+        },
+
+        copy:{
+            html: { expand: true, src: ['index.html', 'src/**/*.html'], dest: 'dist/'},
+            img: { expand: true, src: ['images/**/*'], dest: 'dist/'}
+        },
+
+        uglify: {
+            options: {
+                mangle: false
+            }
+        },
+
+        imagemin: {
+          build: {
+            files: [{
+              expand: true,
+              src: ['images/**/*.{png,jpg,gif}'],
+              dest: 'dist/'
+            }]
+          }
+        },
+
+        clean: {
+          build: ['.tmp']
+        },
+
+        concat: {
+            less: {
+                options: {
+                },
+                dist: {
+                    src: [
+                        'images/grunticon/_grunticon-svg.less',
+                        //'images/grunticon/_grunticon-png.less',
+                        //'images/grunticon/_grunticon-fallback.less',
+                        'less/_variables.less',
+                        'less/_styles.less',
+                        'less/_mixins.less',
+                        'src/components/*/*.less',
+                        'src/pages/**/*.less'
+                    ],
+                    dest: 'less/_concatenated-styles.less'
+                }
+
             }
         },
 
         less: {
-
             production: {
                 options: {
                     cleancss: false,
                     ieCompat: true,
                     sourceMap: true
-                    // sourceMapFilename : "css/ndr.css.map",
+                    // sourceMapFilename : 'css/ndr.css.map',
                     // sourceMapURL: '/css/ndr.css.map' // the complete url and filename put in the compiled css file
                     // sourceMapBasepath: 'css', // Sets sourcemap base path, defaults to current working directory.
                     // sourceMapRootpath: '/' // adds this path onto the sourcemap filename and less file paths
                 },
                 files: {
-                    "css/ndr.css": "less/_concatenated-styles.less"
+                    'css/ndr.css': 'less/_concatenated-styles.less'
                 }
             }
         },
@@ -63,12 +103,12 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'images/svgmin',
                     src: ['*.svg', '*.png'],
-                    dest: "images/grunticon"
+                    dest: 'images/grunticon'
                 }],
                 options: {
-                    datasvgcss: "_grunticon-svg.less",
-                    datapngcss: "_grunticon-png.less",
-                    urlpngcss: "_grunticon-fallback.less",
+                    datasvgcss: '_grunticon-svg.less',
+                    datapngcss: '_grunticon-png.less',
+                    urlpngcss: '_grunticon-fallback.less',
                     pngfolder: 'png',
                     cssprefix: '.grunticon-',
                     pngpath: 'grunticon/png/'
@@ -77,7 +117,6 @@ module.exports = function(grunt) {
         },
 
         watch: {
-
             svgmin: {
                 files: ['images/svg/*.svg'],
                 tasks: ['svgmin'],
@@ -96,12 +135,12 @@ module.exports = function(grunt) {
 
             scripts: {
                 files: [
-                    "src/components/*/*.less",
-                    "src/components/*/*.html",
-                    "src/pages/*/*.html",
-                    "src/pages/**/*.less",
-                    "./less/*.less",
-                    "bower_components/bootstrap/less/*.less"
+                    'src/components/*/*.less',
+                    'src/components/*/*.html',
+                    'src/pages/*/*.html',
+                    'src/pages/**/*.less',
+                    './less/*.less',
+                    'bower_components/bootstrap/less/*.less'
                 ],
                 tasks: ['concat', 'less'],
                 options: {
@@ -112,13 +151,8 @@ module.exports = function(grunt) {
         }
 
     });
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-svgmin');
-    grunt.loadNpmTasks('grunt-grunticon');
-    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['watch']);
-    grunt.registerTask('manual', ['concat', 'less']);
-
+    grunt.registerTask('default', ['concat:less', 'less']);
+    grunt.registerTask('watch', ['watch']);
+    grunt.registerTask('build', ['copy', 'useminPrepare', 'concat:generated', 'uglify', 'cssmin', 'usemin', 'imagemin:build', 'clean:build']);
 };

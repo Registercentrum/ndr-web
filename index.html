@@ -17,37 +17,33 @@
     <script src="http://cdnjs.cloudfare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
     <![endif]-->
 
+    <title>Nationella Diabetesregistret</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Nationella Diabetesregistret</title>
-
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="favicon.ico" />
 
+    <link rel="shortcut icon" href="favicon.ico">
 
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="bower_components/angular-loading-bar/build/loading-bar.css" rel="stylesheet"/>
-
-
-
-    <link href="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,700">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css">
+    <!-- build:css css/style.min.css -->
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css"/>
     <link rel="stylesheet" href="css/ndr.css">
-
+    <!-- endbuild -->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.0.8/es5-shim.min.js"></script>
-    <script type="text/javascript">
+    <script>
         if (!Object.create) {
-            Object.create = (function(){
-                function F(){}
+            Object.create = (function () {
+                function F () {}
 
-                return function(o){
+                return function (o) {
                     if (arguments.length != 1) {
                         throw new Error('Object.create implementation only accepts one parameter.');
                     }
@@ -57,42 +53,27 @@
             })()
         }
 
-        if (!Array.prototype.indexOf)
-        {
-            Array.prototype.indexOf = function(elt /*, from*/)
-            {
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function(elt /*, from*/) {
                 var len = this.length >>> 0;
-
                 var from = Number(arguments[1]) || 0;
-                from = (from < 0)
-                        ? Math.ceil(from)
-                        : Math.floor(from);
-                if (from < 0)
-                    from += len;
-
-                for (; from < len; from++)
-                {
-                    if (from in this &&
-                            this[from] === elt)
-                        return from;
+                from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+                if (from < 0) from += len;
+                for (; from < len; from++) {
+                    if (from in this && this[from] === elt) return from;
                 }
                 return -1;
             };
         }
-
     </script>
     <![endif]-->
-
-
 </head>
 
 
 <body ng-controller="AppController">
 
-
 <!-- Include the header on every page via a partial -->
 <div ng-include="'src/components/Header/header.html'"></div>
-
 
 <!-- Main content -->
 <div ui-view> </div>
@@ -101,22 +82,13 @@
 <div class="page-footer" ng-include="'src/components/Footer/footer.html'"></div>
 
 
-
-
-<!-- LIBS -->
-
-<!-- jQuery -->
+<!-- build:js js/vendor.min.js -->
+<script src="src/components/Modernizr/modernizr.js"></script>
 <script src="bower_components/jquery/dist/jquery.js"></script>
-
 <script src="bower_components/matchHeight/jquery.matchHeight.js"></script>
 
-<!-- UNDERSCORE -->
 <script src="bower_components/lodash/lodash.js"></script>
-
-<!--<script src="bower_components/d3/d3.js"></script>-->
-
-
-<!-- Grunticon -->
+<script src="bower_components/moment/moment.js"></script>
 <script src="images/grunticon/grunticon.loader.js"></script>
 
 <!-- Bootstrap JS -->
@@ -130,19 +102,9 @@
 <script src="bower_components/highcharts/highcharts.js"></script>
 <script src="bower_components/highcharts/highcharts-more.js"></script>
 <script src="bower_components/highcharts/modules/solid-gauge.js"></script>
-
 <script src="bower_components/highcharts/themes/grid-light.js"></script>
 
-<!-- MomentJS -->
-<script src="bower_components/moment/moment.js"></script>
-
-
 <!-- ANGULAR -->
-<!--
-<script src="https://raw.githubusercontent.com/angular/angular.js/master/src/ngLocale/angular-locale_se.js"></script>
--->
-
-
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-touch/angular-touch.min.js"></script>
 <script src="bower_components/angular-once/once.js"></script>
@@ -151,23 +113,14 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-
 <script src="bower_components/angular-datatables/dist/angular-datatables.js"></script>
-
-
 <script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
 <script src="bower_components/angular-selectize2/dist/selectize.js"></script>
-
-
-<!-- Range Slider -->
 <script src="bower_components/venturocket-angular-slider/build/angular-slider.min.js"></script>
-
-<!-- RESTANGULAR -->
 <script src="bower_components/restangular/dist/restangular.js"></script>
+<!-- endbuild -->
 
-
-<!-- SRC: NDR APP -->
-
+<!-- build:js js/app.min.js -->
 <!-- Bootstrap the app -->
 <script src="src/app.js"></script>
 <script src="src/AppController.js"></script>
@@ -175,24 +128,18 @@
 
 <script src="src/services/dataService.js"></script>
 
-
 <!-- Interctive charts -->
 <script src="src/components/Interactive/highcharts/columnChart.js"></script>
 <script src="src/components/Interactive/highcharts/lineChart.js"></script>
 <script src="src/components/Interactive/highcharts/lineChart--Key.js"></script>
-
 <script src="src/components/Interactive/highcharts/lineChart--patient-hba1c.js"></script>
-<script src="src/components/Interactive/highcharts/lineChart--patient-cholesterol.js"></script>
 <script src="src/components/Interactive/highcharts/lineChart--patient-bp.js"></script>
-
 <script src="src/components/Interactive/highcharts/gaugeChart.js"></script>
-
 
 <!-- Components -->
 <script src="src/components/List/ListDirective.js"></script>
 <script src="src/components/Autocomplete/autocompleteDirective.js"></script>
 <script src="src/components/KeyIndicators/KeyIndicatorsDirective.js"></script>
-
 
 <!-- Controllers -->
 <script src="src/components/Header/HeaderController.js"></script>
@@ -200,9 +147,6 @@
 
 <script src="src/pages/Profiles/CountyController.js"></script>
 <script src="src/pages/Profiles/UnitController.js"></script>
-
-
-
 <script src="src/pages/Account/Patients/PatientsController.js"></script>
 <script src="src/pages/Research/ResearchController.js"></script>
 <script src="src/components/Publication/PublicationController.js"></script>
@@ -210,23 +154,15 @@
 <script src="src/pages/NewsItem/NewsItemController.js"></script>
 
 <script src="src/services/accountService.js"></script>
-
 <script src="src/pages/Account/AccountController.js"></script>
 <script src="src/pages/Account/AccountHomeController.js"></script>
-
 <script src="src/pages/Account/Report/ReportController.js"></script>
-
-
 <script src="src/pages/Account/Patients/PatientController.js"></script>
 <script src="src/pages/Home/HomeController.js"></script>
-
 <script src="src/pages/Patient/FilterUnitsController.js"></script>
-
-<script src="src/components/Modernizr/modernizr.js"></script>
 
 <script src="https://code.angularjs.org/1.2.15/i18n/angular-locale_sv.js"></script>
 <script src="https://code.angularjs.org/1.2.15/i18n/angular-locale_sv-se.js"></script>
-
-
+<!-- endbuild -->
 </body>
 </html>

@@ -1,0 +1,64 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-2">
+
+
+            <ul class="NavbarVertical nav nav-pills nav-stacked" style="width: 100%">
+
+
+                <li ui-sref="main.account.home" ui-sref-active="active" class="NavbarVertical-item">
+                    <a ui-sref="main.account.home" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon NavbarVertical-item-icon--overview"></span>
+                        <span class="NavbarVertical-item-link-name">Översikt</span>
+                    </a>
+
+                </li>
+
+
+                <li ui-sref="main.account.report" ui-sref-active="active" class="NavbarVertical-item">
+
+                    <a ui-sref="main.account.report" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon NavbarVertical-item-icon--report"></span>
+                        <span class="NavbarVertical-item-link-name">Rapportera</span>
+                    </a>
+
+                </li>
+
+                <li ui-sref="main.account.patients" ui-sref-active="active" class="NavbarVertical-item">
+
+                    <a ui-sref="main.account.patients" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon"><i class="fa fa-search fa-3x"></i></span>
+                        <span class="NavbarVertical-item-link-name">Söklista</span>
+                    </a>
+
+                </li>
+
+
+
+                <li ui-sref="main.account.patient" ui-sref-active="active" class="NavbarVertical-item">
+
+                    <a ui-sref="main.account.patients" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon NavbarVertical-item-icon--patientProfile"></span>
+                        <span class="NavbarVertical-item-link-name">Patientprofil</span>
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+
+        </div>
+
+
+        <div class="col-md-10">
+
+            <div ui-view></div>
+
+        </div>
+
+    </div>
+
+</div>

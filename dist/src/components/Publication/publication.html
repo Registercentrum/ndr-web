@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12"><br>
+      <p class="Page-title"><a href="/#/forskning">Forskning</a> > Publikation</p>
+      <div class="Panel clearfix">
+
+        <article class="Publication">
+          <h1 class="Publication-title">{{ publication.name }}</h1>
+
+          <div class="Publication-metadata col-md-3 u-noLeftPadding">
+            <img class="Publication-metadata-image" src="http://placehold.it/200&text=saknar%20bild">
+            <p class="Publication-metadata-author">{{ publication.authors.join(', ') }}</p>
+            <p class="Publication-metadata-date">{{ publication.dateOfPublication | date: 'longDate' }}</p>
+          </div>
+
+          <div class="col-md-9 u-noRightPadding">
+            <h3 class="Publication-body-abstractTitle">Abstract</h3>
+            <div class="Publication-body" ng-bind-html="publication.laymansDescription"></div>
+
+            <div class="Publication-link">
+              <a href="#" class="Button Button--default">Full PDF</a>
+            </div>
+          </div>
+
+        </article>
+
+      </div>
+    </div>
+
+  </div>
+</div>

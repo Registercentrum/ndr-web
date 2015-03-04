@@ -1,0 +1,201 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="Panel Intro Intro--equalHeights" style="padding-bottom: 0px;margin-bottom: 0px">
+        <div class="clearfix">
+          <div class="Intro-backgroundImage"></div>
+
+          <div class="row">
+
+            <div class="Intro-image col-md-3">
+
+            </div>
+            <div class="Intro-content col-md-9">
+              <h1 class="Intro-content-text" style="margin-top: 20px">
+                <span class="Intro-content-text-partial Intro-content-text-partial--heading">Från data till kunskap:</span><br>
+                <span class="Intro-content-text-partial">Hur jobbar Sveriges</span><br class="u-mobileHidden">
+                <span class="Intro-content-text-partial">landsting och vårdenheter</span><br class="u-mobileHidden">
+                <span class="Intro-content-text-partial">med diabetes?</span>
+
+                  <div class="" style="margin-top: 50px;">
+
+                    <select model="{}" autocomplete class="Autocomplete Autocomplete--large Autocomplete--white Autocomplete--searchIcon"></select>
+
+                  </div>
+              </h1>
+
+            </div>
+
+          </div>  <!-- Row 1-->
+
+          <div class="row"  style="margin: -30px;padding-bottom: 0px;margin-bottom: 0px;margin-top: 25px">
+            <div class="col-md-12 Panel text-center" style="margin-bottom: 0px;border-radius:0px;padding:15px 10px;font-size: 13px">
+                <div class="col-md-4" style="color:#74BAD8">
+                    <h3>{{model.stats.indicatorSet[1].statSet[0].stat.cRep | number }}</h3>
+                    <p>personer med diabetes som registrerats i NDR senaste 12 mån</p>
+                </div>
+
+                <div class="col-md-4" style="color:#278470">
+                  <h3>{{ model.stats.indicatorSet[1].statSet[0].stat.r + "%" }}</h3>
+                  <p>personer med typ 1-diabetes och senaste HbA1c >70 mmol/mol</p>
+                </div>
+
+              <div class="col-md-4" style="color:#E14274">
+                <h3>{{  model.stats.indicatorSet[0].statSet[0].stat.r + "%"  }}</h3>
+                <p>andel som röker, senaste 12 månaderna</p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+       <!-- <div class="Intro-promos Panel clearfix">
+          <img src="/images/fp_statistics.png">
+        </div>-->
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="Panel Intro--equalHeights">
+        <h3 class="Panel-title">Nyheter</h3>
+        <div list model="model.listModelNews"></div>
+
+
+        <div class="List-readmore">
+          <a href="#/nyheter" class="Button Button--default Button--large Button--centered Button--centered--80">Se alla nyheter</a>
+        </div>
+
+        <div class="spacer" style="height: 0px">
+
+        </div>
+
+
+      </div>
+    </div>
+  </div> <!-- end row -->
+
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="Timeline clearfix">
+        <div class="Timeline-inner">
+           <div class="row">
+
+             <div class="col-sm-2">
+               <div class="Timeline-element Timeline-element--first">
+                 <h5>1996</h5>
+                 <span class="Timeline-text">NDR Startades</span>
+               </div>
+             </div>
+
+             <div class="col-sm-4">
+               <div class="Timeline-element">
+                 <h5>2000</h5>
+                 <span class="Timeline-text">Nådde 50% täckningsgrad</span>
+               </div>
+             </div>
+
+             <div class="col-sm-4">
+               <div class="Timeline-element">
+                 <h5>2014</h5>
+                 <span class="Timeline-text">Lanserade "Knappen"</span>
+               </div>
+             </div>
+
+             <div class="col-sm-2">
+               <div class="Timeline-element Timeline-element--last">
+                 <h5>Framtiden</h5>
+                 <span class="Timeline-text">Nya e-tjänster</span>
+               </div>
+             </div>
+
+           </div>
+         </div>
+      </div>
+      <div class="Panel clearfix">
+        <h3 class="Panel-title about-ndr u-noLeftPadding u-noRightPadding" style="float: left;">Nationella Diabetesregistret <strong>kartlägger och utvecklar</strong> diabetesvårdens kvalitet.</h3>
+        <div style="text-align: right; float: right;">
+          <a href="#/om-ndr" class="Button Button--large Button--default Button--green">Läs mer om NDR</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row col-wrap">
+    <div class="col-md-4">
+      <div class="Panel u-equalHeight" style="background: white url('images/annual_report.png');">
+        <div class="spacer" style="height:200px;"></div>
+
+        <a ui-sref="main.statistics" class="Button Button--default Button--large  Button--white Button--centered">Ladda ned NDR:s årsrapport</a>
+      </div>
+    </div>
+
+
+    <div class="col-md-4">
+      <div class="Panel u-equalHeight" style="background: white url('images/patient.png');">
+
+        <div class="spacer" style="height:200px;"></div>
+        <h3 class="Panel-title"></h3>
+        <div model="{ data: [
+          {
+            title: 'Risk Prediction of Cardiovascular Disease in Type 2 Diabetes',
+            link: 'http://www.google.se'
+          },
+          {
+            title: 'Fler ...',
+            link: 'http://www.google.se'
+          }
+        ]}"></div>
+
+        <a href="#/for-dig-med-diabetes" class="Button Button--default Button--white Button--large Button--centered">För dig med diabetes</a>
+      </div>
+    </div>
+
+
+    <div class="col-md-4">
+      <div class="Panel u-equalHeight">
+        <h3 class="Panel-title">Länkar</h3>
+
+        <div list model="{data: [
+          {
+            title: 'Svensk Förening för Diabetelogi (SFD)',
+            link: 'http://diabetolognytt.se'
+          },
+          {
+            title: 'Svensk Förening för Sjuksköterskor i Diabetesvård',
+            link: 'http://www.swenurse.se/diabetesnurse/'
+          },
+          {
+            title: 'Svenska Diabetesförbundet',
+            link: 'http://www.diabetes.se'
+          },
+          {
+            title: 'SWEDIABKIDS (Barndiabetesregistret)',
+            link: 'http://swediabkids.ndr.nu/'
+          }
+
+        ]}"></div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+ <!-- <div class="row">
+    <div class="col-md-12">
+      <div class="Panel Twitter">
+        <h1 class="Twitter-tweet">"Träffa oss på kvalitetsdagarna i Stockholm"</h1>
+
+        <div><a href="https://twitter.com/twitter" class="twitter-follow-button" data-show-count="false" data-lang="sv" data-size="large">Följ @twitter</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>
+
+        <!--<div class="Button Button--default"><a ui-sref="om"></a></div>
+      </div>
+    </div>
+  </div>-->
+
+</div><!-- end container -->

@@ -1,0 +1,12 @@
+{
+  "browser": true,
+  "esnext": true,
+  "globals": {"angular": true, "_": true},
+  "globalstrict": true,
+  "quotmark": true,
+  "undef": true,
+  "unused": false,
+  "jquery": true,
+  "devel": true,
+  "strict": false
+}
