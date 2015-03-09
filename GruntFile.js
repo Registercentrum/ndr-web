@@ -16,12 +16,16 @@ module.exports = function(grunt) {
 
         copy:{
             html: { expand: true, src: ['index.html', 'src/**/*.html'], dest: 'dist/'},
-            img: { expand: true, src: ['images/**/*'], dest: 'dist/'}
+            img: { expand: true, src: ['images/**/*'], dest: 'dist/'},
+            pdfs: { expand: true, src: ['pdfs/**/*'], dest: 'dist/'}
         },
 
         uglify: {
             options: {
-                mangle: false
+                mangle: false,
+                compress: {
+                    drop_console: true
+                }
             }
         },
 

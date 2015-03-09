@@ -32,7 +32,7 @@ angular.module('ndrApp')
 
             console.log("LOGGING IN");
             
-            return $http.get("https://ndr.registercentrum.se/api/User?APIKey=LkUtebH6B428KkPqAAsV")
+            return $http.get("https://ndr.registercentrum.se/api/me?APIKey=LkUtebH6B428KkPqAAsV")
                 .success(function(user) {
 
                     console.log("SUCCESS");
