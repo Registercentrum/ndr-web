@@ -232,10 +232,12 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
     
                          window.scrollTo(0, 0);
                          clearInterval(interval);
+
+                         $('input').placeholder();
     
                          jQuery('.u-equalHeight').matchHeight(true);
                          jQuery('.Intro--equalHeights').matchHeight(false);
-                            console.log(jQuery(window).width());
+
                          if ( jQuery(window).width() >= 700 ) {
                              jQuery('.InfoGrid-equalHeightsGroup1').matchHeight(false);
                              jQuery('.InfoGrid-equalHeightsGroup2').matchHeight(false);

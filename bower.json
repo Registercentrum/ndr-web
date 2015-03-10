@@ -32,7 +32,8 @@
     "bootstrap-hover-dropdown": "~2.0.11",
     "angular-bootstrap": "~0.12.0",
     "lodash": "~3.1.0",
-    "angular-once": "~0.1.8"
+    "angular-once": "~0.1.8",
+    "jquery-placeholder": "~2.1.1"
   },
   "resolutions": {
     "angular": "~1.2.*"

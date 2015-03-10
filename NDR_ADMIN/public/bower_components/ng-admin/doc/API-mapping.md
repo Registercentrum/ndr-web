@@ -11,15 +11,16 @@ That means you don't need to adapt your API to ng-admin; ng-admin can adapt to a
 Ng-admin expects that requests for a single entity return a JSON object with all the properties defined as fields. For instance, for the following definition:
 
 ```js
-var bookEntity = new Entity('books');
+var bookEntity = nga.entity('books');
 bookEntity.editionView()
-    .addField(new Field('name'))
-    .addField(new Reference('author_id')
-        .label('Author')
-        .targetEntity(author)
-        .targetField(new Field('name'))
-    )
-    .addField(new Field('publication_date').type('date'));
+    .fields([
+        nga.field('name'), 
+        nga.field('author_id', 'reference')
+            .label('Author')
+            .targetEntity(author)
+            .targetField(nga.field('name')),
+        nga.field('publication_date', 'date')
+    ]);
 ```
 
 ng-admin expects the `GET http://your.api.domain/books/12` route to return a JSON response with a single object, containing at least the following properties:
@@ -35,7 +36,20 @@ ng-admin expects the `GET http://your.api.domain/books/12` route to return a JSO
 
 Additional properties not defined in the view are ignored.
 
-Now if your API returns results in another format, for instance with all the values under a `values` key, you can use Restangular element transformers:
+Now if your API returns results in another format, for instance with all the values under a `values` key:
+
+```json
+{
+    "values": {
+        "id": 12,
+        "name": "War and Peace",
+        "author_id": 345,
+        "publication_date": "2014-01-01T00:00:00Z"
+    }
+}
+```
+
+You can use Restangular element transformers to map that to the expected format:
 
 ```js
 app.config(function(RestangularProvider) {
@@ -47,6 +61,19 @@ app.config(function(RestangularProvider) {
         return element;
     });
 });
+```
+
+Symetrically, if your API requires that you post and put data inside of a `values` field, use Restangular request interceptor:
+
+```js
+app.config(function(RestangularProvider) {
+    RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params, httpConfig) {
+        if(operation == 'post' || operation == 'put') {
+            element = { values: element };
+        }
+        return { element: element };
+    });
+}
 ```
 
 ## Pagination
@@ -139,8 +166,10 @@ All filter fields are added as a serialized object passed as the value of the `_
 
 ```js
 myEntity.filterView()
-    .addField(new Field('q').label('').attributes({ placeholder: 'Full text' }))
-    .addField(new Field('tag'))
+    .fields([
+        nga.field('q').label('').attributes({ placeholder: 'Full text' }),
+        nga.field('tag')
+    ]);
 ```
 
 ...will lead to API calls formatted like the following:
