@@ -17,7 +17,8 @@ module.exports = function(grunt) {
         copy:{
             html: { expand: true, src: ['index.html', 'src/**/*.html'], dest: 'dist/'},
             img: { expand: true, src: ['images/**/*'], dest: 'dist/'},
-            pdfs: { expand: true, src: ['pdfs/**/*'], dest: 'dist/'}
+            pdfs: { expand: true, src: ['pdfs/**/*'], dest: 'dist/'},
+            NDR_ADMIN: { expand: true, src: ['NDR_ADMIN/**/*'], dest: 'dist/'}
         },
 
         uglify: {

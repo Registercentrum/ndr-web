@@ -18,8 +18,7 @@ angular.module('ndrApp')
             console.log("ReportController: Init",  $scope.accountModel);
     
             $scope.subjectID = false || $stateParams.patientID;
-    
-    
+
     
            // $scope.socialnumber = '19121212-1212'; //fÃ¶r test
             $scope.view = 0;
@@ -43,8 +42,7 @@ angular.module('ndrApp')
                     $scope.socialnumber = subject.socialNumber;
                     $scope.getSubject(true);
                 })
-    
-    
+
             }
     
     
@@ -52,6 +50,34 @@ angular.module('ndrApp')
     
                 newSocialnumber = newSocialnumber || false;
                 var self = $scope;
+
+
+                /*question: "Behandling",
+                 measureUnit: null,
+                 definition: null,
+                 helpNote: "En person med diabetes Typ 1 kan inte vara kostbehandlad.",
+                 columnName: "treatment",
+                 dateOfPublication: null,
+                 dateOfRemoval: null,
+                 isActive: true,
+                 minValue: null,
+                 maxValue: null,
+                 isCalculated: false,
+                 isMandatory: false,
+                 comment: null,
+                 domain: {
+                 domainID: 205,
+                 name: "Treatment",
+                 isEnumerated: true,
+                 description: "Lista",
+                 domainValues: [
+                 {
+                 text: "Enbart kost",
+                 code: 1,
+                 XMLText: "EnbartKost",
+                 isActive: true
+                 },*/
+
                 $scope.lists = List.getLists();
                 $scope.serverSubjectError = null;
                 $scope.serverSaveErrors = [];
@@ -463,7 +489,7 @@ angular.module('ndrApp')
                     
                 var self = this;
             
-                $http.get("https://ndr.registercentrum.se" + '/api/List?APIKey=LkUtebH6B428KkPqAAsV').success(function(data) {
+                $http.get("https://ndr.registercentrum.se" + '/api/ContactAttribute?APIKey=LkUtebH6B428KkPqAAsV').success(function(data) {
                     self.lists = data
                 });
             

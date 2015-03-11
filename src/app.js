@@ -49,6 +49,26 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
     
                     }
                 })
+
+                .state('main.accountAbout', {
+                    url: '/konto',
+                    //controller : 'GuidelinesController',
+                    templateUrl: 'src/pages/About/aboutAccount.html',
+
+                    resolve: {
+
+                    }
+                })
+
+                .state('main.english', {
+                    url: '/english',
+                    //controller : 'GuidelinesController',
+                    templateUrl: 'src/pages/Language/english.html',
+
+                    resolve: {
+
+                    }
+                })
     
                 .state('main.patient', {
                     url: '/for-dig-med-diabetes',

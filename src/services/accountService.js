@@ -60,7 +60,6 @@ angular.module('ndrApp')
                             break
                         case 401:
                             console.log("not this er parrticular");
-
                             self.accountModel.serverError = 'Inget konto kunde hittas';
                             break;
                         default:
