@@ -26,7 +26,7 @@
                     <div style="font-size: 11px"> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName }}</div>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li ng-repeat="account in accountModel.user.accounts" role="presentation"><a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="accountService.logOut()">Logga ut</a></li>
+                        <!--<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="accountService.logOut()">Logga ut</a></li>-->
 
                     </ul>
                 </div>
