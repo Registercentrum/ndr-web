@@ -36,54 +36,21 @@ angular.module('ndrApp')
             }
     
             if($scope.subjectID){
-    
-    
                 dataService.getSubject($scope.subjectID).then(function (subject) {
                     $scope.socialnumber = subject.socialNumber;
                     $scope.getSubject(true);
-                })
-
+                });
             }
-    
     
             $scope.getSubject = function(newSocialnumber) {
     
                 newSocialnumber = newSocialnumber || false;
                 var self = $scope;
 
-
-                /*question: "Behandling",
-                 measureUnit: null,
-                 definition: null,
-                 helpNote: "En person med diabetes Typ 1 kan inte vara kostbehandlad.",
-                 columnName: "treatment",
-                 dateOfPublication: null,
-                 dateOfRemoval: null,
-                 isActive: true,
-                 minValue: null,
-                 maxValue: null,
-                 isCalculated: false,
-                 isMandatory: false,
-                 comment: null,
-                 domain: {
-                 domainID: 205,
-                 name: "Treatment",
-                 isEnumerated: true,
-                 description: "Lista",
-                 domainValues: [
-                 {
-                 text: "Enbart kost",
-                 code: 1,
-                 XMLText: "EnbartKost",
-                 isActive: true
-                 },*/
-
                 $scope.lists = List.getLists();
                 $scope.serverSubjectError = null;
                 $scope.serverSaveErrors = [];
-                //$scope.contactToUpdate = null;
-    
-    
+
                 $http({
                     url: server.baseURL + '/api/Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + server.APIKey,
                     method: "POST",
@@ -91,7 +58,7 @@ angular.module('ndrApp')
                 })
                     .success(function(data) {
                         self.subject = data;
-                        //vÃ¤lj det senast uppdaterade/skapade besÃ¶ket
+                        //Välj det senast uppdaterade/skapade besöket
                         if (!newSocialnumber) {
                             self.contactToUpdate = self.getContactFromContactDate(self.subject.contacts, self.contactModel.contactDate)
                             self.setContact(self.contactToUpdate);
@@ -105,6 +72,7 @@ angular.module('ndrApp')
     
                         switch (status) {
                             case 400:
+                                alert("Ingen patient hittades");
                                 $scope.serverSubjectError = data;
                                 break;
                             default:
@@ -130,7 +98,7 @@ angular.module('ndrApp')
             $scope.setContact = function(contactToUpdate) {
     
                 $scope.method = contactToUpdate == null ?  'POST' : 'PUT';
-                //senaste kontakt bara intressant vid nybesÃ¶k
+                //senaste kontakt bara intressant vid nybesök
                 $scope.lastContact = contactToUpdate == null ?  ($scope.subject.contacts[0] || null) : null;
     
                 //Skapa modell
@@ -484,19 +452,15 @@ angular.module('ndrApp')
         .service('List', ['$http', function($http) {
             
                 this.lists = null;
-            
-            
-                    
+
                 var self = this;
             
                 $http.get("https://ndr.registercentrum.se" + '/api/ContactAttribute?APIKey=LkUtebH6B428KkPqAAsV').success(function(data) {
-                    self.lists = data
+                    self.lists = _.indexBy(data, "columnName");
                 });
-            
-            
+
                 this.getLists = function() {
-                    console.log("aa", this.lists);
-                    return this.lists;
+                    return self.lists;
                 }
                 this.getList = function(listName) {
                     return this.lists[listName];
