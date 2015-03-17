@@ -4,7 +4,6 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	
-	
     app.directive('customPostLink', ['$location', function ($location) {
         return {
             restrict: 'E',
@@ -24,7 +23,6 @@
     app.config(function (NgAdminConfigurationProvider, RestangularProvider, $stateProvider) {
         var nga = NgAdminConfigurationProvider;
 
-		
         function truncate(value) {
             
 			if(value === '')
@@ -43,9 +41,9 @@
 			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
             .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 		
-<<<<<<< HEAD
+
         var news = nga.entity('News')
-=======
+		
 		// RestangularProvider.addElementTransformer('news', function(element) {
 			// console.log('test');
 			
@@ -63,14 +61,14 @@
 			// return element;
 		// });
 		
-        var app = new Application('NDR Admin') // application main title
-			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
-            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
+        var app = nga.application('NDR Admin') // application main title
+			.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
+            //.baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 		
 		console.log(app);
 		
-        var news = new Entity('News')
->>>>>>> origin/dev
+        var news = new nga.entity('News')
+
             .identifier(nga.field('newsID'))
 			.label('Nyheter');
 		
