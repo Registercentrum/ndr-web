@@ -62,8 +62,8 @@
 		// });
 		
         var app = nga.application('NDR Admin') // application main title
-			.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
-            //.baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
+			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
+            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 		
 		console.log(app);
 		
