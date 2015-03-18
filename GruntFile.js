@@ -47,22 +47,17 @@ module.exports = function(grunt) {
 
         concat: {
             less: {
-                options: {
-                },
-                dist: {
-                    src: [
-                        'images/grunticon/_grunticon-svg.less',
-                        //'images/grunticon/_grunticon-png.less',
-                        //'images/grunticon/_grunticon-fallback.less',
-                        'less/_variables.less',
-                        'less/_styles.less',
-                        'less/_mixins.less',
-                        'src/components/*/*.less',
-                        'src/pages/**/*.less'
-                    ],
-                    dest: 'less/_concatenated-styles.less'
-                }
-
+                src: [
+                    'images/grunticon/_grunticon-svg.less',
+                    //'images/grunticon/_grunticon-png.less',
+                    //'images/grunticon/_grunticon-fallback.less',
+                    'less/_variables.less',
+                    'less/_styles.less',
+                    'less/_mixins.less',
+                    'src/components/*/*.less',
+                    'src/pages/**/*.less'
+                ],
+                dest: 'less/_concatenated-styles.less'
             }
         },
 
