@@ -20,7 +20,7 @@ angular.module('ndrApp')
             $scope.subjectID = false || $stateParams.patientID;
 
     
-           // $scope.socialnumber = '19121212-1212'; //fÃ¶r test
+           // $scope.socialnumber = '19121212-1212'; //för test
             $scope.view = 0;
             $scope.contactModel =  null;
             $scope.contactToUpdate = null;
@@ -105,7 +105,7 @@ angular.module('ndrApp')
                 $scope.contactModel = contactToUpdate == null ?  $scope.getNewContactModel() : $scope.getUpdateModel();
     
                 $scope.showPumpProblem = $scope.contactModel.pumpProblemKeto || $scope.contactModel.pumpProblemHypo || $scope.contactModel.pumpProblemSkininfection || $scope.contactModel.pumpProblemSkinreaction;
-                $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReasonID>0;
+                $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReason>0;
             };
             $scope.getNewContactModel = function() {
     
@@ -119,8 +119,8 @@ angular.module('ndrApp')
                 $scope.showPumpClosureReason = !$scope.showPumpClosureReason;
             };
             $scope.insulinMethodChanged = function() {
-                if ($scope.contactModel.insulinMethodID != 2) {
-                    $scope.contactModel.pumpNewID = null;
+                if ($scope.contactModel.insulinMethod != 2) {
+                    $scope.contactModel.pumpNew = null;
     
                 }
             };
@@ -148,7 +148,7 @@ angular.module('ndrApp')
                 var contactDate = new Date($scope.contactModel.contactDate.substring(0,4),$scope.contactModel.contactDate.substring(5,7)-1,$scope.contactModel.contactDate.substring(8,10));
                 var birthDate = new Date($scope.subject.socialNumber.substring(0,4),$scope.subject.socialNumber.substring(4,6)-1,$scope.subject.socialNumber.substring(6,8));
                 var age = $scope.calculateAge(birthDate, contactDate);
-                var gfr = 175*Math.pow(($scope.contactModel.serumCreatinine/88.4),-1.154)*Math.pow(age,-0.203)*($scope.subject.sex.code == 2 ? femaleFactor : 1);
+                var gfr = 175*Math.pow(($scope.contactModel.serumCreatinine/88.4),-1.154)*Math.pow(age,-0.203)*($scope.subject.sex == 2 ? femaleFactor : 1);
     
                 $scope.contactModel.gfr = parseFloat(gfr.toFixed(2));
     
@@ -416,13 +416,13 @@ angular.module('ndrApp')
     
     
                 }).error(function(data, status, headers, config) {
-                    //todo behÃ¶ver utÃ¶kas
+                    //todo behöver utökas
                     if (data.ModelState != null) {
                         for(var propertyName in data.ModelState) {
                             $scope.serverSaveErrors.push(data.ModelState[propertyName][0])
                         }
                     } else {
-                        $scope.serverSaveErrors.push('Ett okÃ¤nt fel intrÃ¤ffade. Var god fÃ¶rsÃ¶k igen senare.');
+                        $scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
                     }
                 });
             };
@@ -439,10 +439,10 @@ angular.module('ndrApp')
                 })[0];
             };
             $scope.macroChanged = function() {
-                if ($scope.contactModel.macroscopicProteinuriaCode == 1)
-                    $scope.contactModel.microscopicProteinuriaCode = 1;
+                if ($scope.contactModel.macroscopicProteinuria == 1)
+                    $scope.contactModel.microscopicProteinuria = 1;
                 else
-                    $scope.contactModel.microscopicProteinuriaCode = null;
+                    $scope.contactModel.microscopicProteinuria = null;
             };
     
     
