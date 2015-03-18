@@ -44,31 +44,11 @@
 
         var news = nga.entity('News')
 		
-		// RestangularProvider.addElementTransformer('news', function(element) {
-			// console.log('test');
-			
-			// // for (i = 0; i < element.length; ++i) {
-			
-				// // var categories = [];
-				// // if (element[i].categories != null) {
-					// // for (i = 0; i < element[i].categories.length; ++i) {
-						// // categories.push(element[i].categories[i].id);
-					// // }
-				// // }
-				// // element[i].categories = categories;
-			// // }
-			
-			// return element;
-		// });
-		
         var app = nga.application('NDR Admin') // application main title
 			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
             .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
-		
-		console.log(app);
-		
-        var news = new nga.entity('News')
-
+			
+        var news = nga.entity('News')
             .identifier(nga.field('newsID'))
 			.label('Nyheter');
 		
@@ -89,6 +69,12 @@
 			.label('Användarkonton');
 		
 		var newsCategories = nga.entity('NewsCategory')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var roles = nga.entity('Role')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var integrationSystems = nga.entity('IntegrationSystem')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
 		var unitTypes = nga.entity('UnitType')
@@ -118,8 +104,9 @@
 			 .perPage(50)
              .fields([
 				nga.field('unitID').label('Enhets-ID').map(truncate),
-                 nga.field('unitName').label('Enhetsnamn').map(truncate),
-				 nga.field('hsaid').label('HSAID').map(truncate)
+				nga.field('unitName').label('Enhetsnamn').map(truncate),
+				nga.field('hsaid').label('HSAID').map(truncate), 
+				nga.field('statusText').label('Status').map(truncate)
              ])
 			.filters([
 				nga.field('q').label('Sök')
@@ -129,21 +116,31 @@
         accounts.creationView()
 			.title('Nytt användarkonto')
             .fields([
-				nga.field('unitID').label('Enhets-ID').editable(false),
+				nga.field('unitID').label('Enhets-ID'),
 				nga.field('userID').label('Användar-ID'),
+				nga.field('roleIDs', 'reference_many')
+					.label('Roller')
+					.targetEntity(roles) // the tag entity is defined later in this file
+					.targetField(nga.field('name')), // the field to be displayed in this list
 				nga.field('statusID', 'choice').label('Status')
 					.choices(
-						[{value: '1', label: 'Aktiv'},
-						{value: '2', label: 'Second'}])
+						[{value: 1, label: 'Aktiv'},
+						{value: 2, label: 'Inväntar godkännande'},
+						{value: 3, label: 'Inaktivt'}])
             ]);
 		
         accounts.editionView()
 			.title('Uppdatera användarkonto')
             .fields([
+				nga.field('roleIDs', 'reference_many')
+					.label('Roller')
+					.targetEntity(roles) // the tag entity is defined later in this file
+					.targetField(nga.field('name')), // the field to be displayed in this list
 				nga.field('statusID', 'choice').label('Status')
 					.choices(
-						[{value: '1', label: 'First'},
-						{value: '2', label: 'Second'}])
+						[{value: 1, label: 'Aktiv'},
+						{value: 2, label: 'Inväntar godkännande'},
+						{value: 3, label: 'Inaktivt'}])
             ]);	
 		
 		
@@ -177,6 +174,7 @@
         users.creationView()
 			.title('Ny användare')
             .fields([
+				nga.field('userID').label('Användar-ID').editable(false).map(truncate),
 				nga.field('hsaid').label('HSAID').editable(false).map(truncate),
                 nga.field('firstName').label('Förnamn').map(truncate),
 				nga.field('lastName').label('Efternamn').map(truncate),
@@ -251,6 +249,10 @@
                 nga.field('senderID').label('Sänd-ID'),
                 nga.field('manager').label('Verksamhetschef'),
 				nga.field('comment','text').label('Kommentar'),
+				nga.field('systemIDs', 'reference_many')
+					.label('Överföringssystem')
+					.targetEntity(integrationSystems)
+					.targetField(nga.field('name')),
 				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false)
             ]);
 		
@@ -307,7 +309,7 @@
                 nga.field('publishedTo', 'date')
                     .label('Publicerad till')
 					.format('yyyy-MM-dd'), // preset fields in creation view with defaultValue
-				nga.field('categories', 'reference_many')
+				nga.field('categoryIDs', 'reference_many')
 					.label('Kategorier')
 					.targetEntity(newsCategories) // the tag entity is defined later in this file
 					.targetField(nga.field('name')), // the field to be displayed in this list
@@ -368,46 +370,17 @@
             ]);
 		
 
-		// RestangularProvider.addElementTransformer('Account', true, function(elements) {
-			
-			// //do my stuff here
-			// for (var i = 0, len = elements.length; i < len; i++) {
-			  // elements[i].userID=elements[i].user.userID;
-			  // elements[i].hsaid=elements[i].user.hsaid;
-			  // elements[i].unitID=elements[i].unit.unitID;
-			  // elements[i].unitName=elements[i].unit.name;
-			// }
-			// //console.log(elements);
-			
-			// return elements;
-		// });
-		RestangularProvider.addElementTransformer('Account', function(elements) {
+		RestangularProvider.addElementTransformer('Account', true, function(elements) {
 			
 			//do my stuff here
-			if (elements.length>0) {
-				for (var i = 0, len = elements.length; i < len; i++) {
-				  elements[i].userID=elements[i].user.userID;
-				  elements[i].hsaid=elements[i].user.hsaid;
-				  elements[i].unitID=elements[i].unit.unitID;
-				  elements[i].unitName=elements[i].unit.name;
-				}
-			} else {
-				//elements.userID=elements.user.userID;
-				//elements.hsaid=elements.user.hsaid;
-				//elements.unitID=elements.unit.unitID;
-				//elements.unitName=elements.unit.name;
-			}
-			
-			return elements;
-		});
-		
-		
-		//todo transformera nyheter för att skapa array av kategori-idn .categories  ex. = [1,2]
-		RestangularProvider.addElementTransformer('News', true, function(elements) {
-			
 			for (var i = 0, len = elements.length; i < len; i++) {
-			  elements[i].categories=[1,2];
+			  elements[i].userID=elements[i].user.userID;
+			  elements[i].hsaid=elements[i].user.hsaid;
+			  elements[i].unitID=elements[i].unit.unitID;
+			  elements[i].unitName=elements[i].unit.name;
+			  elements[i].statusText=elements[i].status.name;
 			}
+			//console.log(elements);
 			
 			return elements;
 		});
