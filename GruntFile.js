@@ -18,7 +18,8 @@ module.exports = function(grunt) {
             html: { expand: true, src: ['index.html', 'src/**/*.html'], dest: 'dist/'},
             img: { expand: true, src: ['images/**/*'], dest: 'dist/'},
             pdfs: { expand: true, src: ['pdfs/**/*'], dest: 'dist/'},
-            NDR_ADMIN: { expand: true, src: ['NDR_ADMIN/**/*'], dest: 'dist/'}
+            NDR_ADMIN: { expand: true, src: ['NDR_ADMIN/**/*'], dest: 'dist/'},
+            favicon: { src: ['favicon.ico'], dest: 'dist/'}
         },
 
         uglify: {
@@ -147,7 +148,7 @@ module.exports = function(grunt) {
                     './less/*.less',
                     'bower_components/bootstrap/less/*.less'
                 ],
-                tasks: ['concat', 'less'],
+                tasks: ['concat:less', 'less'],
                 options: {
                     spawn: false,
                     livereload: true
@@ -158,6 +159,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('default', ['concat:less', 'less']);
-    grunt.registerTask('watch', ['watch']);
+    grunt.registerTask('observe', ['watch']);
     grunt.registerTask('build', ['copy', 'useminPrepare', 'concat:generated', 'uglify', 'cssmin', 'usemin', 'imagemin:build', 'clean:build']);
 };
