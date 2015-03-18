@@ -1,13 +1,13 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-                 '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         function ($scope,   $http,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
             var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],
                 requiredFilters = ['diabetesType', 'hba1c'];
 
-            var dateOffset = (24*60*60*1000) * 365;
+            var dateOffset = (24*60*60*1000) * 365; //365
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
             $scope.datePickers = {
@@ -37,6 +37,13 @@ angular.module('ndrApp')
                 $scope.datePickers[picker].opened = true;
             };
 
+            $scope.openPicker = function ($event, columnName, direction) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.selectedFilters[columnName][direction].opened = true;
+                //     $scope.selectedFilters[filter.columnName].from
+            };
+
 
             $scope.lookupName = function (filter, value){
 
@@ -51,8 +58,10 @@ angular.module('ndrApp')
             /* DATA TABLE */
             $scope.$watch("model.filteredSubjects", function (){
 
-                function paged (valLists,pageSize)
-                {
+                function paged (valLists,pageSize){
+
+                    if(!valLists) return false;
+
                     retVal = [];
                     for (var i = 0; i < valLists.length; i++) {
                         if (i % pageSize === 0) {
@@ -64,7 +73,7 @@ angular.module('ndrApp')
                     return retVal;
                 };
 
-                $scope.pageSize = 10;
+                $scope.pageSize = 15;
                 $scope.allItems = $scope.model.filteredSubjects;
                 $scope.reverse = false;
 
@@ -149,72 +158,8 @@ angular.module('ndrApp')
 
 
             $scope.toggleDetail = function (d){
-               console.log("detail",d);
+                console.log("detail",d);
             }
-
-
-
-       /*     $scope.resetAll = function () {
-                $scope.filteredList = $scope.allItems;
-                $scope.newEmpId = '';
-                $scope.newName = '';
-                $scope.newEmail = '';
-                $scope.searchText = '';
-
-            }*/
-
-
-        /*    // Template function for additional visit rows in the table
-            function format (visits) {
-                return _.map(visits, function (visit) {
-                    return [
-                        '<tr class="visit-detail">',
-                        '<td colspan="2"></td>',
-                        '<td>' + $filter('date')(new Date(visit.contactDate), 'yyyy-MM-dd') + '</td>',
-                        '<td>' + ((visit.bpDiastolic === null) ? '-' : visit.bpDiastolic) + '</td>',
-                        '<td>' + ((visit.hba1c === null) ? '-' : visit.hba1c) + '</td>',
-                        '<td></td>',
-                        '</tr>'
-                    ].join('');
-                }).join('');
-            }
-
-            $scope.$on('event:dataTableLoaded', function (event, loadedDT) {
-                var dt = loadedDT.DataTable,
-                    detailRows = [],
-                    visits;
-
-                $('#Table--patients tbody').on('click', 'tr td:first-child', function () {
-                    var tr = $(this).closest('tr'),
-                        row = dt.row(tr),
-                        idx = $.inArray(tr.attr('id'), detailRows);
-
-                    if (row.child.isShown()) {
-                        tr.removeClass('details');
-                        row.child.hide();
-
-                        // Remove from the 'open' array
-                        detailRows.splice(idx, 1);
-                    } else {
-                        tr.addClass('details');
-                        // find all the visits aka contacts for this patient
-                        visits = _.find($scope.model.filteredSubjects, {socialNumber: row.data()[1]}).contacts;
-                        // render them as child rows
-                        row.child($(format(visits))).show();
-                        // Add to the 'open' array
-                        if (idx === -1) {
-                            detailRows.push(tr.attr('id'));
-                        }
-                    }
-                });
-
-                // On each draw, loop over the `detailRows` array and show any child rows
-                dt.on('draw', function () {
-                    $.each(detailRows, function (i, id) {
-                        $('#'+id+' td:first-child').trigger('click');
-                    });
-                });
-            });*/
 
 
 
@@ -285,10 +230,38 @@ angular.module('ndrApp')
                 .then(function (filters) {
                     var required;
 
+                    var toReject = ["gfr", "socialNumber", "pumpOngoingSerial", "pumpNewSerial", "contactDate"];
+
                     filters = _.reject(filters, function (d){
-                        return d.columnName == "socialNumber" || d.columnName == "pumpOngoingSerial";
+                        return toReject.indexOf(d.columnName) !== -1;
                     })
-                    
+
+
+                    _.each(filters, function(filter, key){
+
+
+                        if (filter.columnName  == 'age' ) {
+                            filter.min = 0;
+                            filter.max = 120;
+                            filter.maxValue = 120;
+                            filter.range = [0, 120];
+                        }
+
+                        if (filter.columnName  == 'smokingEndYear' ) {
+                            filter.min = 1900;
+                            filter.max = 2020;
+                            filter.range = [1900, 2020];
+                        }
+
+                        if (filter.columnName  == 'yearOfOnset' ) {
+                            filter.min = 1900;
+                            filter.max = 2020;
+                            filter.range = [1900, 2020];
+                        }
+
+                    })
+
+
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
                     _.each(filters, function (filter, index) {
                         // If the filter is required choose it instantly
@@ -304,12 +277,26 @@ angular.module('ndrApp')
                             $scope.selectedFilters[filter.columnName].max = filter.maxValue;
                             $scope.selectedFilters[filter.columnName].range = [filter.minValue || 0, filter.maxValue];
                         }
+
+                        if (filter.domain.name == 'Date') {
+                            $scope.selectedFilters[filter.columnName].from = {
+                                date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
+                                opened : false
+                            };
+                            $scope.selectedFilters[filter.columnName].to = {
+                                date: $filter('date')(new Date(), $scope.format),
+                                opened : false
+                            };
+                        }
+
                     });
 
                     // Make sure that required filters are always first in the list
                     // Also make sure they are sorted alphabetically
                     required = _.remove(filters, 'isChosen');
                     filters = required.concat(_.sortBy(filters, 'question'));
+
+
 
                     // Set the available filters
                     $scope.filters = filters;
@@ -370,7 +357,7 @@ angular.module('ndrApp')
                         if (filter.undef) {
                             return _.isNull(subject[prop]) || _.isNull(subject.aggregatedProfile[prop]);
 
-                        // Handle range filtering
+                            // Handle range filtering
                         } else if (_.isNumber(filter.min) && _.isNumber(filter.max) && (filter.min > filter.range[0] || filter.max < filter.range[1])) {
 
                             // prop may sit directly on the subject (sex) or on aggregatedProfile
@@ -378,14 +365,22 @@ angular.module('ndrApp')
                             return (_.isNumber(subject[prop]) && (subject[prop] >= filter.min && subject[prop] <= filter.max)) ||
                                 (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] >= filter.min && subject.aggregatedProfile[prop] <= filter.max));
 
-                        // Handle value filtering
+                        }
+                        else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
+
+                            //console.log(new Date(filter.from.date), new Date(filter.to.date ));
+                            //console.log("Look", subject.aggregatedProfile[prop], _.isDate(subject.aggregatedProfile[prop], filter.from.date,  new Date(filter.from.date), new Date(filter.to.date) ));
+                            var dateToLookFor = new Date(subject.aggregatedProfile[prop]);
+                            return (_.isDate(dateToLookFor) && (dateToLookFor >= new Date(filter.from.date) && dateToLookFor <= new Date(filter.to.date)));
+
+                            // Handle value filtering
                         } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
                             value = parseInt(filter.value, 10);
                             // prop may sit directly on the subject (sex) or on aggregatedProfile
                             // also, it can have 'code' or 'id' as the prop name, so check for both
                             return subject[prop] === value || subject.aggregatedProfile[prop] === value;
 
-                        // Nothing to filter
+                            // Nothing to filter
                         } else {
                             return true;
                         }
