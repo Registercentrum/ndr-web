@@ -40,13 +40,8 @@
         var app = nga.application('NDR Admin') // application main title
 			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
             .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
-		
 
         var news = nga.entity('News')
-		
-        var app = nga.application('NDR Admin') // application main title
-			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
-            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
