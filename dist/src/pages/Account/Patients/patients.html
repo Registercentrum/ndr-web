@@ -4,7 +4,7 @@
         <p>Välj besöksperiod och andra sökkriterier.</p>
     </div>
 
-  <div class="col-md-12">
+    <div class="col-md-12">
         <div class="MultiFilter">
             <div class="MultiFilter-row MultiFilter-row--header">
                 <div class="row">
@@ -81,14 +81,14 @@
 
                         <!-- If there is max value, display as range slider -->
                         <div
-                            slider
-                            ng-if="filter.maxValue !== null"
-                            ng-model="selectedFilters[filter.columnName].min"
-                            ng-model-range="selectedFilters[filter.columnName].max"
-                            ng-disabled="selectedFilters[filter.columnName].undef"
-                            floor="{{ filter.minValue || 0 }}"
-                            ceiling="{{ filter.maxValue }}"
-                            class="RangeSlider">
+                                slider
+                                ng-if="filter.maxValue !== null"
+                                ng-model="selectedFilters[filter.columnName].min"
+                                ng-model-range="selectedFilters[filter.columnName].max"
+                                ng-disabled="selectedFilters[filter.columnName].undef"
+                                floor="{{ filter.minValue || 0 }}"
+                                ceiling="{{ filter.maxValue }}"
+                                class="RangeSlider">
                         </div>
 
                         <!-- If domain is enumerable and there are just two options, display them as radio buttons -->
@@ -96,10 +96,10 @@
                             <span class="radio" ng-repeat="option in filter.domain.domainValues">
                                 <label>
                                     <input
-                                        type="radio"
-                                        ng-model="selectedFilters[filter.columnName].value"
-                                        ng-disabled="selectedFilters[filter.columnName].undef"
-                                        value="{{ option.code }}">
+                                            type="radio"
+                                            ng-model="selectedFilters[filter.columnName].value"
+                                            ng-disabled="selectedFilters[filter.columnName].undef"
+                                            value="{{ option.code }}">
                                     {{ option.text }}
                                 </label>
                             </span>
@@ -107,22 +107,21 @@
 
                         <!-- If domain is enumerable and have more than two options, display them as a select -->
                         <select
-                            ng-if="filter.domain.isEnumerated && filter.domain.domainValues.length > 2"
-                            ng-options="option.code as option.text for option in filter.domain.domainValues"
-                            ng-model="selectedFilters[filter.columnName].value"
-                            ng-disabled="selectedFilters[filter.columnName].undef"
-                            class="form-control pull-left">
+                                ng-if="filter.domain.isEnumerated && filter.domain.domainValues.length > 2"
+                                ng-options="option.code as option.text for option in filter.domain.domainValues"
+                                ng-model="selectedFilters[filter.columnName].value"
+                                ng-disabled="selectedFilters[filter.columnName].undef"
+                                class="form-control pull-left">
                             <option value="">Välj {{ filter.question }}</option>
                         </select>
 
-                        <!-- If domain is "Date" -->
-                        <!--<div class="FilterDatePopup" ng-if="filter.domain.name == 'Date'">
+                        <div class="FilterDatePopup" ng-if="filter.domain.name == 'Date'">
                             <div class="input-group FilterDatePopup-group">
                                 <span class="input-group-addon">
                                     <button
                                             type="button"
                                             class="FilterDatePopup-button"
-                                            ng-click="open($event, 'from')">
+                                            ng-click="openPicker($event, filter.columnName, 'from')">
                                         <i class="fa fa-calendar"></i>
                                     </button>
                                 </span>
@@ -130,8 +129,8 @@
                                         type="text"
                                         class="FilterDatePopup-input form-control"
                                         datepicker-popup="{{ format }}"
-                                        ng-model="datePickers.from.date"
-                                        is-open="datePickers.from.opened"
+                                        ng-model="selectedFilters[filter.columnName].from.date"
+                                        is-open="selectedFilters[filter.columnName].from.opened"
                                         min-date="minDate"
                                         max-date="'2015-06-22'"
                                         datepicker-options="dateOptions"
@@ -143,7 +142,7 @@
                                    <button
                                            type="button"
                                            class="FilterDatePopup-button"
-                                           ng-click="open($event, 'to')">
+                                           ng-click="openPicker($event, filter.columnName, 'to')">
                                        <i class="fa fa-calendar"></i>
                                    </button>
                                  </span>
@@ -151,8 +150,8 @@
                                         type="text"
                                         class="FilterDatePopup-input form-control"
                                         datepicker-popup="{{ format }}"
-                                        ng-model="datePickers.to.date"
-                                        is-open="datePickers.to.opened"
+                                        ng-model="selectedFilters[filter.columnName].to.date"
+                                        is-open="selectedFilters[filter.columnName].to.opened"
                                         min-date="minDate"
                                         max-date="'2015-06-22'"
                                         datepicker-options="dateOptions"
@@ -160,7 +159,7 @@
                                         ng-required="true"
                                         close-text="Close">
                             </div>
-                        </div>-->
+                        </div>
 
 
                     </div>
@@ -192,77 +191,83 @@
 
 
 
-      <div class="table-responsive">
-          <table id="Table--patients" width="100%" class="data-table table responsive table-striped table-bordered row-border hover">
-              <thead>
-              <tr>
-                  <!--<th>Mer</th>-->
-                  <th class="EmpId">Personnummer</th>
-                  <th class="EmpId">Senaste besök</th>
-                  <th ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</th>
-                  <th>Funktioner</th>
-              </tr>
-              </thead>
-              <tbody>
-
-              <tr ng-repeat="subject in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
-                  <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
-                  <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
-                  <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
-                  <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.columnName == 'diabetesType' ? subject.diabetesTypeText : lookupName(f, subject.aggregatedProfile[f.columnName]) }}</td>
-                  <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
-
-              </tr>
-              </tbody>
-          </table>
-      </div>
-
-      <ul class="pagination pagination-sm" ng-show="ItemsByPage.length > 1" style="cursor: pointer">
-          <li ng-class="{active:0}"><a ng-click="firstPage()">Sida 1</a>
-
-          </li>
-          <li ng-repeat="n in range(ItemsByPage.length)"> <a ng-click="setPage()" ng-bind="n+1">1</a>
-
-          </li>
-          <li ng-show="ItemsByPage">
-              <a ng-click="lastPage()">Sista sidan</a>
-          </li>
-      </ul>
-
-
-  <!--      <div class="table-responsive">
-            <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" width="100%" class="table responsive table-striped table-bordered row-border hover">
+        <div class="table-responsive">
+            <table id="Table--patients" width="100%" class="data-table table responsive table-striped table-bordered row-border hover">
                 <thead>
                 <tr>
-                    <td>Mer</td>
-                    <td>Personnummer</td>
-                    <td>Senaste besök</td>
-                    &lt;!&ndash; <td>Blodtryck</td> &ndash;&gt;
-                    <td>HbA1c</td>
-                    <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</td>
-
-                    <td>Funktioner</td>
-
-                    <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f }}</td>
-
+                    <!--<th>Mer</th>-->
+                    <th class="EmpId">Personnummer</th>
+                    <th class="EmpId">Senaste besök</th>
+                    <th ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</th>
+                    <th>Funktioner</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="subject in model.filteredSubjects">
-                    <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
+
+                <tr ng-repeat="subject in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
+                    <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
                     <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
                     <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
-                    &lt;!&ndash; <td once-text="subject.aggregatedProfile.bpDiastolic"</td> &ndash;&gt;
-                    <td once-text="subject.aggregatedProfile.hba1c"></td>
-                    &lt;!&ndash;<td ng-repeat="f in filters | filter:{isChosen:true}">{{ subject.aggregatedProfile[f.columnName] }}</td>&ndash;&gt;
+                    <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.columnName == 'diabetesType' ? subject.diabetesTypeText : lookupName(f, subject.aggregatedProfile[f.columnName]) }}</td>
+                    <td><a target="_blank" once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
 
-                    <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
--->
+        <ul class="pagination pagination-sm" ng-show="ItemsByPage.length > 1" style="cursor: pointer">
+            <li ng-class="{active:0}"><a ng-click="firstPage()">Sida 1</a>
+
+            </li>
+            <li ng-repeat="n in range(ItemsByPage.length)"> <a ng-click="setPage()" ng-bind="n+1">1</a>
+
+            </li>
+            <li ng-show="ItemsByPage">
+                <a ng-click="lastPage()">Sista sidan</a>
+            </li>
+        </ul>
+
+        <!--  <pre>
+                  {{ selectedFilters | json }}
+
+          </pre>-->
+
+
+
+        <!--      <div class="table-responsive">
+                  <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" width="100%" class="table responsive table-striped table-bordered row-border hover">
+                      <thead>
+                      <tr>
+                          <td>Mer</td>
+                          <td>Personnummer</td>
+                          <td>Senaste besök</td>
+                          &lt;!&ndash; <td>Blodtryck</td> &ndash;&gt;
+                          <td>HbA1c</td>
+                          <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</td>
+
+                          <td>Funktioner</td>
+
+                          <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f }}</td>
+
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr ng-repeat="subject in model.filteredSubjects">
+                          <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
+                          <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
+                          <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
+                          &lt;!&ndash; <td once-text="subject.aggregatedProfile.bpDiastolic"</td> &ndash;&gt;
+                          <td once-text="subject.aggregatedProfile.hba1c"></td>
+                          &lt;!&ndash;<td ng-repeat="f in filters | filter:{isChosen:true}">{{ subject.aggregatedProfile[f.columnName] }}</td>&ndash;&gt;
+
+                          <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+
+      -->
 
     </div>
 </div>

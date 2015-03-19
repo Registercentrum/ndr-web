@@ -40,13 +40,8 @@
         var app = nga.application('NDR Admin') // application main title
 			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
             .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
-		
 
         var news = nga.entity('News')
-		
-        var app = nga.application('NDR Admin') // application main title
-			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint
-            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -85,10 +80,10 @@
 			.identifier(nga.field('code'));
 		
         // set the application entities
-        app.addEntity(news)
-			.addEntity(units)
+        app.addEntity(units)
 			.addEntity(users)
 			.addEntity(accounts)
+			.addEntity(news)
 			.addEntity(publications);
 		
 		// ****** ACCOUNTS ******
@@ -105,6 +100,8 @@
              .fields([
 				nga.field('unitID').label('Enhets-ID').map(truncate),
 				nga.field('unitName').label('Enhetsnamn').map(truncate),
+				nga.field('firstName').label('Förnamn').map(truncate),
+				nga.field('lastName').label('Efternamn').map(truncate),
 				nga.field('hsaid').label('HSAID').map(truncate), 
 				nga.field('statusText').label('Status').map(truncate)
              ])
@@ -281,8 +278,8 @@
                 nga.field('newsID').label('ID').order(0),
                 nga.field('title').label('Rubrik').map(truncate).order(1),
                 nga.field('isInternal','boolean').label('Intern'),
-                nga.field('publishedFrom', 'date').label('Datum'),
-				nga.field('publishedTo', 'date').label('Datum')
+                nga.field('publishedFrom', 'date').label('Från'),
+				nga.field('publishedTo', 'date').label('Till')
                 // new Field() // template fields don't need a name in dashboard view
                 //     .type('template') // a field which uses a custom template
                 //     .label('Actions')
@@ -376,6 +373,8 @@
 			for (var i = 0, len = elements.length; i < len; i++) {
 			  elements[i].userID=elements[i].user.userID;
 			  elements[i].hsaid=elements[i].user.hsaid;
+			  elements[i].firstName=elements[i].user.firstName;
+			  elements[i].lastName=elements[i].user.lastName;
 			  elements[i].unitID=elements[i].unit.unitID;
 			  elements[i].unitName=elements[i].unit.name;
 			  elements[i].statusText=elements[i].status.name;

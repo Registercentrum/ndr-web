@@ -112,74 +112,74 @@
 
               <div class="row Report-formGroup">
                 <div class="col-md-5">
-                  <label class="" for="diabetesTypeID" class="">Diabetestyp</label>
+                  <label class="" for="diabetesType" class="">Diabetestyp</label>
 
-                  <select name="diabetesTypeID" class="form-control"
-                          ng-model="contactModel.diabetesTypeID"
-                          ng-class="{ 'has-no-error' : contactModel.diabetesTypeID != null}"
+                  <select name="diabetesType" class="form-control"
+                          ng-model="contactModel.diabetesType"
+                          ng-class="{ 'has-no-error' : contactModel.diabetesType != null}"
                           ng-model-options="{ updateOn: 'blur' }"
                           ng-options="type.code as type.text for type in lists.diabetesType.domain.domainValues" >
                     <option value="">-- välj diabetestyp --</option>
                   </select>
-                  <p ng-show="contactForm.diabetesTypeID.$pristine && subject.diabetesType != null && contactModel.diabetesTypeID != null && contactModel.diabetesTypeID == subject.diabetestype.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.diabetesType.$pristine && subject.diabetesType != null && contactModel.diabetesType != null && contactModel.diabetesType == subject.diabetesType && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                 </div>
               </div>
 
               <div class="row Report-formGroup">
                 <div class="col-md-12">
                   <div class="Report-formGroup-form ">
-                    <label class="" for="treatmentID" class="">Diabetesbehandling</label>
-                    <p ng-show="contactForm.treatmentID.$pristine && contactModel.treatmentID == contactModel.treatmentID && contactToUpdate == null" class="Report-formItemHelp help-block iteration"></p>
-                    <select name="treatmentID" class="form-control"
-                            ng-model="contactModel.treatmentID"
-                            ng-class="{ 'has-no-error' : contactModel.treatmentID != null}"
+                    <label class="" for="treatment" class="">Diabetesbehandling</label>
+                    <p ng-show="contactForm.treatment.$pristine && contactModel.treatment == contactModel.treatment && contactToUpdate == null" class="Report-formItemHelp help-block iteration"></p>
+                    <select name="treatment" class="form-control"
+                            ng-model="contactModel.treatment"
+                            ng-class="{ 'has-no-error' : contactModel.treatment != null}"
                             ng-options="type.code as type.text for type in lists.treatment.domain.domainValues" >
                       <option value="">-- välj behandling --</option>
                     </select>
-                    <p ng-show="contactForm.treatmentID.$pristine && contactModel.treatmentID != null && contactModel.treatmentID == lastContact.treatment.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                    <p ng-show="contactForm.treatment.$pristine && contactModel.treatment != null && contactModel.treatment == lastContact.treatment && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div><!-- end Report-formGroup-form -->
                 </div>
 
-                  <div class="row" ng-show="(contactModel.treatmentID == 3 || contactModel.treatmentID == 4 || contactModel.treatmentID == 9 || contactModel.treatmentID == 10)"><!-- ng-show="(contactModel.treatmentID == 3 || contactModel.treatmentID == 4 || contactModel.treatmentID == 9 || contactModel.treatmentID == 10)" -->
+                  <div class="row" ng-show="(contactModel.treatment == 3 || contactModel.treatment == 4 || contactModel.treatment == 9 || contactModel.treatment == 10)">
                     <div class="col-md-12">
                       <div class="Report-formGroup-form">
-                        <label class="" for="insulinMethodID" class="">Metod att ge insulin</label>
-                        <select name="insulinMethodID" class="form-control"
-                                ng-model="contactModel.insulinMethodID"
+                        <label class="" for="insulinMethod" class="">Metod att ge insulin</label>
+                        <select name="insulinMethod" class="form-control"
+                                ng-model="contactModel.insulinMethod"
                                 ng-change="insulinMethodChanged()"
-                                ng-class="{ 'has-no-error' : contactModel.insulinMethodID != null}"
+                                ng-class="{ 'has-no-error' : contactModel.insulinMethod != null}"
                                 ng-options="type.code as type.text for type in lists.insulinMethod.domain.domainValues" >
                           <option value="">-- välj metod att ge insulin --</option>
                         </select>
-                        <p ng-show="contactForm.insulinMethodID.$pristine && contactModel.insulinMethodID != null && contactModel.insulinMethodID == lastContact.insulinMethod.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                        <p ng-show="contactForm.insulinMethod.$pristine && contactModel.insulinMethod != null && contactModel.insulinMethod == lastContact.insulinMethod && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                       </div><!-- end Report-formGroup-form -->
                     </div>
 
-                    <div ng-show="(contactModel.insulinMethodID == 2 || contactModel.pumpOngoingID > 0 || (lastContact != null && lastContact.insulinMethod != null && lastContact.insulinMethod.id == 2))"> <!-- ng-show="(contactModel.insulinMethodID == 2 || contactModel.pumpOngoingID > 0 || (lastContact != null && lastContact.insulinMethod != null && lastContact.insulinMethod.id == 2))" -->
+                    <div ng-show="(contactModel.insulinMethod == 2 || contactModel.pumpOngoing > 0 || (lastContact != null && lastContact.insulinMethod != null && lastContact.insulinMethod == 2))">
                       <div class="col-md-12">
                         <div class="Report-formGroup-form">
-                          <label class="" for="pumpIndicationID" class="">Pumpindikation</label>
-                          <select name="pumpIndicationID" class="form-control"
-                                  ng-model="contactModel.pumpIndicationID"
-                                  ng-class="{ 'has-no-error' : contactModel.pumpIndicationID != null}"
+                          <label class="" for="pumpIndication" class="">Pumpindikation</label>
+                          <select name="pumpIndication" class="form-control"
+                                  ng-model="contactModel.pumpIndication"
+                                  ng-class="{ 'has-no-error' : contactModel.pumpIndication != null}"
                                   ng-options="type.code as type.text for type in lists.pumpIndication.domain.domainValues" >
                             <option value="">-- välj pumpindikation --</option>
                           </select>
-                          <p ng-show="contactForm.pumpIndicationID.$pristine && contactModel.pumpIndicationID != null && contactModel.pumpIndicationID == lastContact.pumpIndication.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                          <p ng-show="contactForm.pumpIndication.$pristine && contactModel.pumpIndication != null && contactModel.pumpIndication == lastContact.pumpIndication && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                         </div><!-- end Report-formGroup-form -->
                       </div>
                       <br><br>
                       <div class="col-md-6">
                         <div class="Report-formGroup-form">
-                          <label class="" for="pumpOngoingID" class="">Pågående pumpmodell</label>
-                          <select name="pumpOngoingID" class="form-control"
-                                  ng-model="contactModel.pumpOngoingID"
+                          <label class="" for="pumpOngoing" class="">Pågående pumpmodell</label>
+                          <select name="pumpOngoing" class="form-control"
+                                  ng-model="contactModel.pumpOngoing"
                                   ng-change="pumpOngoingChanged()"
-                                  ng-class="{ 'has-no-error' : contactModel.pumpOngoingID != null}"
+                                  ng-class="{ 'has-no-error' : contactModel.pumpOngoing != null}"
                                   ng-options="type.code as type.text for type in lists.pumpOngoing.domain.domainValues" >
                             <option value="">-- välj pumpmodell --</option>
                           </select>
-                          <p ng-show="contactForm.pumpOngoingID.$pristine && contactModel.pumpOngoingID != null && contactModel.pumpOngoingID == lastContact.pumpOngoing.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                          <p ng-show="contactForm.pumpOngoing.$pristine && contactModel.pumpOngoing != null && contactModel.pumpOngoing == lastContact.pumpOngoing && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                         </div>
                       </div>
 
@@ -235,11 +235,11 @@
 
                 <div class="col-md-5">
                   <div class="Report-formGroup-form">
-                    <label class="" for="pumpNewID" class="">Ny pumpmodell (Endast vid byte eller nyinsättning)</label>
-                    <select name="pumpNewID" class="form-control"
-                            ng-model="contactModel.pumpNewID"
+                    <label class="" for="pumpNew" class="">Ny pumpmodell (Endast vid byte eller nyinsättning)</label>
+                    <select name="pumpNew" class="form-control"
+                            ng-model="contactModel.pumpNew"
                             ng-change="pumpNewChanged()"
-                            ng-class="{ 'has-no-error' : contactModel.pumpNewID != null }"
+                            ng-class="{ 'has-no-error' : contactModel.pumpNew != null }"
                             ng-options="type.code as type.text for type in lists.pumpNew.domain.domainValues" >
                       <option value="">-- välj pumpmodell --</option>
                     </select>
@@ -263,14 +263,14 @@
                   <div class="Report-formGroup-form">
                     <button type="submit" class="Button Button--default" ng-click="togglePumpClosureReason()" >Rapportera/dölj pumpavslut</button>
                     <div class="" ng-show="showPumpClosureReason">
-                      <label class="" for="pumpClosureReasonID" class="">Pumpbehandling avslutad, ange huvudsaklig orsak</label>
-                      <select name="pumpClosureReasonID" class="form-control"
-                              ng-model="contactModel.pumpClosureReasonID"
-                              ng-class="{ 'has-no-error' : contactModel.pumpClosureReasonID != null}"
+                      <label class="" for="pumpClosureReason" class="">Pumpbehandling avslutad, ange huvudsaklig orsak</label>
+                      <select name="pumpClosureReason" class="form-control"
+                              ng-model="contactModel.pumpClosureReason"
+                              ng-class="{ 'has-no-error' : contactModel.pumpClosureReason != null}"
                               ng-options="type.code as type.text for type in lists.pumpClosureReason.domain.domainValues" >
                         <option value="">-- välj alternativ --</option>
                       </select>
-                      <p ng-show="contactForm.pumpClosureReasonID.$pristine && contactModel.pumpClosureReasonID != null && contactModel.pumpClosureReasonID == lastContact.pumpClosureReason.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.pumpClosureReason.$pristine && contactModel.pumpClosureReason != null && contactModel.pumpClosureReason == lastContact.pumpClosureReason && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                     </div>
                   </div><!-- end Report-formGroup-form -->
                 </div>
@@ -285,9 +285,9 @@
                     <div class="" ng-class="{ 'has-error' : contactForm.hba1c.$invalid && contactForm.hba1c.$dirty }">
                         <input name="hba1c" type="number" min="21" max="177" class="form-control" placeholder="HbA1c"
                                decimals="0"
-                               ng-Debounce="500"
                                ng-model="contactModel.hba1c"
-                               ng-class="{ 'has-no-error' : !contactForm.hba1c.$invalid && contactModel.hba1c != null}">
+                               ng-class="{ 'has-no-error' : !contactForm.hba1c.$invalid && contactModel.hba1c != null}"
+							   ng-model-options="{ updateOn: 'blur' }">
                         <p ng-show="contactForm.hba1c.$error.min || contactForm.hba1c.$error.max" class="Report-formItemHelp help-block">HbA1c kan anta ett värde mellan 21 och 177.</p>
                     </div>
                   </div>
@@ -344,9 +344,6 @@
                            ng-model-options="{ updateOn: 'blur' }">
                     <p ng-show="contactForm.bmi.$error.min || contactForm.bmi.$error.max" class="Report-formItemHelp help-block">BMI kan anta ett värde mellan 15 och 62.</p>
                   </div>
-                  <!--<div class="col-md-3">
-                      <button ng-click="calculateBMI()" class="btn btn-default btn-block" >Beräkna BMI</button>
-                  </div>-->
                   </div>
                 </div><!-- end formGroup -->
               </div><!-- end row -->
@@ -392,21 +389,21 @@
                            ng-options="type.code as type.text for type in lists.antihypertensives.domain.domainValues" >
                     <option value="">-- Ja / Nej --</option>
                   </select>
-                  <p ng-show="contactForm.antihypertensives.$pristine && contactModel.antihypertensives != null && contactModel.antihypertensives == lastContact.antihypertensives.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.antihypertensives.$pristine && contactModel.antihypertensives != null && contactModel.antihypertensives == lastContact.antihypertensives && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                 </div>
               </div>
 
 
               <div class="row Report-formGroup">
                 <div class="col-md-5">
-                  <label class="" for="lipidLoweringDrugsCode" class="">Lipidsänkande läkemedel</label>
-                  <select name="lipidLoweringDrugsCode" class="form-control"
-                          ng-model="contactModel.lipidLoweringDrugsCode"
-                          ng-class="{ 'has-no-error' : contactModel.lipidLoweringDrugsCode != null}"
+                  <label class="" for="lipidLoweringDrugs" class="">Lipidsänkande läkemedel</label>
+                  <select name="lipidLoweringDrugs" class="form-control"
+                          ng-model="contactModel.lipidLoweringDrugs"
+                          ng-class="{ 'has-no-error' : contactModel.lipidLoweringDrugs != null}"
                           ng-options="type.code as type.text for type in lists.lipidLoweringDrugs.domain.domainValues" >
                     <option value="">-- Ja / Nej --</option>
                   </select>
-                  <p ng-show="contactForm.lipidLoweringDrugsCode.$pristine && contactModel.lipidLoweringDrugsCode != null && contactModel.lipidLoweringDrugsCode == lastContact.lipidLoweringDrugs.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                  <p ng-show="contactForm.lipidLoweringDrugs.$pristine && contactModel.lipidLoweringDrugs != null && contactModel.lipidLoweringDrugs == lastContact.lipidLoweringDrugs && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                 </div>
 
               </div>
@@ -417,9 +414,9 @@
               <div class="row Report-formGroup">
                 <div class="col-md-10">
                   <label class="" for="physicalActivity" class="">Fysisk aktivitet (30 min promenad eller motsvarande)</label>
-                      <select name="physicalActivityID"
-                              ng-model="contactModel.physicalActivityID"
-                              ng-class="{ 'has-no-error' : contactModel.physicalActivityID != null}"
+                      <select name="physicalActivity"
+                              ng-model="contactModel.physicalActivity"
+                              ng-class="{ 'has-no-error' : contactModel.physicalActivity != null}"
                               ng-options="type.code as type.text for type in lists.physicalActivity.domain.domainValues" >
                           <option value="">-- välj alternativ --</option>
                       </select>
@@ -431,20 +428,20 @@
 
               <div class="row Report-formGroup">
                 <div class="col-md-5">
-                  <label class="" for="smokingHabitID" class="">Rökvanor</label>
-                    <select name="smokingHabitID" class="form-control"
-                            ng-model="contactModel.smokingHabitID"
-                            ng-class="{ 'has-no-error' : contactModel.smokingHabitID != null}"
+                  <label class="" for="smokingHabit" class="">Rökvanor</label>
+                    <select name="smokingHabit" class="form-control"
+                            ng-model="contactModel.smokingHabit"
+                            ng-class="{ 'has-no-error' : contactModel.smokingHabit != null}"
                             ng-options="type.code as type.text for type in lists.smokingHabit.domain.domainValues" >
                         <option value="">-- välj rökvanor --</option>
                     </select>
-                    <p ng-show="contactForm.smokingHabitID.$pristine && contactModel.smokingHabitID != null && contactModel.smokingHabitID == lastContact.smokingHabit.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                    <p ng-show="contactForm.smokingHabit.$pristine && contactModel.smokingHabit != null && contactModel.smokingHabit == lastContact.smokingHabit && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
 
                   <label class="" for="smokingEndYear" class="">Slutat År</label>
                   <input type="number" min="1980" max="2015" class="form-control"
                          ng-model="contactModel.smokingEndYear"
-                         ng-disabled="contactModel.smokingHabitID != 4"
-                         ng-class="{ 'has-no-error' : !contactForm.smokingEndYear.$invalid && contactModel.smokingEndYear != null && contactModel.smokingHabitID == 4}"
+                         ng-disabled="contactModel.smokingHabit != 4"
+                         ng-class="{ 'has-no-error' : !contactForm.smokingEndYear.$invalid && contactModel.smokingEndYear != null && contactModel.smokingHabit == 4}"
                          decimals="0"
                          placeholder="År">
                 </div>
@@ -468,7 +465,7 @@
                               ng-options="type.code as type.text for type in lists.aspirin.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.aspirin.$pristine && contactModel.aspirin != null && contactModel.aspirin == lastContact.aspirin.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.aspirin.$pristine && contactModel.aspirin != null && contactModel.aspirin == lastContact.aspirin && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -479,7 +476,7 @@
                               ng-options="type.code as type.text for type in lists.waran.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.waran.$pristine && contactModel.waran != null && contactModel.waran == lastContact.waran.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.waran.$pristine && contactModel.waran != null && contactModel.waran == lastContact.waran && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -498,7 +495,7 @@
                               ng-options="type.code as type.text for type in lists.macroscopicProteinuria.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.macroscopicProteinuria.$pristine && contactModel.macroscopicProteinuria != null && contactModel.macroscopicProteinuria == lastContact.macroscopicProteinuria.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.macroscopicProteinuria.$pristine && contactModel.macroscopicProteinuria != null && contactModel.macroscopicProteinuria == lastContact.macroscopicProteinuria && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -509,7 +506,7 @@
                               ng-options="type.code as type.text for type in lists.microscopicProteinuria.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.microscopicProteinuria.$pristine && contactModel.microscopicProteinuria != null && contactModel.microscopicProteinuria == lastContact.microscopicProteinuria.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.microscopicProteinuria.$pristine && contactModel.microscopicProteinuria != null && contactModel.microscopicProteinuria == lastContact.microscopicProteinuria && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -612,7 +609,7 @@
                               ng-options="type.code as type.text for type in lists.ischemicHeartDisease.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.ischemicHeartDisease.$pristine && contactModel.ischemicHeartDisease != null && contactModel.ischemicHeartDisease == lastContact.ischemicHeartDisease.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.ischemicHeartDisease.$pristine && contactModel.ischemicHeartDisease != null && contactModel.ischemicHeartDisease == lastContact.ischemicHeartDisease && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -623,7 +620,7 @@
                               ng-options="type.code as type.text for type in lists.cerebrovascularDisease.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.cerebrovascularDisease.$pristine && contactModel.cerebrovascularDisease != null && contactModel.cerebrovascularDisease == lastContact.cerebrovascularDisease.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.cerebrovascularDisease.$pristine && contactModel.cerebrovascularDisease != null && contactModel.cerebrovascularDisease == lastContact.cerebrovascularDisease && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -661,18 +658,18 @@
                               ng-options="type.code as type.text for type in lists.diabeticRetinopathy.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.diabeticRetinopathy.$pristine && contactModel.diabeticRetinopathy != null && contactModel.diabeticRetinopathy == lastContact.diabeticRetinopathy.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.diabeticRetinopathy.$pristine && contactModel.diabeticRetinopathy != null && contactModel.diabeticRetinopathy == lastContact.diabeticRetinopathy && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
-                    <label class="" for="diagnosisWorseSeeingEyeID" class="">Diagnos på sämsta ögat</label>
-                      <select name="diagnosisWorseSeeingEyeID" class="form-control"
-                              ng-model="contactModel.diagnosisWorseSeeingEyeID"
-                              ng-class="{ 'has-no-error' : contactModel.diagnosisWorseSeeingEyeID != null}"
+                    <label class="" for="diagnosisWorseSeeingEye" class="">Diagnos på sämsta ögat</label>
+                      <select name="diagnosisWorseSeeingEye" class="form-control"
+                              ng-model="contactModel.diagnosisWorseSeeingEye"
+                              ng-class="{ 'has-no-error' : contactModel.diagnosisWorseSeeingEye != null}"
                               ng-options="type.code as type.text for type in lists.diagnosisWorseSeeingEye.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.diagnosisWorseSeeingEyeID.$pristine && contactModel.diagnosisWorseSeeingEyeID != null && contactModel.diagnosisWorseSeeingEyeID == lastContact.diagnosisWorseSeeingEye.id && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.diagnosisWorseSeeingEye.$pristine && contactModel.diagnosisWorseSeeingEye != null && contactModel.diagnosisWorseSeeingEye == lastContact.diagnosisWorseSeeingEye && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
               </div>
 
@@ -690,7 +687,7 @@
                               ng-options="type.code as type.text for type in lists.visualLoss.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.visualLoss.$pristine && contactModel.visualLoss != null && contactModel.visualLoss == lastContact.visualLoss.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.visualLoss.$pristine && contactModel.visualLoss != null && contactModel.visualLoss == lastContact.visualLoss && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
                   <div class="col-md-5">
@@ -701,7 +698,7 @@
                               ng-options="type.code as type.text for type in lists.laserTreatment.domain.domainValues" >
                           <option value="">-- Ja / Nej --</option>
                       </select>
-                      <p ng-show="contactForm.laserTreatment.$pristine && contactModel.laserTreatment != null && contactModel.laserTreatment == lastContact.laserTreatment.code && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+                      <p ng-show="contactForm.laserTreatment.$pristine && contactModel.laserTreatment != null && contactModel.laserTreatment == lastContact.laserTreatment && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
                   </div>
 
               </div>
@@ -722,10 +719,10 @@
 
 
                   <div class="col-md-5">
-                    <label class="" for="footRiscCategoryID" class="">Riskkategori fot</label>
-                      <select name="footRiscCategoryID" class="form-control"
-                              ng-model="contactModel.footRiscCategoryID"
-                              ng-class="{ 'has-no-error' : contactModel.footRiscCategoryID != null}"
+                    <label class="" for="footRiscCategory" class="">Riskkategori fot</label>
+                      <select name="footRiscCategory" class="form-control"
+                              ng-model="contactModel.footRiscCategory"
+                              ng-class="{ 'has-no-error' : contactModel.footRiscCategory != null}"
                               ng-options="type.code as type.text for type in lists.footRiscCategory.domain.domainValues" >
                           <option value="">-- välj kategori --</option>
                       </select>
@@ -740,10 +737,10 @@
 
 
                   <div class="col-md-8">
-                    <label class="" for="hypoglycemiaSevereID" class="">Hypoglykemiförekomst svåra (Hjälp av utomstående. Antal senaste året) </label>
-                      <select name="hypoglycemiaSevereID" class="form-control"
-                              ng-model="contactModel.hypoglycemiaSevereID"
-                              ng-class="{ 'has-no-error' : contactModel.hypoglycemiaSevereID != null}"
+                    <label class="" for="hypoglycemiaSevere" class="">Hypoglykemiförekomst svåra (Hjälp av utomstående. Antal senaste året) </label>
+                      <select name="hypoglycemiaSevere" class="form-control"
+                              ng-model="contactModel.hypoglycemiaSevere"
+                              ng-class="{ 'has-no-error' : contactModel.hypoglycemiaSevere != null}"
                               ng-options="type.code as type.text for type in lists.hypoglycemiaSevere.domain.domainValues" >
                           <option value="">-- välj alternativ --</option>
                       </select>

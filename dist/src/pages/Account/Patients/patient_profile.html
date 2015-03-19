@@ -157,9 +157,8 @@
             <div class="Panel">
                 <h4>Kolesterol</h4>
 
-                <div class="col-sm-4" line-chart-patient-cholesterol title="'Kolesterol'" model="model.data.trend.cholesterol"></div>
-                <div class="col-sm-4" line-chart-patient-cholesterol title="'LDL'" model="model.data.trend.ldl"></div>
-                <div class="col-sm-4" line-chart-patient-cholesterol title="'HDL'" model="model.data.trend.hdl"></div>
+                <div class="col-sm-6" line-chart-patient-cholesterol title="'Kolesterol & Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
+                <div class="col-sm-6" line-chart-patient-cholesterol title="'LDL & HDL'" model="model.data.trend.combinedLDLHDL"></div>
 
                 <div> Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>
 
@@ -199,9 +198,22 @@
 
             <div class="Panel">
                <h4 class="Profile-heading">Fysisk aktivitet</h4>  <i class="Profile-latest-value icon " class="" style="font-size: 30px;"></i>
-                <!--<div class="" column-chart="" model="model.data.physicalActive"></div>-->
+
+                <div class="PhysicalChart" physical-chart model="model.latest.physicalActivity">
+                    <div id="_1"><span></span></div>
+                    <div id="_2"><span></span></div>
+                    <div id="_3"><span></span></div>
+                    <div id="_4"><span></span></div>
+                    <div id="_5"><span></span></div>
+                </div>
+
+                <div style="margin-top: 10px" class="text-center"><strong>{{ model.latest.physicalActivity.label }}</strong></div>
+
 
                 <!--<div gauge-chart model="model.data.chart.physicalActivity"></div>-->
+
+                <!--<div class="" column-chart="" model="model.data.physicalActive"></div>-->
+
 
             </div>
         </div>
