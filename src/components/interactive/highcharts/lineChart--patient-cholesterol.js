@@ -14,26 +14,28 @@ angular.module('ndrApp')
             link: function(scope, element, attrs) {
 
 
-
                 scope.$watch('model', function(model) {
 
+                    console.log("Kol", model);
+                    
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'area',
                             height : 180,
                             // width : 200,
-                            marginTop : 20,
+                            marginTop : 40,
                             marginBottom : 30,
-                            marginLeft : 35,
+                            marginLeft : 20,
                             marginRight: 5,
-                            spacingLeft : 30,
+                            spacingLeft : 0,
 
                             style : {
                                 color: "#666"
                             }
                         },
                         title: {
-                            text: scope.title,
+                            enabled: false,
+                            text: '',
                             style : {
                                 color: "#666",
                                 fontSize : 10
@@ -83,8 +85,8 @@ angular.module('ndrApp')
                                 align: 'high'
                             },
                             labels: {
+                                x : -5,
                                 align : "right",
-
                                 style: {
                                     color: '#666',
                                     fontSize : '10px'
@@ -113,7 +115,14 @@ angular.module('ndrApp')
                             },
 
                             area : {
-
+                                /*dataLabels: {
+                                    enabled: true,
+                                    style: {
+                                        color: '#666',
+                                        fontSize : '11px',
+                                        fontWeight : 300,
+                                    }
+                                },*/
                                 fillColor : {
                                     linearGradient: {
                                         x1: 0,
@@ -130,18 +139,17 @@ angular.module('ndrApp')
                             }
                         },
                         legend: {
-                            enabled: false,
+                            margin: 0,
+                            x: -10,
+                            y: -15,
+                            align: 'left',
+                            verticalAlign: 'top',
+                            enabled: true,
                         },
                         credits: {
                             enabled: false
                         },
-                        series: [{
-                            //dashStyle: "ShortDot",
-                            color : "#666",
-                            name: 'Värde',
-                            data : scope.model
-
-                        }]
+                        series: scope.model
                     });
 
                 }, true);

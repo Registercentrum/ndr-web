@@ -21,9 +21,9 @@ angular.module('ndrApp')
                             // width : 200,
                             marginTop : 20,
                             marginBottom : 30,
-                            marginLeft : 35,
+                            marginLeft : 25,
                             marginRight: 5,
-                            spacingLeft : 30,
+                            spacingLeft : 0,
 
                             style : {
                                 color: "#666"
@@ -70,6 +70,7 @@ angular.module('ndrApp')
                                 align: 'high'
                             },
                             labels: {
+                                x : -5,
                                 align : "right",
 
                                 style: {

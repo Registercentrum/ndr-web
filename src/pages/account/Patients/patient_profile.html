@@ -157,9 +157,8 @@
             <div class="Panel">
                 <h4>Kolesterol</h4>
 
-                <div class="col-sm-4" line-chart-patient-cholesterol title="'Kolesterol'" model="model.data.trend.cholesterol"></div>
-                <div class="col-sm-4" line-chart-patient-cholesterol title="'LDL'" model="model.data.trend.ldl"></div>
-                <div class="col-sm-4" line-chart-patient-cholesterol title="'HDL'" model="model.data.trend.hdl"></div>
+                <div class="col-sm-6" line-chart-patient-cholesterol title="'Kolesterol & Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
+                <div class="col-sm-6" line-chart-patient-cholesterol title="'LDL & HDL'" model="model.data.trend.combinedLDLHDL"></div>
 
                 <div> Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>
 

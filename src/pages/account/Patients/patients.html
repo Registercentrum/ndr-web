@@ -209,7 +209,7 @@
                     <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
                     <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
                     <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.columnName == 'diabetesType' ? subject.diabetesTypeText : lookupName(f, subject.aggregatedProfile[f.columnName]) }}</td>
-                    <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
+                    <td><a target="_blank" once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
 
                 </tr>
                 </tbody>

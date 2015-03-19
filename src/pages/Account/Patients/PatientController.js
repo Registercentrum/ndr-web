@@ -94,6 +94,94 @@ angular.module("ndrApp")
             $scope.model.data.chart.smoking = getLatestValue('smoking');
 
 
+            $scope.model.data.trend.combinedLDLHDL = [
+                {
+                    //dashStyle: "ShortDot",
+                    color: 'rgba(89,153,218,1)',
+
+                    fillColor : {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(89,153,218,0.2)'],
+                            [1, 'rgba(89,153,218,0.2)']
+                        ]
+                    },
+
+                    name: 'LDL',
+                    data: $scope.model.data.trend.ldl
+                },
+                {
+                    //dashStyle: "ShortDot",
+                    color: "rgba(26,188,156,1)",
+
+                    fillColor : {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(26,188,156,0.2)'],
+                            [1, 'rgba(26,188,156,0.2)'],
+                        ]
+                    },
+
+                    name: 'HDL',
+                    data: $scope.model.data.trend.hdl
+                },
+            ]
+
+
+            $scope.model.data.trend.combinedCholesterol = [
+                {
+                    //dashStyle: "ShortDot",
+                    color: 'rgba(89,153,218,1)',
+
+                    fillColor : {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(89,153,218,0.2)'],
+                            [1, 'rgba(89,153,218,0.2)']
+                        ]
+                    },
+
+                    name: 'Kolesterol',
+                    data: $scope.model.data.trend.cholesterol
+                },
+                {
+                    //dashStyle: "ShortDot",
+                    color: "rgba(26,188,156,1)",
+
+                    fillColor : {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(26,188,156,0.2)'],
+                            [1, 'rgba(26,188,156,0.2)'],
+                        ]
+                    },
+
+                    name: 'Triglycerider',
+                    data: $scope.model.data.trend.triglyceride
+                },
+            ]
+
+
             $scope.model.data.trend.combinedBp = [
                 {
                     //dashStyle: "ShortDot",
