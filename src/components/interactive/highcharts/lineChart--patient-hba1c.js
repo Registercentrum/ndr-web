@@ -140,8 +140,6 @@ angular.module('ndrApp')
 
                 scope.$watch('model', function(model) {
 
-                    console.log("Reload patient chart line");
-                    
                     chart.highcharts().series[0].setData(model)
 
                 }, true);

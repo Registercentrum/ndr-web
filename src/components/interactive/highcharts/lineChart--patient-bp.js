@@ -14,8 +14,6 @@ angular.module('ndrApp')
 
                 scope.$watch('model', function(model) {
 
-                    console.log("LINK", scope.model);
-
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'area',

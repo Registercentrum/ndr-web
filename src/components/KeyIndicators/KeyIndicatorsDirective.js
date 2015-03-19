@@ -107,9 +107,7 @@ angular.module('ndrApp')
                     
                     var geoData = data[0].indicatorSet;
                     var countryData = data[1].indicatorSet;
-                    
-                    console.log("LOADED DATA", geoData, countryData);
-                    
+
                     var keyIndicators = [];
                     
                     _.each(geoData, function(obj, key){

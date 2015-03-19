@@ -29,3 +29,57 @@
 .unit{
   font-size: 11px;
 }
+
+.PhysicalChart{
+  @barWidth: 16%;
+  @barMargin: 5%;
+  @barHeight: 180px;
+  @barPosition: @barWidth + @barMargin;
+
+    position: relative;
+    min-height: 220px;
+    margin: -0px auto 0;
+    max-width: 200px;
+
+    > div {
+      position: absolute;
+      bottom: 0;
+      width: @barWidth;
+      height: 0;
+      background-color: #ddd;
+      color: #333;
+      transition: height .25s ease-in;
+
+      &:nth-child(1) { left: 0;height:@barHeight/20 }
+      &:nth-child(2) { left: @barPosition;height:@barHeight/8 }
+      &:nth-child(3) { left: @barPosition * 2;height:@barHeight/4 }
+      &:nth-child(4) { left: @barPosition * 3;height:@barHeight/2.5 }
+      &:nth-child(5) { left: @barPosition * 4;height:@barHeight/1 }
+
+     /* &.lowest {
+        color: @color-red;
+        background-color: @color-red;
+      }*/
+
+      &:hover {
+        background-color: darken(#ddd, 10);
+        color: darken(#ddd, 10);
+      }
+
+      > span {
+        opacity: 0;
+        display: block;
+        margin-top: -15px;
+        height: 15px;
+        line-height: 15px;
+        font-size: .8em;
+        text-align: center;
+        transition: opacity .1s ease-in;
+      }
+
+      &.lowest > span, &:hover > span {
+        opacity: 1;
+      }
+    }
+
+}

@@ -138,6 +138,13 @@ angular.module("ndrApp")
             ]
         }
 
+
+
+
+
+
+
+
         function populateLatestData () {
             if (!$scope.subject) return false;
 
@@ -193,9 +200,7 @@ angular.module("ndrApp")
 
             var value;
 
-            
-            console.log("VISIT", visit[key], _.isNull(visit[key]));
-            
+
             if (_.isNull(visit[key]) ||  _.isUndefined(visit[key])   ) {
                 value = 'inget värde';
 
@@ -205,7 +210,6 @@ angular.module("ndrApp")
 
                 // Get proper label for the id value
             } else if (attribute && attribute.domain && attribute.domain.isEnumerated) {
-                console.log("wrong", visit[key], attribute, attribute.domain);
                 value = _.find(attribute.domain.domainValues, {code: visit[key]}).text;
 
                 // If it's a boolean, return proper translation (ja-nej)
