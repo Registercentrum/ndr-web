@@ -9,9 +9,6 @@ angular.module("ndrApp")
                 data.lastAuthor
             ]
 
-
-
-            console.log('data: ', data);
             $scope.publication = data;
             $scope.publication.authors = authors;
 

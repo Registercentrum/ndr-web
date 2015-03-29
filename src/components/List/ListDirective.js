@@ -2,7 +2,6 @@ angular.module('ndrApp')
     .directive('list', [function() {
 
         function link(scope, element, attrs) {
-            console.log('HERE', scope);
         }
 
         return {

@@ -1,8 +1,19 @@
 angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables', 'vr.directives.slider', 'once'])
 
 
+    // Override config options
+    .config(['datepickerPopupConfig', function(datepickerPopupConfig) {
+        datepickerPopupConfig.currentText = 'Idag';
+        datepickerPopupConfig.clearText = 'Rensa';
+        datepickerPopupConfig.closeText = 'Stäng';
+        datepickerPopupConfig.toggleWeeksText = 'Veckoformat';
+    }])
+
+
+
     // The routing system
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+
 
             var templateURL = 'templates/';
     

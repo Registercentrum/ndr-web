@@ -76,7 +76,8 @@
             <!-- Additional filtering -->
             <div class="MultiFilter-row" ng-repeat="(key, filter) in filters" ng-if="isDisplayed(filter.columnName)">
                 <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">{{ filter.question }}</div>
+                    <div class="MultiFilter-row-label col-sm-3"><i class="fa fa-times fa-1x text-danger" ng-click="removeChosenFilter(filter.columnName)" ng-if="!isRequired(filter.columnName)"></i>
+                        {{ filter.question }}</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
 
                         <!-- If there is max value, display as range slider -->
@@ -165,7 +166,6 @@
                     </div>
                     <div class="col-sm-3 form-inline">
                         <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters[filter.columnName].undef"> saknar värde</label></span>
-                        <i class="fa fa-minus-circle fa-1x text-danger" ng-click="removeChosenFilter(filter.columnName)" ng-if="!isRequired(filter.columnName)"></i>
                     </div>
                 </div>
             </div>

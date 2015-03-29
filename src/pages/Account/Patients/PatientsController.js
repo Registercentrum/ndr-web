@@ -402,7 +402,7 @@ angular.module('ndrApp')
                 $scope.$apply(function () {
                     filter();
                 })
-            }, 50);
+            }, 400);
 
 
             $scope.$watch('selectedFilters', debouncedFilter, true);
