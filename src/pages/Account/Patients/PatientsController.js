@@ -210,6 +210,12 @@ angular.module('ndrApp')
                                     }
                                 });
                             }
+                            // Add diabetesType, sex and yearOfOnset to aggregatedProfile
+                            // for easier filtering later on
+                            o.aggregatedProfile.diabetesType = o.diabetesType;
+                            o.aggregatedProfile.sex = o.sex;
+                            o.aggregatedProfile.yearOfOnset = o.yearOfOnset;
+
                             subjects.push(o)
                         });
 
@@ -236,17 +242,14 @@ angular.module('ndrApp')
             // dataService.getContactAttributes(filterNames)
             dataService.getContactAttributes()
                 .then(function (filters) {
-                    var required;
+                    var toReject = ["gfr", "socialNumber", "pumpOngoingSerial", "pumpNewSerial", "contactDate"],
+                        required;
 
-                    var toReject = ["gfr", "socialNumber", "pumpOngoingSerial", "pumpNewSerial", "contactDate"];
-
-                    filters = _.reject(filters, function (d){
+                    filters = _.reject(filters, function (d) {
                         return toReject.indexOf(d.columnName) !== -1;
-                    })
+                    });
 
-
-                    _.each(filters, function(filter, key){
-
+                    _.each(filters, function (filter, key) {
 
                         if (filter.columnName  == 'age' ) {
                             filter.min = 0;
@@ -266,8 +269,7 @@ angular.module('ndrApp')
                             filter.max = 2020;
                             filter.range = [1900, 2020];
                         }
-
-                    })
+                    });
 
 
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
@@ -279,11 +281,9 @@ angular.module('ndrApp')
 
                         // Setup min and max for range slider
                         // We need that for setting up the range slider directive
-                        // .range is need to determine if something was acutally selected and there is need for filtering
                         if (_.isNumber(filter.maxValue)) {
                             $scope.selectedFilters[filter.columnName].min = filter.minValue || 0;
                             $scope.selectedFilters[filter.columnName].max = filter.maxValue;
-                            $scope.selectedFilters[filter.columnName].range = [filter.minValue || 0, filter.maxValue];
                         }
 
                         if (filter.domain.name == 'Date') {
@@ -303,7 +303,6 @@ angular.module('ndrApp')
                     // Also make sure they are sorted alphabetically
                     required = _.remove(filters, 'isChosen');
                     filters = required.concat(_.sortBy(filters, 'question'));
-
 
                     // Set the available filters
                     $scope.filters = filters;
@@ -351,48 +350,43 @@ angular.module('ndrApp')
 
                 $log.debug('Changed Filters');
 
-                var selectedFilters = $scope.selectedFilters,
+                var selectedFilters = {},
                     subjects        = angular.copy($scope.model.allSubjects);
+
+                // Narrow down the filters to only the displayed ones
+                _.each($scope.selectedFilters, function (filter, filterKey) {
+                    if ($scope.isDisplayed(filterKey)) {
+                        selectedFilters[filterKey] = filter;
+                    }
+                });
 
                 // Check additional filters
                 _.each(selectedFilters, function (filter, prop, list) {
 
-                    if(prop == "hba1c") {
-                        console.log("FILTER", filter, prop, list);
-                    }
-
                     subjects = _.filter(subjects, function (subject) {
-                        var value;
+                        var propValue = subject.aggregatedProfile[prop],
+                            value;
 
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
-                            return _.isNull(subject[prop]) || _.isNull(subject.aggregatedProfile[prop]);
+                            return _.isNull(propValue);
 
-                            // Handle range filtering
-                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max) && (filter.min > filter.range[0] || filter.max < filter.range[1])) {
+                        // Handle range filtering
+                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max)) {
+                            return _.isNumber(propValue) && (propValue >= filter.min && propValue <= filter.max);
 
-                            // prop may sit directly on the subject (sex) or on aggregatedProfile
-                            // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return (_.isNumber(subject[prop]) && (subject[prop] >= filter.min && subject[prop] <= filter.max)) ||
-                                (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] >= filter.min && subject.aggregatedProfile[prop] <= filter.max));
+                        // Handle date filtering
+                        } else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
+                            value = new Date(propValue);
+                            return (_.isDate(value) && (value >= new Date(filter.from.date) && value <= new Date(filter.to.date)));
 
-                        }
-                        else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
-
-                            //console.log(new Date(filter.from.date), new Date(filter.to.date ));
-                            //console.log("Look", subject.aggregatedProfile[prop], _.isDate(subject.aggregatedProfile[prop], filter.from.date,  new Date(filter.from.date), new Date(filter.to.date) ));
-                            var dateToLookFor = new Date(subject.aggregatedProfile[prop]);
-                            return (_.isDate(dateToLookFor) && (dateToLookFor >= new Date(filter.from.date) && dateToLookFor <= new Date(filter.to.date)));
-
-                            // Handle value filtering
+                        // Handle value filtering
                         } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
                             value = parseInt(filter.value, 10);
-                            // prop may sit directly on the subject (sex) or on aggregatedProfile
-                            // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return subject[prop] === value || subject.aggregatedProfile[prop] === value;
+                            return propValue === value;
 
-                            // Nothing to filter
+                        // Nothing to filter, filter out only null values
                         } else {
                             return true;
                         }
