@@ -6,6 +6,29 @@ angular.module("ndrApp")
         $scope.subject = undefined;
         $scope.socialnumber = undefined;
 
+        $scope.model = {
+
+        }
+
+        dataService.getList("news").then(function (data){
+
+            data.sort(function (a,b){
+                return new Date(b.publishedFrom) - new Date(a.publishedFrom);
+            })
+
+            data = data.splice(0,4);
+
+            angular.forEach(data, function(item) {
+                item.link = "#/nyheter/" + item.newsID;
+                item.categoryNames = [];
+                angular.forEach(item.categories, function(category){
+                    item.categoryNames.push(category.name);
+                });
+            });
+
+            $scope.model.newsList = data;
+        })
+
 
         $scope.gotoProfile = function () {
             console.log("Social", $scope.socialnumber);
@@ -38,8 +61,6 @@ angular.module("ndrApp")
             .error(function (data, status, headers, config) {
                 console.log("ERROR");
             });
-
-
         }
 
 }])
