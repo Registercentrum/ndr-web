@@ -8,6 +8,7 @@ angular.module('ndrApp')
                     exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
                     required: ['diabetesType', 'hba1c']
                 },
+                isLoadingSubjects = false,
                 filterDisplayIndex;
 
             var dateOffset = (24*60*60*1000) * 365; //365
@@ -174,18 +175,17 @@ angular.module('ndrApp')
                 filteredSubjects: undefined
             };
 
-            var isLoading = false;
-
             // Load data when period changes
             function loadSubjects () {
+                var query;
 
-                if(isLoading) return;
-                isLoading = true;
+                if(isLoadingSubjects) return;
+                isLoadingSubjects = true;
 
-                var query = {
-                        dateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
-                        dateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD')
-                    };
+                query = {
+                    dateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                    dateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD')
+                };
 
                 dataService.getContacts(query)
                     .then(function (data) {
@@ -228,7 +228,7 @@ angular.module('ndrApp')
                         $scope.model.allSubjects = subjects;
                         $scope.model.allSubjectsLength = subjects.length;
 
-                        isLoading = false;
+                        isLoadingSubjects = false;
 
                     });
             }
