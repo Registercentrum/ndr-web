@@ -171,8 +171,14 @@ angular.module('ndrApp')
                 filteredSubjects: undefined
             };
 
+            var isLoading = false;
+
             // Load data when period changes
             function loadSubjects () {
+
+                if(isLoading) return;
+                isLoading = true;
+
                 var from = moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
                     to   = moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
                     url  = 'https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + from +  '&dateTo=' + to + '&AccountID=' + $scope.accountModel.activeAccount.accountID;
@@ -211,12 +217,14 @@ angular.module('ndrApp')
 
                         $scope.model.allSubjects = subjects;
                         $scope.model.allSubjectsLength = subjects.length;
+
+                        isLoading = false;
+
                     });
             }
 
             $scope.$watch('datePickers.to.date', loadSubjects);
             $scope.$watch('datePickers.from.date', loadSubjects);
-
 
 
             // -------------------------------------------------------------------
@@ -297,7 +305,6 @@ angular.module('ndrApp')
                     filters = required.concat(_.sortBy(filters, 'question'));
 
 
-
                     // Set the available filters
                     $scope.filters = filters;
                 });
@@ -349,6 +356,11 @@ angular.module('ndrApp')
 
                 // Check additional filters
                 _.each(selectedFilters, function (filter, prop, list) {
+
+                    if(prop == "hba1c") {
+                        console.log("FILTER", filter, prop, list);
+                    }
+
                     subjects = _.filter(subjects, function (subject) {
                         var value;
 

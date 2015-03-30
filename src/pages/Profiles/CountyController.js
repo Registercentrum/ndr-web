@@ -1,5 +1,5 @@
 angular.module("ndrApp")
-    .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
+    .controller('CountyController',['$scope', '$stateParams', 'dataService', '$q', '$state', function($scope, $stateParams, dataService, $q, $state) {
 
         var id = parseFloat($stateParams.id);
         var autocompleteSelected = "county_" + id;
@@ -13,6 +13,10 @@ angular.module("ndrApp")
             autocompleteModel: {
                 selected: autocompleteSelected
             }
+        }
+
+        $scope.gotoUnit = function (){
+            $state.go('main.profiles.unit', {id: $scope.selectedUnit });
         }
 
         dataService.getOne("county", id).then(function (data){

@@ -9,7 +9,16 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
         datepickerPopupConfig.toggleWeeksText = 'Veckoformat';
     }])
 
+    .run(function ($state,$rootScope, $log) {
 
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+            console.log('toState', toState)
+
+            $rootScope.$state = toState.name;
+
+
+        });
+    })
 
     // The routing system
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
