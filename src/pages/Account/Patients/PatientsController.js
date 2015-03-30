@@ -4,8 +4,11 @@ angular.module('ndrApp')
         function ($scope,   $http,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
-            var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],
-                requiredFilters = ['diabetesType', 'hba1c'];
+            var filterSettings = {
+                    exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
+                    required: ['diabetesType', 'hba1c']
+                },
+                filterDisplayIndex;
 
             var dateOffset = (24*60*60*1000) * 365; //365
             /* Date picker options */
@@ -239,18 +242,11 @@ angular.module('ndrApp')
 
             // Fill additional filters from the API request for cancatct attributes
             $scope.filters = [];
-            // dataService.getContactAttributes(filterNames)
-            dataService.getContactAttributes()
+            dataService.getContactAttributes(filterSettings)
                 .then(function (filters) {
-                    var toReject = ["gfr", "socialNumber", "pumpOngoingSerial", "pumpNewSerial", "contactDate"],
-                        required;
-
-                    filters = _.reject(filters, function (d) {
-                        return toReject.indexOf(d.columnName) !== -1;
-                    });
+                    var required;
 
                     _.each(filters, function (filter, key) {
-
                         if (filter.columnName  == 'age' ) {
                             filter.min = 0;
                             filter.max = 120;
@@ -300,8 +296,13 @@ angular.module('ndrApp')
                     });
 
                     // Make sure that required filters are always first in the list
-                    // Also make sure they are sorted alphabetically
                     required = _.remove(filters, 'isChosen');
+                    // Add display order for the required
+                    required = _.map(required, function (req, reqIndex) { req.displayOrder = reqIndex; return req; });
+                    // Update filterDisplayIndex used for ordering chosen filters
+                    filterDisplayIndex = required.length;
+
+                    // Also make sure they are sorted alphabetically
                     filters = required.concat(_.sortBy(filters, 'question'));
 
                     // Set the available filters
@@ -314,8 +315,14 @@ angular.module('ndrApp')
             // Whenever the filter is chosen from the list of available filters
             // update the list of chosen filters
             $scope.$watch('chosenFilter', function (name) {
+                var filter;
                 if (name !== null) {
-                    _.find($scope.filters, {columnName: name}).isChosen = true;
+                    filter = _.find($scope.filters, {columnName: name});
+                    if (filter) {
+                        filter.isChosen = true;
+                        filter.displayOrder = filterDisplayIndex;
+                        filterDisplayIndex +=1;
+                    }
                     $scope.chosenFilter = null;
                 }
             });
@@ -325,12 +332,13 @@ angular.module('ndrApp')
             }
 
             $scope.isRequired = function (name) {
-                return _.indexOf(requiredFilters, name) !== -1;
+                return _.indexOf(filterSettings.required, name) !== -1;
             }
 
             // Chosen filters can be removed by the user
             $scope.removeChosenFilter = function (name) {
                 _.find($scope.filters, {columnName: name}).isChosen = false;
+                filterDisplayIndex -= 1;
 
                 // Reset the selected filters
                 // Reset range values

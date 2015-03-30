@@ -33,12 +33,28 @@ angular.module("ndrApp")
             //contact                 :    Resta
         };
 
-        this.getContactAttributes = function (names) {
+
+        /**
+         * Get the list of possible choices for filtering option
+         * @param  {Object} filter Object with filter ids to include or exclude from the result
+         * @return {Array}        Array with filter options
+         */
+        this.getContactAttributes = function (filter) {
             return endpoints.contactAttributes.get()
                 .then(function (data) {
+                    var filtered = [];
+
                     // Filter the data set by the column names…
-                    if (names) {
-                        return _.filter(data.plain(), (function (d) { return _.indexOf(names, d.columnName) !== -1; }));
+                    if (filter) {
+                        if (filter.include) {
+                            filtered = filtered.concat(_.filter(data.plain(), (function (d) { return _.indexOf(filter.include, d.columnName) !== -1; })));
+                        }
+
+                        if (filter.exclude) {
+                            filtered = filtered.concat(_.filter(data.plain(), (function (d) { return _.indexOf(filter.exclude, d.columnName) === -1; })));
+                        }
+
+                        return filtered;
 
                     // …or just return the clean data set, without all the stuff from Restangular
                     } else {
