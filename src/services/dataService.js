@@ -23,14 +23,14 @@ angular.module("ndrApp")
 
         /* RESTANGULAR OBJECTS */
         var endpoints = {
-            units                   :    Restangular.all("unit"),
-            counties                :    Restangular.all("county"),
-            news                    :    Restangular.all("news"),
-            indicatorresult         :    Restangular.one("indicatorresult"),
-            indicator               :    Restangular.one("indicator"),
-            researchproject         :    Restangular.all("researchproject"),
-            contactAttributes       :    Restangular.one("ContactAttribute")
-            //contact                 :    Resta
+            indicator        : Restangular.one("indicator"),
+            indicatorresult  : Restangular.one("indicatorresult"),
+            contactAttributes: Restangular.one("ContactAttribute"),
+            units            : Restangular.all("unit"),
+            counties         : Restangular.all("county"),
+            news             : Restangular.all("news"),
+            researchproject  : Restangular.all("researchproject"),
+            contacts         : Restangular.all("Contact")
         };
 
 
@@ -75,6 +75,22 @@ angular.module("ndrApp")
                     return error;
                 });
         };
+
+
+        this.getContacts = function (query) {
+            query = query || {};
+            query.AccountID = accountService.accountModel.activeAccount.accountID;
+
+            return endpoints.contacts.getList(query)
+                .then(function (data) {
+                    return data.plain();
+                })
+                ["catch"](function (error) {
+                    return error;
+                });
+        }
+
+
 
         /* METHODS - returns promises */
         this.getList = function (type){

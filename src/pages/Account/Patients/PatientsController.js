@@ -1,7 +1,7 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope,   $http,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
+                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
             var filterSettings = {
@@ -182,12 +182,13 @@ angular.module('ndrApp')
                 if(isLoading) return;
                 isLoading = true;
 
-                var from = moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
-                    to   = moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
-                    url  = 'https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + from +  '&dateTo=' + to + '&AccountID=' + $scope.accountModel.activeAccount.accountID;
+                var query = {
+                        dateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                        dateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD')
+                    };
 
-                $http.get(url)
-                    .success(function (data) {
+                dataService.getContacts(query)
+                    .then(function (data) {
                         $log.debug('Loaded Contacts', data);
 
                         var subjects = []
