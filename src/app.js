@@ -115,7 +115,12 @@ angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'se
                     templateUrl: 'src/pages/Statistics/statisticsAbout.html'
                     //controller: 'StatisticsController'
                 })
-    
+
+                .state('main.annualReport', {
+                    url: '/arsrapport',
+                    templateUrl: 'src/pages/Statistics/annualReport.html'
+                })
+
                 .state('main.compare', {
                     url: '/knappen',
                     templateUrl: 'src/pages/Compare/compare.html'

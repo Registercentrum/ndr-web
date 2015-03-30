@@ -10,7 +10,7 @@ angular.module("ndrApp")
 
         }
 
-        dataService.getList("news").then(function (data){
+        dataService.getAny("News", "?isInternal=true").then(function (data){
 
             data.sort(function (a,b){
                 return new Date(b.publishedFrom) - new Date(a.publishedFrom);
@@ -19,7 +19,6 @@ angular.module("ndrApp")
             data = data.splice(0,4);
 
             angular.forEach(data, function(item) {
-                item.link = "#/nyheter/" + item.newsID;
                 item.categoryNames = [];
                 angular.forEach(item.categories, function(category){
                     item.categoryNames.push(category.name);

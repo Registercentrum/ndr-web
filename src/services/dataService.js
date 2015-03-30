@@ -97,6 +97,10 @@ angular.module("ndrApp")
             return endpoints[type].getList();
         };
 
+        this.getAny = function (type, params){
+            return Restangular.all(type).get(params);
+        };
+
         this.getOne = function (type, id){
             return Restangular.one(type, id).get();
         };
