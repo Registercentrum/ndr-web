@@ -1,11 +1,15 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$http', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope,   $http,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
+                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
             $log.debug('PatientsController: Init');
 
-            var filterNames = ['diabetesType', 'hba1c', 'treatment', 'weight', 'height', 'antihypertensives', 'lipidLoweringDrugs'],
-                requiredFilters = ['diabetesType', 'hba1c'];
+            var filterSettings = {
+                    exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
+                    required: ['diabetesType', 'hba1c']
+                },
+                isLoadingSubjects = false,
+                filterDisplayIndex;
 
             var dateOffset = (24*60*60*1000) * 365; //365
             /* Date picker options */
@@ -171,20 +175,20 @@ angular.module('ndrApp')
                 filteredSubjects: undefined
             };
 
-            var isLoading = false;
-
             // Load data when period changes
             function loadSubjects () {
+                var query;
 
-                if(isLoading) return;
-                isLoading = true;
+                if(isLoadingSubjects) return;
+                isLoadingSubjects = true;
 
-                var from = moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
-                    to   = moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
-                    url  = 'https://ndr.registercentrum.se/api/Contact?APIKey=LkUtebH6B428KkPqAAsV&dateFrom=' + from +  '&dateTo=' + to + '&AccountID=' + $scope.accountModel.activeAccount.accountID;
+                query = {
+                    dateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                    dateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD')
+                };
 
-                $http.get(url)
-                    .success(function (data) {
+                dataService.getContacts(query)
+                    .then(function (data) {
                         $log.debug('Loaded Contacts', data);
 
                         var subjects = []
@@ -210,6 +214,12 @@ angular.module('ndrApp')
                                     }
                                 });
                             }
+                            // Add diabetesType, sex and yearOfOnset to aggregatedProfile
+                            // for easier filtering later on
+                            o.aggregatedProfile.diabetesType = o.diabetesType;
+                            o.aggregatedProfile.sex = o.sex;
+                            o.aggregatedProfile.yearOfOnset = o.yearOfOnset;
+
                             subjects.push(o)
                         });
 
@@ -218,7 +228,7 @@ angular.module('ndrApp')
                         $scope.model.allSubjects = subjects;
                         $scope.model.allSubjectsLength = subjects.length;
 
-                        isLoading = false;
+                        isLoadingSubjects = false;
 
                     });
             }
@@ -233,21 +243,11 @@ angular.module('ndrApp')
 
             // Fill additional filters from the API request for cancatct attributes
             $scope.filters = [];
-            // dataService.getContactAttributes(filterNames)
-            dataService.getContactAttributes()
+            dataService.getContactAttributes(filterSettings)
                 .then(function (filters) {
                     var required;
 
-                    var toReject = ["gfr", "socialNumber", "pumpOngoingSerial", "pumpNewSerial", "contactDate"];
-
-                    filters = _.reject(filters, function (d){
-                        return toReject.indexOf(d.columnName) !== -1;
-                    })
-
-
-                    _.each(filters, function(filter, key){
-
-
+                    _.each(filters, function (filter, key) {
                         if (filter.columnName  == 'age' ) {
                             filter.min = 0;
                             filter.max = 120;
@@ -266,8 +266,7 @@ angular.module('ndrApp')
                             filter.max = 2020;
                             filter.range = [1900, 2020];
                         }
-
-                    })
+                    });
 
 
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
@@ -279,11 +278,9 @@ angular.module('ndrApp')
 
                         // Setup min and max for range slider
                         // We need that for setting up the range slider directive
-                        // .range is need to determine if something was acutally selected and there is need for filtering
                         if (_.isNumber(filter.maxValue)) {
                             $scope.selectedFilters[filter.columnName].min = filter.minValue || 0;
                             $scope.selectedFilters[filter.columnName].max = filter.maxValue;
-                            $scope.selectedFilters[filter.columnName].range = [filter.minValue || 0, filter.maxValue];
                         }
 
                         if (filter.domain.name == 'Date') {
@@ -300,10 +297,14 @@ angular.module('ndrApp')
                     });
 
                     // Make sure that required filters are always first in the list
-                    // Also make sure they are sorted alphabetically
                     required = _.remove(filters, 'isChosen');
-                    filters = required.concat(_.sortBy(filters, 'question'));
+                    // Add display order for the required
+                    required = _.map(required, function (req, reqIndex) { req.displayOrder = reqIndex; return req; });
+                    // Update filterDisplayIndex used for ordering chosen filters
+                    filterDisplayIndex = required.length;
 
+                    // Also make sure they are sorted alphabetically
+                    filters = required.concat(_.sortBy(filters, 'question'));
 
                     // Set the available filters
                     $scope.filters = filters;
@@ -315,8 +316,14 @@ angular.module('ndrApp')
             // Whenever the filter is chosen from the list of available filters
             // update the list of chosen filters
             $scope.$watch('chosenFilter', function (name) {
+                var filter;
                 if (name !== null) {
-                    _.find($scope.filters, {columnName: name}).isChosen = true;
+                    filter = _.find($scope.filters, {columnName: name});
+                    if (filter) {
+                        filter.isChosen = true;
+                        filter.displayOrder = filterDisplayIndex;
+                        filterDisplayIndex +=1;
+                    }
                     $scope.chosenFilter = null;
                 }
             });
@@ -326,12 +333,13 @@ angular.module('ndrApp')
             }
 
             $scope.isRequired = function (name) {
-                return _.indexOf(requiredFilters, name) !== -1;
+                return _.indexOf(filterSettings.required, name) !== -1;
             }
 
             // Chosen filters can be removed by the user
             $scope.removeChosenFilter = function (name) {
                 _.find($scope.filters, {columnName: name}).isChosen = false;
+                filterDisplayIndex -= 1;
 
                 // Reset the selected filters
                 // Reset range values
@@ -351,48 +359,43 @@ angular.module('ndrApp')
 
                 $log.debug('Changed Filters');
 
-                var selectedFilters = $scope.selectedFilters,
+                var selectedFilters = {},
                     subjects        = angular.copy($scope.model.allSubjects);
+
+                // Narrow down the filters to only the displayed ones
+                _.each($scope.selectedFilters, function (filter, filterKey) {
+                    if ($scope.isDisplayed(filterKey)) {
+                        selectedFilters[filterKey] = filter;
+                    }
+                });
 
                 // Check additional filters
                 _.each(selectedFilters, function (filter, prop, list) {
 
-                    if(prop == "hba1c") {
-                        console.log("FILTER", filter, prop, list);
-                    }
-
                     subjects = _.filter(subjects, function (subject) {
-                        var value;
+                        var propValue = subject.aggregatedProfile[prop],
+                            value;
 
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
-                            return _.isNull(subject[prop]) || _.isNull(subject.aggregatedProfile[prop]);
+                            return _.isNull(propValue);
 
-                            // Handle range filtering
-                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max) && (filter.min > filter.range[0] || filter.max < filter.range[1])) {
+                        // Handle range filtering
+                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max)) {
+                            return _.isNumber(propValue) && (propValue >= filter.min && propValue <= filter.max);
 
-                            // prop may sit directly on the subject (sex) or on aggregatedProfile
-                            // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return (_.isNumber(subject[prop]) && (subject[prop] >= filter.min && subject[prop] <= filter.max)) ||
-                                (_.isNumber(subject.aggregatedProfile[prop]) && (subject.aggregatedProfile[prop] >= filter.min && subject.aggregatedProfile[prop] <= filter.max));
+                        // Handle date filtering
+                        } else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
+                            value = new Date(propValue);
+                            return (_.isDate(value) && (value >= new Date(filter.from.date) && value <= new Date(filter.to.date)));
 
-                        }
-                        else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
-
-                            //console.log(new Date(filter.from.date), new Date(filter.to.date ));
-                            //console.log("Look", subject.aggregatedProfile[prop], _.isDate(subject.aggregatedProfile[prop], filter.from.date,  new Date(filter.from.date), new Date(filter.to.date) ));
-                            var dateToLookFor = new Date(subject.aggregatedProfile[prop]);
-                            return (_.isDate(dateToLookFor) && (dateToLookFor >= new Date(filter.from.date) && dateToLookFor <= new Date(filter.to.date)));
-
-                            // Handle value filtering
+                        // Handle value filtering
                         } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
                             value = parseInt(filter.value, 10);
-                            // prop may sit directly on the subject (sex) or on aggregatedProfile
-                            // also, it can have 'code' or 'id' as the prop name, so check for both
-                            return subject[prop] === value || subject.aggregatedProfile[prop] === value;
+                            return propValue === value;
 
-                            // Nothing to filter
+                        // Nothing to filter, filter out only null values
                         } else {
                             return true;
                         }
