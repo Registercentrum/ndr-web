@@ -13,18 +13,18 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
 
-                <li ng-class="{active: $state.includes('statistics')}" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200" data-close-others="false" ui-sref="main.statistics" ui-sref-active-eq="main.statistics"><i class="fa fa-bar-chart"></i> Statistik</a>
+                <li ng-class="{active:$state == 'main.statistics' || $state == 'main.annualReport' || $state == 'main.risk'  || $state == 'main.statisticsAbout' || $state == 'main.compare' || $state == 'main.profiles.county' || $state == 'main.profiles.unit' }" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200" data-close-others="false" ui-sref="main.statistics"><i class="fa fa-bar-chart"></i> Statistik</a>
                     <ul class="dropdown-menu">
-                        <li class="" ui-sref-active="active"><a ui-sref="main.statistics">Sök landsting och vårdenheter</a>
+                        <li class="" ng-class=""><a ui-sref="main.statistics">Sök landsting och vårdenheter</a>
                         <li class="" ui-sref-active="active"><a ui-sref="main.compare">Jämförelser / Knappen</a>
-                        <li class="" ui-sref-active="active"><a ui-sref="main.statistics">Årsrapport</a>
+                        <li class="" ui-sref-active="active"><a ui-sref="main.annualReport">Årsrapport</a>
                         <li class="" ui-sref-active="active"><a ui-sref="main.statisticsAbout">Om statistiken</a>
                     </ul>
                 </li>
-                <li ui-sref-active="active"><a ui-sref="main.patient"><i class="fa fa-user"></i> För dig med diabetes</a></li>
+                <li ng-class="{active:($state.includes('main.patient') || $state.includes('main.prom'))}"><a ui-sref="main.patient"><i class="fa fa-user"></i> För dig med diabetes</a></li>
                 <li ui-sref-active="active"><a ui-sref="main.improvement"><i class="fa fa-lightbulb-o"></i> Förbättringsprojekt</a></li>
-                <li ui-sref-active="active"><a ui-sref="main.research"><i class="fa fa-flash"></i> Forskning</a></li>
+                <li ng-class="{active:$state == 'main.research' || $state == 'main.researchItem'}"><a ui-sref="main.research"><i class="fa fa-flash"></i> Forskning</a></li>
                 <li ui-sref-active="active"><a ui-sref="main.about"><i class="fa fa-map-marker"></i> Om NDR</a></li>
 
                     <!--<li ui-sref-active="active"><a ui-sref="main.guidelines"><i class="fa fa-lightbulb-o"></i> Style guidelines</a></li>-->

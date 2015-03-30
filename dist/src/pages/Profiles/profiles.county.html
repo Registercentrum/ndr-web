@@ -82,14 +82,26 @@
                 <h1>Vårdenheter</h1>
                 <p>Landstingets vårdenheter</p>
 
-                <table class="table table-condensed table-striped">
+                <select class="form-control" style="height: 40px; width:50%;margin-right:10px; float:left" name="" id="" ng-model="selectedUnit">
+
+                    <option value="">Välj vårdenhet</option>
+                    <option value="{{unit.unitID }}" ng-repeat="unit in model.county.units | orderBy : 'name' | filter : { isActive :true }">
+                        {{ unit.name }}
+                    </option>
+
+                </select>
+
+                <a ng-click="gotoUnit()" class="Button Button--info">Öppna profil</a>
+
+
+               <!-- <table class="table table-condensed table-striped">
 
                     <tr ng-repeat="unit in model.county.units | filter : { isActive :true }">
                         <td>{{ unit.name }}</td>
                         <td><a href="#/profil/enhet/{{ unit.unitID }}" class="Button Button--default">Visa</a></td>
                     </tr>
 
-                </table>
+                </table>-->
 
             </div>
 

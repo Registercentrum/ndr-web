@@ -18,8 +18,8 @@
             <h3 class="Publication-body-abstractTitle">Abstract</h3>
             <div class="Publication-body" ng-bind-html="publication.laymansDescription"></div>
 
-            <div class="Publication-link">
-              <a href="#" class="Button Button--default">Full PDF</a>
+            <div ng-show="publication.pubMedURL" class="Publication-link">
+              <a href="{{ publication.pubMedURL }}" class="Button Button--default">Full PDF</a>
             </div>
           </div>
 

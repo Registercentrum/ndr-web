@@ -1,8 +1,7 @@
 <div class="row">
 
     <div class="col-md-5">
-        <h1 class="Page-title">Översikt  <span style="font-size: 15px">{{ accountModel.activeAccount.unit.name }}</span>    </h1>
-
+        <h1 class="Page-title">Översikt <!-- <span style="font-size: 15px">{{ accountModel.activeAccount.unit.name }}</span>-->    </h1>
 
     </div>
 
@@ -17,11 +16,38 @@
             </div>
         </div>
     </form>
-
 </div>
+
 
 <div class="row">
 
+    <div class="col-md-12">
+
+        <div class="Panel">
+            <h3><i class="fa fa-lightbulb-o"></i> Anslagstavlan</h3>
+            <ul class="List">
+
+                <li ng-repeat="item in model.newsList" class="List-item">
+
+                    <div class="List-item-inner">
+
+                        <div style="font-size:13px"> <span>{{ item.createdAt | date: 'mediumDate' }}</span></div>
+                        <div class="List-item-title"><strong>{{ item.title }}</strong></div>
+                        <p class="News-text-date"></p>
+                        <p ng-bind-html="item.body">
+                        </p>
+
+                    </div>
+
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
     <div class="col-md-12">
         <div class="Panel">
             <div key-indicators light="true" id="accountModel.activeAccount.unit.unitID" geo-type="'unit'"></div>
@@ -29,44 +55,27 @@
     </div>
 </div>
 
+<!--<div>
 
-<div class="row">
+       <div class="col-md-6">
 
-    <div class="col-md-12">
-
-        <div class="Panel Panel--blue">
-
-            <h3>Genvägar</h3>
-
-            <p></p>
-
-        </div>
-
-    </div>
-
-    <div>
-
-        <div class="col-md-6">
-
-            <div class="Panel">
+           <div class="Panel">
 
 
-                <p>Här kommer det info som berör dig/ditt konto</p>
+               <p>Här kommer det info som berör dig/ditt konto</p>
 
-                <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
+               <p>Du är nu inloggad som: {{ accountModel.user.firstName + " " + accountModel.user.lastName }}</p>
 
 
-                <h3>Beta-information</h3>
-            <pre>
+               <h3>Beta-information</h3>
+           <pre>
 
-                {{ serverError }}
-                {{ accountModel | json  }}
-            </pre>
+               {{ serverError }}
+               {{ accountModel | json  }}
+           </pre>
 
-            </div>
+           </div>
 
-        </div>
+       </div>
 
-    </div>
-
-</div>
+   </div>-->
