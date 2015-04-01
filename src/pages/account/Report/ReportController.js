@@ -15,7 +15,7 @@ angular.module('ndrApp')
 				 '$scope', '$http', '$stateParams', '$state', '$modal', '$filter', 'List', 'dataService',
 		function ($scope,   $http,   $stateParams,   $state,   $modal,	$filter,   List, dataService) {
 
-		console.log("ReportController: Init",  $scope.accountModel);
+		//console.log("ReportController: Init",  $scope.accountModel);
 
 		$scope.subjectID = false || $stateParams.patientID;
 
@@ -59,7 +59,7 @@ angular.module('ndrApp')
 			})
 				.success(function(data) {
 					self.subject = data;
-					//Välj det senast uppdaterade/skapade besöket
+					//Välj det senast kompletterade/skapade besöket
 					if (!newSocialnumber) {
 						self.contactToUpdate = self.getContactFromContactDate(self.subject.contacts, self.contactModel.contactDate)
 						self.setContact(self.contactToUpdate);
@@ -425,10 +425,17 @@ angular.module('ndrApp')
 				hypoglycemiaSevere: null
 			}
 		};
+		$scope.setDateValues = function() {
+			$scope.contactModel.contactDate = $scope.getStringDate($scope.contactModel.contactDate);
+			$scope.contactModel.fundusExaminationDate = $scope.getStringDate($scope.contactModel.fundusExaminationDate);
+			$scope.contactModel.footExaminationDate = $scope.getStringDate($scope.contactModel.footExaminationDate);
+		};
 		$scope.saveContact = function() {
 
 			$scope.serverSaveErrors = [];
-			$scope.contactModel.contactDate = $scope.getStringDate($scope.contactModel.contactDate);
+			
+			//Dates are javascript dates until saved, here converted to string dates, better idea?
+			$scope.setDateValues()
 			
 			var httpConfig = {
 				method: $scope.method,
@@ -493,7 +500,6 @@ angular.module("ndrApp")
 		
 			$http.get("https://ndr.registercentrum.se" + '/api/ContactAttribute?APIKey=LkUtebH6B428KkPqAAsV').success(function(data) {
 				self.lists = _.indexBy(data, "columnName");
-				console.log(self.lists);
 			});
 
 			this.getLists = function() {

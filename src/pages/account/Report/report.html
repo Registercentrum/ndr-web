@@ -118,7 +118,7 @@
 			
 					<div class="Report-formGroup">
 						<div class="row">
-							<div class="col-md-5 Report-formGroup-form">
+							<div class="col-md-5">
 								<label class="" for="treatment" class="">Diabetesbehandling</label><i class="fa fa-question-circle helpNote" ng-show="lists['treatment'].helpNote != null" tooltip="{{lists['treatment'].helpNote}}"></i>
 								<select name="treatment" class="form-control" ng-model="contactModel.treatment" ng-class="{ 'has-no-error' : contactModel.treatment != null}" ng-options="type.code as type.text for type in lists.treatment.domain.domainValues">
 									<option value="">-- välj behandling --</option>
@@ -345,13 +345,13 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-5" ng-class="{ 'has-error' : contactForm.hdl.$invalid && !contactForm.hdl.$pristine }">
+							<div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.hdl.$invalid && !contactForm.hdl.$pristine }">
 								<label class="" for="hdl" class="">HDL</label><i class="fa fa-question-circle helpNote" ng-show="lists['hdl'].helpNote != null" tooltip="{{lists['hdl'].helpNote}}"></i>
 								<input name="hdl" type="number" min="0.1" max="5" class="form-control" placeholder="HDL" ng-model="contactModel.hdl" decimals="1" ng-class="{ 'has-no-error' : !contactForm.hdl.$invalid && contactModel.hdl != null}" ng-model-options="{ updateOn: 'blur' }">
 								<p ng-show="contactForm.hdl.$error.min || contactForm.hdl.$error.max" class="Report-formItemHelp help-block">HDL kan anta ett värde mellan 0,1 och 5.</p>
 							</div>
 
-							<div class="col-md-5" ng-class="{ 'has-error' : contactForm.ldl.$invalid && !contactForm.ldl.$pristine }">
+							<div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.ldl.$invalid && !contactForm.ldl.$pristine }">
 								<label class="" for="ldl" class="">LDL</label><i class="fa fa-question-circle helpNote" ng-show="lists['ldl'].helpNote != null" tooltip="{{lists['ldl'].helpNote}}"></i>
 								<input name="ldl" type="number" min="0.5" max="10" class="form-control" placeholder="LDL" ng-model="contactModel.ldl" decimals="1" ng-class="{ 'has-no-error' : !contactForm.ldl.$invalid && contactModel.ldl != null}" ng-model-options="{ updateOn: 'blur' }">
 								<p ng-show="contactForm.ldl.$error.min || contactForm.ldl.$error.max" class="Report-formItemHelp help-block">LDL kan anta ett värde mellan 0,5 och 10.</p>
@@ -359,8 +359,8 @@
 						</div>
 						<div class="row">
 							<div class="col-md-10">
-								<div class="Report-submitWrapper">
-									<button ng-click="calculateLDL()" ng-disabled="contactModel.cholesterol==null || contactModel.hdl==null || contactModel.triglyceride==null" tooltip="Beräknas enligt Friedewalds formel" class="Button Button--info Button--mini" style="margin-top: 3px">Beräkna LDL</button>
+								<div class="Report-submitWrapper pull-right">
+									<button ng-click="calculateLDL()" ng-disabled="contactModel.cholesterol==null || contactModel.hdl==null || contactModel.triglyceride==null" tooltip="Beräknas enligt Friedewalds formel" class="Button Button--default">Beräkna LDL</button>
 								</div>
 							</div>
 						</div>
@@ -526,38 +526,35 @@
 
 							<div class="col-md-5">
 								<label class="" for="footExaminationDate" class="">Datum för senaste fotundersökning</label><i class="fa fa-question-circle helpNote" ng-show="lists['footExaminationDate'].helpNote != null" tooltip="{{lists['footExaminationDate'].helpNote}}"></i>
-								<div class="Report-formGroup-form">
-									<div class="input-group FilterDatePopup-group">
-										<span class="input-group-addon">
-											<button
-													type="button"
-													class="FilterDatePopup-button"
-													ng-click="openPicker($event, 'footExaminationDate')">
-												<i class="fa fa-calendar"></i>
-											</button>
-										</span>
-										<input
-											name="footExaminationDate"
-											type="text"
-											class="form-control"
-											ng-model="contactModel.footExaminationDate"
-											ng-model-options="{ updateOn: 'blur' }"
-											date-disabled="disabled(date, mode)"
-											datepicker-options="dateOptions"
-											datepicker-popup="{{format}}"
-											is-open="datePickers.footExaminationDate.opened"
-											close-text="Stäng"
-											current-text="Idag"
-											clear-text="Rensa"
-											placeholder="ÅÅÅÅ-MM-DD">
-									</div>
-									<p class="Report-formItemHelp help-block" ng-show="contactForm.contactDate.$error.checkContactDate">Det finns redan ett besök på detta datum! Komplettera det befintliga besöket eller skriv in ett nytt datum.</p>
+								<div class="input-group FilterDatePopup-group">
+									<span class="input-group-addon">
+										<button
+												type="button"
+												class="FilterDatePopup-button"
+												ng-click="openPicker($event, 'footExaminationDate')">
+											<i class="fa fa-calendar"></i>
+										</button>
+									</span>
+									<input
+										name="footExaminationDate"
+										type="text"
+										class="form-control"
+										ng-model="contactModel.footExaminationDate"
+										ng-model-options="{ updateOn: 'blur' }"
+										date-disabled="disabled(date, mode)"
+										datepicker-options="dateOptions"
+										datepicker-popup="{{format}}"
+										is-open="datePickers.footExaminationDate.opened"
+										close-text="Stäng"
+										current-text="Idag"
+										clear-text="Rensa"
+										placeholder="ÅÅÅÅ-MM-DD">
 								</div>
+									<p class="Report-formItemHelp help-block" ng-show="contactForm.contactDate.$error.checkContactDate">Det finns redan ett besök på detta datum! Komplettera det befintliga besöket eller skriv in ett nytt datum.</p>
 								<!--<input name="footExaminationDate" type="text" class="form-control" ng-model="contactModel.footExaminationDate" ng-class="{ 'has-no-error' : !contactForm.footExaminationDate.$invalid && contactModel.footExaminationDate != null}" placeholder="Undersökningsdatum">-->
 								<p ng-show="contactForm.footExaminationDate.$pristine && contactModel.footExaminationDate != null && contactModel.footExaminationDate == lastContact.footExaminationDate.split('T')[0] && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
 							</div>
-
-
+							
 							<div class="col-md-5">
 								<label class="" for="footRiscCategory" class="">Riskkategori fot</label><i class="fa fa-question-circle helpNote" ng-show="lists['footRiscCategory'].helpNote != null" tooltip="{{lists['footRiscCategory'].helpNote}}"></i>
 								<select name="footRiscCategory" class="form-control" ng-model="contactModel.footRiscCategory" ng-class="{ 'has-no-error' : contactModel.footRiscCategory != null}" ng-options="type.code as type.text for type in lists.footRiscCategory.domain.domainValues">
