@@ -33,7 +33,7 @@ angular.module('ndrApp')
 
 		var server = {
 			baseURL: 'https://ndr.registercentrum.se',
-			APIKey: 'LkUtebH6B428KkPqAAsV'
+			APIKey: 'jEGPvHoP7G4eMkjLQwE5'
 		}
 
 		if($scope.subjectID){
