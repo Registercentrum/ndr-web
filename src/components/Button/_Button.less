@@ -71,6 +71,13 @@
   background: @ndr-blue;
   color: #fff;
   border: 1px solid @ndr-blue;
+  &:hover,
+  &:focus,
+  &.focus {
+    text-decoration: none;
+    background-color: rgba(red(@ndr-blue), green(@ndr-blue), blue(@ndr-blue),0.8);
+    color: @ndr-white;
+  }
 }
 
 .Button--warning {

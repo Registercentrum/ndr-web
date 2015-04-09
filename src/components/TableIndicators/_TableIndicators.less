@@ -65,14 +65,12 @@
   background-color: lighten(#eee, 1%);
 }
 
-.TableIndicators-row.selected .TableIndicators-row-country-innerWrapper {
+.TableIndicators-row.selected {
   position: relative;
   box-sizing: border-box;
 
   &:after { // arrow
     box-sizing: border-box;
-    left: calc(100% + 15px);
-    top: 50%;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -82,7 +80,7 @@
     border-color: rgba(221, 221, 221, 0);
     border-left-color: #ccc;
     border-width: 20px;
-    margin-top: -20px;
+    margin-top: 0px;
   }
 }
 
