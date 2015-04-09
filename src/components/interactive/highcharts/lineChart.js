@@ -130,7 +130,7 @@ angular.module('ndrApp')
 
                 scope.$watch('model', function(model) {
 
-                    chart.highcharts().series[0].setData(model)
+                    chart.highcharts().series[0].setData(angular.copy(model))
 
                 }, true);
             }

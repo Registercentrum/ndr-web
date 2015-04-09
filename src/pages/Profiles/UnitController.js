@@ -34,7 +34,7 @@ angular.module("ndrApp")
                 var o = {
                    // name : obj.unit.name,
                    // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
-                    x : new Date(obj.Interval),
+                    x : new Date(obj.interval),
                     y : obj.stat.r,
                     cRep : obj.stat.cRep,
                 }

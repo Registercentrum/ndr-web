@@ -31,11 +31,11 @@ angular.module('ndrApp')
                 var selectedIndicator = scope.model.selectedKeyIndicator;
                 var promises = [];
 
-                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode : scope.model.diabetesTypeCode });
-                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode : scope.model.diabetesTypeCode });
+                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesType : scope.model.diabetesTypeCode });
+                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesType : scope.model.diabetesTypeCode });
 
                 if(scope.geoType == "unit"){
-                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode : scope.model.diabetesTypeCode });
+                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesType : scope.model.diabetesTypeCode });
                 }
 
                 promises.push(dataService.getStats(queryCountry));
@@ -50,7 +50,7 @@ angular.module('ndrApp')
 
                         var o = {
                             color : "#999",
-                            x : new Date(obj.Interval),
+                            x : new Date(obj.interval),
                             y : obj.stat.r,
                             cRep : obj.stat.cRep
                         }
@@ -60,7 +60,7 @@ angular.module('ndrApp')
                     _.each(data[1].statSet[0].intervalSet, function(obj, key){
                         var o = {
                             color : "#74BAD8",
-                            x : new Date(obj.Interval),
+                            x : new Date(obj.interval),
                             y : obj.stat.r,
                             cRep : obj.stat.cRep
                         }
@@ -90,16 +90,16 @@ angular.module('ndrApp')
 
                 var promises = [];
 
-                var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode: scope.model.diabetesTypeCode});
+                var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesType: scope.model.diabetesTypeCode});
 
                 if(scope.geoType == "unit"){
-                    query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode: scope.model.diabetesTypeCode});
+                    query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesType: scope.model.diabetesTypeCode});
                 }
 
                 promises.push(dataService.getStats(query));
 
                 //RIKET
-                var query = dataService.queryFactory({ level : 0, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesTypeCode : scope.model.diabetesTypeCode});
+                var query = dataService.queryFactory({ level : 0, ID: toInclude, sex : scope.model.sex, unitTypeID: scope.model.unitTypeID, diabetesType : scope.model.diabetesTypeCode});
                 promises.push(dataService.getStats(query));
 
                 $q.all(promises).then(function (data){

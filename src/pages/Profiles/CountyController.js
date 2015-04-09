@@ -30,8 +30,6 @@ angular.module("ndrApp")
 
             var series = [];
 
-
-            
             _.each(data.statSet, function(obj, key){
 
                 var o = {
@@ -49,7 +47,6 @@ angular.module("ndrApp")
         })
 
 
-
         // GET DATA FOR TREND CHART
         var query = dataService.queryFactory({countyCode : id, interval : "y", fromYear: 2000, toYear : 2014, indicatorID: 101});
         dataService.getStats(query).then(function (data){
@@ -63,7 +60,7 @@ angular.module("ndrApp")
                 var o = {
                    // name : obj.unit.name,
                    // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
-                    x : new Date(obj.Interval),
+                    x : new Date(obj.interval),
                     y : obj.stat.r,
                     cRep : obj.stat.cRep,
                 }

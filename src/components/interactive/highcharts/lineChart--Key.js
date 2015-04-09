@@ -132,7 +132,7 @@ angular.module('ndrApp')
                         credits: {
                             enabled: false
                         },
-                        series: scope.model
+                        series: angular.copy(scope.model)
                     });
 
 
