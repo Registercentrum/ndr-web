@@ -382,8 +382,8 @@ angular.module('ndrApp')
                             return _.isNull(propValue);
 
                         // Handle range filtering
-                        } else if (_.isNumber(filter.min) && _.isNumber(filter.max)) {
-                            return _.isNumber(propValue) && (propValue >= filter.min && propValue <= filter.max);
+                        } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {
+                            return typeof propValue === 'number' && (propValue >= filter.min && propValue <= filter.max);
 
                         // Handle date filtering
                         } else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
