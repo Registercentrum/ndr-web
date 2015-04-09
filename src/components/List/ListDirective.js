@@ -7,7 +7,7 @@ angular.module('ndrApp')
         return {
             restrict : 'A',
             templateUrl: function(elem, attr){
-                return 'src/components/List/List.html';
+                return 'src/components/List/ListTemplate.html';
             },
             link: link,
             scope: {

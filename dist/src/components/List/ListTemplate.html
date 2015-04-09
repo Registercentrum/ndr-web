@@ -1,0 +1,22 @@
+<ul class="List">
+
+    <li ng-repeat="item in model.data" class="List-item">
+
+        <div class="List-item-inner">
+
+            <p class="List-item-category"> {{ item.categoryNames.join(', ') }}</p>
+
+            <h3 class="List-item-title">
+                <a href="{{ item.link }}" class="List-item-link">{{ item.title }}</a>
+            </h3>
+
+        </div>
+
+    </li>
+
+</ul>
+
+
+
+
+
