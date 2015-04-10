@@ -189,41 +189,53 @@ angular.module('ndrApp')
 
                 dataService.getContacts(query)
                     .then(function (data) {
-                        $log.debug('Loaded Contacts', data);
 
-                        var subjects = []
-                        subjectsArray = _.toArray(_.groupBy(data, function (contact){
+                        //$log.debug('Loaded Contacts', data);
+
+                        var timer = +new Date();
+                        console.time(timer + 'getContacts');
+
+                        var subjects = [];
+
+                        var subjectsArray = _.groupBy(data, function (contact){
                             return contact.subject.socialNumber;
-                        }));
+                        });
+                        
 
                         _.each(subjectsArray, function (contactsArray, key){
                             var o = {
-                                contacts : contactsArray,
-                                aggregatedProfile : _.clone(_.first(contactsArray))
+                                contacts             :  contactsArray,
+                                subjectID         : _.first(contactsArray).subject.subjectID,
+                                diabetesType         : _.first(contactsArray).subject.diabetesType,
+                                diabetesTypeText     : _.first(contactsArray).subject.diabetesTypeText,
+                                sex                  : _.first(contactsArray).subject.sex,
+                                yearOfOnset          : _.first(contactsArray).subject.yearOfOnset,
+                                aggregatedProfile    : _.first(contactsArray)
                             };
 
-                            angular.extend(o, _.last(contactsArray).subject);
-
-                            if (contactsArray.length > 1) {
-                                _.each(o.aggregatedProfile, function (obj, key) {
+                             if (contactsArray.length > 1) {
+                                 _.each(o.aggregatedProfile, function (obj, key) {
                                     for (var i = 1, l = contactsArray.length; i < l; i++) {
-                                        if (obj == null && contactsArray[i][key] !== null) {
+                                        if (obj === null && contactsArray[i][key] !== null) {
                                             o.aggregatedProfile[key] = contactsArray[i][key];
-                                            break;
-                                        }
+                                        break;
+                                       }
                                     }
                                 });
-                            }
-                            // Add diabetesType, sex and yearOfOnset to aggregatedProfile
-                            // for easier filtering later on
+                             }
+
                             o.aggregatedProfile.diabetesType = o.diabetesType;
                             o.aggregatedProfile.sex = o.sex;
                             o.aggregatedProfile.yearOfOnset = o.yearOfOnset;
 
-                            subjects.push(o)
+
+                            subjects.push(o);
                         });
 
-                        $log.debug('Loaded Subjects', subjects.length, subjects);
+                        console.timeEnd(timer + 'getContacts');
+
+                        /*console.log("subjects", subjects);
+                        $log.debug('Loaded Subjects', subjects.length, subjects);*/
 
                         $scope.model.allSubjects = subjects;
                         $scope.model.allSubjectsLength = subjects.length;
@@ -369,10 +381,14 @@ angular.module('ndrApp')
                     }
                 });
 
+
                 // Check additional filters
                 _.each(selectedFilters, function (filter, prop, list) {
 
+                    if(_.isEmpty(filter)) return;
+
                     subjects = _.filter(subjects, function (subject) {
+
                         var propValue = subject.aggregatedProfile[prop],
                             value;
 
