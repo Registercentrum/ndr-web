@@ -165,7 +165,7 @@ angular.module("ndrApp")
                 toMonth: 0,
                 diabetesTypeCode: null,
                 sex: null,
-                unitTypeID: 0,
+                unitType: 0,
                 fromAge: 0,
                 toAge: 0,
                 interval: null,

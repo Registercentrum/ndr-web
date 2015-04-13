@@ -205,7 +205,7 @@ angular.module('ndrApp')
                         _.each(subjectsArray, function (contactsArray, key){
                             var o = {
                                 contacts             :  contactsArray,
-                                subjectID         : _.first(contactsArray).subject.subjectID,
+                                subjectID            : _.first(contactsArray).subject.subjectID,
                                 diabetesType         : _.first(contactsArray).subject.diabetesType,
                                 diabetesTypeText     : _.first(contactsArray).subject.diabetesTypeText,
                                 sex                  : _.first(contactsArray).subject.sex,

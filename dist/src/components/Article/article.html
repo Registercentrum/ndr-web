@@ -18,7 +18,7 @@
         <aside class="col-md-3">
           <div class="Article-metadata">
 
-            <img class="Article-metadata-image" ng-src="{{article.image}}">
+            <img ng-if="article.image" class="Article-metadata-image" ng-src="{{article.image}}">
             <!--https://placehold.it/200&text=saknar%20bild-->
             <span class="Article-metadata-author">{{ article.author }}</span>
             <p class="Article-date">{{ article.createdAt | date: 'longDate' }}</p>

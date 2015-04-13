@@ -36,6 +36,9 @@ angular.module("ndrApp")
             $scope.model.listModelNews = {
                 data : data
             }
+
+            jQuery('.Intro--equalHeights').matchHeight(true);
+
         })
 
     }]);
