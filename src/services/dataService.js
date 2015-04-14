@@ -30,8 +30,11 @@ angular.module("ndrApp")
             counties         : Restangular.all("county"),
             news             : Restangular.all("news"),
             researchproject  : Restangular.all("researchproject"),
-            contacts         : Restangular.all("Contact")
+            contacts         : Restangular.all("Contact"),
+            subject          : Restangular.all("subject")
+
         };
+
 
 
         /**
@@ -88,6 +91,20 @@ angular.module("ndrApp")
                 ["catch"](function (error) {
                     return error;
                 });
+        }
+
+
+        this.getSubjects = function (query) {
+            query = query || {};
+            query.AccountID = accountService.accountModel.activeAccount.accountID;
+
+            return endpoints.subject.getList(query)
+                .then(function (data) {
+                    return data.plain();
+                })
+                ["catch"](function (error) {
+                return error;
+            });
         }
 
 

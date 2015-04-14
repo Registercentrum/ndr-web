@@ -183,64 +183,18 @@ angular.module('ndrApp')
                 isLoadingSubjects = true;
 
                 query = {
-                    dateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
-                    dateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD')
+                    DateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                    DateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
+
                 };
 
-                dataService.getContacts(query)
+                //https://ndr.registercentrum.se/api/subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=13&DateFrom=2013-08-09&DateTo=2013-09-09
+                
+                dataService.getSubjects(query)
                     .then(function (data) {
-
-                        //$log.debug('Loaded Contacts', data);
-
-                        var timer = +new Date();
-                        console.time(timer + 'getContacts');
-
-                        var subjects = [];
-
-                        var subjectsArray = _.groupBy(data, function (contact){
-                            return contact.subject.socialNumber;
-                        });
-
-
-                        _.each(subjectsArray, function (contactsArray, key){
-                            var o = {
-                                contacts             :  contactsArray,
-                                subjectID            : _.first(contactsArray).subject.subjectID,
-                                diabetesType         : _.first(contactsArray).subject.diabetesType,
-                                diabetesTypeText     : _.first(contactsArray).subject.diabetesTypeText,
-                                sex                  : _.first(contactsArray).subject.sex,
-                                yearOfOnset          : _.first(contactsArray).subject.yearOfOnset,
-                                aggregatedProfile    : _.first(contactsArray)
-                            };
-
-                             /*if (contactsArray.length > 1) {
-                                 _.each(o.aggregatedProfile, function (obj, key) {
-
-                                    for (var i = 1, l = contactsArray.length; i < l; i++) {
-                                        if (obj === null && contactsArray[i][key] !== null) {
-                                            o.aggregatedProfile[key] = contactsArray[i][key];
-                                        break;
-                                       }
-                                    }
-
-                                });
-                             }*/
-
-                            o.aggregatedProfile.diabetesType = o.diabetesType;
-                            o.aggregatedProfile.sex = o.sex;
-                            o.aggregatedProfile.yearOfOnset = o.yearOfOnset;
-
-
-                            subjects.push(o);
-                        });
-
-                        console.timeEnd(timer + 'getContacts');
-
-                        /*console.log("subjects", subjects);
-                        $log.debug('Loaded Subjects', subjects.length, subjects);*/
-
-                        $scope.model.allSubjects = subjects;
-                        $scope.model.allSubjectsLength = subjects.length;
+                        
+                        $scope.model.allSubjects = data;
+                        $scope.model.allSubjectsLength = data.length;
 
                         isLoadingSubjects = false;
 
@@ -373,6 +327,10 @@ angular.module('ndrApp')
 
                 $log.debug('Changed Filters');
 
+
+                console.time("answer time");
+
+
                 var selectedFilters = {},
                     subjects        = $scope.model.allSubjects;
 
@@ -391,13 +349,15 @@ angular.module('ndrApp')
 
                     subjects = _.filter(subjects, function (subject) {
 
+                        //console.log(prop);
+                        
                         var propValue = subject.aggregatedProfile[prop],
                             value;
 
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
-                            return _.isNull(propValue);
+                            return _.isNull(subject.aggregatedProfile[prop]);
 
                         // Handle range filtering
                         } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {
@@ -420,10 +380,7 @@ angular.module('ndrApp')
                     });
                 });
 
-
-                /*var subjects = _.toArray(_.groupBy(contacts, function(contact){
-                 return contact.subject.subjectID
-                 }));*/
+                console.timeEnd("answer time");
 
                 $scope.model.filteredSubjects = subjects;
                 $scope.model.filteredSubjectsLength = subjects.length;
