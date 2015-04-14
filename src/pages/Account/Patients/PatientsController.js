@@ -59,13 +59,11 @@ angular.module('ndrApp')
                 }
             }
 
-            /* DATA TABLE */
+           /* *//* DATA TABLE *//*
             $scope.$watch("model.filteredSubjects", function (){
 
                 function paged (valLists,pageSize){
-
                     if(!valLists) return false;
-
                     retVal = [];
                     for (var i = 0; i < valLists.length; i++) {
                         if (i % pageSize === 0) {
@@ -82,10 +80,8 @@ angular.module('ndrApp')
                 $scope.reverse = false;
 
                 $scope.filteredList = $scope.allItems;
-
                 $scope.currentPage = 0;
                 $scope.Header = ['','',''];
-
 
                 $scope.pagination = function () {
                     $scope.ItemsByPage = paged( $scope.filteredList, $scope.pageSize );
@@ -158,7 +154,7 @@ angular.module('ndrApp')
                 //By Default sort ny Name
                 $scope.sort ('name');
 
-            }, true)
+            }, true)*/
 
 
             $scope.toggleDetail = function (d){
