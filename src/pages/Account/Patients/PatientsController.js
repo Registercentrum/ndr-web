@@ -196,8 +196,7 @@ angular.module('ndrApp')
                         $scope.model.allSubjectsLength = data.length;
 
                         isLoadingSubjects = false;
-
-                        filter();
+                        debouncedFilter();
 
                     });
             }
