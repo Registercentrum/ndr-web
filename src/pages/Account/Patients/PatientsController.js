@@ -2,8 +2,9 @@ angular.module('ndrApp')
     .controller('PatientsController', [
                  '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
+          
             $log.debug('PatientsController: Init');
-
+            console.time("Test")
             var filterSettings = {
                     exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
                     required: ['diabetesType', 'hba1c']
@@ -48,9 +49,7 @@ angular.module('ndrApp')
                 //     $scope.selectedFilters[filter.columnName].from
             };
 
-
             $scope.lookupName = function (filter, value){
-
                 if(filter.domain.isEnumerated){
                     return _.result(_.findWhere(filter.domain.domainValues, {code : value}), "text", "");
                 }
@@ -59,13 +58,17 @@ angular.module('ndrApp')
                 }
             }
 
-           /* *//* DATA TABLE *//*
+            /* DATA TABLE */
             $scope.$watch("model.filteredSubjects", function (){
 
-                function paged (valLists,pageSize){
+                function paged (valLists, pageSize){
+
                     if(!valLists) return false;
-                    retVal = [];
-                    for (var i = 0; i < valLists.length; i++) {
+
+                    var valLength = valLists.length;
+                    var retVal = [];
+
+                    for (var i = 0; i < valLength; i++) {
                         if (i % pageSize === 0) {
                             retVal[Math.floor(i / pageSize)] = [valLists[i]];
                         } else {
@@ -73,7 +76,7 @@ angular.module('ndrApp')
                         }
                     }
                     return retVal;
-                };
+                }
 
                 $scope.pageSize = 15;
                 $scope.allItems = $scope.model.filteredSubjects;
@@ -115,12 +118,8 @@ angular.module('ndrApp')
 
                 $scope.resetAll = function () {
                     $scope.filteredList = $scope.allItems;
-                    //$scope.newEmpId = '';
-                    //$scope.newName = '';
-                    //$scope.newEmail = '';
-                    //$scope.searchText = '';
-
                 }
+
 
                 $scope.sort = function(sortBy){
                     $scope.resetAll();
@@ -154,13 +153,12 @@ angular.module('ndrApp')
                 //By Default sort ny Name
                 $scope.sort ('name');
 
-            }, true)*/
+            }, true)
 
 
             $scope.toggleDetail = function (d){
                 console.log("detail",d);
             }
-
 
 
             // -------------------------------------------------------------------
@@ -173,6 +171,9 @@ angular.module('ndrApp')
 
             // Load data when period changes
             function loadSubjects () {
+
+                console.timeEnd("Test");
+
                 var query;
 
                 if(isLoadingSubjects) return;
@@ -188,11 +189,15 @@ angular.module('ndrApp')
                 
                 dataService.getSubjects(query)
                     .then(function (data) {
-                        
+
+                        console.time("Yupp");
+
                         $scope.model.allSubjects = data;
                         $scope.model.allSubjectsLength = data.length;
 
                         isLoadingSubjects = false;
+
+                        filter();
 
                     });
             }
@@ -208,7 +213,13 @@ angular.module('ndrApp')
             // Fill additional filters from the API request for cancatct attributes
             $scope.filters = [];
             dataService.getContactAttributes(filterSettings)
+
+
                 .then(function (filters) {
+
+                    console.time("ContactAttrs")
+
+
                     var required;
 
                     _.each(filters, function (filter, key) {
@@ -270,8 +281,13 @@ angular.module('ndrApp')
                     // Also make sure they are sorted alphabetically
                     filters = required.concat(_.sortBy(filters, 'question'));
 
+
                     // Set the available filters
                     $scope.filters = filters;
+
+                    console.timeEnd("ContactAttrs")
+
+
                 });
 
             // Used to update the list of chosen filters
@@ -318,6 +334,8 @@ angular.module('ndrApp')
             $scope.selectedFilters = {};
 
             function filter () {
+                console.timeEnd("Yupp");
+
                 // Check if there is anything to filter
                 if (!$scope.model.allSubjectsLength) return;
 
@@ -325,7 +343,6 @@ angular.module('ndrApp')
 
 
                 console.time("answer time");
-
 
                 var selectedFilters = {},
                     subjects        = $scope.model.allSubjects;
@@ -336,8 +353,7 @@ angular.module('ndrApp')
                         selectedFilters[filterKey] = filter;
                     }
                 });
-
-
+                
                 // Check additional filters
                 _.each(selectedFilters, function (filter, prop, list) {
 
@@ -397,6 +413,6 @@ angular.module('ndrApp')
             // $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
             // $scope.$watch('selectedFilters.diabetesTypes', filter, true);
             // $scope.$watch('selectedFilters.additional', filter, true);
-            $scope.$watch('model.allSubjects', filter, true);
+            //$scope.$watch('model.allSubjects', filter, true);
 
         }]);
