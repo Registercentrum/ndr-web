@@ -80,17 +80,34 @@ angular.module("ndrApp")
         };
 
 
-        this.getContacts = function (query) {
+
+
+            this.getContacts = function (query) {
+                query = query || {};
+                query.AccountID = accountService.accountModel.activeAccount.accountID;
+
+                return endpoints.contacts.getList(query)
+                    .then(function (data) {
+                        return data.plain();
+                    })
+                    ["catch"](function (error) {
+                    return error;
+                });
+            }
+
+
+
+
+
+        this.getSubjects = function (query) {
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
 
-            return endpoints.contacts.getList(query)
-                .then(function (data) {
-                    return data.plain();
+            //https://ndr.registercentrum.se/api/subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=13&DateFrom=2013-08-09&DateTo=2013-09-09
+            return $http.get('https://ndr.registercentrum.se/api/subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=13&DateFrom=2013-08-09&DateTo=2013-09-09')
+                .success(function(data) {
+                    return data;
                 })
-                ["catch"](function (error) {
-                    return error;
-                });
         }
 
 
