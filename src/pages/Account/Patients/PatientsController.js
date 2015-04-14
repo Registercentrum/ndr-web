@@ -200,7 +200,7 @@ angular.module('ndrApp')
                         var subjectsArray = _.groupBy(data, function (contact){
                             return contact.subject.socialNumber;
                         });
-                        
+
 
                         _.each(subjectsArray, function (contactsArray, key){
                             var o = {
@@ -213,16 +213,18 @@ angular.module('ndrApp')
                                 aggregatedProfile    : _.first(contactsArray)
                             };
 
-                             if (contactsArray.length > 1) {
+                             /*if (contactsArray.length > 1) {
                                  _.each(o.aggregatedProfile, function (obj, key) {
+
                                     for (var i = 1, l = contactsArray.length; i < l; i++) {
                                         if (obj === null && contactsArray[i][key] !== null) {
                                             o.aggregatedProfile[key] = contactsArray[i][key];
                                         break;
                                        }
                                     }
+
                                 });
-                             }
+                             }*/
 
                             o.aggregatedProfile.diabetesType = o.diabetesType;
                             o.aggregatedProfile.sex = o.sex;
@@ -372,7 +374,7 @@ angular.module('ndrApp')
                 $log.debug('Changed Filters');
 
                 var selectedFilters = {},
-                    subjects        = angular.copy($scope.model.allSubjects);
+                    subjects        = $scope.model.allSubjects;
 
                 // Narrow down the filters to only the displayed ones
                 _.each($scope.selectedFilters, function (filter, filterKey) {
@@ -432,11 +434,13 @@ angular.module('ndrApp')
             var debouncedFilter = _.debounce(function () {
                 $scope.$apply(function () {
                     filter();
-                })
+                });
             }, 400);
 
 
-            $scope.$watch('selectedFilters', debouncedFilter, true);
+            $scope.$watch('selectedFilters', function (){
+                debouncedFilter();
+            }, true);
             // $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
             // $scope.$watch('selectedFilters.diabetesTypes', filter, true);
             // $scope.$watch('selectedFilters.additional', filter, true);
