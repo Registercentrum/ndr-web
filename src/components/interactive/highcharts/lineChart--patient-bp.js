@@ -38,7 +38,7 @@ angular.module('ndrApp')
                             type: 'datetime',
 
                             dateTimeLabelFormats: {
-                                year: '%Y'
+                                year: '%y, %b'
                             },
 
                             lineWidth: 0,

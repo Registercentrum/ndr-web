@@ -21,6 +21,8 @@ angular.module("ndrApp")
 
         dataService.getOne("county", id).then(function (data){
             $scope.model.county = data;
+
+            $scope.model.data.no = _.countBy($scope.model.county.units, 'typeID');
             $scope.model.data.noUnits = $scope.model.county.units.length;
         })
 

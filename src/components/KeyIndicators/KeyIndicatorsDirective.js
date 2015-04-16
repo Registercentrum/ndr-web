@@ -13,7 +13,7 @@ angular.module('ndrApp')
                 selectedKeyIndicator: 201,
                 sex : 0,
                 unitType : 0,
-                diabetesTypeCode : undefined,
+                diabetesType : 0,
             }
 
             scope.data = {
@@ -34,11 +34,11 @@ angular.module('ndrApp')
                 var selectedIndicator = scope.model.selectedKeyIndicator;
                 var promises = [];
 
-                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesTypeCode });
-                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesTypeCode });
+                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
 
                 if(scope.geoType == "unit"){
-                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesTypeCode });
+                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
                 }
 
                 promises.push(dataService.getStats(queryCountry));
@@ -93,16 +93,16 @@ angular.module('ndrApp')
 
                 var promises = [];
 
-                var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesTypeCode});
+                var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesType});
 
                 if(scope.geoType == "unit"){
-                    query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesTypeCode});
+                    query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesType});
                 }
 
                 promises.push(dataService.getStats(query));
 
                 //RIKET
-                var query = dataService.queryFactory({ level : 0, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesTypeCode});
+                var query = dataService.queryFactory({ level : 0, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType});
                 promises.push(dataService.getStats(query));
 
                 $q.all(promises).then(function (data){

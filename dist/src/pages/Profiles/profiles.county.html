@@ -12,39 +12,45 @@
 </div>
 
 
+
 <div class="container">
     <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
             <div class="Panel Panel--blue u-equalHeight">
-                <h1 class="Panel-title">{{ model.data.noPatients }} personer</h1>
+                <h1 class="Panel-title">{{ model.data.noPatients | number }} personer</h1>
                 <p class="Panel-subline">med diabetes under senaste 12 månaderna</p>
-                <div class="text-center" style="margin-top:5px;">
+                <div class="text-center" style="margin-top:20px;">
                     <i style="font-size: 100px" class="fa fa-icon_patients"></i>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
             <div class="Panel u-equalHeight">
                 <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
+                    <table class="table">
+                        <tr><td>Primärvårdsenheter</td><td>{{  model.data.no['1'] }}</td></tr>
+                        <tr><td>Medicinkliniker</td><td>{{  model.data.no['2'] }}</td></tr>
+                    </table>
+
                 <div class="text-center" style="margin-top: 32px">
                     <i style="font-size: 100px" class="fa fa-icon_unit"></i>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
             <div class="Panel Panel--pink-text u-equalHeight">
-                <h1 class="Panel-title">Trend HbA1c</h1>
+                <h1 class="Panel-title">Landstingets medelvärde för HbA1c</h1>
                 <div line-chart model="model.data.trendhba1c"></div>
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
             <div class="Panel Panel--yellow-text u-equalHeight">
-                <h1 class="Panel-title">Jämförelse HbA1c</h1>
-                <div column-chart model="model.data.hba1c"></div>
+                <h1 class="Panel-title">Jämförelse mellan landsting för HbA1c</h1>
+                <div style="margin-top: 5px" column-chart model="model.data.hba1c"></div>
             </div>
         </div>
 

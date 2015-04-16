@@ -14,8 +14,8 @@
                 <option value="2">Män</option>
             </select>
 
-            <select ng-model="model.diabetesTypeCode" class="form-control pull-left"  style="font-size:13px; margin-left:20px;width: 200px">
-                <option value="">Diabetes, typ 1 och 2</option>
+            <select ng-model="model.diabetesType" class="form-control pull-left"  style="font-size:13px; margin-left:20px;width: 200px">
+                <option value="0">Diabetes, typ 1 och 2</option>
                 <option value="1">Diabetes, typ 1</option>
                 <option value="2">Diabetes, typ 2</option>
             </select>
@@ -40,9 +40,9 @@
 
             <tbody>
             <tr ng-repeat="indicator in data.keyIndicators" ng-click="model.selectedKeyIndicator = indicator.id" class="TableIndicators-row"  ng-class="indicator.id == model.selectedKeyIndicator ? 'selected' : ''">
-                <td class="TableIndicators-row-status {{indicator.status}}" ng-class="{last: $last}">{{indicator.name}}</td>
+                <td class="TableIndicators-row-status {{indicator.geo ? indicator.status : 'grey'}}" ng-class="{last: $last}">{{indicator.name}}</td>
                 <!--<td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>-->
-                <td class="TableIndicators-row-county">{{indicator.geo}}%</td>
+                <td class="TableIndicators-row-county">{{indicator.geo ? indicator.geo + '%' : '-' }}</td>
                 <td class="TableIndicators-row-country"><div class="TableIndicators-row-country-innerWrapper">{{indicator.riket}}%</div></td>
             </tr>
             </tbody>

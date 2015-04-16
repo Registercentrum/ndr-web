@@ -12,26 +12,19 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
             <div class="Panel Panel--blue u-equalHeight">
-                <h1 class="Panel-title">{{ model.data.noPatients }} personer</h1>
+                <h1 class="Panel-title">{{ model.data.noPatients | number }} personer</h1>
                 <p class="Panel-subline">med diabetes under senaste 12 månaderna</p>
-                  <div class="text-center" style="margin-top:5px;">
+                  <div class="text-center" style="margin-top:15px;">
                     <i style="font-size: 100px" class="fa fa-icon_patients"></i>
                 </div>
             </div>
         </div>
 
-       <!-- <div class="col-md-3">
-            <div class="Panel u-equalHeight">
-                <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
-                <img class="Icon" src="images/icons/icon_unit.png" alt=""/>
-            </div>
-        </div>
--->
-        <div class="col-md-3">
+        <div class="col-md-3 text-center">
             <div class="Panel Panel--pink-text u-equalHeight">
-                <h1 class="Panel-title">Trend HbA1c</h1>
+                <h1 class="Panel-title">Vårdenhetens medelvärde för HbA1c</h1>
                 <div line-chart model="model.data.trendhba1c"></div>
             </div>
         </div>
@@ -39,17 +32,13 @@
         <div class="col-md-6">
             <div class="Panel u-equalHeight">
                 <h1 class="Panel-title">Om vårdenheten</h1>
-
                 <div>
-                    {{ model.geo.name }}
+                    {{ model.unit.name }}
                 </div>
                 <div>
-                    {{ model.geo.street }}
-
+                    {{ model.unit.street }}
                 </div>
-                <div> {{ model.geo.postalCode }} {{ model.geo.postalLocation }} </div>
-
-
+                <div> {{ model.unit.postalCode }} {{ model.unit.postalLocation }} </div>
             </div>
         </div>
     </div>
@@ -60,19 +49,12 @@
 
 <div class="container">
     <div class="row">
-
         <div class="col-md-12">
-
             <div class="Panel">
-
                 <div key-indicators id="model.id" geo="model.geo" geo-type="'unit'"></div>
-
-
             </div>
-
         </div>
     </div>
-
 </div>
 
 

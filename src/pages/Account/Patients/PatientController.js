@@ -5,6 +5,17 @@ angular.module("ndrApp")
 
             var Account = $scope.accountModel;
 
+
+            $scope.checkFootDate = function (d){
+
+                if(!d) return false;
+                var now = moment();
+                var then = moment(d.label);
+
+                var diff = now.diff(then, 'days');
+                return diff > 365 ? true : false;
+            }
+
         $scope.subject = undefined;
         $scope.subjectID = false || $stateParams.patientID;
 

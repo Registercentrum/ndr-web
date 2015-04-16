@@ -22,7 +22,7 @@ angular.module('ndrApp')
                         chart: {
                             type: 'area',
                             height : 180,
-                            // width : 200,
+                            //width : 200,
                             marginTop : 40,
                             marginBottom : 30,
                             marginLeft : 20,

@@ -16,6 +16,7 @@ angular.module("ndrApp")
         }
 
         dataService.getOne("unit", id).then(function (data){
+            console.log("dd", data);
             $scope.model.unit = data;
         })
 
