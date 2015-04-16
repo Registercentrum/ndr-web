@@ -169,35 +169,43 @@ angular.module('ndrApp')
                 filteredSubjects: undefined
             };
 
+            var ready = false;
+
             // Load data when period changes
             function loadSubjects () {
 
-                console.timeEnd("Test");
-
-                var query;
+                if(!ready) { return false; }
 
                 if(isLoadingSubjects) return;
                 isLoadingSubjects = true;
 
+
+                var query;
+                var selectedFilters = {};
+
+                // Narrow down the filters to only the displayed ones
+                _.each($scope.selectedFilters, function (filter, filterKey) {
+                    if ($scope.isDisplayed(filterKey)) {
+                        selectedFilters[filterKey] = filter;
+                    }
+                });
+
                 query = {
                     DateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
                     DateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
+                    f       : _.keys(selectedFilters)
 
                 };
 
-                //https://ndr.registercentrum.se/api/subject?APIKey=LkUtebH6B428KkPqAAsV&AccountID=13&DateFrom=2013-08-09&DateTo=2013-09-09
-                
+
                 dataService.getSubjects(query)
                     .then(function (data) {
-
-                        console.time("Yupp");
 
                         $scope.model.allSubjects = data;
                         $scope.model.allSubjectsLength = data.length;
 
                         isLoadingSubjects = false;
                         debouncedFilter();
-
                     });
             }
 
@@ -215,8 +223,6 @@ angular.module('ndrApp')
 
 
                 .then(function (filters) {
-
-                    console.time("ContactAttrs")
 
 
                     var required;
@@ -284,8 +290,8 @@ angular.module('ndrApp')
                     // Set the available filters
                     $scope.filters = filters;
 
-                    console.timeEnd("ContactAttrs")
-
+                    ready = true;
+                    loadSubjects();
 
                 });
 
@@ -295,6 +301,7 @@ angular.module('ndrApp')
             // Whenever the filter is chosen from the list of available filters
             // update the list of chosen filters
             $scope.$watch('chosenFilter', function (name) {
+
                 var filter;
                 if (name !== null) {
                     filter = _.find($scope.filters, {columnName: name});
@@ -305,6 +312,9 @@ angular.module('ndrApp')
                     }
                     $scope.chosenFilter = null;
                 }
+
+                loadSubjects();
+
             });
 
             $scope.isDisplayed = function (name) {
@@ -333,7 +343,6 @@ angular.module('ndrApp')
             $scope.selectedFilters = {};
 
             function filter () {
-                console.timeEnd("Yupp");
 
                 // Check if there is anything to filter
                 if (!$scope.model.allSubjectsLength) return;
@@ -368,7 +377,8 @@ angular.module('ndrApp')
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
-                            return _.isNull(subject.aggregatedProfile[prop]);
+                            
+                            return typeof subject.aggregatedProfile[prop] === 'undefined';
 
                         // Handle range filtering
                         } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {
