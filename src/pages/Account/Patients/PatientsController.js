@@ -205,7 +205,7 @@ angular.module('ndrApp')
                         $scope.model.allSubjectsLength = data.length;
 
                         isLoadingSubjects = false;
-                        debouncedFilter();
+                        //debouncedFilter();
                     });
             }
 
@@ -371,14 +371,14 @@ angular.module('ndrApp')
 
                         //console.log(prop);
                         
-                        var propValue = subject.aggregatedProfile[prop],
+                        var propValue = subject[prop],
                             value;
 
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
                             
-                            return typeof subject.aggregatedProfile[prop] === 'undefined';
+                            return typeof subject[prop] === 'undefined';
 
                         // Handle range filtering
                         } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {

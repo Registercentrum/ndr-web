@@ -197,24 +197,22 @@
         <div class="table-responsive">
             <table id="Table--patients" width="100%" class="data-table table responsive table-striped table-bordered row-border hover">
                 <thead>
-                <tr>
-                    <!--<th>Mer</th>-->
-                    <th class="EmpId">Personnummer</th>
-                    <th class="EmpId">Senaste besök</th>
-                    <th ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</th>
-                    <th>Funktioner</th>
-                </tr>
-                </thead>
+                        <tr>
+                            <!--<th>Mer</th>-->
+                            <th class="EmpId">Personnummer</th>
+                            <th class="EmpId">Senaste besök</th>
+                            <th ng-repeat="f in filters | filter:{isChosen:true}" once-text="f.question"></th>
+                            <th>Funktioner</th>
+                        </tr>
+                    </thead>
                 <tbody>
-
-                <tr ng-repeat="subject in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
-                    <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
-                    <td once-text="subject.aggregatedProfile.socialNumber"></td>
-                    <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
-                    <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.columnName == 'diabetesType' ? subject.diabetesTypeText : lookupName(f, subject.aggregatedProfile[f.columnName]) }}</td>
-                    <td><a target="_blank" once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
-
-                </tr>
+                    <tr ng-repeat="subject in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
+                        <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
+                        <td once-text="subject.socialNumber"></td>
+                        <td once-text="subject.contactDate | date:'yyyy-MM-dd'"></td>
+                        <td ng-repeat="f in filters | filter:{isChosen:true}" once-text='lookupName(f, subject[f.columnName])'></td>
+                        <td><a target="_blank" once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
