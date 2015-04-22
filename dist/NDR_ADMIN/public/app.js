@@ -40,8 +40,6 @@
         var app = nga.application('NDR Admin') // application main title
 			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
             .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
-
-        var news = nga.entity('News')
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -62,6 +60,9 @@
 		var accounts = nga.entity('Account')
 			.identifier(nga.field('accountID'))
 			.label('Användarkonton');
+
+		var contactAttributes = nga.entity('ContactAttribute')
+			.label('Metavariabler');			
 		
 		var newsCategories = nga.entity('NewsCategory')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
@@ -84,7 +85,28 @@
 			.addEntity(users)
 			.addEntity(accounts)
 			.addEntity(news)
-			.addEntity(publications);
+			.addEntity(publications)
+			.addEntity(contactAttributes);
+		
+		// ****** METAVARIABLER ******
+		contactAttributes.listView()
+             .title('Metavariabler')
+			 .perPage(60)
+             .fields([
+				nga.field('question').label('Etikett').map(truncate),
+				nga.field('definition').label('Beskrivning').map(truncate),
+				nga.field('helpNote').label('Hjälptext').map(truncate)
+             ])
+			.listActions(['edit']);
+		
+        contactAttributes.editionView()
+			.title('Uppdatera variabel')
+            .fields([
+                nga.field('question').label('Etikett'),
+                nga.field('definition','text').label('Beskrivning'),
+                nga.field('helpNote','text').label('Hjälptext')
+            ]);	
+		
 		
 		// ****** ACCOUNTS ******
         accounts.dashboardView()
@@ -206,7 +228,7 @@
                 nga.field('unitID').label('NDR-ID').order(0),
                 nga.field('name').label('Enhetsnamn').map(truncate).order(1),
 				nga.field('hsaid').label('HSAID').map(truncate).order(2),
-				nga.field('manager').label('Verksamhetschef').map(truncate).order(2),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
 				nga.field('phone').label('Telefon').map(truncate).order(2),
             ])
             .listActions(['edit', 'delete'])

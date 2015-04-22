@@ -1,4 +1,13 @@
-angular.module('ndrApp', ['ui.router', 'angular-loading-bar', 'restangular', 'selectize', 'ngSanitize', 'ui.bootstrap', 'datatables', 'vr.directives.slider', 'once'])
+angular.module('ndrApp', [
+    'ui.router',
+    'angular-loading-bar',
+    'restangular',
+    'selectize',
+    'ngSanitize',
+    'ui.bootstrap',
+    //'datatables',
+    'vr.directives.slider',
+    'once'])
 
 
     // Override config options

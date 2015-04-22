@@ -2,7 +2,7 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license Highcharts JS v4.1.1 (2015-02-17)
+ * @license Highcharts JS v4.1.5 (2015-04-13)
  *
  * (c) 2009-2013 Torstein Hønsi
  *
@@ -579,32 +579,38 @@ Highcharts.wrap(Highcharts.Chart.prototype, 'redraw', function (proceed) {
 	proceed.apply(this, [].slice.call(arguments, 1));	
 });
 
-// Draw the series in the reverse order (#3803)
-Highcharts.Chart.prototype.renderSeries = function () {
-	var serie,
+// Draw the series in the reverse order (#3803, #3917)
+Highcharts.wrap(Highcharts.Chart.prototype, 'renderSeries', function (proceed) {
+	var series,
 		i = this.series.length;
-	while (i--) {		
-		serie = this.series[i];
-		serie.translate();
-		serie.render();	
+	
+	if (this.is3d()) {
+		while (i--) {		
+			series = this.series[i];
+			series.translate();
+			series.render();	
+		}
+	} else {
+		proceed.call(this);
 	}
-};
+});
 
-Highcharts.Chart.prototype.retrieveStacks = function (grouping, stacking) {
-
-	var stacks = {},
+Highcharts.Chart.prototype.retrieveStacks = function (stacking) {
+	var series = this.series,
+		stacks = {},
+		stackNumber,
 		i = 1;
 
-	if (grouping || !stacking) { return this.series; }
-
 	Highcharts.each(this.series, function (S) {
-		if (!stacks[S.options.stack || 0]) {
-			stacks[S.options.stack || 0] = { series: [S], position: i};
+		stackNumber = stacking ? (S.options.stack || 0) : series.length - 1 - S.index; // #3841
+		if (!stacks[stackNumber]) {
+			stacks[stackNumber] = { series: [S], position: i};
 			i++;
 		} else {
-			stacks[S.options.stack || 0].series.push(S);
+			stacks[stackNumber].series.push(S);
 		}
 	});
+
 	stacks.totalStacks = i + 1;
 	return stacks;
 };
@@ -843,7 +849,9 @@ Highcharts.wrap(Highcharts.seriesTypes.column.prototype, 'translate', function (
 			tooltipPos = perspective([{ x: tooltipPos[0], y: tooltipPos[1], z: z }], chart, false)[0];
 			point.tooltipPos = [tooltipPos.x, tooltipPos.y];
 		}
-	});	    
+	});
+	// store for later use #4067
+	series.z = z;
 });
 
 Highcharts.wrap(Highcharts.seriesTypes.column.prototype, 'animate', function (proceed) {
@@ -904,8 +912,8 @@ Highcharts.wrap(Highcharts.seriesTypes.column.prototype, 'init', function (proce
 			stacking = seriesOptions.stacking,
 			z = 0;	
 		
-		if (!(grouping !== undefined && !grouping) && stacking) {
-			var stacks = this.chart.retrieveStacks(grouping, stacking),
+		if (!(grouping !== undefined && !grouping)) {
+			var stacks = this.chart.retrieveStacks(stacking),
 				stack = seriesOptions.stack || 0,
 				i; // position within the stack
 			for (i = 0; i < stacks[stack].series.length; i++) {
@@ -923,14 +931,15 @@ function draw3DPoints(proceed) {
 	// Do not do this if the chart is not 3D
 	if (this.chart.is3d()) {		
 		var grouping = this.chart.options.plotOptions.column.grouping;
-		if (grouping !== undefined && !grouping && this.group.zIndex !== undefined) {
+		if (grouping !== undefined && !grouping && this.group.zIndex !== undefined && !this.zIndexSet) {
 			this.group.attr({zIndex : (this.group.zIndex * 10)});
+			this.zIndexSet = true; // #4062 set zindex only once
 		} 
 
 		var options = this.options,
 			states = this.options.states;
 			
-		this.borderWidth = options.borderWidth = options.edgeWidth || 1;
+		this.borderWidth = options.borderWidth = defined(options.edgeWidth) ? options.edgeWidth : 1; //#4055
 
 		Highcharts.each(this.data, function (point) {
 			if (point.y !== null) {
@@ -959,7 +968,7 @@ Highcharts.wrap(Highcharts.Series.prototype, 'alignDataLabel', function (proceed
 		var args = arguments,
 			alignTo = args[4];
 		
-		var pos = ({x: alignTo.x, y: alignTo.y, z: 0});
+		var pos = ({x: alignTo.x, y: alignTo.y, z: series.z});
 		pos = perspective([pos], chart, true)[0];
 		alignTo.x = pos.x;
 		alignTo.y = pos.y;
@@ -1150,7 +1159,7 @@ Highcharts.wrap(Highcharts.seriesTypes.pie.prototype, 'addPoint', function (proc
 	proceed.apply(this, [].slice.call(arguments, 1));	
 	if (this.chart.is3d()) {
 		// destroy (and rebuild) everything!!!
-		this.update();
+		this.update(this.userOptions, true); // #3845 pass the old options
 	}
 });
 

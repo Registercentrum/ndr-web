@@ -17,7 +17,7 @@
       // if watching and binding $parsers are the same, use watching's value, else $parse the new value
       return done(element, watcherParser == bindingParser ? watchingValue : bindingParser($scope));
     }
-    
+
     // we do not have a valid value, so we register a $watch
     var watcherRemover = $scope.$watch(watch, function (newValue) {
       // wait until we have a valid value
@@ -41,11 +41,14 @@
 
   function makeBindingDirective(definition) {
     once.directive(definition.name, ['$parse', function ($parse) {
-      return function ($scope, element, attrs) {
-        var watch = attrs.onceWaitFor || attrs[definition.name];
-        var watcherParser = $parse(watch);
-        var bindingParser = attrs.onceWaitFor ? $parse(attrs[definition.name]) : watcherParser;
-        setOneTimeBinding($scope, element, watch, watcherParser, bindingParser, definition.binding);
+      return {
+        priority: definition.priority || 0,
+        link: function ($scope, element, attrs) {
+          var watch = attrs.onceWaitFor || attrs[definition.name];
+          var watcherParser = $parse(watch);
+          var bindingParser = attrs.onceWaitFor ? $parse(attrs[definition.name]) : watcherParser;
+          setOneTimeBinding($scope, element, watch, watcherParser, bindingParser, definition.binding);
+        }
       };
     }]);
   }
@@ -65,12 +68,14 @@
     },
     {
       name: 'onceSrc',
+      priority: 99,
       binding: function (element, value) {
         element.attr('src', value);
       }
     },
     {
       name: 'onceHref',
+      priority: 99,
       binding: function (element, value) {
         element.attr('href', value);
       }
@@ -95,6 +100,7 @@
     },
     {
       name: 'onceIf',
+      priority: 600,
       binding: function (element, value) {
         if (!value) {
           element.remove();
@@ -146,21 +152,22 @@
 
   angular.forEach(bindingsDefinitions, makeBindingDirective);
 
-  once.directive('once', function () {
-    return function ($scope, element, attrs) {
-      angular.forEach(attrs, function (attr, attrName) {
+  once.directive('once', ['$parse', function ($parse) {
+      return function ($scope, element, attrs) {
+          angular.forEach(attrs, function (attr, attrName) {
+              if (!/^onceAttr[A-Z]/.test(attrName)) return;
+              var watch = attrs.onceWaitFor || attrs[attrName];
+              var watcherParser = $parse(watch);
+              var bindingParser = attrs.onceWaitFor ? $parse(attrs[attrName]) : watcherParser;
+              var binding = function (element,value) {
+                  var dashedName = attrName.replace(/[A-Z]/g, function (match) { return '-' + match.toLowerCase(); });
+                  var name = dashedName.substr(10);
 
-        if (!/^onceAttr[A-Z]/.test(attrName)) return;
-        var bind = function(element, value) {
-          var dashedName = attrName.replace(/[A-Z]/g, function(match) { return '-' + match.toLowerCase(); });
-          var name = dashedName.substr(10);
-
-          element.attr(name, value);
-        };
-
-        setOneTimeBinding($scope, element, attrs, attrName, bind);
-      });
-    };
-  });
+                  element.attr(name, value);
+              }
+              setOneTimeBinding($scope, element, watch, watcherParser, bindingParser, binding);
+          });
+      };
+  }]);
 
 })(window, window.angular);

@@ -16,13 +16,13 @@ Highcharts.theme = {
 	chart: {
 		backgroundColor: null,
 		style: {
-			fontFamily: "Open Sans, sans-serif"
+			fontFamily: "Dosis, sans-serif"
 		}
 	},
 	title: {
 		style: {
 			fontSize: '16px',
-			fontWeight: 'normal',
+			fontWeight: 'bold',
 			textTransform: 'uppercase'
 		}
 	},
@@ -33,8 +33,8 @@ Highcharts.theme = {
 	},
 	legend: {
 		itemStyle: {
-			fontWeight: 'normal',
-			fontSize: '12px'
+			fontWeight: 'bold',
+			fontSize: '13px'
 		}
 	},
 	xAxis: {

@@ -34,20 +34,13 @@
                 <h2 class="Heading--h3-sidebar u-noTopMargin">Diabetesvården där du bor</h2>
                 <p>Knappa in ditt postnummer för att hitta statistik och annan information om diabetesvården där du bor:</p>
 
-                <input type="text" class="form-control" ng-model="unit.postalCode" style="width: 80%;margin-top: 20px" placeholder="Ditt postnummer"/>
+                <input type="text" class="form-control" ng-model="postalCode" style="width: 80%;margin-top: 20px" placeholder="Ditt postnummer"/>
                 <div class="PostalCodeSearch">
-                    <ul class="PostalCodeSearch-list" ng-show="unit.postalCode">
-                        <li ng-repeat="unit in units | filter:unit | orderBy: 'name'" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">
-
-                            <!--<span class="PostalCodeSearch-list-item-index">{{ $index + 1 }}</span>-->
+                    <ul class="PostalCodeSearch-list" ng-show="postalCode">
+                        <li ng-repeat="unit in filteredUnits" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">
                             <h5 class="PostalCodeSearch-list-item-title" ><a href="/#/profil/enhet/{{ unit.unitID }}">{{ unit.name }}</a></h5>
-<!--
-                            <a class="Button Button--small Button--centered Button--centered--60" href="/#/profil/enhet/{{ unit.unitID }}">Visa profil</a>
--->
-
                         </li>
                     </ul>
-
                 </div>
             </div>
 

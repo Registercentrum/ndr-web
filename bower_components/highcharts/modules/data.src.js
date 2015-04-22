@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v4.1.1 (2015-02-17)
+ * @license Highcharts JS v4.1.5 (2015-04-13)
  * Data module
  *
  * (c) 2012-2014 Torstein Honsi
@@ -520,9 +520,8 @@
 
 		if (parseDate) {
 			ret = parseDate(val);
-		}
 		
-		if (typeof val === 'string') {
+		} else if (typeof val === 'string') {
 			// Auto-detect the date format the first time
 			if (!dateFormat) {
 				for (key in this.dateFormats) {

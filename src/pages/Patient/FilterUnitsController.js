@@ -1,9 +1,25 @@
-angular.module("ndrApp")
+angular.module('ndrApp')
     .controller('FilterUnitsController',['$scope', '$stateParams', 'dataService', function($scope, $stateParams, dataService) {
 
-      var units = dataService.data.units;
+      dataService.getList('units').then(function (data){
+          console.log("d", data);
+          var units = data.plain();
 
-      $scope.units = units;
+          $scope.filteredUnits = [];
+
+          $scope.$watch('postalCode', function (){
+
+              $scope.filteredUnits = _.take(_.filter(units, function (d){
+                  return  d.postalCode.indexOf( $scope.postalCode ) > -1 ;
+              }), 10);
+
+          }, true);
+
+      })
+
+
+
+
 
       //dataService.getList("units").then(function (data){
       //  console.log(data);

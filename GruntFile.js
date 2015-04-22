@@ -128,7 +128,7 @@ module.exports = function(grunt) {
             },
 
             grunticon: {
-                files: ['images/svgmin/*.svg'],
+                files: ['images/svgmin.svg'],
                 tasks: ['grunticon'],
                 options: {
                     spawn: false
