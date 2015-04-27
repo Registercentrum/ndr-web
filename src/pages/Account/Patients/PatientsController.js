@@ -357,12 +357,17 @@ angular.module('ndrApp')
 
 
                 var selectedFilters = {},
+                    selectedFiltersArray = [],
                     subjects        = $scope.model.allSubjects;
 
                 // Narrow down the filters to only the displayed ones
                 _.each($scope.selectedFilters, function (filter, filterKey) {
                     if ($scope.isDisplayed(filterKey)) {
                         selectedFilters[filterKey] = filter;
+
+                        selectedFiltersArray.push(
+                            angular.extend({ columnName : filterKey}, filter)
+                        );
                     }
                 });
 
@@ -372,6 +377,7 @@ angular.module('ndrApp')
                     DateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
                     f       : _.keys(selectedFilters),
                     filters : selectedFilters,
+                    filtersArray : selectedFiltersArray,
                     limit   : 15,
                     offset  : 100,
                     count    : 'given-by-server',
