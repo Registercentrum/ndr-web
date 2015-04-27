@@ -1,7 +1,7 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService,   DTOptionsBuilder,   DTColumnDefBuilder) {
+                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService',
+        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService) {
           
             $log.debug('PatientsController: Init');
             console.time("Test")
@@ -179,7 +179,6 @@ angular.module('ndrApp')
                 if(isLoadingSubjects) return;
                 isLoadingSubjects = true;
 
-
                 var query;
                 var selectedFilters = {};
 
@@ -193,9 +192,16 @@ angular.module('ndrApp')
                 query = {
                     DateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
                     DateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
-                    f       : _.keys(selectedFilters)
-
+                    f       : _.keys(selectedFilters),
+                    filters : selectedFilters,
+                    limit   : 15,
+                    offset  : 100,
+                    count    : 'given-by-server',
+                    matching : 'given-by-server'
                 };
+
+                console.log('query on loaded', query);
+
 
 
                 dataService.getSubjects(query)
@@ -205,7 +211,7 @@ angular.module('ndrApp')
                         $scope.model.allSubjectsLength = data.length;
 
                         isLoadingSubjects = false;
-                        //debouncedFilter();
+                        debouncedFilter();
                     });
             }
 
@@ -350,8 +356,6 @@ angular.module('ndrApp')
                 $log.debug('Changed Filters');
 
 
-                console.time("answer time");
-
                 var selectedFilters = {},
                     subjects        = $scope.model.allSubjects;
 
@@ -361,7 +365,23 @@ angular.module('ndrApp')
                         selectedFilters[filterKey] = filter;
                     }
                 });
-                
+
+
+                query = {
+                    DateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
+                    DateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
+                    f       : _.keys(selectedFilters),
+                    filters : selectedFilters,
+                    limit   : 15,
+                    offset  : 100,
+                    count    : 'given-by-server',
+                    matching : 'given-by-server'
+                };
+
+                console.log('query when filters change', query);
+
+
+
                 // Check additional filters
                 _.each(selectedFilters, function (filter, prop, list) {
 
@@ -401,7 +421,6 @@ angular.module('ndrApp')
                     });
                 });
 
-                console.timeEnd("answer time");
 
                 $scope.model.filteredSubjects = subjects;
                 $scope.model.filteredSubjectsLength = subjects.length;

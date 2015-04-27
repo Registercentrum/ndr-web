@@ -249,6 +249,12 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Account/Patients/patients.html',
                     controller : 'PatientsController'
                 })
+
+                .state('main.account.patients2', {
+                    url: '/patienter2',
+                    templateUrl: 'src/pages/Account/Patients/patients2.html',
+                    controller : 'Patients2Controller'
+                })
     
                 .state('main.account.patient', {
                     url: '/patient/:patientID',
