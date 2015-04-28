@@ -17,6 +17,8 @@ angular.module('ndrApp')
 
 		//console.log("ReportController: Init",  $scope.accountModel);
 
+			console.log("Loaded", $stateParams.patientID);
+			
 		$scope.subjectID = false || $stateParams.patientID;
 
 
@@ -110,8 +112,8 @@ angular.module('ndrApp')
 			$scope.checkContactDate();
 		};
 		$scope.getNewContactModel = function() {
-
 			$scope.contactForm.$setPristine();
+
 			return $scope.getNewModel($scope.lastContact);
 		};
 		$scope.togglePumpProblem = function() {

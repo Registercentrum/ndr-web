@@ -23,15 +23,16 @@ angular.module('ndrApp')
 
             scope.$watch('model', function (newValue, oldValue){
                 getSelectedKeyIndicator();
+
+                if(newValue.sex == oldValue.sex || newValue.diabetesType == oldValue.diabetesType){
+                    getKeyIndicators()
+                }
+
             }, true)
 
 
             function getSelectedKeyIndicator(){
 
-                //console.log("MM", scope.model);
-
-                getKeyIndicators();
-                
                 var selectedIndicator = scope.model.selectedKeyIndicator;
                 var promises = [];
 
@@ -75,15 +76,15 @@ angular.module('ndrApp')
 
                     scope.data.keyIndicator = [
                         {
-                            name : "Riket",
-                            color: "#ccc",
-                            data : seriesCountry
-                        },
-                        {
-                            name: "Vald",
+                            name: scope.geo ? scope.geo.name : 'Enhet',
                             lineWidth: 3,
                             color : "#74BAD8",
                             data: seriesGeo
+                        },
+                        {
+                            name : "Riket",
+                            color: "#ccc",
+                            data : seriesCountry
                         }
                     ]
                 })
@@ -91,7 +92,7 @@ angular.module('ndrApp')
 
             function getKeyIndicators(){
 
-                var toInclude = [201,221,207,222,209,214,211,203,223,216,202,309];
+                var toInclude = [201,221,207,222,209,214,211,203,223,216,202,219];
                 var highIsBetter = [201, 207, 222, 209, 203, 212, 213, 223]
 
                 var promises = [];

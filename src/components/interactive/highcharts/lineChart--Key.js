@@ -103,6 +103,8 @@ angular.module('ndrApp')
                                     enabled: true
                                 }
                             },
+
+
                             spline: {
                                 dataLabels: {
                                     style: {
@@ -112,22 +114,24 @@ angular.module('ndrApp')
                                    /* formatter: function() {
                                         return '<b>' +  this.series.name + '</b>';
                                     }*/
+                                    //crop : false,
+                                    //overflow : false,
+                                    allowOverlap : true,
+                                    //showLastLabel : true
                                 },
-
-
                             }
                         },
                         legend: {
-                            enabled: false,
-                            layout: 'vertical',
-                            align: 'right',
+                            //enabled: enabled,
+                            layout: 'horizontal',
+                            align: 'center',
                             verticalAlign: 'top',
-                            x: -40,
-                            y: 100,
+                            //x: -40,
+                            y: 30,
                             floating: true,
-                            borderWidth: 1,
-                            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor || '#FFFFFF'),
-                            shadow: true
+                            //borderWidth: 1,
+                            //backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor || '#FFFFFF'),
+                            //shadow: true
                         },
                         credits: {
                             enabled: false

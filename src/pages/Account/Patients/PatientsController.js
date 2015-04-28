@@ -204,16 +204,15 @@ angular.module('ndrApp')
 
 
 
-                dataService.getSubjects(query)
-                    .then(function (data) {
+                dataService.getSubjects(query, function (data){
 
-                        $scope.model.allSubjects = data;
-                        $scope.model.allSubjectsLength = data.length;
+                    $scope.model.allSubjects = data;
+                    $scope.model.allSubjectsLength = data.length;
 
-                        isLoadingSubjects = false;
-                        debouncedFilter();
-                    });
-            }
+                    isLoadingSubjects = false;
+                    debouncedFilter();
+                })
+                               }
 
             $scope.$watch('datePickers.to.date', loadSubjects);
             $scope.$watch('datePickers.from.date', loadSubjects);

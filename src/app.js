@@ -7,7 +7,9 @@ angular.module('ndrApp', [
     'ui.bootstrap',
     //'datatables',
     'vr.directives.slider',
-    'once'])
+    'truncate',
+    'once'
+])
 
 
     // Override config options
@@ -24,7 +26,6 @@ angular.module('ndrApp', [
             console.log('toState', toState)
 
             $rootScope.$state = toState.name;
-
 
         });
     })

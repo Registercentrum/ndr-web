@@ -14,10 +14,14 @@ angular.module("ndrApp")
             preparedGeoList : []
         };
 
+
+        var baseURL = "https://ndr.registercentrum.se/api/";
+        var APIKey = "LkUtebH6B428KkPqAAsV";
+
         /* RESTANGULAR CONFIG */
-        Restangular.setBaseUrl("https://ndr.registercentrum.se/api/");
+        Restangular.setBaseUrl(baseURL);
         Restangular.setDefaultRequestParams({
-            APIKey : "LkUtebH6B428KkPqAAsV"
+            APIKey : APIKey
         });
 
 
@@ -97,18 +101,36 @@ angular.module("ndrApp")
 
 
 
-
-        this.getSubjects = function (query) {
+        this.getSubjects = function (query, callback) {
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
+            query.APIKey = APIKey;
 
-            return endpoints.subject.getList(query)
+         /*   request = {
+                dateFrom: '2014-04-27',
+                dateTo: '2015-04-28',
+                f: ['hba1c', 'bmi', 'gfr']
+            }*/
+
+            $.ajax({
+                url: baseURL + 'subject',
+                data: query,
+                type: 'GET',
+                success: function(data) {
+                    callback(data);
+                },
+                dataType: 'json'
+            });
+
+
+
+            /*return endpoints.subject.getList(query)
                 .then(function (data) {
                     return data.plain();
                 })
                 ["catch"](function (error) {
                 return error;
-            });
+            });*/
         }
 
 

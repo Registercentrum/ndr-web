@@ -33,7 +33,8 @@
     "angular-once": "~0.1.8",
     "jquery-placeholder": "~2.1.1",
     "angularjs-ie8-build": "~1.3.14",
-    "angular-i18n": "~1.3.15"
+    "angular-i18n": "~1.3.15",
+    "angular-truncate": "*"
   },
   "resolutions": {
     "angular": "~1.3.*"

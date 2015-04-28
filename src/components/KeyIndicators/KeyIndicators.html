@@ -40,8 +40,7 @@
 
             <tbody>
             <tr ng-repeat="indicator in data.keyIndicators" ng-click="model.selectedKeyIndicator = indicator.id" class="TableIndicators-row"  ng-class="indicator.id == model.selectedKeyIndicator ? 'selected' : ''">
-                <td class="TableIndicators-row-status {{indicator.geo ? indicator.status : 'grey'}}" ng-class="{last: $last}">{{indicator.name}}</td>
-                <!--<td class="text-center"><span class="badge" ng-class="indicator.precalculated.status">&nbsp;</span></td>-->
+                <td class="TableIndicators-row-status {{indicator.geo ? indicator.status : 'grey'}}" ng-class="{last: $last}">{{indicator.name }}</td>
                 <td class="TableIndicators-row-county">{{indicator.geo ? indicator.geo + '%' : '-' }}</td>
                 <td class="TableIndicators-row-country"><div class="TableIndicators-row-country-innerWrapper">{{indicator.riket}}%</div></td>
             </tr>
@@ -51,12 +50,17 @@
         <div ng-hide="data.keyIndicators" style="margin: 30px; font-size: 20px">Laddar <i  class="fa fa-spinner fa-spin"></i></div>
 
 
-
-
     </div>
 
     <div class="col-md-7">
         <div line-chart-key model="data.keyIndicator"></div>
+        <div class="text-center">
+            <p class="small alert" style="margin-top: 20px">
+               Saknas indikator? Det krävs minst 50 rapporteringar för attt resultat ska kunna redovisas.<br/>
+               Tips: Ytterligare statistik kan <a href="#/knappen">hämtas i Knappen</a>.
+
+            </p>
+        </div>
     </div>
 
 </div>
