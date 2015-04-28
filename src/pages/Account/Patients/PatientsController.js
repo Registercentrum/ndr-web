@@ -7,7 +7,7 @@ angular.module('ndrApp')
             console.time("Test")
             var filterSettings = {
                     exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
-                    required: ['diabetesType', 'hba1c']
+                    required: ['d', 'hba1c']
                 },
                 isLoadingSubjects = false,
                 filterDisplayIndex;
@@ -227,13 +227,25 @@ angular.module('ndrApp')
             $scope.filters = [];
             dataService.getContactAttributes(filterSettings)
 
-
                 .then(function (filters) {
-
 
                     var required;
 
+
                     _.each(filters, function (filter, key) {
+
+                        if (filter.columnName  == 'diabetesType' ) {
+                            filter.columnName  = 'd';
+                        }
+
+                        if (filter.columnName  == 'sex' ) {
+                            filter.columnName  = 's';
+                        }
+
+                       /* if (filter.columnName  == 'socialNumber' ) {
+                            filter.columnName  = 'snr';
+                        }*/
+
                         if (filter.columnName  == 'age' ) {
                             filter.min = 0;
                             filter.max = 120;

@@ -28,8 +28,9 @@ angular.module('ndrApp')
 
             function getSelectedKeyIndicator(){
 
-                
-                console.log("MM", scope.model);
+                //console.log("MM", scope.model);
+
+                getKeyIndicators();
                 
                 var selectedIndicator = scope.model.selectedKeyIndicator;
                 var promises = [];
@@ -117,18 +118,19 @@ angular.module('ndrApp')
                     
                     _.each(geoData, function(obj, key){
                         
-                        console.log(obj);
-                        
+
                         var o = {
                             riket   : countryData[key].statSet[0].stat.r,
                             geo     : obj.statSet[0].stat.r,
                             status  : "equal",
                             name    : obj.indicator.name,
                             id      : obj.indicator.id,
-                            lKonf   : countryData[key].statSet[0].stat.r,
+                            lKonf   : countryData[key].statSet[0].stat.lKonf,
                             uKonf   : countryData[key].statSet[0].stat.uKonf
-
                         }
+
+                        console.log(obj, o);
+
 
 
                         if(_.indexOf(highIsBetter, o.id) == -1){
