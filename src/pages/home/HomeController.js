@@ -9,6 +9,30 @@ angular.module("ndrApp")
         }
 
 
+        var query = {
+            DateFrom: '2014-04-29',
+            DateTo  : '2015-04-29',
+            f       : ['d', 'hba1c']
+            //filters : selectedFilters,
+            //limit   : 15,
+            //offset  : 100,
+            //count    : 'given-by-server',
+            //matching : 'given-by-server'
+        };
+
+        //console.log('query on loaded', query);
+
+        dataService.getSubjects(query, function (data){
+
+            console.log("dd", data);
+            $scope.model.allSubjects = data;
+            $scope.model.allSubjectsLength = data.length;
+
+
+        });
+
+
+
         /* Get data for stats */
 
         var query = dataService.queryFactory({ID : [202,221], level : 0})

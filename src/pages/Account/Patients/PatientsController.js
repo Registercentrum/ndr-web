@@ -203,7 +203,6 @@ angular.module('ndrApp')
                 console.log('query on loaded', query);
 
 
-
                 dataService.getSubjects(query, function (data){
 
                     $scope.model.allSubjects = data;
