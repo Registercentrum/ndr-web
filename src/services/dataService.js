@@ -100,6 +100,23 @@ angular.module("ndrApp")
             }
 
 
+        this.getUnits = function (callback){
+
+            var query = query || {};
+            query.APIKey = APIKey;
+
+            $.ajax({
+                url: baseURL + 'Unit',
+                data: query,
+                type: 'GET',
+                success: function(data) {
+                    callback(data);
+                },
+                dataType: 'json'
+            });
+
+        }
+
 
         this.getSubjects = function (query, callback) {
             query = query || {};

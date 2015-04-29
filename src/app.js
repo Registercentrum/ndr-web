@@ -50,9 +50,6 @@ angular.module('ndrApp', [
                     resolve: {
                         config: function(dataService){
                             return dataService.bootstrap();
-                        },
-                        account: function(accountService){
-                            return accountService.bootstrap();
                         }
                     }
                 })

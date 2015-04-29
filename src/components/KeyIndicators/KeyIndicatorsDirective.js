@@ -25,7 +25,7 @@ angular.module('ndrApp')
                 getSelectedKeyIndicator();
 
                 if(newValue.sex == oldValue.sex || newValue.diabetesType == oldValue.diabetesType){
-                    getKeyIndicators()
+                    getKeyIndicators();
                 }
 
             }, true)
@@ -36,13 +36,13 @@ angular.module('ndrApp')
                 var selectedIndicator = scope.model.selectedKeyIndicator;
                 var promises = [];
 
-                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
-                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
 
-                if(scope.geoType == "unit"){
-                    console.log("UNIT", scope.model);
-                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
-                    //var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : "y", fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                if(scope.geoType == 'unit'){
+                    console.log('UNIT', scope.model);
+                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                    //var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
                 }
 
                 promises.push(dataService.getStats(queryCountry));
@@ -56,34 +56,34 @@ angular.module('ndrApp')
                     _.each(data[0].statSet[0].intervalSet, function(obj, key){
 
                         var o = {
-                            color : "#999",
+                            color : '#999',
                             x : new Date(obj.interval),
                             y : obj.stat.r,
-                            cRep : obj.stat.cRep
+                            cRep : obj.stat.cRepInd
                         }
-                        seriesCountry.push(o)
+                        seriesCountry.push(o);
                     })
 
                     _.each(data[1].statSet[0].intervalSet, function(obj, key){
                         var o = {
-                            color : "#74BAD8",
+                            color : '#74BAD8',
                             x : new Date(obj.interval),
                             y : obj.stat.r,
-                            cRep : obj.stat.cRep
+                            cRep : obj.stat.cRepInd
                         }
-                        seriesGeo.push(o)
+                        seriesGeo.push(o);
                     })
 
                     scope.data.keyIndicator = [
                         {
                             name: scope.geo ? scope.geo.name : 'Enhet',
                             lineWidth: 3,
-                            color : "#74BAD8",
+                            color : '#74BAD8',
                             data: seriesGeo
                         },
                         {
-                            name : "Riket",
-                            color: "#ccc",
+                            name : 'Riket',
+                            color: '#ccc',
                             data : seriesCountry
                         }
                     ]
@@ -99,7 +99,7 @@ angular.module('ndrApp')
 
                 var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesType});
 
-                if(scope.geoType == "unit"){
+                if(scope.geoType == 'unit'){
                     query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesType});
                 }
 
@@ -118,40 +118,36 @@ angular.module('ndrApp')
                     var keyIndicators = [];
                     
                     _.each(geoData, function(obj, key){
-                        
 
                         var o = {
-                            riket   : countryData[key].statSet[0].stat.r,
-                            geo     : obj.statSet[0].stat.r,
-                            status  : "equal",
-                            name    : obj.indicator.name,
-                            id      : obj.indicator.id,
-                            lKonf   : countryData[key].statSet[0].stat.lKonf,
-                            uKonf   : countryData[key].statSet[0].stat.uKonf
+                            riket       : countryData[key].statSet[0].stat.r,
+                            geo         : obj.statSet[0].stat.r,
+                            status      : 'equal',
+                            name        : obj.indicator.name,
+                            id          : obj.indicator.id,
+                            lKonf       : countryData[key].statSet[0].stat.lKonf,
+                            uKonf       : countryData[key].statSet[0].stat.uKonf
                         }
 
-                        console.log(obj, o);
-
-
+                        //console.log(obj, o);
 
                         if(_.indexOf(highIsBetter, o.id) == -1){
-                            if(o.geo < o.lKonf) o.status = "better";
-                            if(o.geo > o.uKonf) o.status = "worse";
+                            if(o.geo < o.lKonf) o.status = 'better';
+                            if(o.geo > o.uKonf) o.status = 'worse';
                         }
 
                         else{
-                            if(o.geo < o.lKonf) o.status = "worse";
-                            if(o.geo > o.uKonf) o.status = "better";
+                            if(o.geo < o.lKonf) o.status = 'worse';
+                            if(o.geo > o.uKonf) o.status = 'better';
                         }
 
-                        keyIndicators.push(o)
-
+                        keyIndicators.push(o);
                         
                     })
 
                     scope.data.keyIndicators = keyIndicators;
 
-                })
+                });
 
             }
 
@@ -166,10 +162,10 @@ angular.module('ndrApp')
             },
             link: link,
             scope: {
-                id: "=",
-                geo: "=",
-                geoType : "=",
-                light : "="
+                id: '=',
+                geo: '=',
+                geoType : '=',
+                light : '='
             }
         }
 

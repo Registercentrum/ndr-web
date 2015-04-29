@@ -6,6 +6,7 @@ angular.module('ndrApp')
 
         var self = this;
 
+        var isLoggingIn = false;
 
         this.accountModel = {
             user : null,
@@ -31,6 +32,8 @@ angular.module('ndrApp')
 
         this.login = function(accountID) {
 
+            isLoggingIn = true;
+
             console.log("LOGGING IN");
 
             return $http.get("https://ndr.registercentrum.se/api/me?APIKey=LkUtebH6B428KkPqAAsV")
@@ -39,9 +42,7 @@ angular.module('ndrApp')
                     console.log("SUCCESS");
 
                     self.accountModel.user = user;
-                    
-                    console.log("user", user);
-                    
+
                     var logInId = accountID || user.defaultAccountID;
 
                     self.accountModel.activeAccount = user.accounts[0];
@@ -50,21 +51,21 @@ angular.module('ndrApp')
                         self.accountModel.activeAccount =  self.accountModel.tempAccount;
                     }
 
+                    isLoggingIn = false;
+
                 })
                 .error(function(data, status, headers, config) {
 
                     switch (status) {
                         case 0:
                         case 400:
-                            console.log("Error parrticular");
                             self.accountModel.serverError = 'Inget konto kunde hittas';
                             break
                         case 401:
-                            console.log("not this er parrticular");
                             self.accountModel.serverError = 'Inget konto kunde hittas';
                             break;
                         default:
-                            self.accountModel.serverError = 'Ett okÃ¤nt fel intrÃ¤ffade';
+                            self.accountModel.serverError = 'Ett okänt fel inträffade';
                     }
                 });
         };
@@ -80,6 +81,10 @@ angular.module('ndrApp')
         this.bootstrap = function (){
             console.log("AccountService: Bootstrap");
 
+            if(isLoggingIn) {
+                return false;
+            };
+
             var accountID = undefined;
 
             return self.login(accountID)
@@ -87,43 +92,8 @@ angular.module('ndrApp')
                 console.log("err", error);
                 return error;
             });
-        }
+        };
 
     }])
 
 
-
-/*        $scope.logOut = function() {
- $scope.user = null;
- $scope.activeAccount = null;
- Account.setAccount(null);
- };
-
- $scope.updateAccount = function() {
- Account.setAccount($scope.activeAccount);
- }
-
- $scope.toggleLogin = function() {
-
- if ($scope.activeAccount != null) {
- $scope.logOut();
- }
- else {
- $scope.logIn();
- }
- };
- */
-
-
-
-/*  if (logInId>0) {
- $scope.accountModel.activeAccount = $filter('filter')(user.accounts, function (d)
- {
- return d.accountID == logInId;
- })[0]
- } else {
- self.activeAccount = user.accounts[0];
- }*/
-
-//Account.setAccount($scope.activeAccount);
-//List.init();

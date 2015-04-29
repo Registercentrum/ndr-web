@@ -12,6 +12,8 @@ angular.module('ndrApp')
                 isLoadingSubjects = false,
                 filterDisplayIndex;
 
+            var subjects;
+
             var dateOffset = (24*60*60*1000) * 365; //365
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
@@ -205,13 +207,14 @@ angular.module('ndrApp')
 
                 dataService.getSubjects(query, function (data){
 
-                    $scope.model.allSubjects = data;
+                    subjects = data;
                     $scope.model.allSubjectsLength = data.length;
 
                     isLoadingSubjects = false;
                     debouncedFilter();
-                })
-                               }
+
+                });
+            }
 
             $scope.$watch('datePickers.to.date', loadSubjects);
             $scope.$watch('datePickers.from.date', loadSubjects);
@@ -367,8 +370,8 @@ angular.module('ndrApp')
 
 
                 var selectedFilters = {},
-                    selectedFiltersArray = [],
-                    subjects        = $scope.model.allSubjects;
+                    selectedFiltersArray = [];
+
 
                 // Narrow down the filters to only the displayed ones
                 _.each($scope.selectedFilters, function (filter, filterKey) {
@@ -437,11 +440,12 @@ angular.module('ndrApp')
                     });
                 });
 
+                //$scope.model.allSubjects = subjects;
 
                 $scope.model.filteredSubjects = subjects;
                 $scope.model.filteredSubjectsLength = subjects.length;
 
-                $log.debug('Filtered subjects', subjects.length, subjects);
+                //$log.debug('Filtered subjects', subjects.length, subjects);
             }
 
             var debouncedFilter = _.debounce(function () {
