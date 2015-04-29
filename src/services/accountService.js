@@ -81,9 +81,9 @@ angular.module('ndrApp')
         this.bootstrap = function (){
             console.log("AccountService: Bootstrap");
 
-            if(isLoggingIn) {
+           /* if(isLoggingIn) {
                 return false;
-            };
+            };*/
 
             var accountID = undefined;
 

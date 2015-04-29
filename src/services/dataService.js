@@ -71,19 +71,17 @@ angular.module("ndrApp")
                 ["catch"](function (error) {
                     return error;
                 });
-        };
+            };
 
-        this.getSubject = function (id) {
-            return Restangular.one("Subject", id).get({"AccountID": accountService.accountModel.activeAccount.accountID})
-                .then(function(subject) {
-                    return subject.plain();
-                })
-                ["catch"](function(error) {
-                    return error;
-                });
-        };
-
-
+            this.getSubject = function (id) {
+                return Restangular.one("Subject", id).get({"AccountID": accountService.accountModel.activeAccount.accountID})
+                    .then(function(subject) {
+                        return subject.plain();
+                    })
+                    ["catch"](function(error) {
+                        return error;
+                    });
+            };
 
 
             this.getContacts = function (query) {

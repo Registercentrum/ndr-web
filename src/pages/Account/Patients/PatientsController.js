@@ -12,7 +12,7 @@ angular.module('ndrApp')
                 isLoadingSubjects = false,
                 filterDisplayIndex;
 
-            var subjects;
+            var allSubjects;
 
             var dateOffset = (24*60*60*1000) * 365; //365
             /* Date picker options */
@@ -207,8 +207,8 @@ angular.module('ndrApp')
 
                 dataService.getSubjects(query, function (data){
 
-                    subjects = data;
-                    $scope.model.allSubjectsLength = data.length;
+                    allSubjects = data;
+                    $scope.model.allSubjectsLength = allSubjects.length;
 
                     isLoadingSubjects = false;
                     debouncedFilter();
@@ -369,36 +369,18 @@ angular.module('ndrApp')
                 $log.debug('Changed Filters');
 
 
+
+
                 var selectedFilters = {},
-                    selectedFiltersArray = [];
+                    subjects = allSubjects;
 
 
                 // Narrow down the filters to only the displayed ones
                 _.each($scope.selectedFilters, function (filter, filterKey) {
                     if ($scope.isDisplayed(filterKey)) {
                         selectedFilters[filterKey] = filter;
-
-                        selectedFiltersArray.push(
-                            angular.extend({ columnName : filterKey}, filter)
-                        );
                     }
                 });
-
-
-                query = {
-                    DateFrom: moment($scope.datePickers.from.date).format('YYYY-MM-DD'),
-                    DateTo  : moment($scope.datePickers.to.date).format('YYYY-MM-DD'),
-                    f       : _.keys(selectedFilters),
-                    filters : selectedFilters,
-                    filtersArray : selectedFiltersArray,
-                    limit   : 15,
-                    offset  : 100,
-                    count    : 'given-by-server',
-                    matching : 'given-by-server'
-                };
-
-                console.log('query when filters change', query);
-
 
 
                 // Check additional filters
