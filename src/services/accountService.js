@@ -2,7 +2,7 @@
 // Account Service
 
 angular.module('ndrApp')
-    .service('accountService', ['$q', '$http', 'Restangular', '$state', function($q, $http, Restangular, $state) {
+    .service('accountService', ['$q', '$http', 'Restangular', '$state', '$filter', function($q, $http, Restangular, $state, $filter) {
 
         var self = this;
 
@@ -19,16 +19,14 @@ angular.module('ndrApp')
             pnrRegex: /\b(19\d{2}|20\d{2}|\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?\d{4}\b/
         };
 
-
         this.updateAccount = function(accountID) {
 
-            var activeAccount =_.find(this.accountModel.user.accounts,{accountID : accountID});
+            var activeAccount =_.find(this.accountModel.user.activeAccounts,{accountID : accountID});
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount = activeAccount;
 
             $state.go($state.current, {}, {reload: true});
         }
-
 
         this.login = function(accountID) {
 
@@ -45,7 +43,12 @@ angular.module('ndrApp')
 
                     var logInId = accountID || user.defaultAccountID;
 
-                    self.accountModel.activeAccount = user.accounts[0];
+					user.activeAccounts = $filter('filter')(user.accounts, function (account)
+					{
+						return account.status.id == 1;
+					});
+					
+                    self.accountModel.activeAccount = user.activeAccounts[0];
 
                     if(self.accountModel.tempAccount){
                         self.accountModel.activeAccount =  self.accountModel.tempAccount;

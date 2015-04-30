@@ -87,6 +87,16 @@ angular.module('ndrApp', [
                     }
                 })
 
+                .state('main.currentUser', {
+                    url: '/currentuser',
+                    controller : 'CurrentUserController',
+                    templateUrl: 'src/pages/CurrentUser/currentUser.html',
+
+                    resolve: {
+
+                    }
+                })
+				
                 .state('main.english', {
                     url: '/english',
                     //controller : 'GuidelinesController',
