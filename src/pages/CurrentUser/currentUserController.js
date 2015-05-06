@@ -1,5 +1,5 @@
 angular.module('ndrApp')
-    .controller('CurrentUserController', ['$scope', '$http', '$stateParams', '$state', 'accountService', 'dataService', function ($scope, $http, $stateParams, $state, accountService, dataService) {
+    .controller('CurrentUserController', ['$scope', '$http', '$stateParams', '$state', 'accountService', 'dataService', 'APIconfigService', function ($scope, $http, $stateParams, $state, accountService, dataService, APIconfigService) {
     
             console.log('CurrentUserController: Init', accountService.accountModel.user);
     
@@ -9,13 +9,9 @@ angular.module('ndrApp')
 			$scope.unitSearchString = '';
 			$scope.user = accountService.accountModel.user;
 			
+			console.log(APIconfigService);
 			
-			var server = {
-				//baseURL: 'https://ndr.registercentrum.se',
-				baseURL: 'https://w8-038.rcvg.local',
-				APIKey: 'jEGPvHoP7G4eMkjLQwE5'
-			}
-			
+			//could be moved to Restangular
 			$scope.setRoles = function() {
 				angular.forEach($scope.user.accounts, function(account, accountkey) {
 					var rolestring = '';
@@ -28,6 +24,11 @@ angular.module('ndrApp')
 				});
 			}
 			
+			$scope.resetAccountErrors = function() {
+				$scope.newAccountError = [];
+				$scope.newAccountSuccess = null;
+			};
+			
 			dataService.getList('units').then(function (data){
 
 				var units = data.plain();
@@ -35,7 +36,9 @@ angular.module('ndrApp')
 
 				$scope.$watch('unitSearchString', function (){
 					
-					var s = $scope.unitSearchString.toLowerCase()
+					$scope.resetAccountErrors();
+					
+					var s = $scope.unitSearchString.toLowerCase();
 					
 					if (s != '') {
 						$scope.filteredUnits = _.take(_.filter(units, function (d){
@@ -51,23 +54,28 @@ angular.module('ndrApp')
 
 			$scope.updateUser = function() {
 				
+				$scope.updateUserError = [];
+				$scope.updateUserSuccess = false;
+				
 				var httpConfig = {
 					method: 'PUT',
 					data: $scope.user,
-					url: server.baseURL + '/api/User/' + $scope.user.userID + '?AccountID=' + $scope.accountModel.activeAccount.accountID + '&APIKey=' + server.APIKey
+					url: APIconfigService.baseURL + 'User/' + $scope.user.userID + '?APIKey=' + APIconfigService.APIKey
 				};
 				
 				$http(httpConfig).success(function(data) {
+					console.log('updated ok');
 					$scope.user = data;
 					$scope.setRoles();
-					$scope.updatedUserOK = true; 
+					$scope.updateUserSuccess = true;
+					setTimeout(function () { $scope.updateUserSuccess = null; $scope.$apply(); }, 3000);   
 				}).error(function(data, status, headers, config) {
 					if (data.ModelState != null) {
 						for(var propertyName in data.ModelState) {
-							$scope.serverSaveErrors.push(data.ModelState[propertyName][0])
+							$scope.updateUserError.push(data.ModelState[propertyName][0])
 						}
 					} else {
-						$scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
+						$scope.updateUserError.push('Ett okänt fel inträffade. Var god försök igen senare.');
 					}
 				});
 
@@ -75,13 +83,17 @@ angular.module('ndrApp')
 			
 			$scope.applyUnit = function(unitID) {
 				
-				
+				$scope.resetAccountErrors();
+
 				angular.forEach($scope.user.accounts, function(account, accountkey) {
 					if (account.unit.unitID == unitID) {
+						$scope.newAccountError.push('Du har redan ett konto på denna enhet.');
 						alert('Du har redan ett konto på denna enhet.')
-						return;
 					}
 				});
+				
+				if ($scope.newAccountError.length>0)
+					return;
 				
 				var accountModel = {
 					unitID: unitID,
@@ -93,27 +105,27 @@ angular.module('ndrApp')
 				var httpConfig = {
 					method: 'POST',
 					data: accountModel,
-					url: server.baseURL + '/api/Account/?AccountID=' + $scope.accountModel.activeAccount.accountID + '&APIKey=' + server.APIKey
+					url: APIconfigService.baseURL + 'Account/?APIKey=' + APIconfigService.APIKey
 				};
 				
 				$http(httpConfig).success(function(data) {
 					$scope.user = data;
 					$scope.setRoles();
-					$scope.appliedUnitOK = true; 
+					$scope.newAccountSuccess = true; 
 				}).error(function(data, status, headers, config) {
 					if (data.ModelState != null) {
 						for(var propertyName in data.ModelState) {
-							$scope.serverSaveErrors.push(data.ModelState[propertyName][0])
+							$scope.newAccountError.push(data.ModelState[propertyName][0])
 						}
 					} else {
-						$scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
+						$scope.newAccountError.push('Ett okänt fel inträffade. Var god försök igen senare.');
 					}
 				});
 
 			}
 			
-
-			$scope.setRoles();
+			$scope.$on('newUser', function() {
+				$scope.user = accountService.accountModel.user;
+			});
 			
-			console.log($scope);
         }]);

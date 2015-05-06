@@ -6,87 +6,112 @@
 			padding: 5px;
 		}
 	</style>
-    <div class="row Panel">
-		
+    <div class="Panel">
 		<div class="row">
 			<div class="col-md-6">
-				<h2>Mina uppgifter</h2>
-				<form name="newUser" class="Report-form form-horizontal" role="form" novalidate>
-					<div class="row inputrow">
-						<div class="col-md-12">
-							<label class="" for="hsaid">HSAID</label>
-							<input name="hsaid" type="text" class="form-control" ng-disabled="true" ng-model="user.hsaid" ng-class="{ 'has-no-error' : contactModel.newUser.hsaid != null}" placeholder="HSAID">
-						</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h2>Mina uppgifter</h2>
+						<form name="userForm" class="Report-form form-horizontal" role="form">
+							<fieldset ng-disabled="user.accounts.length == 0">
+								<div class="row inputrow" ng-class="{ 'has-error' : userForm.hsaid.$invalid && !userForm.hsaid.$pristine }">
+									<label class="" for="hsaid">HSAID</label>
+									<input name="hsaid" type="text" class="form-control" ng-disabled="true" ng-model="user.hsaid" ng-class="{ 'has-no-error' : user.hsaid != null}" placeholder="HSAID">
+								</div>
+								<div class="row inputrow" ng-class="{ 'has-error' : userForm.firstName.$invalid && !userForm.firstName.$pristine }">
+									<label class="" for="firstName">Förnamn</label>
+									<input name="firstName" type="text" class="form-control" required ng-model="user.firstName" ng-class="{ 'has-no-error' : user.firstName != null}" placeholder="Förnamn">
+								</div>
+								<div class="row inputrow" ng-class="{ 'has-error' : userForm.lastName.$invalid && !userForm.lastName.$pristine }">
+									<label class="" for="lastName">Efternamn</label>
+									<input name="lastName" type="text" class="form-control" required ng-model="user.lastName" ng-class="{ 'has-no-error' : user.lastName != null}" placeholder="Efternamn">
+								</div>
+								<div class="row inputrow" ng-class="{ 'has-error' : userForm.workTitle.$invalid && !userForm.workTitle.$pristine }">
+									<label class="" for="workTitle">Arbetsroll</label>
+									<input name="workTitle" type="text" class="form-control" required ng-model="user.workTitle" ng-class="{ 'has-no-error' : user.workTitle != null}" placeholder="Arbetsroll">
+								</div>
+								<div class="row inputrow" ng-class="{ 'has-error' : userForm.email.$invalid }">
+									<label class="" for="email">E-postadress</label>
+									<input type="email" name="email" class="form-control" required ng-model="user.email" placeholder="E-postadress" required>
+								</div>
+								<div class="row inputrow">
+									<div class="Report-submitWrapper pull-right">
+										<button ng-click="updateUser()" tooltip="" ng-disabled="!userForm.$valid" class="Button Button--default">Uppdatera</button>
+									</div>
+								</div>
+								<div ng-show="(updateUserError && updateUserError.length>0)" class="">
+									<div class="col-md-12">
+										<p>{{updateUserError[0]}}</p>
+									</div>
+								</div>
+								<div ng-show="updateUserSuccess" class=""><!-- Daniel väljer design för detta -->
+									<div class="col-md-12">
+										<p><strong><i class="fa fa-check-circle"></i> Dina uppgifter uppdaterades.</strong></p>
+									</div>
+								</div>
+							</fieldset>
+						</form>
 					</div>
-					<div class="row inputrow">
-						<div class="col-md-12">
-							<label class="" for="hsaid">Förnamn</label>
-							<input name="hsaid" type="text" class="form-control" ng-required ng-model="user.firstName" ng-class="{ 'has-no-error' : contactModel.newUser.hsaid != null}" placeholder="Förnamn">
-						</div>
+				</div>
+			
+				<div class="row">
+					<div class="col-md-12">
+						<h2>Mina enhetskonton</h2>
+						<table class="table">
+							<tr>
+								<th>Enhetsnamn</th>
+								<th>Roll(er)</th>
+								<th>Status</th>
+							</tr>
+							<tr ng-show="user" ng-repeat="account in user.accounts">
+								<td>
+									{{ account.unit.name }}
+								</td>
+								<td>
+									{{ account.rolestring }}
+								</td>
+								<td>
+									{{ account.status.name }}
+								</td>
+							</tr>
+						</table>
 					</div>
-					<div class="row inputrow">
-						<div class="col-md-12">
-							<label class="" for="hsaid">Efternamn</label>
-							<input name="hsaid" type="text" class="form-control" ng-required ng-model="user.lastName" ng-class="{ 'has-no-error' : contactModel.newUser.hsaid != null}" placeholder="Efternamn">
-						</div>
-					</div>
-					<div class="row inputrow">
-						<div class="col-md-12">
-							<label class="" for="hsaid">Arbetsroll</label>
-							<input name="hsaid" type="text" class="form-control" ng-required ng-model="user.workTitle" ng-class="{ 'has-no-error' : contactModel.newUser.workTitle != null}" placeholder="Arbetsroll">
-						</div>
-					</div>
-					<div class="row inputrow">
-						<div class="col-md-12">
-							<label class="" for="hsaid">E-postadress</label>
-							<input name="hsaid" type="text" class="form-control" ng-required ng-model="user.email" ng-class="{ 'has-no-error' : contactModel.newUser.workTitle != null}" placeholder="E-postadress">
-						</div>
-					</div>
-					<div class="row inputrow">
-						<div class="col-md-12">
-							<div class="Report-submitWrapper pull-right">
-								<button ng-click="updateUser()" ng-disabled="" tooltip="" class="Button Button--default">Uppdatera</button>
-							</div>
-						</div>
-					</div>
-				</form>
+				</div>
 			</div>
-			<div class="col-md-6">
-				<h2>Mina enhetskonton</h2>
-				<table class="table">
-					<tr>
-						<th>Enhetsnamn</th>
-						<th>Roll(er)</th>
-						<th>Status</th>
-					</tr>
-					<tr ng-repeat="account in user.accounts">
-						<td>
-							{{ account.unit.name }}
-						</td>
-						<td>
-							{{ account.rolestring }}
-						</td>
-						<td>
-							{{ account.status.name }}
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-6" ng-show="user">
 				<h2>Ansökan om nytt enhetskonto</h2>
-				<p>För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress ovan stämmer.</p>
-				<form name="newAccount" class="Report-form form-horizontal" role="form" novalidate>
-					<div class="row Report-formGroup">
+				
+				<div class="row Panel Panel--purple">
+					<form name="newAccount" class="Report-form form-horizontal" role="form" novalidate>
 						<div class="col-md-12">
 							<label class="" for="hsaid">Sök enhet:</label>
 							<input name="hsaid" type="text" class="form-control" ng-model="unitSearchString" placeholder="Sök">
 						</div>
+					</form>
+				</div>
+
+				<div class="row">
+					<div ng-show="user.accounts.length > 0" class="">
+						<div class="col-md-12">
+							<p><strong><i class="fa fa-exclamation-circle blue"></i> För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress stämmer.</strong></p>
+						</div>
 					</div>
-				</form>
-				<br />
+				</div>
+				<div class="row">
+					<div ng-show="newAccountError.length>0" class="">
+						<div class="col-md-12">
+							<p><strong><i class="fa fa-exclamation-circle blue"></i> {{newAccountError[0]}}</strong></p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div ng-show="newAccountSuccess" class="">
+						<div class="col-md-12">
+							<p><strong>Din kontoansökan är inskickad och vi kommer att återkomma till dig när ärendet är hanterat.</strong></p>
+						</div>
+					</div>
+				</div>
+
 				<table class="table" ng-show="filteredUnits.length>0">
 					<tr>
 						<th>Enhetsnamn</th>
@@ -103,10 +128,8 @@
 						</td>
 					</tr>
 				</table>			
-				
-			</div>
+			</div>	
 		</div>
-		
 	</div>
 
 </div>
