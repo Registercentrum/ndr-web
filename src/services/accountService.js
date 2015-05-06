@@ -2,12 +2,11 @@
 // Account Service
 
 angular.module('ndrApp')
-    .service('accountService', ['$q', '$http', 'Restangular', '$state', '$filter', function($q, $http, Restangular, $state, $filter) {
+    .service('accountService', ['$q', '$http', 'Restangular', '$state', '$filter', '$rootScope', 'APIconfigService', function($q, $http, Restangular, $state, $filter, $rootScope, APIconfigService) {
 
         var self = this;
-
-        var isLoggingIn = false;
-
+		this.isLoggingIn = false;
+		
         this.accountModel = {
             user : null,
             activeAccount : null,
@@ -30,16 +29,17 @@ angular.module('ndrApp')
 
         this.login = function(accountID) {
 
-            isLoggingIn = true;
+            this.isLoggingIn = true;
 
             console.log("LOGGING IN");
 
-            return $http.get("https://ndr.registercentrum.se/api/me?APIKey=LkUtebH6B428KkPqAAsV")
+            return $http.get(APIconfigService.baseURL + "me?APIKey=" + APIconfigService.APIKey)
                 .success(function(user) {
 
                     console.log("SUCCESS");
 
                     self.accountModel.user = user;
+					$rootScope.$broadcast("newUser");
 
                     var logInId = accountID || user.defaultAccountID;
 
@@ -54,7 +54,9 @@ angular.module('ndrApp')
                         self.accountModel.activeAccount =  self.accountModel.tempAccount;
                     }
 
-                    isLoggingIn = false;
+					
+					
+                    this.isLoggingIn = false;
 
                 })
                 .error(function(data, status, headers, config) {

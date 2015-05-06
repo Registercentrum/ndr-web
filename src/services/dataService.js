@@ -2,7 +2,7 @@
 // Data Service
 
 angular.module("ndrApp")
-    .service("dataService", ["$q", "$http", "Restangular", "accountService", function($q, $http, Restangular, accountService) {
+    .service("dataService", ["$q", "$http", "Restangular", "accountService", 'APIconfigService', function($q, $http, Restangular, accountService, APIconfigService) {
 
         var self = this;
 
@@ -10,18 +10,13 @@ angular.module("ndrApp")
             units : [],
             counties : [],
             indicators : [],
-
             preparedGeoList : []
         };
 
-
-        var baseURL = "https://ndr.registercentrum.se/api/";
-        var APIKey = "LkUtebH6B428KkPqAAsV";
-
         /* RESTANGULAR CONFIG */
-        Restangular.setBaseUrl(baseURL);
+        Restangular.setBaseUrl(APIconfigService.baseURL);
         Restangular.setDefaultRequestParams({
-            APIKey : APIKey
+            APIKey : APIconfigService.APIKey
         });
 
 
@@ -101,10 +96,10 @@ angular.module("ndrApp")
         this.getUnits = function (callback){
 
             var query = query || {};
-            query.APIKey = APIKey;
+            query.APIKey = APIconfigService.APIKey;
 
             $.ajax({
-                url: baseURL + 'Unit',
+                url: APIconfigService.baseURL + 'Unit',
                 data: query,
                 type: 'GET',
                 success: function(data) {
@@ -119,7 +114,7 @@ angular.module("ndrApp")
         this.getSubjects = function (query, callback) {
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
-            query.APIKey = APIKey;
+            query.APIKey = APIconfigService.APIKey;
 
          /*   request = {
                 dateFrom: '2014-04-27',
@@ -128,7 +123,7 @@ angular.module("ndrApp")
             }*/
 
             $.ajax({
-                url: baseURL + 'subject',
+                url: APIconfigService.baseURL + 'subject',
                 data: query,
                 type: 'GET',
                 success: function(data) {
