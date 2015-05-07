@@ -1,7 +1,7 @@
 angular.module('ndrApp')
     .controller('PatientsController', [
-                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService',
-        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService) {
+                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout',
+        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout) {
           
             $log.debug('PatientsController: Init');
             console.time("Test")
@@ -216,8 +216,15 @@ angular.module('ndrApp')
                 });
             }
 
-            $scope.$watch('datePickers.to.date', loadSubjects);
-            $scope.$watch('datePickers.from.date', loadSubjects);
+
+            var delayStartTime = 200;
+            if(!Modernizr.svg){
+                delayStartTime = 6000;
+            }
+            $timeout(function (){
+                $scope.$watch('datePickers.to.date', loadSubjects);
+                $scope.$watch('datePickers.from.date', loadSubjects);
+            }, delayStartTime)
 
 
             // -------------------------------------------------------------------
@@ -367,8 +374,6 @@ angular.module('ndrApp')
                 if (!$scope.model.allSubjectsLength) return;
 
                 $log.debug('Changed Filters');
-
-
 
 
                 var selectedFilters = {},

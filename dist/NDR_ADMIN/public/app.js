@@ -38,8 +38,8 @@
         RestangularProvider.setDefaultRequestParams({APIKey: 'jEGPvHoP7G4eMkjLQwE5'});
 				
         var app = nga.application('NDR Admin') // application main title
-			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
-            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
+			.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
+            //.baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -109,13 +109,17 @@
 		
 		
 		// ****** ACCOUNTS ******
-        accounts.dashboardView()
-             .title('Användarkonton')
-             .fields([
-                 nga.field('unitName').label('Enhetsnamn').map(truncate),
-				 nga.field('hsaid').label('HSAID').map(truncate)
-             ]);
-
+        // accounts.dashboardView()
+             // .title('Användarkonton')
+			 // .limit(10)
+             // .fields([
+                 // nga.field('unitName').label('Enhetsnamn').map(truncate),
+				 // nga.field('hsaid').label('HSAID').map(truncate)
+             // ]);
+		var accountStatus = [{value: 1, label: 'Aktiv'},
+						{value: 2, label: 'Inväntar godkännande'},
+						{value: 3, label: 'Inaktivt'}];
+			 
         accounts.listView()
              .title('Användarkonton')
 			 .perPage(50)
@@ -128,7 +132,9 @@
 				nga.field('statusText').label('Status').map(truncate)
              ])
 			.filters([
-				nga.field('q').label('Sök')
+				nga.field('q').label('Sök'),
+				nga.field('statusID', 'choice').label('Status')
+					.choices(accountStatus)
 			])
 			.listActions(['edit']);
 		
@@ -142,10 +148,7 @@
 					.targetEntity(roles) // the tag entity is defined later in this file
 					.targetField(nga.field('name')), // the field to be displayed in this list
 				nga.field('statusID', 'choice').label('Status')
-					.choices(
-						[{value: 1, label: 'Aktiv'},
-						{value: 2, label: 'Inväntar godkännande'},
-						{value: 3, label: 'Inaktivt'}])
+					.choices(accountStatus)
             ]);
 		
         accounts.editionView()
@@ -166,6 +169,7 @@
 		// ****** USER ******
 		users.dashboardView()
 			.title('Användare')
+			.limit(5)
 			.fields([
 				nga.field('userID').label('ID').order(0),
 				nga.field('hsaid').label('HSAID').map(truncate).order(1),
@@ -215,6 +219,7 @@
 		// ****** UNIT ******
         units.dashboardView()
             .title('Enheter')
+			.limit(10)
             .fields([
                 nga.field('unitID').label('NDR-ID').order(0),
                 nga.field('name').label('Enhetsnamn').map(truncate).order(1)
@@ -286,6 +291,7 @@
 		// ****** NEWS ******
         news.dashboardView()
             .title('Nyheter')
+			.limit(5)
             .fields([
                 nga.field('newsID').label('ID').order(0),
                 nga.field('title').label('Rubrik').map(truncate).order(1)
@@ -295,7 +301,6 @@
             .title('Nyheter')
 			.sortField('priority')
             // .order(1) // display the comment panel second in the dashboard
-            // .limit(5)
             .fields([
                 nga.field('newsID').label('ID').order(0),
                 nga.field('title').label('Rubrik').map(truncate).order(1),
@@ -351,6 +356,7 @@
 		// ****** PUBLICATIONS ******
         publications.dashboardView()
              .title('Forskningsprojekt')
+			 .limit(5)
              .fields([
                  nga.field('id').label('ID').order(0),
                  nga.field('name').map(truncate).order(1)
