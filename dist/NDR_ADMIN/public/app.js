@@ -38,8 +38,8 @@
         RestangularProvider.setDefaultRequestParams({APIKey: 'jEGPvHoP7G4eMkjLQwE5'});
 				
         var app = nga.application('NDR Admin') // application main title
-			.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
-            //.baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
+			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
+            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -234,6 +234,7 @@
                 nga.field('name').label('Enhetsnamn').map(truncate).order(1),
 				nga.field('hsaid').label('HSAID').map(truncate).order(2),
 				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate).order(2),
 				nga.field('phone').label('Telefon').map(truncate).order(2),
             ])
             .listActions(['edit', 'delete'])
@@ -270,6 +271,8 @@
                 nga.field('postalCode').label('Postadress'),
                 nga.field('postalLocation').label('Postort'),
                 nga.field('phone').label('Telefon'),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate).order(2),
                 nga.field('senderID').label('Sänd-ID'),
                 nga.field('manager').label('Verksamhetschef'),
 				nga.field('comment','text').label('Kommentar'),
@@ -354,6 +357,16 @@
             ]);
 		
 		// ****** PUBLICATIONS ******
+		var status = [{value: 1, label: 'Pågår'},
+						{value: 2, label: 'Manus'},
+						{value: 3, label: 'Submitterat'},
+						{value: 4, label: 'Accepterat'},
+						{value: 5, label: 'Publicerat'}];
+						
+		var ethicsApprovalStatus = [{value: 1, label: 'Godkänt'},
+						{value: 2, label: 'Ej relevant'}];
+		
+		
         publications.dashboardView()
              .title('Forskningsprojekt')
 			 .limit(5)
@@ -368,11 +381,18 @@
                  nga.field('id').label('ID').order(0),
                  nga.field('name').label('Titel').map(truncate).order(1)
              ])
+			.filters([
+				nga.field('q').label('Sök'),
+				nga.field('status', 'choice').label('Status')
+					.choices(status)
+			])
              .listActions(['edit', 'delete']);
 
         publications.creationView()
 			.title('Ny')
 			.fields([
+				nga.field('statusID', 'choice').label('Status')
+					.choices(status),
 				nga.field('name').label('Titel'),
 				nga.field('laymansDescription','text').label('Beskrivning'),
 				nga.field('firstAuthor').label('Första författare'),
@@ -384,12 +404,14 @@
 				nga.field('issue').label('Upplaga'),
 				nga.field('pages').label('Sidor'),
 				nga.field('image').label('Bild'),
+				nga.field('ethicsApprovalStatusID', 'choice').label('Etikprövat')
+					.choices(ethicsApprovalStatus),
 				nga.field('pubMedURL').label('Länk till pubmed')
 			]);
 		
         publications.editionView()
 			.title('Uppdatera')
-			.description('"{{ entry.values.name }}"')
+			.description('{{ entry.values.name }}')
             .fields([
                 publications.creationView().fields()
             ]);

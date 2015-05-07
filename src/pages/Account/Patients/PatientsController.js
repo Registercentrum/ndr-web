@@ -224,6 +224,7 @@ angular.module('ndrApp')
             $timeout(function (){
                 $scope.$watch('datePickers.to.date', loadSubjects);
                 $scope.$watch('datePickers.from.date', loadSubjects);
+                loadSubjects();
             }, delayStartTime)
 
 
