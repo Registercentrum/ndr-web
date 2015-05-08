@@ -291,30 +291,30 @@ angular.module('ndrApp', [
                     }
                 });
          }])
-    .run(['$rootScope', function($rootScope) {
-    
-            $rootScope.$on('$viewContentLoaded', function () {
-    
-                 var interval = setInterval(function(){
-                     if (document.readyState == 'complete') {
-    
-                         window.scrollTo(0, 0);
-                         clearInterval(interval);
+        .run(['$rootScope', function($rootScope) {
 
-                         $('input').placeholder();
-    
-                         jQuery('.u-equalHeight').matchHeight(true);
-                         jQuery('.Intro--equalHeights').matchHeight(false);
+                $rootScope.$on('$viewContentLoaded', function () {
 
-                         if ( jQuery(window).width() >= 700 ) {
-                             jQuery('.InfoGrid-equalHeightsGroup1').matchHeight(false);
-                             jQuery('.InfoGrid-equalHeightsGroup2').matchHeight(false);
-                             jQuery('.InfoGrid-equalHeightsGroup3').matchHeight(false);
-                             jQuery('.InfoGrid-equalHeightsGroup4').matchHeight(false);
+                     var interval = setInterval(function(){
+                         if (document.readyState == 'complete') {
+
+                             window.scrollTo(0, 0);
+                             clearInterval(interval);
+
+                             $('input').placeholder();
+
+                             jQuery('.u-equalHeight').matchHeight(true);
+                             jQuery('.Intro--equalHeights').matchHeight(false);
+
+                             if ( jQuery(window).width() >= 700 ) {
+                                 jQuery('.InfoGrid-equalHeightsGroup1').matchHeight(false);
+                                 jQuery('.InfoGrid-equalHeightsGroup2').matchHeight(false);
+                                 jQuery('.InfoGrid-equalHeightsGroup3').matchHeight(false);
+                                 jQuery('.InfoGrid-equalHeightsGroup4').matchHeight(false);
+                             }
+
                          }
-    
-                     }
-                 },100);
-    
-            });
-        }]);
+                     },100);
+
+                });
+            }]);

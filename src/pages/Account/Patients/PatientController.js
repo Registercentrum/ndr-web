@@ -5,22 +5,27 @@ angular.module("ndrApp")
 
             var Account = $scope.accountModel;
 
-
             $scope.gotoReport = function (subjectID) {
                 console.log("go", subjectID);
                 $state.go("main.account.report", {patientID: subjectID});
             }
 
 
-            $scope.checkFootDate = function (d){
 
-                if(!d) return false;
-                var now = moment();
-                var then = moment(d.label);
 
-                var diff = now.diff(then, 'days');
-                return diff > 365 ? true : false;
-            }
+
+
+
+
+        $scope.checkFootDate = function (d){
+
+            if(!d) return false;
+            var now = moment();
+            var then = moment(d.label);
+
+            var diff = now.diff(then, 'days');
+            return diff > 365 ? true : false;
+        }
 
         $scope.subject = undefined;
         $scope.subjectID = false || $stateParams.patientID;
@@ -398,8 +403,9 @@ angular.module("ndrApp")
             }
 
 
-
-
+            $scope.print = function (){
+                window.print();
+            }
 
 
         

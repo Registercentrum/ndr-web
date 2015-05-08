@@ -20,27 +20,27 @@ angular.module('ndrApp')
                     console.log('Physical Stat Bar Chart render', $scope.model);
 
 
-                    var domainValues = [
+                    $scope.model.domainValues = [
                         {
-                            text: "Aldrig ",
+                            text: "Aldrig",
                             code: 1,
                             XMLText: "Aldrig",
                             isActive: true
                         },
                         {
-                            text: "<1 ggr/vecka",
+                            text: "<1",
                             code: 2,
                             XMLText: "Oregelbundet",
                             isActive: true
                         },
                         {
-                            text: "Regelbundet 1-2 ggr/vecka",
+                            text: "1-2",
                             code: 3,
                             XMLText: "Regelbundet1",
                             isActive: true
                         },
                         {
-                            text: "Regelbundet 3-5 ggr/vecka",
+                            text: "3-5",
                             code: 4,
                             XMLText: "Regelbundet2",
                             isActive: true
@@ -54,19 +54,19 @@ angular.module('ndrApp')
                     ]
 
 
-                    // Draw the "chart"
-                    _.each(domainValues, function (d, key) {
+                   /* // Draw the "chart"
+                    _.each($scope.model-domainValues, function (d, key) {
 
                         if($scope.model.value >=  d.code  ) {
 
                             iElm.find('#_' + d.code)
                                 .css('background-color', "#74BAD8")
-                            /*.toggleClass('lowest', d === minValue)
+                            *//*.toggleClass('lowest', d === minValue)
                              .find('span')
-                             .text(d3.round(d, 1) + '%');*/
+                             .text(d3.round(d, 1) + '%');*//*
                         }
 
-                    });
+                    });*/
                 }
             }
         };
