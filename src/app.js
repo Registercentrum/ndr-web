@@ -8,7 +8,9 @@ angular.module('ndrApp', [
     //'datatables',
     'vr.directives.slider',
     'truncate',
-    'once'
+    'once',
+    'angulartics',
+    'angulartics.google.analytics'
 ])
 
 

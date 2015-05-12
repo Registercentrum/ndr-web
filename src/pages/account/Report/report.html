@@ -339,20 +339,6 @@
 								<p ng-show="contactForm.cholesterol.$error.min || contactForm.cholesterol.$error.max" class="Report-formItemHelp help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
 							</div>
 
-							<div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.cholesterol.$invalid && !contactForm.cholesterol.$pristine }">
-								<label class="" for="height" class="">Kolesterol</label><i class="fa fa-question-circle helpNote" ng-show="lists['cholesterol'].helpNote != null" tooltip="{{lists['cholesterol'].helpNote}}"></i>
-								<input name="cholesterol" type="text" min="1" max="20" class="form-control" placeholder="Kolesterol" ng-model="contactModel.cholesterol" decimals="1" ng-class="{ 'has-no-error' : !contactForm.cholesterol.$invalid && contactModel.cholesterol != null}" ng-model-options="{ updateOn: 'blur' }">
-								<p ng-show="contactForm.cholesterol.$error.min || contactForm.cholesterol.$error.max" class="Report-formItemHelp help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
-							</div>
-
-							<div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.cholesterol.$invalid && !contactForm.cholesterol.$pristine }">
-								<label class="" for="height" class="">Kolesterol</label><i class="fa fa-question-circle helpNote" ng-show="lists['cholesterol'].helpNote != null" tooltip="{{lists['cholesterol'].helpNote}}"></i>
-								<input name="cholesterol" type="number" min="1" max="20" class="form-control" placeholder="Kolesterol" ng-model="contactModel.cholesterol" decimals="1" ng-class="{ 'has-no-error' : !contactForm.cholesterol.$invalid && contactModel.cholesterol != null}" ng-model-options="{ updateOn: 'blur' }">
-								<p ng-show="contactForm.cholesterol.$error.min || contactForm.cholesterol.$error.max" class="Report-formItemHelp help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
-							</div>
-
-
-
 
 							<div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.triglyceride.$invalid && !contactForm.triglyceride.$pristine }">
 								<label class="" for="triglyceride" class="">Triglycerider</label><i class="fa fa-question-circle helpNote" ng-show="lists['triglyceride'].helpNote != null" tooltip="{{lists['triglyceride'].helpNote}}"></i>

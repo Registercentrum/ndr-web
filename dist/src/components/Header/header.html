@@ -19,9 +19,9 @@
                 <a ng-show="!accountModel.activeAccount" style="margin-left: 10px" ui-sref="main.accountAbout" title="">Konto / Inloggning</a>
 				<a ng-show="accountService.accountModel.user" style="margin-left: 10px" ui-sref="main.currentUser" title="">Mitt tjänstekort</a>
 
-                <div ng-show="accountModel.activeAccount" class="dropdown btn btn-default" style="z-index: 5000;margin-left: 10px;display: inline-block; vertical-align: top">
+                <div ng-show="accountModel.activeAccount" class="dropdown btn btn-default" style="z-index: 5000;margin-left: 10px;display: inline-block; vertical-align: top"> <!--  tooltip-placement="left"  tooltip="{{accountModel.activeAccount.unit.name}}" -->
                     <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
-                        <i class="fa fa-user"></i> {{ accountModel.activeAccount.unit.name }}
+                        <i class="fa fa-user"></i> {{ accountModel.activeAccount.unit.name | characters:16 }}
                         <span class="caret"></span>
                     </a>
                     <div style="font-size: 11px"> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName }}</div>
