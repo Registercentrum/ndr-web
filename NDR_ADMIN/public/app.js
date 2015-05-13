@@ -87,6 +87,22 @@
 			.addEntity(news)
 			.addEntity(publications)
 			.addEntity(contactAttributes);
+			
+			
+		//Menu
+		app.menu().getChildByTitle('Enheter')
+			.icon('<span class="glyphicon glyphicon-home"></span>');
+		app.menu().getChildByTitle('Användare')
+			.icon('<span class="glyphicon glyphicon-user"></span>');
+		app.menu().getChildByTitle('Användarkonton')
+			.icon('<span class="glyphicon glyphicon-erase"></span>');
+		app.menu().getChildByTitle('Nyheter')
+			.icon('<span class="glyphicon glyphicon-file"></span>');
+		app.menu().getChildByTitle('Forskningsprojekt')
+			.icon('<span class="glyphicon glyphicon-book"></span>');
+		app.menu().getChildByTitle('Metavariabler')
+			.icon('<span class="glyphicon glyphicon-list"></span>');
+
 		
 		// ****** METAVARIABLER ******
 		contactAttributes.listView()
@@ -171,10 +187,10 @@
 			.title('Användare')
 			.limit(5)
 			.fields([
-				nga.field('userID').label('ID').order(0),
-				nga.field('hsaid').label('HSAID').map(truncate).order(1),
-				nga.field('firstName').label('Förnamn').map(truncate).order(1),
-				nga.field('lastName').label('Efternamn').map(truncate).order(1)
+				nga.field('userID').label('ID'),
+				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('firstName').label('Förnamn').map(truncate),
+				nga.field('lastName').label('Efternamn').map(truncate)
 			]);		
 		
 		users.listView()
@@ -221,8 +237,8 @@
             .title('Enheter')
 			.limit(10)
             .fields([
-                nga.field('unitID').label('NDR-ID').order(0),
-                nga.field('name').label('Enhetsnamn').map(truncate).order(1)
+                nga.field('unitID').label('NDR-ID'),
+                nga.field('name').label('Enhetsnamn').map(truncate)
             ]);
 			
         units.listView()
@@ -230,12 +246,12 @@
 			.sortField('name')
 			.perPage(50)
             .fields([
-                nga.field('unitID').label('NDR-ID').order(0),
-                nga.field('name').label('Enhetsnamn').map(truncate).order(1),
-				nga.field('hsaid').label('HSAID').map(truncate).order(2),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate).order(2),
-				nga.field('phone').label('Telefon').map(truncate).order(2),
+                nga.field('unitID').label('NDR-ID'),
+                nga.field('name').label('Enhetsnamn').map(truncate),
+				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
+				nga.field('phone').label('Telefon').map(truncate)
             ])
             .listActions(['edit', 'delete'])
 			.filters([
@@ -252,7 +268,7 @@
 			]);
 
         units.creationView()
-			.title('Ny')
+			.title('Ny enhet')
             .fields([
                 nga.field('name').label('Enhetsnamn'),
 				nga.field('isActive', 'boolean').label('Aktiv'),
@@ -271,8 +287,8 @@
                 nga.field('postalCode').label('Postadress'),
                 nga.field('postalLocation').label('Postort'),
                 nga.field('phone').label('Telefon'),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate).order(2),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
                 nga.field('senderID').label('Sänd-ID'),
                 nga.field('manager').label('Verksamhetschef'),
 				nga.field('comment','text').label('Kommentar'),
@@ -285,7 +301,7 @@
 		
         units.editionView()
 			.title('Uppdatera enhet')
-			//.description('"{{ entry.values.name }}"')
+			.description('{{ entry.values.name }}')
             .fields([
                 //new Field('newsID'),
                 units.creationView().fields()
@@ -296,17 +312,16 @@
             .title('Nyheter')
 			.limit(5)
             .fields([
-                nga.field('newsID').label('ID').order(0),
-                nga.field('title').label('Rubrik').map(truncate).order(1)
+                nga.field('newsID').label('ID'),
+                nga.field('title').label('Rubrik').map(truncate)
             ]);
 
         news.listView()
             .title('Nyheter')
 			.sortField('priority')
-            // .order(1) // display the comment panel second in the dashboard
             .fields([
-                nga.field('newsID').label('ID').order(0),
-                nga.field('title').label('Rubrik').map(truncate).order(1),
+                nga.field('newsID').label('ID'),
+                nga.field('title').label('Rubrik').map(truncate),
                 nga.field('isInternal','boolean').label('Intern'),
                 nga.field('publishedFrom', 'date').label('Från'),
 				nga.field('publishedTo', 'date').label('Till')
@@ -336,6 +351,7 @@
                 nga.field('publishedTo', 'date')
                     .label('Publicerad till')
 					.format('yyyy-MM-dd'), // preset fields in creation view with defaultValue
+				nga.field('isInternal','boolean').label("Intern?"),
 				nga.field('categoryIDs', 'reference_many')
 					.label('Kategorier')
 					.targetEntity(newsCategories) // the tag entity is defined later in this file
@@ -343,10 +359,9 @@
                 nga.field('author').label('Av'),
                 nga.field('title').label('Titel'),
                 nga.field('image').label('Bild'),
+				nga.field('excerpt','text').label('Ingress'),
                 nga.field('body','wysiwyg').label('Brödtext'),
-                nga.field('excerpt','text').label('Sammanfattning'),
-                nga.field('priority').label('Prioritet?'),
-                nga.field('isInternal','boolean').label("Intern?")
+                nga.field('priority').label('Prioritet?')
             ]);
 		
         news.editionView()
@@ -371,15 +386,15 @@
              .title('Forskningsprojekt')
 			 .limit(5)
              .fields([
-                 nga.field('id').label('ID').order(0),
-                 nga.field('name').map(truncate).order(1)
+                 nga.field('id').label('ID'),
+                 nga.field('name').map(truncate)
              ]);
 
         publications.listView()
              .title('Forskningsprojekt')
              .fields([
-                 nga.field('id').label('ID').order(0),
-                 nga.field('name').label('Titel').map(truncate).order(1)
+                 nga.field('id').label('ID'),
+                 nga.field('name').label('Titel').map(truncate)
              ])
 			.filters([
 				nga.field('q').label('Sök'),
