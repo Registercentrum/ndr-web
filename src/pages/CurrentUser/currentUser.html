@@ -13,7 +13,7 @@
 					<div class="col-md-12">
 						<h2>Mina uppgifter</h2>
 						<form name="userForm" class="Report-form form-horizontal" role="form">
-							<fieldset ng-disabled="user.accounts.length == 0">
+							<fieldset ng-disabled="user == null || user.accounts.length == 0">
 								<div class="row inputrow" ng-class="{ 'has-error' : userForm.hsaid.$invalid && !userForm.hsaid.$pristine }">
 									<label class="" for="hsaid">HSAID</label>
 									<input name="hsaid" type="text" class="form-control" ng-disabled="true" ng-model="user.hsaid" ng-class="{ 'has-no-error' : user.hsaid != null}" placeholder="HSAID">
@@ -30,7 +30,7 @@
 									<label class="" for="workTitle">Arbetsroll</label>
 									<input name="workTitle" type="text" class="form-control" required ng-model="user.workTitle" ng-class="{ 'has-no-error' : user.workTitle != null}" placeholder="Arbetsroll">
 								</div>
-								<div class="row inputrow" ng-class="{ 'has-error' : userForm.email.$invalid }">
+								<div class="row inputrow" ng-class="{ 'has-error' : userForm.email.$invalid && user.userID>0 }">
 									<label class="" for="email">E-postadress</label>
 									<input type="email" name="email" class="form-control" required ng-model="user.email" placeholder="E-postadress" required>
 								</div>

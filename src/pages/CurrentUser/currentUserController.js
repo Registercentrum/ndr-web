@@ -9,8 +9,6 @@ angular.module('ndrApp')
 			$scope.unitSearchString = '';
 			$scope.user = accountService.accountModel.user;
 			
-			console.log(APIconfigService);
-			
 			//could be moved to Restangular
 			$scope.setRoles = function() {
 				angular.forEach($scope.user.accounts, function(account, accountkey) {
@@ -65,8 +63,14 @@ angular.module('ndrApp')
 				
 				$http(httpConfig).success(function(data) {
 					console.log('updated ok');
-					$scope.user = data;
-					$scope.setRoles();
+					
+					if ($scope.accountModel.activeAccount =! null) {
+						accountService.login($scope.accountModel.activeAccount.accountID);
+					} else {
+						$scope.user = data;
+						$scope.setRoles();
+					}	
+
 					$scope.updateUserSuccess = true;
 					setTimeout(function () { $scope.updateUserSuccess = null; $scope.$apply(); }, 3000);   
 				}).error(function(data, status, headers, config) {
@@ -109,9 +113,11 @@ angular.module('ndrApp')
 				};
 				
 				$http(httpConfig).success(function(data) {
+				
 					$scope.user = data;
 					$scope.setRoles();
 					$scope.newAccountSuccess = true; 
+					
 				}).error(function(data, status, headers, config) {
 					if (data.ModelState != null) {
 						for(var propertyName in data.ModelState) {
