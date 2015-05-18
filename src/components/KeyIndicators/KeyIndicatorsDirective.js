@@ -142,7 +142,7 @@ angular.module('ndrApp')
                         }
 
                         keyIndicators.push(o);
-                        
+
                     })
 
                     scope.data.keyIndicators = keyIndicators;

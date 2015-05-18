@@ -1,6 +1,20 @@
 'use strict';
 angular.module('ndrApp')
 
+.directive("replaceComma", function() {
+    return {
+        restrict: "A",
+        link: function(scope, element) {
+            element.on("keydown", function(e) {
+                if(e.keyCode === 188) {
+                    this.value += ".";
+                    e.preventDefault();
+                }
+            });
+        }
+    };
+})
+
 .directive('asNumber', [
     '$locale',
     function ($locale, undefined)
