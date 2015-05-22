@@ -12,15 +12,14 @@ angular.module('ndrApp')
     
 angular.module('ndrApp')
 	.controller('ReportController', [
-				 '$scope', '$http', '$stateParams', '$state', '$modal', '$filter', 'List', 'dataService',
-		function ($scope,   $http,   $stateParams,   $state,   $modal,	$filter,   List, dataService) {
+				 '$scope', '$http', '$stateParams', '$state', '$modal', '$filter', 'List', 'dataService', 'APIconfigService',
+		function ($scope,   $http,   $stateParams,   $state,   $modal,	$filter,   List, dataService, APIconfigService) {
 
 		//console.log("ReportController: Init",  $scope.accountModel);
 
-			console.log("Loaded", $stateParams.patientID);
+		console.log("Loaded", $stateParams.patientID);
 			
 		$scope.subjectID = false || $stateParams.patientID;
-
 
 	   // $scope.socialnumber = '19121212-1212'; //för test
 		$scope.view = 0;
@@ -30,12 +29,25 @@ angular.module('ndrApp')
 		$scope.serverSaveErrors = [];
 		$scope.method = 'POST';
 		$scope.thisYear = new Date().getFullYear(); //Används för "År rökslut"
+		$scope.optionalQuestions = [];
 		
 		var Account = $scope.accountModel;
-
-		var server = {
-			baseURL: 'https://ndr.registercentrum.se',
-			APIKey: 'jEGPvHoP7G4eMkjLQwE5'
+	
+		$scope.getOptionalQuestions = function() {
+			dataService.getOptionalQuestionsMeta($scope.accountModel.activeAccount.accountID, function(data){
+				$scope.optionalQuestions = data;
+				//angular.forEach($scope.optionalQuestions, function(q) {
+				//  q.value = "";
+				//});
+			});
+		};
+		
+		$scope.$on('newUser', function() {
+			$scope.getOptionalQuestions();
+		});
+		
+		if ($scope.accountModel.activeAccount != null) {
+			$scope.getOptionalQuestions();
 		}
 
 		if($scope.subjectID){
@@ -44,7 +56,7 @@ angular.module('ndrApp')
 				$scope.getSubject(true);
 			});
 		}
-
+		
 		$scope.getSubject = function(newSocialnumber) {
 
 			newSocialnumber = newSocialnumber || false;
@@ -55,7 +67,7 @@ angular.module('ndrApp')
 			$scope.serverSaveErrors = [];
 
 			$http({
-				url: server.baseURL + '/api/Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + server.APIKey,
+				url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
 				method: "POST",
 				data: { socialNumber: $scope.socialnumber }
 			})
@@ -88,10 +100,9 @@ angular.module('ndrApp')
 
 		$scope.deleteContact = function(contactID) {
 			var self = $scope;
-			var server = Server.getServer();
 
 			$http({
-				url: server.baseURL + '/api/Contact/' + contactID + '?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + server.APIKey,
+				url: APIconfigService.baseURL + 'Contact/' + contactID + '?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
 				method: "DELETE"
 			}).success(function(data) {
 				$scope.subject.contacts = $scope.removeItemFromArray($scope.subject.contacts, contactID);
@@ -315,8 +326,22 @@ angular.module('ndrApp')
 		$scope.pumpNewChanged = function() {
 			$scope.contactModel.pumpNewSerial = null;
 		};
-		$scope.getUpdateModel = function() {
+		$scope.setOptionalQuestionsValue = function() {
+			angular.forEach($scope.optionalQuestions, function(q) {
+				q.value = "";
+				if ($scope.contactToUpdate != null) {
+					if ($scope.contactToUpdate.optionals != null) {
+						if ($scope.contactToUpdate.optionals[q.columnName] != undefined)
+							q.value = $scope.contactToUpdate.optionals[q.columnName];
+					}
+				}
 
+			});
+		}
+		$scope.getUpdateModel = function() {
+			
+			$scope.setOptionalQuestionsValue();
+			
 			return {
 				contactID: $scope.contactToUpdate.contactID,
 				socialNumber: $scope.subject.socialNumber,
@@ -368,10 +393,13 @@ angular.module('ndrApp')
 				smokingHabit: $scope.contactToUpdate.smokingHabit,
 				smokingEndYear: $scope.contactToUpdate.smokingEndYear,
 				physicalActivity: $scope.contactToUpdate.physicalActivity,
-				hypoglycemiaSevere: $scope.contactToUpdate.hypoglycemiaSevere
+				hypoglycemiaSevere: $scope.contactToUpdate.hypoglycemiaSevere,
+				optionals: null
 			}
 		};
 		$scope.getNewModel = function(lastContact) {
+			
+			$scope.setOptionalQuestionsValue();
 			
 			return {
 				contactID: null,
@@ -424,7 +452,8 @@ angular.module('ndrApp')
 				smokingHabit: lastContact != null ? lastContact.smokingHabit : null,
 				smokingEndYear: null,
 				physicalActivity: null,
-				hypoglycemiaSevere: null
+				hypoglycemiaSevere: null,
+				optionals: null
 			}
 		};
 		$scope.setDateValues = function() {
@@ -438,6 +467,9 @@ angular.module('ndrApp')
 			
 			//Dates are javascript dates until saved, here converted to string dates, better idea?
 			$scope.setDateValues()
+			$scope.contactModel.optionals = $scope.getOptionals();
+			
+			console.log($scope.contactModel);
 			
 			var httpConfig = {
 				method: $scope.method,
@@ -445,9 +477,9 @@ angular.module('ndrApp')
 			};
 
 			if ($scope.method == 'PUT')
-				httpConfig.url = server.baseURL + '/api/Contact/' + $scope.contactModel.contactID + '?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + server.APIKey;
+				httpConfig.url = APIconfigService.baseURL + 'Contact/' + $scope.contactModel.contactID + '?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey;
 			else
-				httpConfig.url = server.baseURL + '/api/Contact/?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + server.APIKey;
+				httpConfig.url = APIconfigService.baseURL + 'Contact/?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey;
 
 			$http(httpConfig).success(function(data) {
 				$scope.getSubject(false);
@@ -489,18 +521,36 @@ angular.module('ndrApp')
 			else
 				$scope.contactModel.microscopicProteinuria = null;
 		};
+		$scope.getOptionals = function() {
+			
+			var optionals = null;
+			
+			if ($scope.optionalQuestions.length == 0)
+				return null;
+			
+			angular.forEach($scope.optionalQuestions, function(q) {
+				if (q.value != null)
+					if (q.value != "") {
+						if (optionals == null)
+							optionals = {};
+							
+						optionals[q.columnName] = q.value;
+					}
+			});
 
+			return optionals;
+		};
 
 	}])
 
 angular.module("ndrApp")
-	.service('List', ['$http', function($http) {
+	.service('List', ['$http', 'APIconfigService', function($http, APIconfigService) {
 		
 			this.lists = null;
 
 			var self = this;
 		
-			$http.get("https://ndr.registercentrum.se" + '/api/ContactAttribute?APIKey=LkUtebH6B428KkPqAAsV').success(function(data) {
+			$http.get(APIconfigService.baseURL + 'ContactAttribute?APIKey=' + APIconfigService.APIKey).success(function(data) {
 				self.lists = _.indexBy(data, "columnName");
 			});
 

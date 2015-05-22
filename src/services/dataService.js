@@ -109,7 +109,24 @@ angular.module("ndrApp")
             });
 
         }
+		
+        this.getOptionalQuestionsMeta = function (accountID, callback){
 
+            var query = query || {};
+            query.APIKey = APIconfigService.APIKey;
+			query.AccountID = accountID;//accountService.accountModel.activeaccount.accountID;
+
+            $.ajax({
+                url: APIconfigService.baseURL + 'ContactOptionalMeta',
+                data: query,
+                type: 'GET',
+                success: function(data) {
+                    callback(data);
+                },
+                dataType: 'json'
+            });
+
+        }
 
         this.getSubjects = function (query, callback) {
             query = query || {};
