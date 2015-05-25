@@ -73,6 +73,9 @@
 		var integrationSystems = nga.entity('IntegrationSystem')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
+		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
 		var unitTypes = nga.entity('UnitType')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
@@ -296,6 +299,10 @@
 					.label('Överföringssystem')
 					.targetEntity(integrationSystems)
 					.targetField(nga.field('name')),
+				nga.field('optionalIDs', 'reference_many')
+					.label('Valbara frågor')
+					.targetEntity(contactOptionalMeta)
+					.targetField(nga.field('question')),
 				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false)
             ]);
 		
