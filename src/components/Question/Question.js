@@ -8,6 +8,7 @@ angular.module('ndrApp')
 						'<ndr-Question-List ng-if="question.domain.isEnumerated" question="question"></ndr-Question-List>',
 						'<ndr-Question-Numeric ng-if="question.domain.domainID == 101" question="question"></ndr-Question-Numeric>',
 						'<ndr-Question-Decimal1 ng-if="question.domain.domainID == 102" question="question"></ndr-Question-Decimal1>',
+						'<ndr-Question-Decimal2 ng-if="question.domain.domainID == 103" question="question"></ndr-Question-Decimal2>',
 						'<ndr-Question-Date ng-if="question.domain.domainID == 105" question="question"></ndr-Question-Date>',
 						'</div></div>'].join(''),
 			require:"^form", //inject parent form as the forth parameter to the link function
@@ -67,6 +68,30 @@ angular.module('ndrApp')
 		return {
 			restrict: 'E',
 			template: '<div ng-class="getErrorClass(form.{{ question.columnName}}.$invalid && !form.{{ question.columnName}}.$pristine)"><input name="{{question.columnName}}" type="number" min="{{question.minValue || 0}}" max="{{question.maxValue || 1000}}" class="form-control has-error" placeholder="{{question.question}}" ng-model="question.value" decimals="1" ><p class="Report-formItemHelp help-block" ng-show="form.{{ question.columnName}}.$error.min || form.{{ question.columnName}}.$error.max"">{{ question.question}} kan anta ett värde mellan {{question.minValue}} och {{question.maxValue}}.</p></div>',
+			require:"^form",
+			link: function(scope, iElement, iAttrs, form) {
+				scope.form = form;
+				scope.getErrorClass = function(hasError) {
+					if(hasError)
+						return 'has-error';
+					else
+						return 'has-no-error';
+				};
+			},
+			replace: true,
+			scope: {
+				question: "=",
+				value: "="
+			}
+		}
+
+    }]);
+angular.module('ndrApp')
+    .directive('ndrQuestionDecimal2', [function() {
+		
+		return {
+			restrict: 'E',
+			template: '<div ng-class="getErrorClass(form.{{ question.columnName}}.$invalid && !form.{{ question.columnName}}.$pristine)"><input name="{{question.columnName}}" type="number" min="{{question.minValue || 0}}" max="{{question.maxValue || 1000}}" class="form-control has-error" placeholder="{{question.question}}" ng-model="question.value" decimals="2" ><p class="Report-formItemHelp help-block" ng-show="form.{{ question.columnName}}.$error.min || form.{{ question.columnName}}.$error.max"">{{ question.question}} kan anta ett värde mellan {{question.minValue}} och {{question.maxValue}}.</p></div>',
 			require:"^form",
 			link: function(scope, iElement, iAttrs, form) {
 				scope.form = form;
