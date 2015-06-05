@@ -1,11 +1,9 @@
 angular.module('ndrApp')
-    .directive('autocomplete', [
-                 'dataService', '$state',
-        function (dataService,   $state) {
+    .directive('autocomplete', ['$state', function ($state) {
             return {
                 controller: function ($scope, $element) {
                     $scope.config = {
-                        options          : dataService.data.preparedGeoList,
+                        options          : $scope.model.options,
                         items            : [$scope.model.selected],
                         optgroupField    : 'type',
                         valueField       : 'id',

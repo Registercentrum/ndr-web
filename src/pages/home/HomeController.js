@@ -4,9 +4,10 @@ angular.module("ndrApp")
         $scope.model = {
             listModelNews : {},
             autocompleteModel : {
-                selected : undefined
+                selected : undefined,
+                options: dataService.data.preparedGeoList
             }
-        }
+        };
 
         /* Get data for stats */
 

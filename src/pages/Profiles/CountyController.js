@@ -11,9 +11,10 @@ angular.module("ndrApp")
             id: id,
             data: {},
             autocompleteModel: {
-                selected: autocompleteSelected
+                selected: autocompleteSelected,
+                options: dataService.data.preparedGeoList
             }
-        }
+        };
 
         $scope.gotoUnit = function (){
             $state.go('main.profiles.unit', {id: $scope.selectedUnit });

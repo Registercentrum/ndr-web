@@ -1,8 +1,8 @@
-angular.module("ndrApp")
+angular.module('ndrApp')
     .controller('UnitController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
 
         var id = parseFloat($stateParams.id);
-        var autocompleteSelected = "unit_" + id;
+        var autocompleteSelected = 'unit_' + id;
 
 
         $scope.model = {
@@ -11,19 +11,20 @@ angular.module("ndrApp")
             id: id,
             data: {},
             autocompleteModel: {
-                selected: autocompleteSelected
+                selected: autocompleteSelected,
+                options: dataService.data.preparedGeoList
             }
-        }
+        };
 
-        dataService.getOne("unit", id).then(function (data){
-            console.log("dd", data);
+        dataService.getOne('unit', id).then(function (data){
+            console.log('dd', data);
             $scope.model.unit = data;
-        })
+        });
 
 
 
         // GET DATA FOR TREND CHART
-        var query = dataService.queryFactory({unitID : id, level : 2, interval : "y", fromYear: 2000, toYear : 2014, indicatorID: 101});
+        var query = dataService.queryFactory({unitID : id, level : 2, interval : 'y', fromYear: 2000, toYear : 2014, indicatorID: 101});
         dataService.getStats(query).then(function (data){
 
             var series = [];
@@ -34,18 +35,18 @@ angular.module("ndrApp")
 
                 var o = {
                    // name : obj.unit.name,
-                   // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
+                   // color : obj.unit.levelID != id ? '#D4D4D4' : '#F1AD0F',
                     x : new Date(obj.interval),
                     y : obj.stat.r,
                     cRep : obj.stat.cRep,
-                }
+                };
 
-                series.push(o)
-            })
+                series.push(o);
+            });
 
             $scope.model.data.noPatients = _.last(series).cRep;
             $scope.model.data.trendhba1c = series;
-        })
+        });
 
     }]);
 
