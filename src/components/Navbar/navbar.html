@@ -12,7 +12,7 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-
+                <li ng-class="{active:$state == 'main.home' }"><a ui-sref="main.home" title="Start"><i class="fa fa-home"></i> Start</a>
                 <li ng-class="{active:$state == 'main.statistics' || $state == 'main.annualReport' || $state == 'main.risk'  || $state == 'main.statisticsAbout' || $state == 'main.compare' || $state == 'main.profiles.county' || $state == 'main.profiles.unit' }" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200" data-close-others="false" ui-sref="main.statistics"><i class="fa fa-bar-chart"></i> Statistik</a>
                     <ul class="dropdown-menu">
