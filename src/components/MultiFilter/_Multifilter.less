@@ -41,4 +41,31 @@
 
 .MultiFilter-row-filterKnobs {
   position: relative;
+
+  .RangeSlider {
+    float: left;
+    max-width: 70%;
+  }
+}
+
+.MultiFilter-row-filterKnobs--inputs {
+  float: right;
+  width: 25%;
+  padding-top: 5px;
+
+  .form-control {
+    float: left;
+    width: 50%;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    &:first-child {
+      border-right-width: 0;
+      border-radius: 3px 0 0 3px;
+    }
+
+    &:last-child {
+      border-radius: 0 3px 3px 0;
+    }
+  }
 }
