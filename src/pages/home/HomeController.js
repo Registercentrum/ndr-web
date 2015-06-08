@@ -1,5 +1,7 @@
-angular.module("ndrApp")
-    .controller('HomeController', ['$scope', 'dataService', '$state', function($scope, dataService, $state) {
+'use strict';
+
+angular.module('ndrApp')
+    .controller('HomeController', ['$scope', 'dataService', 'accountService', function($scope, dataService, accountService) {
 
         $scope.model = {
             listModelNews : {},
@@ -8,6 +10,8 @@ angular.module("ndrApp")
                 options: dataService.data.preparedGeoList
             }
         };
+
+        $scope.accountModel = accountService.accountModel;
 
         /* Get data for stats */
 
