@@ -1,12 +1,7 @@
-// =============================
-// Account Service
+'use strict';
 
 angular.module('ndrApp')
-    .service('APIconfigService', ['$q', '$http', 'Restangular', '$state', '$filter', '$rootScope', function($q, $http, Restangular, $state, $filter, $rootScope) {
-
-        this.baseURL = "https://ndr.registercentrum.se/api/";
-        this.APIKey = "LkUtebH6B428KkPqAAsV";
-
-    }])
-
-
+  .service('APIconfigService', [function () {
+    this.baseURL = 'https://ndr.registercentrum.se/api/';
+    this.APIKey  = 'LkUtebH6B428KkPqAAsV';
+  }]);

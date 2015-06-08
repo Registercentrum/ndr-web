@@ -1,9 +1,9 @@
+'use strict';
+
 angular.module('ndrApp')
   .controller('HeaderController', [
-             '$scope', 'accountService', '$state',
-    function ($scope,   accountService, $state) {
-
+             '$scope', 'accountService',
+    function ($scope,   accountService) {
       $scope.accountService = accountService;
       $scope.accountModel = accountService.accountModel;
     }]);
-  

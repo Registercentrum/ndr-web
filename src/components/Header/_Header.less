@@ -3,7 +3,7 @@
 }
 
 .Header-extras{
-  height:110px;
+  min-height: 110px;
 }
 
 .Logo{
@@ -15,8 +15,23 @@
 
 }
 
-.SecondaryMenu{
-  @media (max-width: 800px) {
-    display: none;
+.SecondaryMenu {
+  float: left;
+  font-size: 15px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+
+  > a {
+    margin-right: 10px;
+  }
+
+  .dropdown {
+    display: inline-block;
+    vertical-align: top;
+    z-index: 5000;
+  }
+
+  @media (min-width: 1200px) {
+    float: right;
   }
 }
