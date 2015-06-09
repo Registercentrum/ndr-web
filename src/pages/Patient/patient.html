@@ -35,6 +35,10 @@
                 <p>Knappa in ditt postnummer för att hitta statistik och annan information om diabetesvården där du bor:</p>
 
                 <input type="text" class="form-control" ng-model="postalCode" style="width: 80%;margin-top: 20px" placeholder="Ditt postnummer"/>
+                <p ng-if="(postalCode.length > 2 && !filteredUnits.length) || fuzzySearch">
+                    Inga diabetesvården matcha denna postnummer.
+                    <strong ng-if="fuzzySearch">Dessa finns i närheten.</strong>
+                </p>
                 <div class="PostalCodeSearch">
                     <ul class="PostalCodeSearch-list" ng-show="postalCode">
                         <li ng-repeat="unit in filteredUnits" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">

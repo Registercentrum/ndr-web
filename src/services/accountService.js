@@ -21,7 +21,7 @@ angular.module('ndrApp')
 
 
         this.updateAccount = function (accountID) {
-            var activeAccount =_.find(this.accountModel.user.activeAccounts, {accountID : accountID});
+            var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID : accountID});
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount   = activeAccount;
 
@@ -30,20 +30,24 @@ angular.module('ndrApp')
 
 
         this.login = function (accountID) {
-            isLoggingIn = true;
+            var url = APIconfigService.baseURL + 'me?APIKey=' + APIconfigService.APIKey;
 
             console.log('LOGGING IN');
+            isLoggingIn = true;
 
-            return $http.get(APIconfigService.baseURL + 'me?APIKey=' + APIconfigService.APIKey)
-                .success(function (user) {
-                    var logInId;
+            return $http.get(url)
+                .then(function (response) {
+                    var user = response.data,
+                        loginId;
+
+                    console.log(user);
 
                     console.log('LOGIN SUCCESS');
 
                     self.accountModel.user = user;
                     $rootScope.$broadcast('newUser');
 
-                    logInId = accountID || user.defaultAccountID;
+                    loginId = accountID || user.defaultAccountID;
 
                     user.activeAccounts = _.filter(user.accounts, function (account) {
                         return account.status.id === 1;
@@ -57,7 +61,8 @@ angular.module('ndrApp')
 
                     isLoggingIn = false;
                 })
-                .error(function (data, status) {
+                ['catch'](function (data, status) {
+                    console.error(data.statusText, data);
                     self.accountModel.serverError = (status === 0 || status === 400 || status === 401) ?
                                                     'Inget konto kunde hittas' :
                                                     'Ett okänt fel inträffade';
@@ -74,11 +79,6 @@ angular.module('ndrApp')
 
         this.bootstrap = function () {
             console.log('AccountService: Bootstrap');
-
-            return self.login()
-                ['catch'](function (error) {
-                    console.error(error);
-                    return error;
-            });
+            return self.login();
         };
     }]);

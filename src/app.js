@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('ndrApp', [
     'ui.router',
     'angular-loading-bar',
@@ -16,19 +18,23 @@ angular.module('ndrApp', [
 
     // Override config options
     .config(['datepickerPopupConfig', function (datepickerPopupConfig) {
-        datepickerPopupConfig.currentText = 'Idag';
-        datepickerPopupConfig.clearText = 'Rensa';
-        datepickerPopupConfig.closeText = 'Stäng';
+        datepickerPopupConfig.currentText     = 'Idag';
+        datepickerPopupConfig.clearText       = 'Rensa';
+        datepickerPopupConfig.closeText       = 'Stäng';
         datepickerPopupConfig.toggleWeeksText = 'Veckoformat';
     }])
 
-    .run(function ($state, $rootScope, $log) {
+    .run(function ($state, $rootScope, accountService) {
 
-        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-            console.log('toState', toState)
-
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            console.log('toState', toState);
             $rootScope.$state = toState.name;
+        });
 
+        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+            if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
+                $state.go('main.home', {}, {reload: true});
+            }
         });
     })
 
@@ -235,7 +241,7 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Account/account.html',
                     controller : 'AccountController',
                     resolve: {
-                        config: function(accountService){
+                        config: function (accountService) {
                              return accountService.bootstrap();
                         }
                     }

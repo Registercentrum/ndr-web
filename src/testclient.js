@@ -4,10 +4,10 @@ NDRTestClient.config(function(datepickerConfig, datepickerPopupConfig) {
     datepickerConfig.startingDay = 1;
     datepickerConfig.showWeeks = false;
 
-    datepickerPopupConfig.datepickerPopup = "yyyy-MM-dd";
-    datepickerPopupConfig.currentText = "Idag";
-    datepickerPopupConfig.clearText = "Rensa";
-    datepickerPopupConfig.closeText = "StÃ¤ng";
+    datepickerPopupConfig.datepickerPopup = 'yyyy-MM-dd';
+    datepickerPopupConfig.currentText = 'Idag';
+    datepickerPopupConfig.clearText = 'Rensa';
+    datepickerPopupConfig.closeText = 'StÃ¤ng';
 });
 
 NDRTestClient.config(['$routeProvider', function($routeProvider) {
@@ -334,7 +334,7 @@ NDRTestClient.controller('RegistrationCtrl', function ($scope, Account, List, Se
 
         $http({
             url: server.baseURL + '/api/Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + server.APIKey,
-            method: "POST",
+            method: 'POST',
             data: { socialNumber: $scope.socialnumber }
         })
             .success(function(data) {
