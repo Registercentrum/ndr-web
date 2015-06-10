@@ -1,6 +1,6 @@
 {
   "name": "angularjs-ie8-build",
-  "version": "1.3.14",
+  "version": "1.3.15",
   "homepage": "https://github.com/fergaldoyle/angular.js-ie8-builds",
   "authors": [
     "Fergal Doyle"
@@ -11,14 +11,13 @@
     "globals"
   ],
   "license": "MIT",
-  "_release": "1.3.14",
+  "_release": "1.3.15",
   "_resolution": {
     "type": "version",
-    "tag": "v1.3.14",
-    "commit": "7f6e98856b818df01e138dd1e130fd9e61333eb5"
+    "tag": "v1.3.15",
+    "commit": "199bacd2e65bdce73d44ebf3f305659c417c8dde"
   },
   "_source": "git://github.com/fergaldoyle/angular.js-ie8-builds.git",
   "_target": "~1.3.14",
-  "_originalSource": "angularjs-ie8-build",
-  "_direct": true
+  "_originalSource": "angularjs-ie8-build"
 }

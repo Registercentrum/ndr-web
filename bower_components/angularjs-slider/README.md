@@ -11,6 +11,8 @@ Slider directive implementation for AngularJS, without any dependencies.
 
 ## Examples
 
+[http://rzajac.github.io/angularjs-slider/](http://rzajac.github.io/angularjs-slider/)
+
 ### Single slider
 
 ```javascript
@@ -88,6 +90,18 @@ $scope.priceSlider = {
 
 > The precision to display values with. The `toFixed()` is used internally for this.
 
+**rz-slider-hide-limit-labels**
+
+> Set to true to hide min / max labels
+
+**rz-slider-always-show-bar**
+
+> Set to true to always show selection bar
+
+**rz-slider-present-only**
+
+> When set to true slider is used in presentation mode. No handle dragging. 
+
 **rz-slider-translate**
 
 > Custom translate function. Use this if you want to translate values displayed on the slider. For example if you want to display dollar amounts instead of just numbers do this:
@@ -123,10 +137,13 @@ To force slider to recalculate dimensions broadcast **reCalcViewDimensions** eve
 
 You can also force redraw with **rzSliderForceRender** event.
 
+At the end of each "slide" slider emits `slideEnded` event. 
 
-## Plunker example
-
-[http://embed.plnkr.co/53AUdB/preview](http://embed.plnkr.co/53AUdB/preview)
+```javascript
+$scope.$on("slideEnded", function() {
+     // user finished sliding a handle 
+});
+```
 
 ## Project integration
 
@@ -139,19 +156,10 @@ You can also force redraw with **rzSliderForceRender** event.
     </script>
 ```
 
-## Changelog
+## Browser support
 
-**v0.1.3**
-
-    Forked from this version.
-
-**v0.1.4**
-
-    Touch events were broken if jQuery was used with Angular instead of jQuery lite. This version fixes them (Jusas).
-
-**v0.1.5**
-
-    Added 'slideEnded' event emitted on slider knob dragging ended (Jusas).
+I use Slider on couple of my projects and it's being tested on desktop versions of Chrome, Firefox, Safari, IE 9/10.
+Slider is also tested on Android and iPhone using all browsers available on those platforms.
 
 ## Disclaimer
 

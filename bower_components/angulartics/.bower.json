@@ -39,6 +39,5 @@
   },
   "_source": "git://github.com/luisfarzati/angulartics.git",
   "_target": "~0.17.2",
-  "_originalSource": "angulartics",
-  "_direct": true
+  "_originalSource": "angulartics"
 }

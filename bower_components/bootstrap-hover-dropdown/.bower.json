@@ -21,8 +21,8 @@
   "_release": "2.0.11",
   "_resolution": {
     "type": "version",
-    "tag": "2.0.11",
-    "commit": "9f6835b8f7aa39bed3d1d3d122bf74134281e2ea"
+    "tag": "v2.0.11",
+    "commit": "87d36bd4dbd28654ca4b2baa950bd553b9e69f8f"
   },
   "_source": "git://github.com/CWSpear/twitter-bootstrap-hover-dropdown.git",
   "_target": "~2.0.11",

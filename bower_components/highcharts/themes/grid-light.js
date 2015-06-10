@@ -3,12 +3,12 @@
  * @author Torstein Honsi
  */
 
-/*// Load the fonts
+// Load the fonts
 Highcharts.createElement('link', {
 	href: '//fonts.googleapis.com/css?family=Dosis:400,600',
 	rel: 'stylesheet',
 	type: 'text/css'
-}, null, document.getElementsByTagName('head')[0]);*/
+}, null, document.getElementsByTagName('head')[0]);
 
 Highcharts.theme = {
 	colors: ["#7cb5ec", "#f7a35c", "#90ee7e", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
@@ -16,7 +16,7 @@ Highcharts.theme = {
 	chart: {
 		backgroundColor: null,
 		style: {
-			fontFamily: "'Open Sans', sans-serif"
+			fontFamily: "Dosis, sans-serif"
 		}
 	},
 	title: {
@@ -33,7 +33,7 @@ Highcharts.theme = {
 	},
 	legend: {
 		itemStyle: {
-			fontWeight: 'normal',
+			fontWeight: 'bold',
 			fontSize: '13px'
 		}
 	},

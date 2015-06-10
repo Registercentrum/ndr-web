@@ -15,6 +15,5 @@
   },
   "_source": "git://github.com/sparkalow/angular-truncate.git",
   "_target": "*",
-  "_originalSource": "angular-truncate",
-  "_direct": true
+  "_originalSource": "angular-truncate"
 }
