@@ -1,15 +1,15 @@
 angular.module('ndrApp')
     .controller('ModalInstanceCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
-    
+
         $scope.ok = function () {
             $modalInstance.close($scope.selected.item);
         };
-    
+
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     }]);
-    
+
 angular.module('ndrApp')
 	.controller('ReportController', [
 				 '$scope', '$http', '$stateParams', '$state', '$modal', '$filter', 'List', 'dataService', 'APIconfigService',
@@ -18,7 +18,7 @@ angular.module('ndrApp')
 		//console.log("ReportController: Init",  $scope.accountModel);
 
 		console.log("Loaded", $stateParams.patientID);
-			
+
 		$scope.subjectID = false || $stateParams.patientID;
 
 	   // $scope.socialnumber = '19121212-1212'; //för test
@@ -30,9 +30,9 @@ angular.module('ndrApp')
 		$scope.method = 'POST';
 		$scope.thisYear = new Date().getFullYear(); //Används för "År rökslut"
 		$scope.optionalQuestions = [];
-		
+
 		var Account = $scope.accountModel;
-	
+
 		$scope.getOptionalQuestions = function() {
 			dataService.getOptionalQuestionsMeta($scope.accountModel.activeAccount.accountID, function(data){
 				$scope.optionalQuestions = data;
@@ -41,22 +41,22 @@ angular.module('ndrApp')
 				//});
 			});
 		};
-		
+
 		$scope.$on('newUser', function() {
 			$scope.getOptionalQuestions();
 		});
-		
+
 		if ($scope.accountModel.activeAccount != null) {
 			$scope.getOptionalQuestions();
 		}
 
 		if($scope.subjectID){
-			dataService.getSubject($scope.subjectID).then(function (subject) {
+			dataService.getSubjectById($scope.subjectID).then(function (subject) {
 				$scope.socialnumber = subject.socialNumber;
 				$scope.getSubject(true);
 			});
 		}
-		
+
 		$scope.getSubject = function(newSocialnumber) {
 
 			newSocialnumber = newSocialnumber || false;
@@ -157,13 +157,13 @@ angular.module('ndrApp')
 				$scope.contactModel.gfr = null;
 				return;
 			}
-			
+
 			var femaleFactor = 0.742;
-			var contactDate = $scope.contactModel.contactDate;//new Date($scope.contactModel.contactDate.substring(0,4),$scope.contactModel.contactDate.substring(5,7)-1,$scope.contactModel.contactDate.substring(8,10));			
+			var contactDate = $scope.contactModel.contactDate;//new Date($scope.contactModel.contactDate.substring(0,4),$scope.contactModel.contactDate.substring(5,7)-1,$scope.contactModel.contactDate.substring(8,10));
 			var birthDate = new Date($scope.subject.socialNumber.substring(0,4),$scope.subject.socialNumber.substring(4,6)-1,$scope.subject.socialNumber.substring(6,8));
 			var age = $scope.calculateAge(birthDate, contactDate);
 			var gfr = 175*Math.pow(($scope.contactModel.creatinine/88.4),-1.154)*Math.pow(age,-0.203)*($scope.subject.sex == 2 ? femaleFactor : 1);
-			
+
 			$scope.contactModel.gfr = parseFloat(gfr.toFixed(2));
 
 		};
@@ -183,7 +183,7 @@ angular.module('ndrApp')
 		$scope.today = function() {
 			$scope.contactModel.contactDate = new Date();
 		};
-		
+
 		$scope.clear = function () {
 			$scope.contactModel.contactDate = null;
 		};
@@ -202,12 +202,12 @@ angular.module('ndrApp')
 				opened: false,
 			}
 		};
-		
+
 		// Disable future dates
 		$scope.disabled = function(date, mode) {
 
 			var d = new Date();
-			
+
 			return date >= d.setDate(d.getDate() + 1) //no future
 			//return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
 			//return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
@@ -226,7 +226,7 @@ angular.module('ndrApp')
 			$event.stopPropagation();
 			$scope.datePickers[dateField].opened = true;
 		};
-		
+
 		$scope.dateOptions = {
 			formatYear: 'yy',
 			startingDay: 1
@@ -241,14 +241,14 @@ angular.module('ndrApp')
 			var valid = true;
 			var m = $scope.contactModel;
 			var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate)
-			
+
 			var compare = function(thisDate, thatDate) {
 				if (thisDate == thatDate) {
 					return false;
 				}
 				return true;
 			}
-			
+
 			if ($scope.subject.contacts  == undefined)
 				valid = true
 			else {
@@ -271,7 +271,7 @@ angular.module('ndrApp')
 
 				}
 			}
-			
+
 			$scope.contactForm.contactDate.$setValidity('checkContactDate', valid);
 			//ctrl.$setValidity('checkContactDate', valid);
 		}
@@ -295,15 +295,15 @@ angular.module('ndrApp')
 
 		//not needed for now
 		 //$scope.$watch('contactModel.contactDate', function(date){
-			
+
 			//if (date === undefined)
 			//	return;
-			
+
 			//if (date === null)
 			//	return;
-			
+
 			//$scope.contactModel.contactDate = $scope.getStringDate(date);
-			
+
 			// console.log(date);
 			// $scope.contactModel.contactDate = $scope.getStringDate(date);
 			// console.log(d);
@@ -339,9 +339,9 @@ angular.module('ndrApp')
 			});
 		}
 		$scope.getUpdateModel = function() {
-			
+
 			$scope.setOptionalQuestionsValue();
-			
+
 			return {
 				contactID: $scope.contactToUpdate.contactID,
 				socialNumber: $scope.subject.socialNumber,
@@ -398,9 +398,9 @@ angular.module('ndrApp')
 			}
 		};
 		$scope.getNewModel = function(lastContact) {
-			
+
 			$scope.setOptionalQuestionsValue();
-			
+
 			return {
 				contactID: null,
 				socialNumber: $scope.subject != null ? $scope.subject.socialNumber : null,
@@ -464,13 +464,13 @@ angular.module('ndrApp')
 		$scope.saveContact = function() {
 
 			$scope.serverSaveErrors = [];
-			
+
 			//Dates are javascript dates until saved, here converted to string dates, better idea?
 			$scope.setDateValues()
 			$scope.contactModel.optionals = $scope.getOptionals();
-			
+
 			console.log($scope.contactModel);
-			
+
 			var httpConfig = {
 				method: $scope.method,
 				data: $scope.contactModel
@@ -522,18 +522,18 @@ angular.module('ndrApp')
 				$scope.contactModel.microscopicProteinuria = null;
 		};
 		$scope.getOptionals = function() {
-			
+
 			var optionals = null;
-			
+
 			if ($scope.optionalQuestions.length == 0)
 				return null;
-			
+
 			angular.forEach($scope.optionalQuestions, function(q) {
 				if (q.value != null)
 					if (q.value != "") {
 						if (optionals == null)
 							optionals = {};
-							
+
 						optionals[q.columnName] = q.value;
 					}
 			});
@@ -545,11 +545,11 @@ angular.module('ndrApp')
 
 angular.module("ndrApp")
 	.service('List', ['$http', 'APIconfigService', function($http, APIconfigService) {
-		
+
 			this.lists = null;
 
 			var self = this;
-		
+
 			$http.get(APIconfigService.baseURL + 'ContactAttribute?APIKey=' + APIconfigService.APIKey).success(function(data) {
 				self.lists = _.indexBy(data, "columnName");
 			});
@@ -560,7 +560,7 @@ angular.module("ndrApp")
 			this.getList = function(listName) {
 				return this.lists[listName];
 			}
-		
+
 		}]);
 
 

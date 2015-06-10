@@ -2,15 +2,21 @@
     <div class="col-md-5">
         <h1 class="Page-title">Patientprofil</h1>
     </div>
-    <form class="col-md-7 text-right" role="search" name="subjectForm" novalidate>
-        <div class="PatientSearch">
+    <div class="col-md-7 text-right">
+        <form class="PatientSearch" role="search" name="subjectForm" novalidate>
             <div class="PatientSearch-inner">
                 <span class="PatientSearch-icon"><i class="fa fa-search" style="color:#999"></i></span>
-                <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
-                <button style="border-left: 1px solid white;" ng-click="getSubject(true)" class="PatientSearch-reportButton">Visa profil</button>
+                <input class="PatientSearch-input" name="socialnumber" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="pnrRegex">
+                <button
+                    style="border-left: 1px solid white;"
+                    ng-click="getSubject()"
+                    ng-disabled="subjectForm.socialnumber.$pristine || subjectForm.socialnumber.$dirty && subjectForm.socialnumber.$invalid"
+                    class="PatientSearch-reportButton">
+                    Visa profil
+                </button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <div id="patient" ng-show="subject">

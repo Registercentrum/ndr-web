@@ -67,6 +67,8 @@
     "Datamap"    : false,
     "d3"         : false,
     "melt"       : false,
-    "topojson"   : false
+    "topojson"   : false,
+    "moment"     : false,
+    "jQuery"     : false
   }
 }

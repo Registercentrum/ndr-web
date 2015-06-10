@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
     .service('dataService',
-                ['$q', 'Restangular', 'accountService', 'APIconfigService',
-        function ($q,   Restangular,   accountService,   APIconfigService) {
+                ['$q', '$http', 'Restangular', 'accountService', 'APIconfigService',
+        function ($q,   $http,   Restangular,   accountService,   APIconfigService) {
 
         var self = this;
 
@@ -70,7 +70,7 @@ angular.module('ndrApp')
         };
 
 
-        this.getSubject = function (id) {
+        this.getSubjectById = function (id) {
             return Restangular.one('Subject', id).get({'AccountID': accountService.accountModel.activeAccount.accountID})
                 .then(function(subject) {
                     return subject.plain();
@@ -78,6 +78,19 @@ angular.module('ndrApp')
                 ['catch'](function(error) {
                     return error;
                 });
+        };
+
+
+        this.getSubjectBySocialNumber = function (socialNumber) {
+            var query = {
+                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
+                method: 'POST',
+                data: {socialNumber: socialNumber}
+            };
+
+            return $http(query)
+                .then(function (response) { return response.data; })
+                ['catch'](console.error.bind(console));
         };
 
 
