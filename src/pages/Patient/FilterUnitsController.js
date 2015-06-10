@@ -8,32 +8,41 @@ angular.module('ndrApp')
 
         $scope.$watch('postalCode', function (postalCode) {
             if (!units.length) return;
-            $scope.filteredUnits = getFilteredUnits(postalCode);
+            filterUnits(postalCode);
         });
 
+
         dataService.getUnits(function (data) {
-            console.log('Units', data);
             units = data;
         });
 
 
-        function getFilteredUnits (postalCode) {
+        function filterUnits (postalCode) {
             var filtered = [];
             postalCode = postalCode.replace(/\s+/g, '');
 
-            $scope.fuzzySearch = false;
+            $scope.triedFuzzy = false;
 
-            while (!filtered.length && postalCode.length > 1) {
-                filtered = _.take(_.filter(units, function (unit) {
-                    return unit.postalCode.replace(/\s+/g, '').indexOf(postalCode) === 0;
-                }), 10);
+            while (!filtered.length && postalCode.length) {
+                if (!$scope.triedFuzzy || $scope.triedFuzzy && postalCode.length > 2) filtered = getFilteredUnits(postalCode);
 
-                if (!filtered.length && postalCode.length > 3) {
-                    $scope.fuzzySearch = true;
+                // If the list came up empty, try search with one less digit
+                if (!filtered.length) {
                     postalCode = postalCode.slice(0, -1);
+
+                    // Fuzzy search only for at least 3 digits
+                    $scope.triedFuzzy = true;
+                    $scope.fuzzySuccess = (postalCode.length > 2) ? true : false;
                 }
             }
 
-            return filtered;
+            $scope.filteredUnits = filtered;
+        }
+
+
+        function getFilteredUnits (postalCode) {
+            return _.take(_.filter(units, function (unit) {
+                return unit.postalCode.replace(/\s+/g, '').indexOf(postalCode) === 0;
+            }), 10);
         }
     }]);

@@ -34,15 +34,15 @@
                 <h2 class="Heading--h3-sidebar u-noTopMargin">Diabetesvården där du bor</h2>
                 <p>Knappa in ditt postnummer för att hitta statistik och annan information om diabetesvården där du bor:</p>
 
-                <input type="text" class="form-control" ng-model="postalCode" style="width: 80%;margin-top: 20px" placeholder="Ditt postnummer"/>
-                <p ng-if="(postalCode.length > 2 && !filteredUnits.length) || fuzzySearch">
-                    Inga diabetesvården matcha denna postnummer.
-                    <strong ng-if="fuzzySearch">Dessa finns i närheten.</strong>
-                </p>
                 <div class="PostalCodeSearch">
-                    <ul class="PostalCodeSearch-list" ng-show="postalCode">
+                    <input type="text" class="form-control PostalCodeSearch-input" ng-model="postalCode" placeholder="Ditt postnummer">
+                    <p ng-if="(postalCode.length && !filteredUnits.length) || triedFuzzy" class="PostalCodeSearch-empty">
+                        Inga diabetesvården matcha denna postnummer.
+                        <span ng-if="fuzzySuccess && filteredUnits.length">Dessa finns i närheten.</span>
+                    </p>
+                    <ul class="PostalCodeSearch-list" ng-show="filteredUnits.length">
                         <li ng-repeat="unit in filteredUnits" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">
-                            <h5 class="PostalCodeSearch-list-item-title" ><a href="#/profil/enhet/{{ unit.unitID }}">{{ unit.name }}</a></h5>
+                            <a href="#/profil/enhet/{{ unit.unitID }}" class="PostalCodeSearch-list-item-title">{{ unit.name }}</a>
                         </li>
                     </ul>
                 </div>
