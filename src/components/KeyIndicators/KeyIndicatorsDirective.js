@@ -1,172 +1,186 @@
+'use strict';
+
 angular.module('ndrApp')
     .directive('keyIndicators', ['$q','dataService', function($q, dataService) {
 
-        function link(scope, element, attrs) {
+        function link (scope) {
 
-            if(!scope.id) return false;
-            
+            if (!scope.id) return;
+
             var id = scope.id;
-            
+
             scope.model = {
                 id : id,
                 geo : scope.geo,
                 selectedKeyIndicator: 201,
                 sex : 0,
                 unitType : 0,
-                diabetesType : 0,
-            }
+                diabetesType : 0
+            };
 
             scope.data = {
                 keyIndicator : undefined,
                 keyIndicators : undefined
-            }
+            };
 
             scope.$watch('model', function (newValue, oldValue){
                 getSelectedKeyIndicator();
-
-                if(newValue.sex == oldValue.sex || newValue.diabetesType == oldValue.diabetesType){
-                    getKeyIndicators();
-                }
-
-            }, true)
+                if(newValue.sex === oldValue.sex || newValue.diabetesType === oldValue.diabetesType) getKeyIndicators();
+            }, true);
 
 
-            function getSelectedKeyIndicator(){
+            function getSelectedKeyIndicator () {
+                var selectedIndicator = scope.model.selectedKeyIndicator,
+                    promises          = [],
+                    queryCountry      = dataService.queryFactory({
+                        indicatorID : selectedIndicator,
+                        level       : 0,
+                        interval    : 'y',
+                        fromYear    : 2010,
+                        toYear      : 2014,
+                        sex         : scope.model.sex,
+                        unitType    : scope.model.unitType,
+                        diabetesType: scope.model.diabetesType
+                    }),
+                    queryGeo;
 
-                var selectedIndicator = scope.model.selectedKeyIndicator;
-                var promises = [];
-
-                var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
-                var queryGeo    = dataService.queryFactory({countyCode : id, indicatorID: selectedIndicator, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
-
-                if(scope.geoType == 'unit'){
+                if (scope.geoType === 'unit') {
                     console.log('UNIT', scope.model);
-                    var queryGeo = dataService.queryFactory({unitID : id, level : 2, indicatorID: selectedIndicator, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                    queryGeo = dataService.queryFactory({
+                        unitID      : id,
+                        level       : 2,
+                        indicatorID : selectedIndicator,
+                        interval    : 'y',
+                        fromYear    : 2010,
+                        toYear      :2014,
+                        sex         : scope.model.sex,
+                        unitType    : scope.model.unitType,
+                        diabetesType: scope.model.diabetesType
+                    });
                     //var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
+                } else {
+                    queryGeo = dataService.queryFactory({
+                        countyCode  : id,
+                        indicatorID : selectedIndicator,
+                        interval    : 'y',
+                        fromYear    : 2010,
+                        toYear      : 2014,
+                        sex         : scope.model.sex,
+                        unitType    : scope.model.unitType,
+                        diabetesType: scope.model.diabetesType
+                    });
                 }
 
                 promises.push(dataService.getStats(queryCountry));
                 promises.push(dataService.getStats(queryGeo));
 
                 $q.all(promises).then(function (data) {
+                    var seriesCountry = [],
+                        seriesGeo = [];
 
-                    var seriesCountry = [];
-                    var seriesGeo = [];
-
-                    _.each(data[0].statSet[0].intervalSet, function(obj, key){
-
-                        var o = {
+                    _.each(data[0].statSet[0].intervalSet, function (obj) {
+                        seriesCountry.push({
                             color : '#999',
                             x : new Date(obj.interval),
                             y : obj.stat.r,
                             cRep : obj.stat.cRepInd
-                        }
-                        seriesCountry.push(o);
-                    })
+                        });
+                    });
 
-                    _.each(data[1].statSet[0].intervalSet, function(obj, key){
-                        var o = {
+                    _.each(data[1].statSet[0].intervalSet, function (obj) {
+                        seriesGeo.push({
                             color : '#74BAD8',
                             x : new Date(obj.interval),
                             y : obj.stat.r,
                             cRep : obj.stat.cRepInd
-                        }
-                        seriesGeo.push(o);
-                    })
+                        });
+                    });
 
-                    scope.data.keyIndicator = [
-                        {
-                            name: scope.geo ? scope.geo.name : 'Enhet',
-                            lineWidth: 3,
-                            color : '#74BAD8',
-                            data: seriesGeo
-                        },
-                        {
-                            name : 'Riket',
-                            color: '#ccc',
-                            data : seriesCountry
-                        }
-                    ]
-                })
+                    scope.data.keyIndicator = [{
+                        name: scope.geo ? scope.geo.name : 'Enhet',
+                        lineWidth: 3,
+                        color : '#74BAD8',
+                        data: seriesGeo
+                    }, {
+                        name : 'Riket',
+                        color: '#ccc',
+                        data : seriesCountry
+                    }];
+                });
             }
 
-            function getKeyIndicators(){
 
-                var toInclude = [201,221,207,222,209,214,211,203,223,216,202,219];
-                var highIsBetter = [201, 207, 222, 209, 203, 212, 213, 223]
+            function getKeyIndicators () {
+                var toInclude = [201, 221, 207, 222, 209, 214, 211, 203, 223, 216, 202, 219],
+                    promises  = [],
+                    query     = dataService.queryFactory({
+                        countyCode  : id,
+                        ID          : toInclude,
+                        sex         : scope.model.sex,
+                        unitType    : scope.model.unitType,
+                        diabetesType: scope.model.diabetesType
+                    });
 
-                var promises = [];
-
-                var query = dataService.queryFactory({countyCode : id, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesType});
-
-                if(scope.geoType == 'unit'){
-                    query = dataService.queryFactory({unitID : id, level : 2, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType: scope.model.diabetesType});
+                if (scope.geoType === 'unit'){
+                    query = dataService.queryFactory({
+                        unitID      : id,
+                        level       : 2,
+                        ID          : toInclude,
+                        sex         : scope.model.sex,
+                        unitType    : scope.model.unitType,
+                        diabetesType: scope.model.diabetesType
+                    });
                 }
-
                 promises.push(dataService.getStats(query));
 
                 //RIKET
-                var query = dataService.queryFactory({ level : 0, ID: toInclude, sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType});
+                query = dataService.queryFactory({
+                    level: 0,
+                    ID: toInclude,
+                    sex: scope.model.sex,
+                    unitType: scope.model.unitType,
+                    diabetesType: scope.model.diabetesType
+                });
                 promises.push(dataService.getStats(query));
 
-                $q.all(promises).then(function (data){
 
-                    
-                    var geoData = data[0].indicatorSet;
-                    var countryData = data[1].indicatorSet;
+                $q.all(promises).then(function (data) {
+                    var geoData       = data[0].indicatorSet,
+                        countryData   = data[1].indicatorSet,
+                        keyIndicators = [];
 
-                    var keyIndicators = [];
-                    
-                    _.each(geoData, function(obj, key){
+                    _.each(geoData, function (obj, key) {
 
                         var o = {
-                            riket       : countryData[key].statSet[0].stat.r,
-                            geo         : obj.statSet[0].stat.r,
-                            status      : 'equal',
-                            name        : obj.indicator.name,
-                            id          : obj.indicator.id,
-                            lKonf       : countryData[key].statSet[0].stat.lKonf,
-                            uKonf       : countryData[key].statSet[0].stat.uKonf
-                        }
+                            riket : countryData[key].statSet[0].stat.r,
+                            geo   : obj.statSet[0].stat.r,
+                            status: 'equal',
+                            name  : obj.indicator.name,
+                            id    : obj.indicator.id,
+                            lKonf : countryData[key].statSet[0].stat.lKonf,
+                            uKonf : countryData[key].statSet[0].stat.uKonf
+                        };
 
-                        //console.log(obj, o);
-
-                        if(_.indexOf(highIsBetter, o.id) == -1){
-                            if(o.geo < o.lKonf) o.status = 'better';
-                            if(o.geo > o.uKonf) o.status = 'worse';
-                        }
-
-                        else{
-                            if(o.geo < o.lKonf) o.status = 'worse';
-                            if(o.geo > o.uKonf) o.status = 'better';
-                        }
+                        if (!obj.asc && o.geo < o.lKonf || obj.asc && o.geo > o.uKonf) o.status = 'better';
+                        if (!obj.asc && o.geo > o.lKonf || obj.asc && o.geo < o.uKonf) o.status = 'worse';
 
                         keyIndicators.push(o);
-
-                    })
+                    });
 
                     scope.data.keyIndicators = keyIndicators;
-
                 });
-
             }
-
-            getKeyIndicators();
         }
-
 
         return {
             restrict : 'A',
-            templateUrl: function(elem, attr){
-                return 'src/components/KeyIndicators/KeyIndicators.html';
-            },
+            templateUrl: 'src/components/KeyIndicators/KeyIndicators.html',
             link: link,
             scope: {
-                id: '=',
-                geo: '=',
-                geoType : '=',
-                light : '='
+                id     : '=',
+                geo    : '=',
+                geoType: '=',
+                light  : '='
             }
-        }
-
+        };
     }]);
