@@ -73,7 +73,7 @@ angular.module('ndrApp')
 
 
             function populateTableData () {
-                var table = {},
+                var table = [],
                     exluded = ['contactID', 'insertedAt', 'lastUpdatedAt', 'unitID'],
                     contacts, keys;
 
@@ -88,11 +88,17 @@ angular.module('ndrApp')
                 keys = _.filter(keys, function (key) { return _.indexOf(exluded, key) === -1; });
 
                 // Construct the table data
-                _.each(keys, function (key) {
+                _.each(keys, function (key, keyIndex) {
                     var attribute = _.find($scope.contactAttributes, {columnName: key}),
-                        label = attribute ? attribute.question : key;
+                        label = attribute ? attribute.question : key,
+                        sequence = attribute ? attribute.sequence : 0;
 
-                    table[label] = [];
+                    table[keyIndex] = {
+                        label   : label,
+                        sequence: sequence,
+                        values  : []
+                    };
+
                     _.each(contacts, function (contact) {
                         var value = contact[key];
 
@@ -112,11 +118,12 @@ angular.module('ndrApp')
                             value = value ? 'Ja' : 'Nej';
                         }
 
-                        table[label].push(value);
+                        table[keyIndex].values.push(value);
                     });
                 });
 
                 $scope.model.data.table = table;
+                $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
             }
 
 
@@ -262,14 +269,18 @@ angular.module('ndrApp')
 
             /**
              * Generate time series data for the charts for a specific key
+             * limit to 3 years back
              * @param  {String} key What values are we looking for?
              * @return {Array} Array of key:value objects
              */
             function getSeries (key) {
-                var series = [];
+                var series = [],
+                    now = moment();
 
                 _.each($scope.subject.contacts, function (obj) {
-                    if (_.isNumber(obj[key])) {
+                    var then = moment(obj.contactDate);
+
+                    if (_.isNumber(obj[key]) && now.diff(then, 'years') <= 3) {
                         series.push({
                             x : new Date(obj.contactDate),
                             y : obj[key]

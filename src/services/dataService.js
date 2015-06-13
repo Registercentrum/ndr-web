@@ -83,7 +83,7 @@ angular.module('ndrApp')
 
         this.getSubjectBySocialNumber = function (socialNumber) {
             var query = {
-                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
+                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
                 method: 'POST',
                 data: {socialNumber: socialNumber}
             };
@@ -91,6 +91,32 @@ angular.module('ndrApp')
             return $http(query)
                 .then(function (response) { return response.data; })
                 ['catch'](console.error.bind(console));
+        };
+
+
+        this.deleteContact = function (id) {
+            var query = {
+                url: APIconfigService.baseURL + 'Contact/' + id + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+                method: 'DELETE'
+            };
+
+            return $http(query)
+                .then(function (response) { return response.data; })
+                ['catch'](console.error.bind(console));
+        };
+
+
+        this.saveContact = function (data) {
+            var query = {
+              url: APIconfigService.baseURL + 'Contact/' + (data.contactID || '') + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+              method: data.contactID ? 'PUT' : 'POST',
+              data: data
+            };
+
+            return $http(query)
+                .then(function (response) { return response.data; })
+                ['catch'](console.error.bind(console));
+
         };
 
 

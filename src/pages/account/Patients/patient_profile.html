@@ -237,13 +237,13 @@
                 <thead>
                     <tr>
                         <th class="key"></th>
-                        <th ng-repeat="date in model.data.table['Besöksdatum']">{{ date | date : 'dd MMM yyyy'}}</th>
+                        <th ng-repeat="date in model.data.tableHeader.values">{{ date | date : 'dd MMM yyyy'}}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="(key, contact) in model.data.table">
-                        <td class="key">{{ key }}</td>
-                        <td ng-repeat="c in contact track by $index">{{ c }}</td>
+                    <tr ng-repeat="contact in model.data.table | orderBy: 'sequence'">
+                        <td class="key">{{ contact.label }}</td>
+                        <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
                     </tr>
                 </tbody>
             </table>
