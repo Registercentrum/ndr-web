@@ -1,10 +1,11 @@
+'use strict';
+
 angular.module('ndrApp')
     .controller('PatientsController', [
                  '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout',
-        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout) {
-          
+        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService,   $timeout) {
+
             $log.debug('PatientsController: Init');
-            console.time("Test")
             var filterSettings = {
                     exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
                     required: ['d', 'hba1c']
@@ -20,11 +21,11 @@ angular.module('ndrApp')
             $scope.datePickers = {
                 from: {
                     date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
-                    opened: false,
+                    opened: false
                 },
                 to: {
                     date: $filter('date')(new Date(), $scope.format),
-                    opened: false,
+                    opened: false
                 }
             };
 
@@ -52,34 +53,12 @@ angular.module('ndrApp')
             };
 
             $scope.lookupName = function (filter, value){
-                if(filter.domain.isEnumerated){
-                    return _.result(_.findWhere(filter.domain.domainValues, {code : value}), "text", "");
-                }
-                else{
-                    return value;
-                }
-            }
+                if (filter.domain.isEnumerated) return _.result(_.find(filter.domain.domainValues, {code : value}), 'text', '');
+                return value;
+            };
 
             /* DATA TABLE */
-            $scope.$watch("model.filteredSubjects", function (){
-
-                function paged (valLists, pageSize){
-
-                    if(!valLists) return false;
-
-                    var valLength = valLists.length;
-                    var retVal = [];
-
-                    for (var i = 0; i < valLength; i++) {
-                        if (i % pageSize === 0) {
-                            retVal[Math.floor(i / pageSize)] = [valLists[i]];
-                        } else {
-                            retVal[Math.floor(i / pageSize)].push(valLists[i]);
-                        }
-                    }
-                    return retVal;
-                }
-
+            $scope.$watchCollection('model.filteredSubjects', function () {
                 $scope.pageSize = 15;
                 $scope.allItems = $scope.model.filteredSubjects;
                 $scope.reverse = false;
@@ -88,79 +67,88 @@ angular.module('ndrApp')
                 $scope.currentPage = 0;
                 $scope.Header = ['','',''];
 
-                $scope.pagination = function () {
-                    $scope.ItemsByPage = paged( $scope.filteredList, $scope.pageSize );
-                };
-
-                $scope.setPage = function () {
-                    $scope.currentPage = this.n;
-                };
-
-                $scope.firstPage = function () {
-                    $scope.currentPage = 0;
-                };
-
-                $scope.lastPage = function () {
-                    $scope.currentPage = $scope.ItemsByPage.length - 1;
-                };
-
-                $scope.range = function (input, total) {
-                    var ret = [];
-                    if (!total) {
-                        total = input;
-                        input = 0;
-                    }
-                    for (var i = input; i < total; i++) {
-                        if (i != 0 && i != total - 1) {
-                            ret.push(i);
-                        }
-                    }
-                    return ret;
-                };
-
-                $scope.resetAll = function () {
-                    $scope.filteredList = $scope.allItems;
-                }
-
-
-                $scope.sort = function(sortBy){
-                    $scope.resetAll();
-
-                    $scope.columnToOrder = sortBy;
-
-                    //$Filter - Standard Service
-                    $scope.filteredList = $filter('orderBy')($scope.filteredList, $scope.columnToOrder, $scope.reverse);
-
-                    if($scope.reverse)
-                        iconName = 'glyphicon glyphicon-chevron-up';
-                    else
-                        iconName = 'glyphicon glyphicon-chevron-down';
-
-                    if(sortBy === 'EmpId')
-                    {
-                        $scope.Header[0] = iconName;
-                    }
-                    else if(sortBy === 'name')
-                    {
-                        $scope.Header[1] = iconName;
-                    }else {
-                        $scope.Header[2] = iconName;
-                    }
-
-                    $scope.reverse = !$scope.reverse;
-
-                    $scope.pagination();
-                };
-
                 //By Default sort ny Name
                 $scope.sort ('name');
+            });
 
-            }, true)
+            function paged (valLists, pageSize) {
+                var valLength, retVal;
 
+                if (!valLists) return;
 
-            $scope.toggleDetail = function (d){
-                console.log("detail",d);
+                valLength = valLists.length;
+                retVal = [];
+
+                for (var i = 0; i < valLength; i++) {
+                    if (i % pageSize === 0) {
+                        retVal[Math.floor(i / pageSize)] = [valLists[i]];
+                    } else {
+                        retVal[Math.floor(i / pageSize)].push(valLists[i]);
+                    }
+                }
+                return retVal;
             }
+
+            $scope.pagination = function () {
+                $scope.ItemsByPage = paged($scope.filteredList, $scope.pageSize);
+            };
+
+            $scope.setPage = function () {
+                $scope.currentPage = this.n;
+            };
+
+            $scope.firstPage = function () {
+                $scope.currentPage = 0;
+            };
+
+            $scope.lastPage = function () {
+                $scope.currentPage = $scope.ItemsByPage.length - 1;
+            };
+
+            $scope.range = function (input, total) {
+                var ret = [];
+                if (!total) {
+                    total = input;
+                    input = 0;
+                }
+                for (var i = input; i < total; i++)
+                    if (i !== 0 && i !== total - 1) ret.push(i);
+                return ret;
+            };
+
+            $scope.resetAll = function () {
+                $scope.filteredList = $scope.allItems;
+            };
+
+
+            $scope.sort = function(sortBy) {
+                var iconName;
+                $scope.resetAll();
+
+                $scope.columnToOrder = sortBy;
+
+                //$Filter - Standard Service
+                $scope.filteredList = $filter('orderBy')($scope.filteredList, $scope.columnToOrder, $scope.reverse);
+
+                iconName = $scope.reverse ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down';
+
+                if(sortBy === 'EmpId') {
+                    $scope.Header[0] = iconName;
+                } else if (sortBy === 'name') {
+                    $scope.Header[1] = iconName;
+                } else {
+                    $scope.Header[2] = iconName;
+                }
+
+                $scope.reverse = !$scope.reverse;
+
+                $scope.pagination();
+            };
+
+
+            $scope.toggleDetail = function (d) {
+                console.log('detail', d);
+            };
 
 
             // -------------------------------------------------------------------
@@ -232,52 +220,39 @@ angular.module('ndrApp')
             // FILTERING
             // -------------------------------------------------------------------
 
-            // Fill additional filters from the API request for cancatct attributes
+            // Fill additional filters from the API request for cantact attributes
             $scope.filters = [];
             dataService.getContactAttributes(filterSettings)
-
                 .then(function (filters) {
-
                     var required;
 
-
-                    _.each(filters, function (filter, key) {
-
-                        if (filter.columnName  == 'diabetesType' ) {
-                            filter.columnName  = 'd';
-                        }
-
-                        if (filter.columnName  == 'sex' ) {
-                            filter.columnName  = 's';
-                        }
-
-                       /* if (filter.columnName  == 'socialNumber' ) {
-                            filter.columnName  = 'snr';
-                        }*/
-
-                        if (filter.columnName  == 'age' ) {
-                            filter.min = 0;
-                            filter.max = 120;
-                            filter.maxValue = 120;
-                            filter.range = [0, 120];
-                        }
-
-                        if (filter.columnName  == 'smokingEndYear' ) {
-                            filter.min = 1900;
-                            filter.max = 2020;
-                            filter.range = [1900, 2020];
-                        }
-
-                        if (filter.columnName  == 'yearOfOnset' ) {
-                            filter.min = 1900;
-                            filter.max = 2020;
-                            filter.range = [1900, 2020];
-                        }
-                    });
-
-
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
-                    _.each(filters, function (filter, index) {
+                    _.each(filters, function (filter) {
+                        // Normalize naming
+                        if (filter.columnName === 'diabetesType' ) filter.columnName  = 'd';
+                        if (filter.columnName === 'sex' ) filter.columnName  = 's';
+
+                        // Fill out missing props
+                        if (filter.columnName === 'age' ) {
+                           filter.min      = 0;
+                           filter.max      = 120;
+                           filter.maxValue = 120;
+                           filter.range    = [0, 120];
+                        }
+
+                        if (filter.columnName === 'smokingEndYear' ) {
+                            filter.min   = 1900;
+                            filter.max   = 2020;
+                            filter.range = [1900, 2020];
+                        }
+
+                        if (filter.columnName === 'yearOfOnset' ) {
+                            filter.min   = 1900;
+                            filter.max   = 2020;
+                            filter.range = [1900, 2020];
+                        }
+
+
                         // If the filter is required choose it instantly
                         filter.isChosen = $scope.isRequired(filter.columnName);
 
@@ -290,7 +265,7 @@ angular.module('ndrApp')
                             $scope.selectedFilters[filter.columnName].max = filter.maxValue;
                         }
 
-                        if (filter.domain.name == 'Date') {
+                        if (filter.domain.name === 'Date') {
                             $scope.selectedFilters[filter.columnName].from = {
                                 date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
                                 opened : false
@@ -310,8 +285,8 @@ angular.module('ndrApp')
                     // Update filterDisplayIndex used for ordering chosen filters
                     filterDisplayIndex = required.length;
 
-                    // Also make sure they are sorted alphabetically
-                    filters = required.concat(_.sortBy(filters, 'question'));
+                    // Also make sure they are sorted by API sequence
+                    filters = required.concat(_.sortBy(filters, 'sequence'));
 
 
                     // Set the available filters
@@ -328,29 +303,34 @@ angular.module('ndrApp')
             // Whenever the filter is chosen from the list of available filters
             // update the list of chosen filters
             $scope.$watch('chosenFilter', function (name) {
-
                 var filter;
-                if (name !== null) {
+                if (!name) return;
+
+                // Diabetes type and HbA1c are alwyas preselected and always at the top of the list
+                if (name !== 'd' && name !== 'hb1ac') {
                     filter = _.find($scope.filters, {columnName: name});
                     if (filter) {
                         filter.isChosen = true;
                         filter.displayOrder = filterDisplayIndex;
-                        filterDisplayIndex +=1;
+                        filterDisplayIndex += 1;
                     }
-                    $scope.chosenFilter = null;
                 }
+                $scope.chosenFilter = null;
+
+                // Realy simple highlight
+                $scope.highlightedFilter = name;
+                $timeout(function () { $scope.highlightedFilter = null; }, 1000);
 
                 loadSubjects();
-
             });
 
             $scope.isDisplayed = function (name) {
                 return $scope.isRequired(name) || _.find($scope.filters, {columnName: name}).isChosen;
-            }
+            };
 
             $scope.isRequired = function (name) {
                 return _.indexOf(filterSettings.required, name) !== -1;
-            }
+            };
 
             // Chosen filters can be removed by the user
             $scope.removeChosenFilter = function (name) {
@@ -363,7 +343,7 @@ angular.module('ndrApp')
                     $scope.selectedFilters[name].min = $scope.selectedFilters[name].range[0];
                     $scope.selectedFilters[name].max = $scope.selectedFilters[name].range[1];
                 } else {
-                    $scope.selectedFilters[name] = {}
+                    $scope.selectedFilters[name] = {};
                 }
             };
 
@@ -397,14 +377,14 @@ angular.module('ndrApp')
                     subjects = _.filter(subjects, function (subject) {
 
                         //console.log(prop);
-                        
+
                         var propValue = subject[prop],
                             value;
 
                         // if filter.undef is true it means that option for searching undefined values is checked
                         // so return only those that have null specified for this option
                         if (filter.undef) {
-                            
+
                             return typeof subject[prop] === 'undefined';
 
                         // Handle range filtering

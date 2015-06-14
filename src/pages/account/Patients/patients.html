@@ -88,7 +88,11 @@
             </div>
 
             <!-- Additional filtering -->
-            <div class="MultiFilter-row" ng-repeat="(key, filter) in filters | orderBy: 'displayOrder'" ng-if="isDisplayed(filter.columnName)">
+            <div
+                class="MultiFilter-row"
+                ng-repeat="(key, filter) in filters | orderBy: 'displayOrder'"
+                ng-if="isDisplayed(filter.columnName)"
+                ng-class="{highlighted:highlightedFilter === filter.columnName }">
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">
                         <i class="fa fa-times fa-1x text-danger" ng-click="removeChosenFilter(filter.columnName)" ng-if="!isRequired(filter.columnName)"></i>
@@ -197,7 +201,7 @@
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Valbar</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select ng-options="filter.columnName as filter.question for filter in filters | filter: {isChosen: false}" ng-model="chosenFilter" name="" id="" class="form-control">
+                        <select ng-options="filter.columnName as filter.question for filter in filters" ng-model="chosenFilter" name="" id="" class="form-control">
                             <option value="">Välj sökkriterium</option>
                         </select>
                     </div>
