@@ -1,4 +1,9 @@
-<a ui-sref="main.account.patients({restoreFilters: 'restoreFilters'})" class="Button Button--primary Button--large" ng-if="backToSearchVisible"><i class="fa fa-arrow-left"></i>Gå tillbaka till Sõklista</a>
+<a
+    ui-sref="main.account.patients({restoreFilters: 'restoreFilters'})"
+    class="Button Button--primary Button--large"
+    ng-if="backToSearchVisible">
+    <i class="fa fa-arrow-left"></i>Gå tillbaka till Söklista
+</a>
 
 <div class="row PatientProfile-Header">
     <div class="col-md-5">
@@ -29,7 +34,7 @@
                     <i class="fa fa-user"></i>  {{ subject.socialNumber }}
                 </div>
                 <div class="PatientHeader-navigation col-md-7 u-noRightPadding text-right">
-                    <a class="Button--tight Button Button--dark" ng-click="print()"><i class="fa fa-print"></i> Skriv ut</a>
+                    <a class="Button--tight Button Button--dark" ui-sref="main.account.patientPrint({patientID: subject.subjectID})"><i class="fa fa-print"></i> Skriv ut</a>
                     <a style="margin-right: 20px" href="#/inloggad/rapportera/{{ subject.subjectID }}" class="Button--tight Button Button--dark"><i class="fa fa-plus-circle"></i> Nytt besök</a>
                     <div class="btn-group pull-right">
                         <label class="btn Button--tight  Button Button--dark" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</label>

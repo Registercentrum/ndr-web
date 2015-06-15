@@ -284,6 +284,12 @@ angular.module('ndrApp', [
                     }
                 })
 
+                .state('main.account.patientPrint', {
+                    url: '/patient/print/:patientID',
+                    templateUrl: 'src/pages/Account/Patients/patient_print.html',
+                    controller : 'PatientPrintController'
+                })
+
                 /* Generic pages */
 
                 .state('page', {
