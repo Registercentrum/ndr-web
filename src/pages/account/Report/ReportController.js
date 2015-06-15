@@ -32,7 +32,8 @@ angular.module('ndrApp')
         $scope.subject           = null;
         $scope.serverSaveErrors  = [];
         $scope.method            = 'POST';
-        $scope.thisYear          = new Date().getFullYear(); //Används för "År rökslut"
+		$scope.minYear          = null; //Används för "År rökslut"
+        $scope.maxYear          = new Date().getFullYear(); //Används för "År rökslut"
         $scope.optionalQuestions = [];
 
 
@@ -56,6 +57,7 @@ angular.module('ndrApp')
 
 
         $scope.getSubject = function (newSocialnumber) {
+			$scope.minYear			  = $scope.socialnumber.substring(0,4);
             $scope.lists              = List.getLists();
             $scope.serverSubjectError = null;
             $scope.serverSaveErrors   = [];
@@ -204,8 +206,6 @@ angular.module('ndrApp')
       var d = new Date();
 
       return date >= d.setDate(d.getDate() + 1) //no future
-      //return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-      //return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
     };
 
     $scope.toggleMin = function() {
@@ -213,9 +213,6 @@ angular.module('ndrApp')
     };
     $scope.toggleMin();
 
-    //$scope.formatDate = function() {
-      //console.log('date changed');
-    //}
     $scope.openPicker = function($event, dateField) {
       $event.preventDefault();
       $event.stopPropagation();
@@ -231,7 +228,7 @@ angular.module('ndrApp')
     $scope.format = $scope.formats[0];
     //END datePicker
 
-    $scope.checkContactDate = function() {
+    $scope.contactDateChanged = function() {
 
       var valid = true;
       var m = $scope.contactModel;
@@ -268,7 +265,12 @@ angular.module('ndrApp')
       }
 
       $scope.contactForm.contactDate.$setValidity('checkContactDate', valid);
-      //ctrl.$setValidity('checkContactDate', valid);
+	  
+	if (valid)
+		$scope.maxYear = $scope.getStringDate($scope.contactModel.contactDate).substring(0,4);
+	else
+		$scope.maxYear = new Date().getFullYear()
+	
     }
     $scope.getStringDate = function(date) {
 
@@ -509,6 +511,11 @@ angular.module('ndrApp')
         $scope.contactModel.microscopicProteinuria = 1;
       else
         $scope.contactModel.microscopicProteinuria = null;
+    };
+    $scope.retinopathyChanged = function() {
+		if ($scope.contactModel.diabeticRetinopathy != 1)
+			if ($scope.contactModel.diagnosisWorseSeeingEye != null)
+				$scope.contactModel.diagnosisWorseSeeingEye = null;
     };
     $scope.getOptionals = function() {
 
