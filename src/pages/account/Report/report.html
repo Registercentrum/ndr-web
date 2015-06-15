@@ -71,8 +71,8 @@
                       type="text"
                       class="form-control"
                       ng-model="contactModel.contactDate"
-                      ng-class="{ 'has-no-error' : !contactForm.contactDate.$error.checkContactDate && contactModel.contactDate != null}"
-                      ng-change="checkContactDate();tryCalculateGFR()"
+                      ng-class="{ 'has-error' : !contactForm.contactDate.$error.checkContactDate && contactModel.contactDate != null}"
+                      ng-change="contactDateChanged();tryCalculateGFR()"
                       ng-model-options="{ updateOn: 'blur' }"
                       date-disabled="disabled(date, mode)"
                       datepicker-options="dateOptions"
@@ -84,7 +84,7 @@
                       clear-text="Rensa"
                       placeholder="ÅÅÅÅ-MM-DD">
                   </div>
-                  <p class="Report-formItemHelp help-block" ng-show="contactForm.contactDate.$error.checkContactDate">Det finns redan ett besök på detta datum! Komplettera det befintliga besöket eller skriv in ett nytt datum.</p>
+                  <p class="Report-formItemHelphelp-block" ng-show="contactForm.contactDate.$error.checkContactDate">Det finns redan ett besök på detta datum! Komplettera det befintliga besöket eller skriv in ett nytt datum.</p>
                 </div>
               </div>
             </div>
@@ -473,7 +473,7 @@
             <div class="row">
               <div class="col-md-5 Report-formGroup-form">
                 <label class="" for="diabeticRetinopathy" class="">Diabetesretinopati</label><i class="fa fa-question-circle helpNote" ng-show="lists['diabeticRetinopathy'].helpNote != null" tooltip="{{lists['diabeticRetinopathy'].helpNote}}"></i>
-                <select name="diabeticRetinopathy" class="form-control" ng-model="contactModel.diabeticRetinopathy" ng-class="{ 'has-no-error' : contactModel.diabeticRetinopathy != null}" ng-options="type.code as type.text for type in lists.diabeticRetinopathy.domain.domainValues">
+                <select name="diabeticRetinopathy" class="form-control" ng-change="retinopathyChanged()" ng-model="contactModel.diabeticRetinopathy" ng-class="{ 'has-no-error' : contactModel.diabeticRetinopathy != null}" ng-options="type.code as type.text for type in lists.diabeticRetinopathy.domain.domainValues">
                   <option value="">-- välj --</option>
                 </select>
                 <p ng-show="contactForm.diabeticRetinopathy.$pristine && contactModel.diabeticRetinopathy != null && contactModel.diabeticRetinopathy == lastContact.diabeticRetinopathy && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
@@ -481,7 +481,7 @@
 
               <div class="col-md-5 Report-formGroup-form">
                 <label class="" for="diagnosisWorseSeeingEye" class="">Diagnos på sämsta ögat</label><i class="fa fa-question-circle helpNote" ng-show="lists['diagnosisWorseSeeingEye'].helpNote != null" tooltip="{{lists['diagnosisWorseSeeingEye'].helpNote}}"></i>
-                <select name="diagnosisWorseSeeingEye" class="form-control" ng-model="contactModel.diagnosisWorseSeeingEye" ng-class="{ 'has-no-error' : contactModel.diagnosisWorseSeeingEye != null}" ng-options="type.code as type.text for type in lists.diagnosisWorseSeeingEye.domain.domainValues">
+                <select name="diagnosisWorseSeeingEye" class="form-control" ng-model="contactModel.diagnosisWorseSeeingEye" ng-disabled="contactModel.diabeticRetinopathy != 1" ng-class="{ 'has-no-error' : contactModel.diagnosisWorseSeeingEye != null}" ng-options="type.code as type.text for type in lists.diagnosisWorseSeeingEye.domain.domainValues">
                   <option value="">-- välj --</option>
                 </select>
                 <p ng-show="contactForm.diagnosisWorseSeeingEye.$pristine && contactModel.diagnosisWorseSeeingEye != null && contactModel.diagnosisWorseSeeingEye == lastContact.diagnosisWorseSeeingEye && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
@@ -559,7 +559,7 @@
               </div>
               <div class="col-md-5 Report-formGroup-form">
                 <label class="" for="smokingEndYear" class="">Slutat År</label><i class="fa fa-question-circle helpNote" ng-show="lists['smokingEndYear'].helpNote != null" tooltip="{{lists['smokingEndYear'].helpNote}}"></i>
-                <input name="smokingEndYear" type="number" min="1980" max="2015" class="form-control" ng-model="contactModel.smokingEndYear" ng-disabled="contactModel.smokingHabit != 4" ng-class="{ 'has-no-error' : !contactForm.smokingEndYear.$invalid && contactModel.smokingEndYear != null && contactModel.smokingHabit == 4}" decimals="0" placeholder="År">
+                <input name="smokingEndYear" type="number" min="{{minYear}}" max="{{maxYear}}" class="form-control" ng-model="contactModel.smokingEndYear" ng-disabled="contactModel.smokingHabit != 4" ng-class="{ 'has-no-error' : !contactForm.smokingEndYear.$invalid && contactModel.smokingEndYear != null && contactModel.smokingHabit == 4}" decimals="0" placeholder="ÅÅÅÅ">
                 <p ng-show="contactForm.smokingEndYear.$error.min || contactForm.smokingEndYear.$error.max" class="Report-formItemHelp help-block">Kontrollera slutår. Slutår kan inte vara i framtiden.</p>
               </div>
             </div>
