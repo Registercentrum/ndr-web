@@ -263,7 +263,10 @@ angular.module('ndrApp', [
                 .state('main.account.patients', {
                     url: '/patienter',
                     templateUrl: 'src/pages/Account/Patients/patients.html',
-                    controller : 'PatientsController'
+                    controller : 'PatientsController',
+                    params: {
+                        restoreFilters: ''
+                    }
                 })
 
                 .state('main.account.patients2', {
@@ -275,7 +278,10 @@ angular.module('ndrApp', [
                 .state('main.account.patient', {
                     url: '/patient/:patientID',
                     templateUrl: 'src/pages/Account/Patients/patient_profile.html',
-                    controller : 'PatientController'
+                    controller : 'PatientController',
+                    params: {
+                        backToSearchVisible: ''
+                    }
                 })
 
                 /* Generic pages */

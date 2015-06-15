@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
     .controller('PatientsController', [
-                 '$scope', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout',
-        function ($scope,   $stateParams,   $state,   $log,   $filter,   dataService,   $timeout) {
+                 '$scope', '$state', '$stateParams', '$log', '$filter', 'dataService', '$timeout',
+        function ($scope,   $state,   $stateParams,   $log,   $filter,   dataService,   $timeout) {
 
             $log.debug('PatientsController: Init');
             var filterSettings = {
@@ -12,6 +12,10 @@ angular.module('ndrApp')
                 },
                 isLoadingSubjects = false,
                 filterDisplayIndex;
+
+            // If we don't want to restore filters, unset them
+            if (!$stateParams.restoreFilters) dataService.setSearchFilters();
+            console.log($stateParams);
 
             var allSubjects;
 
@@ -224,7 +228,9 @@ angular.module('ndrApp')
             $scope.filters = [];
             dataService.getContactAttributes(filterSettings)
                 .then(function (filters) {
-                    var required;
+                    var selected,
+                        preselected = dataService.getSearchFilters();
+                        console.log(preselected);
 
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
                     _.each(filters, function (filter) {
@@ -253,40 +259,51 @@ angular.module('ndrApp')
                         }
 
 
-                        // If the filter is required choose it instantly
-                        filter.isChosen = $scope.isRequired(filter.columnName);
+                        // If the filter is required or preselected choose it instantly
+                        filter.isChosen = $scope.isRequired(filter.columnName) || _.keys(preselected.values).indexOf(filter.columnName) !== -1;
 
                         $scope.selectedFilters[filter.columnName] = {};
 
-                        // Setup min and max for range slider
-                        // We need that for setting up the range slider directive
-                        if (_.isNumber(filter.maxValue)) {
-                            $scope.selectedFilters[filter.columnName].min = filter.minValue || 0;
-                            $scope.selectedFilters[filter.columnName].max = filter.maxValue;
-                        }
 
-                        if (filter.domain.name === 'Date') {
-                            $scope.selectedFilters[filter.columnName].from = {
-                                date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
-                                opened : false
-                            };
-                            $scope.selectedFilters[filter.columnName].to = {
-                                date: $filter('date')(new Date(), $scope.format),
-                                opened : false
-                            };
-                        }
+                        // If the filter was preselected, use those values
+                        if (_.keys(preselected.values).indexOf(filter.columnName) !== -1) {
+                            $scope.selectedFilters[filter.columnName] = preselected.values[filter.columnName];
 
+                        // Otherwise fill out some defaults
+                        } else {
+                            // Setup min and max for range slider
+                            // We need that for setting up the range slider directive
+                            if (_.isNumber(filter.maxValue)) {
+                                $scope.selectedFilters[filter.columnName].min = filter.minValue || 0;
+                                $scope.selectedFilters[filter.columnName].max = filter.maxValue;
+                            }
+
+                            if (filter.domain.name === 'Date') {
+                                $scope.selectedFilters[filter.columnName].from = {
+                                    date: $filter('date')(new Date(new Date() - dateOffset), $scope.format),
+                                    opened : false
+                                };
+                                $scope.selectedFilters[filter.columnName].to = {
+                                    date: $filter('date')(new Date(), $scope.format),
+                                    opened : false
+                                };
+                            }
+                        }
                     });
 
-                    // Make sure that required filters are always first in the list
-                    required = _.remove(filters, 'isChosen');
-                    // Add display order for the required
-                    required = _.map(required, function (req, reqIndex) { req.displayOrder = reqIndex; return req; });
+                    // Make sure that selected filters are always first in the list
+                    selected = _.remove(filters, 'isChosen');
+                    // Add display order for the selected
+                    selected = _.map(selected, function (sel, selIndex) {
+                        var preselectedFilter = _.find(preselected.filters, {columnName: sel.columnName});
+                        sel.displayOrder = preselectedFilter ? preselectedFilter.displayOrder : selIndex;
+                        return sel;
+                    });
                     // Update filterDisplayIndex used for ordering chosen filters
-                    filterDisplayIndex = required.length;
+                    filterDisplayIndex = selected.length;
 
                     // Also make sure they are sorted by API sequence
-                    filters = required.concat(_.sortBy(filters, 'sequence'));
+                    filters = _.sortBy(selected.concat(filters), 'sequence');
 
 
                     // Set the available filters
@@ -303,11 +320,14 @@ angular.module('ndrApp')
             // Whenever the filter is chosen from the list of available filters
             // update the list of chosen filters
             $scope.$watch('chosenFilter', function (name) {
-                var filter;
+                var filter, alreadySelected;
+
                 if (!name) return;
 
-                // Diabetes type and HbA1c are alwyas preselected and always at the top of the list
-                if (name !== 'd' && name !== 'hb1ac') {
+                alreadySelected = $scope.isDisplayed(name);
+
+                // Select the filter, only if it's not already displayed
+                if (!alreadySelected) {
                     filter = _.find($scope.filters, {columnName: name});
                     if (filter) {
                         filter.isChosen = true;
@@ -321,7 +341,10 @@ angular.module('ndrApp')
                 $scope.highlightedFilter = name;
                 $timeout(function () { $scope.highlightedFilter = null; }, 1000);
 
-                loadSubjects();
+                dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
+
+                // Load subjects only if it's a new filter
+                if (!alreadySelected) loadSubjects();
             });
 
             $scope.isDisplayed = function (name) {
@@ -368,9 +391,11 @@ angular.module('ndrApp')
                     }
                 });
 
+                dataService.setSearchFilters('values', selectedFilters);
+
 
                 // Check additional filters
-                _.each(selectedFilters, function (filter, prop, list) {
+                _.each(selectedFilters, function (filter, prop) {
 
                     if(_.isEmpty(filter)) return;
 

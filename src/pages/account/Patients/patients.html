@@ -235,7 +235,7 @@
                         <td once-text="subject.snr"></td>
                         <td once-text="subject.contactDate | date:'yyyy-MM-dd'"></td>
                         <td ng-repeat="f in filters | filter:{isChosen:true}" once-text='lookupName(f, subject[f.columnName])'></td>
-                        <td><a target="_blank" once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
+                        <td><a ui-sref="main.account.patient({patientID: subject.subjectID, backToSearchVisible: 'yes'})" class="Button Button--info Button--small">Visa profil</a></td>
                     </tr>
                 </tbody>
             </table>

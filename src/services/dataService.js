@@ -245,6 +245,24 @@ angular.module('ndrApp')
         };
 
 
+        // Store the state of the selected filters for the search list
+        // so the user is able to come back to the page from the user profile
+        // and get the same state of the search list
+        var selectedSearchFilters = {};
+        this.setSearchFilters = function (prop, value) {
+            // If no prop and value, reset the object
+            if (!prop && !value) {
+                selectedSearchFilters = {};
+            } else {
+                selectedSearchFilters[prop] = value;
+            }
+        };
+
+        this.getSearchFilters = function (prop) {
+            return prop ? selectedSearchFilters[prop] : selectedSearchFilters;
+        };
+
+
         this.bootstrap = function () {
 
             var useStaticUnits = true;
