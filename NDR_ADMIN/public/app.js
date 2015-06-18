@@ -3,6 +3,8 @@
     "use strict";
 
     var app = angular.module('myApp', ['ng-admin']);
+	var baseApiUrl = 'https://ndr.registercentrum.se/api/';
+	//var baseApiUrl = 'https://w8-038.rcvg.local/api/' Henrik local development
 	
     app.directive('customPostLink', ['$location', function ($location) {
         return {
@@ -20,9 +22,24 @@
         };
     }]);
 	
+	app.controller('adminCtrl', function adminCtrl($scope, $http)
+	{
+		$scope.isAdmin = null;
+		
+		var dfd = $http.get(baseApiUrl + 'me')	
+		
+		dfd.success(function(data, status, headers, config) {
+			$scope.isAdmin = data.isAdministrator;
+		})
+		.error(function(data, status, headers, config) {
+			$scope.isAdmin = false;
+		});
+	
+	});
+	
     app.config(function (NgAdminConfigurationProvider, RestangularProvider, $stateProvider) {
         var nga = NgAdminConfigurationProvider;
-
+		
         function truncate(value) {
             
 			if(value === '')
@@ -38,8 +55,7 @@
         RestangularProvider.setDefaultRequestParams({APIKey: 'jEGPvHoP7G4eMkjLQwE5'});
 				
         var app = nga.application('NDR Admin') // application main title
-			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
-            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
+			.baseApiUrl(baseApiUrl);
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -145,10 +161,12 @@
              .fields([
 				nga.field('unitID').label('Enhets-ID').map(truncate),
 				nga.field('unitName').label('Enhetsnamn').map(truncate),
-				nga.field('firstName').label('Förnamn').map(truncate),
-				nga.field('lastName').label('Efternamn').map(truncate),
-				nga.field('hsaid').label('HSAID').map(truncate), 
-				nga.field('statusText').label('Status').map(truncate)
+				nga.field('firstName').label('Anv. Förnamn').map(truncate),
+				nga.field('lastName').label('Anv. Efternamn').map(truncate),
+				nga.field('statusText').label('Status').map(truncate),
+				nga.field('unitContactPerson').label('Enhetskontakt').map(truncate), 
+				nga.field('unitContactPhone').label('Telefon').map(truncate), 
+				nga.field('unitContactEmail').label('E-post').map(truncate)
              ])
 			.filters([
 				nga.field('q').label('Sök'),
@@ -449,6 +467,9 @@
 			  elements[i].lastName=elements[i].user.lastName;
 			  elements[i].unitID=elements[i].unit.unitID;
 			  elements[i].unitName=elements[i].unit.name;
+			  elements[i].unitContactPerson=elements[i].unit.contactPerson;
+			  elements[i].unitContactPhone=elements[i].unit.phone;
+			  elements[i].unitContactEmail=elements[i].unit.contactPersonEmail;
 			  elements[i].statusText=elements[i].status.name;
 			}
 			//console.log(elements);
