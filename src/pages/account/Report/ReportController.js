@@ -107,7 +107,7 @@ angular.module('ndrApp')
 
             $scope.showPumpProblem = $scope.contactModel.pumpProblemKeto || $scope.contactModel.pumpProblemHypo || $scope.contactModel.pumpProblemSkininfection || $scope.contactModel.pumpProblemSkinreaction;
             $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReason > 0;
-            $scope.checkContactDate();
+            $scope.contactDateChanged();
         };
 
 
