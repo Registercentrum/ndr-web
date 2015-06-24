@@ -3,6 +3,8 @@
     "use strict";
 
     var app = angular.module('myApp', ['ng-admin']);
+	var baseApiUrl = 'https://ndr.registercentrum.se/api/';
+	//var baseApiUrl = 'https://w8-038.rcvg.local/api/' Henrik local development
 	
     app.directive('customPostLink', ['$location', function ($location) {
         return {
@@ -20,9 +22,24 @@
         };
     }]);
 	
+	app.controller('adminCtrl', function adminCtrl($scope, $http)
+	{
+		$scope.isAdmin = null;
+		
+		var dfd = $http.get(baseApiUrl + 'me')	
+		
+		dfd.success(function(data, status, headers, config) {
+			$scope.isAdmin = data.isAdministrator;
+		})
+		.error(function(data, status, headers, config) {
+			$scope.isAdmin = false;
+		});
+	
+	});
+	
     app.config(function (NgAdminConfigurationProvider, RestangularProvider, $stateProvider) {
         var nga = NgAdminConfigurationProvider;
-
+		
         function truncate(value) {
             
 			if(value === '')
@@ -38,8 +55,7 @@
         RestangularProvider.setDefaultRequestParams({APIKey: 'jEGPvHoP7G4eMkjLQwE5'});
 				
         var app = nga.application('NDR Admin') // application main title
-			//.baseApiUrl('https://w8-038.rcvg.local/api/'); // main API endpoint, Henrik utveckling
-            .baseApiUrl('https://ndr.registercentrum.se/api/'); // main API endpoint
+			.baseApiUrl(baseApiUrl);
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -73,6 +89,9 @@
 		var integrationSystems = nga.entity('IntegrationSystem')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
+		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
 		var unitTypes = nga.entity('UnitType')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
@@ -87,6 +106,22 @@
 			.addEntity(news)
 			.addEntity(publications)
 			.addEntity(contactAttributes);
+			
+			
+		//Menu
+		app.menu().getChildByTitle('Enheter')
+			.icon('<span class="glyphicon glyphicon-home"></span>');
+		app.menu().getChildByTitle('Användare')
+			.icon('<span class="glyphicon glyphicon-user"></span>');
+		app.menu().getChildByTitle('Användarkonton')
+			.icon('<span class="glyphicon glyphicon-erase"></span>');
+		app.menu().getChildByTitle('Nyheter')
+			.icon('<span class="glyphicon glyphicon-file"></span>');
+		app.menu().getChildByTitle('Forskningsprojekt')
+			.icon('<span class="glyphicon glyphicon-book"></span>');
+		app.menu().getChildByTitle('Metavariabler')
+			.icon('<span class="glyphicon glyphicon-list"></span>');
+
 		
 		// ****** METAVARIABLER ******
 		contactAttributes.listView()
@@ -126,10 +161,12 @@
              .fields([
 				nga.field('unitID').label('Enhets-ID').map(truncate),
 				nga.field('unitName').label('Enhetsnamn').map(truncate),
-				nga.field('firstName').label('Förnamn').map(truncate),
-				nga.field('lastName').label('Efternamn').map(truncate),
-				nga.field('hsaid').label('HSAID').map(truncate), 
-				nga.field('statusText').label('Status').map(truncate)
+				nga.field('firstName').label('Anv. Förnamn').map(truncate),
+				nga.field('lastName').label('Anv. Efternamn').map(truncate),
+				nga.field('statusText').label('Status').map(truncate),
+				nga.field('unitContactPerson').label('Enhetskontakt').map(truncate), 
+				nga.field('unitContactPhone').label('Telefon').map(truncate), 
+				nga.field('unitContactEmail').label('E-post').map(truncate)
              ])
 			.filters([
 				nga.field('q').label('Sök'),
@@ -171,10 +208,10 @@
 			.title('Användare')
 			.limit(5)
 			.fields([
-				nga.field('userID').label('ID').order(0),
-				nga.field('hsaid').label('HSAID').map(truncate).order(1),
-				nga.field('firstName').label('Förnamn').map(truncate).order(1),
-				nga.field('lastName').label('Efternamn').map(truncate).order(1)
+				nga.field('userID').label('ID'),
+				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('firstName').label('Förnamn').map(truncate),
+				nga.field('lastName').label('Efternamn').map(truncate)
 			]);		
 		
 		users.listView()
@@ -221,8 +258,8 @@
             .title('Enheter')
 			.limit(10)
             .fields([
-                nga.field('unitID').label('NDR-ID').order(0),
-                nga.field('name').label('Enhetsnamn').map(truncate).order(1)
+                nga.field('unitID').label('NDR-ID'),
+                nga.field('name').label('Enhetsnamn').map(truncate)
             ]);
 			
         units.listView()
@@ -230,12 +267,12 @@
 			.sortField('name')
 			.perPage(50)
             .fields([
-                nga.field('unitID').label('NDR-ID').order(0),
-                nga.field('name').label('Enhetsnamn').map(truncate).order(1),
-				nga.field('hsaid').label('HSAID').map(truncate).order(2),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate).order(2),
-				nga.field('phone').label('Telefon').map(truncate).order(2),
+                nga.field('unitID').label('NDR-ID'),
+                nga.field('name').label('Enhetsnamn').map(truncate),
+				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
+				nga.field('phone').label('Telefon').map(truncate)
             ])
             .listActions(['edit', 'delete'])
 			.filters([
@@ -252,7 +289,7 @@
 			]);
 
         units.creationView()
-			.title('Ny')
+			.title('Ny enhet')
             .fields([
                 nga.field('name').label('Enhetsnamn'),
 				nga.field('isActive', 'boolean').label('Aktiv'),
@@ -271,8 +308,8 @@
                 nga.field('postalCode').label('Postadress'),
                 nga.field('postalLocation').label('Postort'),
                 nga.field('phone').label('Telefon'),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate).order(2),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate).order(2),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
                 nga.field('senderID').label('Sänd-ID'),
                 nga.field('manager').label('Verksamhetschef'),
 				nga.field('comment','text').label('Kommentar'),
@@ -280,12 +317,16 @@
 					.label('Överföringssystem')
 					.targetEntity(integrationSystems)
 					.targetField(nga.field('name')),
+				nga.field('optionalIDs', 'reference_many')
+					.label('Valbara frågor')
+					.targetEntity(contactOptionalMeta)
+					.targetField(nga.field('question')),
 				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false)
             ]);
 		
         units.editionView()
 			.title('Uppdatera enhet')
-			//.description('"{{ entry.values.name }}"')
+			.description('{{ entry.values.name }}')
             .fields([
                 //new Field('newsID'),
                 units.creationView().fields()
@@ -296,17 +337,16 @@
             .title('Nyheter')
 			.limit(5)
             .fields([
-                nga.field('newsID').label('ID').order(0),
-                nga.field('title').label('Rubrik').map(truncate).order(1)
+                nga.field('newsID').label('ID'),
+                nga.field('title').label('Rubrik').map(truncate)
             ]);
 
         news.listView()
             .title('Nyheter')
 			.sortField('priority')
-            // .order(1) // display the comment panel second in the dashboard
             .fields([
-                nga.field('newsID').label('ID').order(0),
-                nga.field('title').label('Rubrik').map(truncate).order(1),
+                nga.field('newsID').label('ID'),
+                nga.field('title').label('Rubrik').map(truncate),
                 nga.field('isInternal','boolean').label('Intern'),
                 nga.field('publishedFrom', 'date').label('Från'),
 				nga.field('publishedTo', 'date').label('Till')
@@ -336,6 +376,7 @@
                 nga.field('publishedTo', 'date')
                     .label('Publicerad till')
 					.format('yyyy-MM-dd'), // preset fields in creation view with defaultValue
+				nga.field('isInternal','boolean').label("Intern?"),
 				nga.field('categoryIDs', 'reference_many')
 					.label('Kategorier')
 					.targetEntity(newsCategories) // the tag entity is defined later in this file
@@ -343,10 +384,9 @@
                 nga.field('author').label('Av'),
                 nga.field('title').label('Titel'),
                 nga.field('image').label('Bild'),
+				nga.field('excerpt','text').label('Ingress'),
                 nga.field('body','wysiwyg').label('Brödtext'),
-                nga.field('excerpt','text').label('Sammanfattning'),
-                nga.field('priority').label('Prioritet?'),
-                nga.field('isInternal','boolean').label("Intern?")
+                nga.field('priority').label('Prioritet?')
             ]);
 		
         news.editionView()
@@ -371,15 +411,15 @@
              .title('Forskningsprojekt')
 			 .limit(5)
              .fields([
-                 nga.field('id').label('ID').order(0),
-                 nga.field('name').map(truncate).order(1)
+                 nga.field('id').label('ID'),
+                 nga.field('name').map(truncate)
              ]);
 
         publications.listView()
              .title('Forskningsprojekt')
              .fields([
-                 nga.field('id').label('ID').order(0),
-                 nga.field('name').label('Titel').map(truncate).order(1)
+                 nga.field('id').label('ID'),
+                 nga.field('name').label('Titel').map(truncate)
              ])
 			.filters([
 				nga.field('q').label('Sök'),
@@ -427,6 +467,9 @@
 			  elements[i].lastName=elements[i].user.lastName;
 			  elements[i].unitID=elements[i].unit.unitID;
 			  elements[i].unitName=elements[i].unit.name;
+			  elements[i].unitContactPerson=elements[i].unit.contactPerson;
+			  elements[i].unitContactPhone=elements[i].unit.phone;
+			  elements[i].unitContactEmail=elements[i].unit.contactPersonEmail;
 			  elements[i].statusText=elements[i].status.name;
 			}
 			//console.log(elements);

@@ -1,4 +1,14 @@
 <div class="container">
+  <div ng-show="accountModel.activeAccount" class="row">
+    <div class="col-md-12">
+      <div class="Panel ServicesShortcuts">
+        <span>Du har blivit automatiskt inloggad. Genväger till våra e-tjänster:</span>
+        <a ui-sref="main.account.report" class="Button Button--default">Rapportera</a>
+        <a ui-sref="main.account.patients" class="Button Button--default">Söklista</a>
+        <a ui-sref="main.account.patient" class="Button Button--default">Petientprofil</a>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-8">
@@ -19,9 +29,7 @@
                 <span class="Intro-content-text-partial">med diabetes?</span>
 
                   <div class="" style="margin-top: 50px;">
-
-                    <select model="{}" autocomplete class="Autocomplete Autocomplete--large Autocomplete--white Autocomplete--searchIcon"></select>
-
+                    <select model="model.autocompleteModel"  autocomplete class="Autocomplete Autocomplete--large Autocomplete--white Autocomplete--searchIcon"></select>
                   </div>
               </h1>
 

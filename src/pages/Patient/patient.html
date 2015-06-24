@@ -37,8 +37,8 @@
                 <div class="PostalCodeSearch">
                     <input type="text" class="form-control PostalCodeSearch-input" ng-model="postalCode" placeholder="Ditt postnummer">
                     <p ng-if="(postalCode.length && !filteredUnits.length) || triedFuzzy" class="PostalCodeSearch-empty">
-                        Inga diabetesvården matcha denna postnummer.
-                        <span ng-if="fuzzySuccess && filteredUnits.length">Dessa finns i närheten.</span>
+                        Det finns inga enheter i detta postnummer.
+                        <span ng-if="fuzzySuccess && filteredUnits.length">Dessa enheter finns i närheten.</span>
                     </p>
                     <ul class="PostalCodeSearch-list" ng-show="filteredUnits.length">
                         <li ng-repeat="unit in filteredUnits" class="PostalCodeSearch-list-item clearfix" ng-class-odd="'PostalCodeSearch-list-item--odd'">

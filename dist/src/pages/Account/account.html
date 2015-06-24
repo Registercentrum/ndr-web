@@ -1,60 +1,36 @@
 <div class="container">
-
     <div class="row">
-
         <div class="col-md-2 NavbarVertical-container">
-
             <ul class="NavbarVertical nav nav-pills nav-stacked" style="width: 100%">
-
                 <li ui-sref="main.account.home" ui-sref-active="active" class="NavbarVertical-item">
                     <a ui-sref="main.account.home" class="NavbarVertical-item-link">
                         <span class="NavbarVertical-item-icon"><i style="font-size: 50px" class="fa fa-icon_heart"></i></span></span>
                         <span class="NavbarVertical-item-link-name">Översikt</span>
                     </a>
                 </li>
-
                 <li ui-sref="main.account.report" ui-sref-active="active" class="NavbarVertical-item">
                     <a ui-sref="main.account.report" class="NavbarVertical-item-link">
                         <span class="NavbarVertical-item-icon"><i style="font-size: 60px" class="fa fa-icon_pen"></i></span></span>
                         <span class="NavbarVertical-item-link-name">Rapportera</span>
                     </a>
-
                 </li>
-
                 <li ui-sref="main.account.patients" ui-sref-active="active" class="NavbarVertical-item">
-
                     <a ui-sref="main.account.patients" class="NavbarVertical-item-link">
                         <span class="NavbarVertical-item-icon"><i style="font-size: 50px" class="fa fa-magnifying-glass"></i></span>
                         <span class="NavbarVertical-item-link-name">Söklista</span>
                     </a>
-
                 </li>
-
-
-
                 <li ui-sref="main.account.patient" ui-sref-active="active" class="NavbarVertical-item">
-
-                    <a ui-sref="main.account.patients" class="NavbarVertical-item-link">
+                    <a ui-sref="main.account.patient" class="NavbarVertical-item-link">
                         <span class="NavbarVertical-item-icon"><i style="font-size: 50px" class="fa fa-icon_user"></i></span></span>
-
                         <span class="NavbarVertical-item-link-name">Patientprofil</span>
                     </a>
-
                 </li>
-
-
             </ul>
-
-
         </div>
-
 
         <div class="col-md-10">
-
             <div ui-view></div>
-
         </div>
-
     </div>
-
 </div>

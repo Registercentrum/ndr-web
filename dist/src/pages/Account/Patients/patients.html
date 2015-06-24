@@ -88,24 +88,34 @@
             </div>
 
             <!-- Additional filtering -->
-            <div class="MultiFilter-row" ng-repeat="(key, filter) in filters | orderBy: 'displayOrder'" ng-if="isDisplayed(filter.columnName)">
+            <div
+                class="MultiFilter-row"
+                ng-repeat="(key, filter) in filters | orderBy: 'displayOrder'"
+                ng-if="isDisplayed(filter.columnName)"
+                ng-class="{highlighted:highlightedFilter === filter.columnName }">
                 <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3"><i class="fa fa-times fa-1x text-danger" ng-click="removeChosenFilter(filter.columnName)" ng-if="!isRequired(filter.columnName)"></i>
-                        {{ filter.question }}</div>
-                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                    <div class="MultiFilter-row-label col-sm-3">
+                        <i class="fa fa-times fa-1x text-danger" ng-click="removeChosenFilter(filter.columnName)" ng-if="!isRequired(filter.columnName)"></i>
+                        {{ filter.question }}
+                    </div>
+                    <div class="MultiFilter-row-filterKnobs col-sm-7">
 
                         <!-- If there is max value, display as range slider -->
-                        <div
+                        <div ng-if="filter.maxValue !== null">
+                            <div
                                 slider
-                                ng-if="filter.maxValue !== null"
                                 ng-model="selectedFilters[filter.columnName].min"
                                 ng-model-range="selectedFilters[filter.columnName].max"
                                 ng-disabled="selectedFilters[filter.columnName].undef"
                                 floor="{{ filter.minValue || 0 }}"
                                 ceiling="{{ filter.maxValue }}"
                                 class="RangeSlider">
+                            </div>
+                            <div class="MultiFilter-row-filterKnobs--inputs">
+                                <input type="number" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].min" ng-model-options="{debounce: 250}">
+                                <input type="number" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].max" ng-model-options="{debounce: 250}">
+                            </div>
                         </div>
-
 
 
                         <!-- If domain is enumerable and there are just two options, display them as radio buttons -->
@@ -181,7 +191,7 @@
 
 
                     </div>
-                    <div class="col-sm-3 form-inline">
+                    <div class="col-sm-2 form-inline">
                         <span class="checkbox"><label><input type="checkbox" ng-model="selectedFilters[filter.columnName].undef"> saknar värde</label></span>
                     </div>
                 </div>
@@ -191,7 +201,7 @@
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Valbar</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
-                        <select ng-options="filter.columnName as filter.question for filter in filters | filter: {isChosen: false}" ng-model="chosenFilter" name="" id="" class="form-control">
+                        <select ng-options="filter.columnName as filter.question for filter in filters" ng-model="chosenFilter" name="" id="" class="form-control">
                             <option value="">Välj sökkriterium</option>
                         </select>
                     </div>
@@ -225,7 +235,7 @@
                         <td once-text="subject.snr"></td>
                         <td once-text="subject.contactDate | date:'yyyy-MM-dd'"></td>
                         <td ng-repeat="f in filters | filter:{isChosen:true}" once-text='lookupName(f, subject[f.columnName])'></td>
-                        <td><a target="_blank" once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
+                        <td><a ui-sref="main.account.patient({patientID: subject.subjectID, backToSearchVisible: 'yes'})" class="Button Button--info Button--small">Visa profil</a></td>
                     </tr>
                 </tbody>
             </table>
