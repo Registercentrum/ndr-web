@@ -4,7 +4,7 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	var baseApiUrl = 'https://ndr.registercentrum.se/api/';
-	//var baseApiUrl = 'https://w8-038.rcvg.local/api/' Henrik local development
+	//var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
 	
     app.directive('customPostLink', ['$location', function ($location) {
         return {
@@ -141,19 +141,15 @@
                 nga.field('definition','text').label('Beskrivning'),
                 nga.field('helpNote','text').label('Hjälptext')
             ]);	
-		
-		
+			
+		contactAttributes.deletionView().disable();
+			
+			
 		// ****** ACCOUNTS ******
-        // accounts.dashboardView()
-             // .title('Användarkonton')
-			 // .limit(10)
-             // .fields([
-                 // nga.field('unitName').label('Enhetsnamn').map(truncate),
-				 // nga.field('hsaid').label('HSAID').map(truncate)
-             // ]);
 		var accountStatus = [{value: 1, label: 'Aktiv'},
 						{value: 2, label: 'Inväntar godkännande'},
-						{value: 3, label: 'Inaktivt'}];
+						{value: 3, label: 'Inkommen'},
+						{value: 9, label: 'Inaktivt'}];
 			 
         accounts.listView()
              .title('Användarkonton')
@@ -196,12 +192,10 @@
 					.targetEntity(roles) // the tag entity is defined later in this file
 					.targetField(nga.field('name')), // the field to be displayed in this list
 				nga.field('statusID', 'choice').label('Status')
-					.choices(
-						[{value: 1, label: 'Aktiv'},
-						{value: 2, label: 'Inväntar godkännande'},
-						{value: 3, label: 'Inaktivt'}])
+					.choices(accountStatus)
             ]);	
 		
+		accounts.deletionView().disable();
 		
 		// ****** USER ******
 		users.dashboardView()
@@ -222,6 +216,7 @@
 				nga.field('firstName').label('Förnamn'),
 				nga.field('lastName').label('Efternamn'),
 				nga.field('email','email').label('E-post'),
+				nga.field('lastActiveAt').label('Senast aktiv'),
 				nga.field('isKAS','boolean').label('KAS'),
 				nga.field('isCoordinator','boolean').label('Koordinator'),
 				nga.field('isAdministrator','boolean').label('Administratör')
@@ -253,6 +248,8 @@
                 users.creationView().fields()
             ]);	
 		
+		users.deletionView().disable();
+		
 		// ****** UNIT ******
         units.dashboardView()
             .title('Enheter')
@@ -274,7 +271,7 @@
 				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
 				nga.field('phone').label('Telefon').map(truncate)
             ])
-            .listActions(['edit', 'delete'])
+            .listActions(['edit'])
 			.filters([
 				nga.field('q').label('Sök'),
 				nga.field('countyCode', 'reference')
@@ -292,7 +289,7 @@
 			.title('Ny enhet')
             .fields([
                 nga.field('name').label('Enhetsnamn'),
-				nga.field('isActive', 'boolean').label('Aktiv'),
+				nga.field('isActive', 'boolean').label('Aktiv').defaultValue(true),
 				nga.field('countyCode', 'reference')
 					.label('Landsting')
 					.map(truncate) // Allows to truncate values in the select
@@ -304,23 +301,27 @@
 					.targetEntity(unitTypes) // Select a target Entity
 					.targetField(nga.field('name')), // Select a label Field
 				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('senderID').label('Sänd-ID'),
                 nga.field('street').label('Gatuadress'),
                 nga.field('postalCode').label('Postadress'),
                 nga.field('postalLocation').label('Postort'),
                 nga.field('phone').label('Telefon'),
 				nga.field('contactPerson').label('Kontaktperson').map(truncate),
 				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
-                nga.field('senderID').label('Sänd-ID'),
                 nga.field('manager').label('Verksamhetschef'),
 				nga.field('comment','text').label('Kommentar'),
+				nga.field('systemsText').label('Tidigare valda system').editable(false),
 				nga.field('systemIDs', 'reference_many')
 					.label('Överföringssystem')
 					.targetEntity(integrationSystems)
 					.targetField(nga.field('name')),
+				nga.field('optionalsText', 'text').label('Tidigare valda frågor').editable(false),
 				nga.field('optionalIDs', 'reference_many')
 					.label('Valbara frågor')
 					.targetEntity(contactOptionalMeta)
 					.targetField(nga.field('question')),
+				nga.field('lng').label('Longitud'),
+				nga.field('lat').label('Latitud'),
 				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false)
             ]);
 		
@@ -332,6 +333,8 @@
                 units.creationView().fields()
             ]);	
 			
+		units.deletionView().disable();
+		
 		// ****** NEWS ******
         news.dashboardView()
             .title('Nyheter')
@@ -475,6 +478,38 @@
 			//console.log(elements);
 			
 			return elements;
+		});
+		
+		RestangularProvider.addElementTransformer('Unit', false, function(element) {
+			
+			function GetTextString(array, property) {
+				
+				var defaultVal = 'Inga';
+				
+				if (!array)
+					return defaultVal;
+				
+				if (array.length == 0)
+					return defaultVal;
+				
+				var tempArray = [];
+				
+				for (var i = 0, len = array.length; i < len; i++)
+					tempArray.push(array[i][property]);
+				
+				if (tempArray.length>0)
+					return tempArray.join(', ');
+					
+				return defaultVal;
+				
+			};
+			
+			//add optionalsText
+			element.systemsText = GetTextString(element.systems, 'name');
+			element.optionalsText = GetTextString(element.optionals, 'question');
+			
+			return element;
+			
 		});
 		
         NgAdminConfigurationProvider.configure(app);
