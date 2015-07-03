@@ -1,5 +1,5 @@
 angular.module('ndrApp')
-    .controller('UnitController',['$scope', '$stateParams', 'dataService', '$q', function($scope, $stateParams, dataService, $q) {
+    .controller('UnitController',['$scope', '$stateParams', 'dataService', '$q', '$state', function($scope, $stateParams, dataService, $q, $state) {
 
         var id = parseFloat($stateParams.id);
         var autocompleteSelected = 'unit_' + id;
@@ -19,7 +19,74 @@ angular.module('ndrApp')
         dataService.getOne('unit', id).then(function (data){
             console.log('dd', data);
             $scope.model.unit = data;
+
+
+            function initialize() {
+                var mapOptions = {
+                    center: { lat: $scope.model.unit.lat, lng: $scope.model.unit.lng},
+                    zoom: 13,
+                };
+                var map = new google.maps.Map(document.getElementById('Google-Map'),
+                    mapOptions);
+
+                var sameCountyUnits = _.filter(dataService.data.units, function (d){
+                    return d.countyCode === $scope.model.unit.countyCode;
+                })
+
+                _.each(sameCountyUnits, function(obj){
+
+                    var latLong = new google.maps.LatLng(obj.lat, obj.lng);
+                    var contentString = '<h5>' + obj.name + '</h5>';
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    if($scope.model.unit.unitID === obj.unitID){
+                        
+                        var marker = new google.maps.Marker({
+                            position: latLong,
+                            title: obj.name,
+                        });
+                    }
+                    else{
+                        var marker = new google.maps.Marker({
+                            position: latLong,
+                            title: obj.name,
+                            icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                fillOpacity: 0.8,
+                                fillColor: '#fff',
+                                strokeOpacity: 1.0,
+                                strokeColor: '#E14274',
+                                strokeWeight: 4.0,
+                                scale: 5 //pixels
+                            }
+                        });
+                    }
+
+                    google.maps.event.addListener(marker, 'mouseover', function() {
+                        infowindow.open(map, this);
+                    });
+
+                    google.maps.event.addListener(marker, 'mouseout', function() {
+                        infowindow.close();
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function() {
+                        $state.go('main.profiles.unit', {id: obj.unitID });
+                    });
+
+                    marker.setMap(map);
+                })
+
+
+
+            }
+            initialize();
+
         });
+
 
 
 

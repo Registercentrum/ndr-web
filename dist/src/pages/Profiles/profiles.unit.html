@@ -13,7 +13,7 @@
     <div class="row">
 
         <div class="col-md-3 text-center">
-            <div class="Panel Panel--blue u-equalHeight">
+            <div class="Panel Panel--blue" style="height:280px; ">
                 <h1 class="Panel-title">{{ model.data.noPatients | number }} personer</h1>
                 <p class="Panel-subline">med diabetes under senaste 12 månaderna</p>
                   <div class="text-center" style="margin-top:15px;">
@@ -23,22 +23,27 @@
         </div>
 
         <div class="col-md-3 text-center">
-            <div class="Panel Panel--pink-text u-equalHeight">
+            <div class="Panel Panel--pink-text" style="height:280px; ">
                 <h1 class="Panel-title">Vårdenhetens medelvärde för HbA1c</h1>
                 <div line-chart model="model.data.trendhba1c"></div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="Panel u-equalHeight">
-                <h1 class="Panel-title">Om vårdenheten</h1>
-                <div>
-                    {{ model.unit.name }}
+            <div class="Panel" style="height:280px; padding: 0px">
+
+                <div class="" id="Google-Map" style="height: 60%; margin: 0; padding: 0;"></div>
+
+                <div style="padding: 10px;text-align: center">
+                    <div>
+                        <i class="fa fa-map-marker"></i>
+                            {{ model.unit.name }}
+                    </div>
+                    <div>
+                        {{ model.unit.street }}
+                    </div>
+                    <div> {{ model.unit.postalCode }} {{ model.unit.postalLocation }} </div>
                 </div>
-                <div>
-                    {{ model.unit.street }}
-                </div>
-                <div> {{ model.unit.postalCode }} {{ model.unit.postalLocation }} </div>
             </div>
         </div>
     </div>
