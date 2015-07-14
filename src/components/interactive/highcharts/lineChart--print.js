@@ -1,5 +1,5 @@
 angular.module('ndrApp')
-    .directive('lineChartPatientHba1c', [function() {
+    .directive('lineChartPrint', [function() {
 
         return {
             restrict: 'A',
@@ -16,7 +16,7 @@ angular.module('ndrApp')
 
                 var chart = jQuery('.chart-container', element).highcharts({
                         chart: {
-                            type: scope.type === 'basic' ? 'spline' : 'area',
+                            type: 'spline',
                             height : 180,
                            // width : 200,
                             marginTop : 20,
@@ -26,7 +26,7 @@ angular.module('ndrApp')
                             spacingLeft : 30,
 
                             style : {
-                                color: 'white'
+                                color: 'black'
                             }
                         },
                         title: {
@@ -53,8 +53,8 @@ angular.module('ndrApp')
                             lineColor: '#eee',
                             labels: {
                                 style: {
-                                    color: 'white',
-                                    fontSize : '10px'
+                                    color: 'black',
+                                    fontSize : '12px'
                                 }
                             },
                             minorTickLength: 0,
@@ -64,7 +64,7 @@ angular.module('ndrApp')
 
                         yAxis: {
                            gridLineWidth: 0.5,
-                           gridLineColor : '#eee',
+                           gridLineColor : '#666',
                            lineWidth: 0,
 
                             minorGridLineWidth: 0,
@@ -136,7 +136,7 @@ angular.module('ndrApp')
                         },
                         series: [{
                             //dashStyle: 'ShortDot',
-                            color : 'white',
+                            color : 'black',
                             name: 'Värde',
                             data : [{x: 1, y:10}, {x: 3, y:5}]
 

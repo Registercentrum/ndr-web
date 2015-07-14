@@ -5,5 +5,5 @@ angular.module('ndrApp')
     
             $scope.accountModel   = accountService.accountModel;
             $scope.accountHelpers = accountService.helpers;
-    
+
         }]);

@@ -32,17 +32,17 @@
         <div class="col-md-6">
             <div class="Panel" style="height:280px; padding: 0px">
 
-                <div class="" id="Google-Map" style="height: 60%; margin: 0; padding: 0;"></div>
+                <div class="" id="Google-Map" style="height: 80%; margin: 0; padding: 0;"></div>
 
-                <div style="padding: 10px;text-align: center">
+                <div style="padding: 5px 10px;text-align: center">
                     <div>
                         <i class="fa fa-map-marker"></i>
                             {{ model.unit.name }}
                     </div>
                     <div>
-                        {{ model.unit.street }}
+                        {{ model.unit.street }}, {{ model.unit.postalCode }} {{ model.unit.postalLocation }}
                     </div>
-                    <div> {{ model.unit.postalCode }} {{ model.unit.postalLocation }} </div>
+
                 </div>
             </div>
         </div>

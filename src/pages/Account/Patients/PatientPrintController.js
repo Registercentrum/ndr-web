@@ -78,7 +78,7 @@ angular.module('ndrApp')
 
             function populateTableData () {
                 var table = [],
-                    exluded = ['contactID', 'insertedAt', 'lastUpdatedAt', 'unitID'],
+                    included = ['contactDate', 'hba1c', 'weight', 'height'],
                     contacts, keys;
 
                 if (!$scope.subject) return false;
@@ -88,8 +88,8 @@ angular.module('ndrApp')
                 // Get tha keys for the table
                 keys = _.keys(contacts[0]);
 
-                // Filter exluded
-                keys = _.filter(keys, function (key) { return _.indexOf(exluded, key) === -1; });
+                // Filter included
+                keys = _.filter(keys, function (key) { return _.indexOf(included, key) !== -1; });
 
                 // Construct the table data
                 _.each(keys, function (key, keyIndex) {
@@ -147,7 +147,8 @@ angular.module('ndrApp')
 
                 $scope.model.data.trend.combinedLDLHDL = [{
                     //dashStyle: "ShortDot",
-                    color: 'rgba(89,153,218,1)',
+                    color: 'black',
+                    symbol : 'circle',
                     fillColor : {
                         linearGradient: {
                             x1: 0,
@@ -164,7 +165,8 @@ angular.module('ndrApp')
                     data: $scope.model.data.trend.ldl
                 }, {
                     //dashStyle: "ShortDot",
-                    color: 'rgba(26,188,156,1)',
+                    color: 'black',
+                    symbol : 'square',
                     fillColor : {
                         linearGradient: {
                             x1: 0,
@@ -183,7 +185,8 @@ angular.module('ndrApp')
 
                 $scope.model.data.trend.combinedCholesterol = [{
                     //dashStyle: "ShortDot",
-                    color: 'rgba(89,153,218,1)',
+                    color: 'black',
+                    symbol : 'circle',
                     fillColor : {
                         linearGradient: {
                             x1: 0,
@@ -201,7 +204,8 @@ angular.module('ndrApp')
                     data: $scope.model.data.trend.cholesterol
                 }, {
                     //dashStyle: "ShortDot",
-                    color: 'rgba(26,188,156,1)',
+                    color: 'black',
+                    symbol : 'square',
                     fillColor : {
                         linearGradient: {
                             x1: 0,
@@ -220,7 +224,8 @@ angular.module('ndrApp')
 
                 $scope.model.data.trend.combinedBp = [{
                     //dashStyle: "ShortDot",
-                    color: 'rgba(89,153,218,1)',
+                    color: 'black',
+                    symbol : 'circle',
                     fillColor : {
                         linearGradient: {
                             x1: 0,
@@ -233,11 +238,12 @@ angular.module('ndrApp')
                             [1, 'rgba(89,153,218,0.2)']
                         ]
                     },
-                    name: 'Värde',
+                    name: 'Systoliskt',
                     data: $scope.model.data.trend.bpSystolic
                 }, {
                     //dashStyle: "ShortDot",
-                    color: 'rgba(26,188,156,1)',
+                    color: 'black',
+                    symbol : 'square',
                     fillColor : {
                         linearGradient: {
                             x1: 0,
@@ -250,7 +256,7 @@ angular.module('ndrApp')
                             [1, 'rgba(26,188,156,0.2)']
                         ]
                     },
-                    name: 'Värde',
+                    name: 'Diastoliskt',
                     data: $scope.model.data.trend.bpDiastolic
                 }];
             }

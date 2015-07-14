@@ -311,7 +311,11 @@ angular.module('ndrApp', [
                     }
                 });
          }])
-        .run(['$rootScope', function($rootScope) {
+        .run(['$rootScope', '$state', function($rootScope, $state) {
+
+                $rootScope.is = function(name){
+                    return $state.is(name);
+                };
 
                 $rootScope.$on('$viewContentLoaded', function () {
 
