@@ -78,8 +78,47 @@ angular.module('ndrApp')
 
             function populateTableData () {
                 var table = [],
-                    included = ['contactDate', 'hba1c', 'weight', 'height'],
-                    contacts, keys;
+                    included = [
+                        'contactDate',
+                        'hba1c',
+                        'weight',
+                        'height',
+                        'bmi',
+                        'waist', //Midjemått cm
+                        'bpSystolic',
+                        'bpDiastolic',
+                        'cholesterol',
+                        'triglyceride',
+                        'hdl',
+                        'ldl',
+                        'microscopicProteinuria',
+                        'macroscopicProteinuria',
+                        'fundusExaminationDate',
+                        'footExamination',
+                        'footRiscCategory',
+                        'physicalActivity',
+                        'smokingHabit'
+
+                        //Blodtryck systoliskt
+                        //Blodtryck diastoliskt
+                        //Kolesterol  mmol/l
+                        //Triglycerider  mmol/l
+                        //HDL ("goda" kolesterolet) mmol/l
+                        //LDL ("onda" kolesterolet) mmol/l
+                        //Mikroalbuminuri
+                        //Makroalbuminuri
+                        //Datum för senaste ögonbottenundersökning
+                        //Datum för senaste fotundersökning
+                        //Riskkategori fot
+                        //Fysisk aktivitet
+                        //Rökvanor
+                    ],
+
+
+
+
+
+                contacts, keys;
 
                 if (!$scope.subject) return false;
 
