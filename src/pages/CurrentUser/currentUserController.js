@@ -2,7 +2,7 @@
 
 angular.module('ndrApp')
     .controller('CurrentUserController',
-                ['$scope', '$http', 'accountService', 'dataService', 'APIconfigService',
+    ['$scope', '$http', 'accountService', 'dataService', 'APIconfigService',
         function ($scope,   $http,   accountService,   dataService,   APIconfigService) {
 
             console.log('CurrentUserController: Init', accountService.accountModel.user);
@@ -27,16 +27,14 @@ angular.module('ndrApp')
                     $scope.resetAccountErrors();
 
                     unitSearchString = unitSearchString.toLowerCase();
-					
-                    if (unitSearchString != '') {
-					
+
+                    if (!unitSearchString) {
                         $scope.filteredUnits = _.take(_.filter(units, function (d) {
-							return (d.name.toLowerCase().indexOf(unitSearchString) > -1);
+                            return d.name.toLowerCase().indexOf(unitSearchString) > -1;
                         }), 20);
                     } else {
                         $scope.filteredUnits = [];
                     }
-
                 });
             });
 
@@ -102,47 +100,30 @@ angular.module('ndrApp')
 
 
             $scope.applyUnit = function (unitID) {
-				var reActivateAccount = null;
-				var accountModel;
-				var httpConfig;
-				
                 $scope.resetAccountErrors();
 
                 angular.forEach($scope.user.accounts, function (account) {
-                    if (account.unit.unitID === unitID && account.status.id === 1) {
+                    if (account.unit.unitID === unitID) {
                         $scope.newAccountError.push('Du har redan ett konto på denna enhet.');
-					} else if (account.unit.unitID === unitID && (account.status.id === 2 || account.status.id === 3)){
-                        $scope.newAccountError.push('En kontobegäran är redan under behandling för dig på denna enhet.');
-                    } else if (account.unit.unitID === unitID && account.status.id === 9) { //inaktivt konto finns, skall återaktiveras
-						reActivateAccount = account;
-					}
+                        window.alert('Du har redan ett konto på denna enhet.');
+                    }
                 });
-				
-				if ($scope.newAccountError.length) return;
-				
-				if (reActivateAccount != null) {
-					httpConfig = {
-						method: 'PUT',
-						data  : {
-							statusID: 3
-						},
-						url   : APIconfigService.baseURL + 'Account/' + reActivateAccount.accountID + '?APIKey=' + APIconfigService.APIKey
-					};
-				} else {
-					accountModel = {
-						unitID  : unitID,
-						userID  : $scope.user.userID,
-						statusID: 3,
-						roleIDs : []
-					};
 
-					var httpConfig = {
-						method: 'POST',
-						data  : accountModel,
-						url   : APIconfigService.baseURL + 'Account/?APIKey=' + APIconfigService.APIKey
-					};
-				};
-				
+                if ($scope.newAccountError.length) return;
+
+                var accountModel = {
+                    unitID  : unitID,
+                    userID  : $scope.user.userID,
+                    statusID: 2,
+                    roleIDs : []
+                };
+
+                var httpConfig = {
+                    method: 'POST',
+                    data  : accountModel,
+                    url   : APIconfigService.baseURL + 'Account/?APIKey=' + APIconfigService.APIKey
+                };
+
                 $http(httpConfig)
                     .success(function (data) {
                         $scope.user = data;
@@ -156,6 +137,6 @@ angular.module('ndrApp')
                         } else {
                             $scope.newAccountError.push('Ett okänt fel inträffade. Var god försök igen senare.');
                         }
-                });
+                    });
             };
         }]);
