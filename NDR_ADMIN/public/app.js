@@ -27,7 +27,6 @@
 		$scope.isAdmin = null;
 		
 		var dfd = $http.get(baseApiUrl + 'me')	
-		
 		dfd.success(function(data, status, headers, config) {
 			$scope.isAdmin = data.isAdministrator;
 		})
@@ -37,7 +36,8 @@
 	
 	});
 	
-    app.config(function (NgAdminConfigurationProvider, RestangularProvider, $stateProvider) {
+    /*app.config(function (NgAdminConfigurationProvider, RestangularProvider) {*/
+	app.config(['NgAdminConfigurationProvider', 'RestangularProvider', function (NgAdminConfigurationProvider, RestangularProvider) {
         var nga = NgAdminConfigurationProvider;
 		
         function truncate(value) {
@@ -56,6 +56,12 @@
 				
         var app = nga.application('NDR Admin') // application main title
 			.baseApiUrl(baseApiUrl);
+			
+		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var integrationSystems = nga.entity('IntegrationSystem')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -86,12 +92,6 @@
 		var roles = nga.entity('Role')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
-		var integrationSystems = nga.entity('IntegrationSystem')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
-		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
 		var unitTypes = nga.entity('UnitType')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
 			
@@ -107,20 +107,6 @@
 			.addEntity(publications)
 			.addEntity(contactAttributes);
 			
-			
-		//Menu
-		app.menu().getChildByTitle('Enheter')
-			.icon('<span class="glyphicon glyphicon-home"></span>');
-		app.menu().getChildByTitle('Användare')
-			.icon('<span class="glyphicon glyphicon-user"></span>');
-		app.menu().getChildByTitle('Användarkonton')
-			.icon('<span class="glyphicon glyphicon-erase"></span>');
-		app.menu().getChildByTitle('Nyheter')
-			.icon('<span class="glyphicon glyphicon-file"></span>');
-		app.menu().getChildByTitle('Forskningsprojekt')
-			.icon('<span class="glyphicon glyphicon-book"></span>');
-		app.menu().getChildByTitle('Metavariabler')
-			.icon('<span class="glyphicon glyphicon-list"></span>');
 
 		
 		// ****** METAVARIABLER ******
@@ -231,6 +217,7 @@
             .fields([
 				nga.field('userID').label('Användar-ID').editable(false).map(truncate),
 				nga.field('hsaid').label('HSAID').editable(false).map(truncate),
+				nga.field('socialNumber').attributes({ placeholder: 'krävs för inloggning med mobilt bank-ID' }).label('Personnummer').map(truncate),
                 nga.field('firstName').label('Förnamn').map(truncate),
 				nga.field('lastName').label('Efternamn').map(truncate),
 				nga.field('workTitle').label('Titel').map(truncate),
@@ -512,6 +499,20 @@
 			
 		});
 		
+		//Menu
+		app.menu().getChildByTitle('Enheter')
+			.icon('<span class="glyphicon glyphicon-home"></span>');
+		app.menu().getChildByTitle('Användare')
+			.icon('<span class="glyphicon glyphicon-user"></span>');
+		app.menu().getChildByTitle('Användarkonton')
+			.icon('<span class="glyphicon glyphicon-erase"></span>');
+		app.menu().getChildByTitle('Nyheter')
+			.icon('<span class="glyphicon glyphicon-file"></span>');
+		app.menu().getChildByTitle('Forskningsprojekt')
+			.icon('<span class="glyphicon glyphicon-book"></span>');
+		app.menu().getChildByTitle('Metavariabler')
+			.icon('<span class="glyphicon glyphicon-list"></span>');
+		
         NgAdminConfigurationProvider.configure(app);
-    });
+    }]);
 }());
