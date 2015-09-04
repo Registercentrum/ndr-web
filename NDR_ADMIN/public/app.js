@@ -132,6 +132,10 @@
 					.label('Visa inaktiva')
 			]);
 
+			
+		var ownership = [{value: 1, label: 'Offentlig'},
+						{value: 2, label: 'Privat'}];	
+			
         units.creationView()
 			.title('Ny enhet')
             .fields([
@@ -147,6 +151,9 @@
 					.map(truncate) // Allows to truncate values in the select
 					.targetEntity(unitTypes) // Select a target Entity
 					.targetField(nga.field('name')), // Select a label Field
+				nga.field('ownershipID', 'choice')
+					.label('Ägarskap')
+					.choices(ownership),
 				nga.field('hsaid').label('HSAID').map(truncate),
 				nga.field('senderID').label('Sänd-ID'),
                 nga.field('street').label('Gatuadress'),
@@ -156,20 +163,18 @@
 				nga.field('contactPerson').label('Kontaktperson').map(truncate),
 				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
                 nga.field('manager').label('Verksamhetschef'),
-				nga.field('comment','text').label('Kommentar'),
-				nga.field('systemsText').label('Tidigare valda system').editable(false),
 				nga.field('systemIDs', 'reference_many')
 					.label('Överföringssystem')
 					.targetEntity(integrationSystems)
 					.targetField(nga.field('name')),
-				nga.field('optionalsText', 'text').label('Tidigare valda frågor').editable(false),
 				nga.field('optionalIDs', 'reference_many')
 					.label('Valbara frågor')
 					.targetEntity(contactOptionalMeta)
 					.targetField(nga.field('question')),
 				nga.field('lng').label('Longitud'),
 				nga.field('lat').label('Latitud'),
-				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false)
+				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false),
+				nga.field('comment','text').label('Kommentar')
             ]);
 		
         units.editionView()
@@ -254,7 +259,8 @@
 					.label('Roller')
 					.targetEntity(roles) // the tag entity is defined later in this file
 					.targetField(nga.field('name')), // the field to be displayed in this list
-				nga.field('statusID', 'choice').label('Status')
+				nga.field('statusID', 'choice')
+					.label('Status')
 					.choices(accountStatus)
             ]);	
 		
@@ -438,7 +444,8 @@
 				nga.field('issue').label('Upplaga'),
 				nga.field('pages').label('Sidor'),
 				nga.field('image').label('Bild'),
-				nga.field('ethicsApprovalStatusID', 'choice').label('Etikprövat')
+				nga.field('ethicsApprovalStatusID', 'choice')
+					.label('Etikprövat')
 					.choices(ethicsApprovalStatus),
 				nga.field('pubMedURL').label('Länk till pubmed')
 			]);
@@ -470,7 +477,7 @@
 			return elements;
 		});
 		
-		RestangularProvider.addElementTransformer('Unit', false, function(element) {
+		/*RestangularProvider.addElementTransformer('Unit', false, function(element) {
 			
 			function GetTextString(array, property) {
 				
@@ -500,7 +507,7 @@
 			
 			return element;
 			
-		});
+		});*/
 		
 		//Menu
 		app.menu().getChildByTitle('Enheter')
