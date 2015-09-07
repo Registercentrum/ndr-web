@@ -24,7 +24,7 @@ angular.module('ndrApp')
         console.log('ReportController: Init',  $stateParams.patientID);
 
 
-        $scope.socialnumber = '19121212-1212'; //för test
+        $scope.socialnumber = '',//'19121212-1212'; //för test
         $scope.subjectID         = $stateParams.patientID;
         $scope.view              = 0;
         $scope.contactModel      = null;

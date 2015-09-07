@@ -15,8 +15,29 @@ angular.module('ndrApp')
 
         /* Get data for stats */
 
-        var query = dataService.queryFactory({ID : [202,221], level : 0})
+        var query = dataService.queryFactory(
+            {
+                ID : [202,221],
+                level : 0,
+                fromYear    : new Date().getFullYear()-1,
+                toYear    : new Date().getFullYear(),
+                fromMonth   : new Date().getMonth(),
+                toMonth   : new Date().getMonth()
+            }
+        )
 
+      /*  var query1 = dataService.queryFactory(
+            {
+                ID : [202,221],
+                level : 0,
+
+                fromYear    : new Date().getFullYear()-1,
+                toYear    : new Date().getFullYear(),
+                fromMonth   : new Date().getMonth(),
+                toMonth   : new Date().getMonth()
+            }
+        )
+*/
         dataService.getStats(query).then(function (data){
             $scope.model.stats = data;
         })

@@ -17,8 +17,8 @@ angular.module('ndrApp')
         };
 
         dataService.getOne('unit', id).then(function (data){
-            console.log('dd', data);
-            $scope.model.unit = data;
+            console.log('dd', data.plain());
+            $scope.model.unit = data.plain();
 
 
             function initialize() {
@@ -91,7 +91,7 @@ angular.module('ndrApp')
 
 
         // GET DATA FOR TREND CHART
-        var query = dataService.queryFactory({unitID : id, level : 2, interval : 'y', fromYear: 2000, toYear : 2014, indicatorID: 101});
+        var query = dataService.queryFactory({unitID : id, level : 2, interval : 'y', fromYear: 2000, toYear : new Date().getFullYear(), indicatorID: 101});
         dataService.getStats(query).then(function (data){
 
             var series = [];

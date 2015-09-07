@@ -28,7 +28,16 @@ angular.module("ndrApp")
         })
 
         // GET DATA FOR BAR CHART
-        var query = dataService.queryFactory({fromYear: 2013, toYear : 2014, indicatorID: 101});
+        var query = dataService.queryFactory(
+            {
+                fromYear: new Date().getFullYear()-1,
+                toYear : new Date().getFullYear(),
+                //fromMonth : new Date().getMonth(),
+                //toMonth : new Date().getMonth(),
+                indicatorID: 101,
+
+            }
+        );
         dataService.getStats(query).then(function (data){
 
             var series = [];
@@ -51,7 +60,16 @@ angular.module("ndrApp")
 
 
         // GET DATA FOR TREND CHART
-        var query = dataService.queryFactory({countyCode : id, interval : "y", fromYear: 2000, toYear : 2014, indicatorID: 101});
+        var query = dataService.queryFactory(
+            {
+                countyCode : id,
+                interval : "y",
+                fromYear: 2000,
+                toYear : new Date().getFullYear(),
+                fromMonth : new Date().getMonth(),
+                toMonth : new Date().getMonth(),
+                indicatorID: 101
+            });
         dataService.getStats(query).then(function (data){
 
             var series = [];

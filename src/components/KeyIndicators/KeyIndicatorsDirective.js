@@ -9,13 +9,16 @@ angular.module('ndrApp')
 
             var id = scope.id;
 
+            console.log('un', scope.unitType);
+            
             scope.model = {
                 id : id,
                 geo : scope.geo,
                 selectedKeyIndicator: 201,
+                selectedKeyIndicatorName: undefined,
                 sex : 0,
-                unitType : 0,
-                diabetesType : 0
+                unitType : scope.unitType || 0,
+                diabetesType : scope.unitType == 1 ? 0 : 1,
             };
 
             scope.data = {
@@ -25,6 +28,8 @@ angular.module('ndrApp')
 
             scope.$watch('model', function (newValue, oldValue){
                 getSelectedKeyIndicator();
+                console.log('test', dataService.data.indicators);
+                scope.model.selectedKeyIndicatorName = _.find(dataService.data.indicators.byType.target, {id : scope.model.selectedKeyIndicator}).name;
                 if(newValue.sex === oldValue.sex || newValue.diabetesType === oldValue.diabetesType) getKeyIndicators();
             }, true);
 
@@ -106,6 +111,7 @@ angular.module('ndrApp')
                         color: '#ccc',
                         data : seriesCountry
                     }];
+
                 });
             }
 
@@ -161,8 +167,8 @@ angular.module('ndrApp')
                             uKonf : countryData[key].statSet[0].stat.uKonf
                         };
 
-                        if (!obj.asc && o.geo < o.lKonf || obj.asc && o.geo > o.uKonf) o.status = 'better';
-                        if (!obj.asc && o.geo > o.lKonf || obj.asc && o.geo < o.uKonf) o.status = 'worse';
+                        if (!obj.asc && o.geo < o.lKonf || obj.asc && o.geo > o.uKonf) o.status = 'worse';
+                        if (!obj.asc && o.geo > o.lKonf || obj.asc && o.geo < o.uKonf) o.status = 'better';
 
                         keyIndicators.push(o);
                     });
@@ -180,7 +186,8 @@ angular.module('ndrApp')
                 id     : '=',
                 geo    : '=',
                 geoType: '=',
-                light  : '='
+                light  : '=',
+                unitType: '='
             }
         };
     }]);

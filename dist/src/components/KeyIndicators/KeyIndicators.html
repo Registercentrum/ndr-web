@@ -6,21 +6,7 @@
             <tr><td class="TableIndicators-row-status equal">Resultat är i nivå med riksgenomsnittet</td></tr>
             <tr><td class="TableIndicators-row-status worse">Signifikant sämre än riksgenomsnittet</td></tr>
         </table>' class="fa fa-info-circle"></i></h1>
-        <div class="pull-right">
 
-            <select ng-model="model.sex" class="form-control pull-left" style="font-size:13px; width: 200px">
-                <option value="0">Både kvinnor och män</option>
-                <option value="2">Kvinnor</option>
-                <option value="1">Män</option>
-            </select>
-
-            <select ng-model="model.diabetesType" class="form-control pull-left"  style="font-size:13px; margin-left:20px;width: 200px">
-                <option value="0">Diabetes, typ 1 och 2</option>
-                <option value="1">Diabetes, typ 1</option>
-                <option value="2">Diabetes, typ 2</option>
-            </select>
-
-        </div>
     </div>
 </div>
 
@@ -53,6 +39,23 @@
     </div>
 
     <div class="col-md-7">
+        <h4 class="text-center">{{  model.selectedKeyIndicatorName }}</h4>
+        <div class="text-center">
+
+            <select ng-model="model.sex" class="form-control" style="display:inline-block;font-size:13px; width: 200px">
+                <option value="0">Både kvinnor och män</option>
+                <option value="2">Kvinnor</option>
+                <option value="1">Män</option>
+            </select>
+
+            <select ng-model="model.diabetesType" class="form-control" style="display:inline-block;font-size:13px; margin-left:20px;width: 200px">
+                <option value="0">Diabetes, typ 1 och 2</option>
+                <option value="1">Diabetes, typ 1</option>
+                <option value="2">Diabetes, typ 2</option>
+            </select>
+
+        </div>
+
         <div line-chart-key model="data.keyIndicator"></div>
         <div class="text-center">
             <p class="small alert" style="margin-top: 20px">

@@ -78,7 +78,7 @@ angular.module('ndrApp')
 
             function populateTableData () {
                 var table = [],
-                    exluded = ['contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
+                    exluded = ['unit', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
                     contacts, keys;
 
                 if (!$scope.subject) return false;

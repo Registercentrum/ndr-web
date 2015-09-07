@@ -39,21 +39,20 @@
 
           <div class="row"  style="margin: -30px;padding-bottom: 0px;margin-bottom: 0px;margin-top: 25px">
             <div class="col-md-12 Panel text-center" style="
-            margin-bottom: 0px;border-radius:0px;padding:15px 10px;font-size: 13px;position: relative;top: 30px;
-            ">
+            margin-bottom: 0px;border-radius:0px;padding:15px 10px;font-size: 13px;position: relative;top: 30px;">
                 <div class="col-md-4" style="color:#74BAD8">
-                    <h3>{{model.stats.indicatorSet[1].statSet[0].stat.cRep | number }}</h3>
-                    <p>personer med diabetes som registrerats i NDR senaste 12 mån</p>
+                    <h3 style="font-weight: 700">{{model.stats.indicatorSet[1].statSet[0].stat.cRep | number }}</h3>
+                    <p style="font-weight: 500">personer med diabetes som registrerats i NDR senaste 12 mån</p>
                 </div>
 
                 <div class="col-md-4" style="color:#278470">
-                  <h3>{{ model.stats.indicatorSet[1].statSet[0].stat.r + "%" }}</h3>
-                  <p>personer med typ 1-diabetes och senaste HbA1c >70 mmol/mol</p>
+                  <h3 style="font-weight: 700">{{ model.stats.indicatorSet[1].statSet[0].stat.r + "%" }}</h3>
+                  <p style="font-weight: 500">personer med typ 1-diabetes och senaste HbA1c >70 mmol/mol</p>
                 </div>
 
               <div class="col-md-4" style="color:#E14274">
-                <h3>{{  model.stats.indicatorSet[0].statSet[0].stat.r + "%"  }}</h3>
-                <p>andel som röker, senaste 12 månaderna</p>
+                <h3 style="font-weight: 700">{{  model.stats.indicatorSet[0].statSet[0].stat.r + "%"  }}</h3>
+                <p style="font-weight: 500">andel som röker, senaste 12 månaderna</p>
               </div>
 
             </div>
