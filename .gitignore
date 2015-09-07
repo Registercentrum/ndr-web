@@ -3,3 +3,4 @@ codekit-config.json
 node_modules/*
 css/*.map
 less/_concatenated-styles.less
+.DS_Store
