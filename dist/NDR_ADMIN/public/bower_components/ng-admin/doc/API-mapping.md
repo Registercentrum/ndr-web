@@ -52,7 +52,7 @@ Now if your API returns results in another format, for instance with all the val
 You can use Restangular element transformers to map that to the expected format:
 
 ```js
-app.config(function(RestangularProvider) {
+myApp.config(function(RestangularProvider) {
     RestangularProvider.addElementTransformer('books', function(element) {
         for (var key in element.values) {
             element[key] = element.values[key];
@@ -66,7 +66,7 @@ app.config(function(RestangularProvider) {
 Symetrically, if your API requires that you post and put data inside of a `values` field, use Restangular request interceptor:
 
 ```js
-app.config(function(RestangularProvider) {
+myApp.config(function(RestangularProvider) {
     RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params, httpConfig) {
         if(operation == 'post' || operation == 'put') {
             element = { values: element };
@@ -74,6 +74,49 @@ app.config(function(RestangularProvider) {
         return { element: element };
     });
 }
+```
+
+**Tip**: If you want to define a field mapped to a deeply nested property, you don't need an interceptor. Just define the field with a name made by the path to the property using dots as separators:
+
+```json
+{
+    "id": 12,
+    "name": "War and Peace",
+    "author": {
+        "id": 345,
+        "name": "Leo Tolstoi"
+    },
+    "publication_date": "2014-01-01T00:00:00Z"
+}
+```
+
+```js
+listView.fields([
+    nga.field('name'),
+    nga.field('author.name')
+])
+```
+
+## Custom Headers, Authentication
+
+Does your API require an authentication header? Restangular has got you covered with [`setDefaultHeaders`](https://github.com/mgonto/restangular#setdefaultheaders):
+
+```js
+myApp.config(function(RestangularProvider) {
+    var login = 'admin',
+        password = '53cr3t',
+        token = window.btoa(login + ':' + password);
+    RestangularProvider.setDefaultHeaders({'Authorization': 'Basic ' + token});
+});
+```
+
+## HTTP Method
+
+The REST standard suggests using the POST method to create a new resource, and PUT to update it. If your API uses a different verb for a given action (e.g. PATCH), then you can force the method to be used for a given entity with `createMethod()` and `updateMethod()`.
+
+```js
+bookEntity.createMethod('PUT');   // default is POST
+bookEntity.updateMethod('PATCH'); // default is PUT
 ```
 
 ## Pagination
@@ -85,7 +128,7 @@ http://your.api.domain/entityName?_page=2&_perPage=20
 For instance, to use `offset` and `limit` instead of `_page` and `_perPage` across the entire application, use the following code:
 
 ```js
-app.config(function(RestangularProvider) {
+myApp.config(function(RestangularProvider) {
     RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params, httpConfig) {
         if (operation == 'getList' && what == 'entityName') {
             params.offset = (params._page - 1) * params._perPage;
@@ -129,7 +172,7 @@ If your API doesn't return a `X-Total-Count` header, you can add a `totalCount` 
 Add the following response interceptor:
 
 ```js
-app.config(function(RestangularProvider) {
+myApp.config(function(RestangularProvider) {
     RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response) {
         if (operation == "getList") {
             var contentRange = response.headers('Content-Range');
@@ -140,6 +183,8 @@ app.config(function(RestangularProvider) {
 });
 ```
 
+**Tip**: If you added the `X-Total-Count` header to your API but the pagination controls don't appear, maybe it's a [cross-origin resource sharing (CORS)](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) problem. The admin application is probably hosted on another domain than the API, so you must explicitly allow the access to the header from the admin app domain. To do so, add a `Access-Control-Expose-Headers: x-total-count` header to the API response.
+
 ## Sort Columns and Sort Order
 
 To sort each list view, ng-admin uses `_sortField` & `_sortDir` query parameters.
@@ -149,7 +194,7 @@ http://your.api.domain/entityName?_sortField=name&_sortDir=ASC
 Once again, you can change it with a response interceptor. For instance, to sort by `id desc` by default, and without changing the name of the sort query parameters, use:
 
 ```js
-app.config(function(RestangularProvider) {
+myApp.config(function(RestangularProvider) {
     RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params, httpConfig) {
         if (operation == 'getList' && what == 'entityName') {
             params._sortField = params._sortField || 'id';
@@ -181,7 +226,7 @@ Where the `_filters` value is the url encoded version of `{"q":"foo","tag":"bar"
 Just like other query params, you can transform it using a Restangular request interceptor. For instance, to pass all filters directly as query parameters:
 
 ```js
-app.config(function(RestangularProvider) {
+myApp.config(function(RestangularProvider) {
     RestangularProvider.addFullRequestInterceptor(function(element, operation, what, url, headers, params, httpConfig) {
         if (operation == 'getList' && what == 'entityName') {
             if (params._filters) {

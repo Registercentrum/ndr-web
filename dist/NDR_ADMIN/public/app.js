@@ -6,28 +6,11 @@
 	var baseApiUrl = 'https://ndr.registercentrum.se/api/';
 	//var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
 	
-    app.directive('customPostLink', ['$location', function ($location) {
-        return {
-            restrict: 'E',
-            template: '<p class="form-control-static"><a ng-click="displayPost(entry)">View&nbsp;post</a></p>',
-            link: function ($scope) {
-                $scope.displayPost = function (entry) {
-                    var postId = entry.values.newsID;
-
-                    //console.log(entry);
-
-                    $location.path('/edit/posts/' + postId);
-                };
-            }
-        };
-    }]);
-	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
 		$scope.isAdmin = null;
 		
 		var dfd = $http.get(baseApiUrl + 'me')	
-		
 		dfd.success(function(data, status, headers, config) {
 			$scope.isAdmin = data.isAdministrator;
 		})
@@ -37,7 +20,8 @@
 	
 	});
 	
-    app.config(function (NgAdminConfigurationProvider, RestangularProvider, $stateProvider) {
+    /*app.config(function (NgAdminConfigurationProvider, RestangularProvider) {*/
+	app.config(['NgAdminConfigurationProvider', 'RestangularProvider', function (NgAdminConfigurationProvider, RestangularProvider) {
         var nga = NgAdminConfigurationProvider;
 		
         function truncate(value) {
@@ -56,6 +40,25 @@
 				
         var app = nga.application('NDR Admin') // application main title
 			.baseApiUrl(baseApiUrl);
+			
+		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var integrationSystems = nga.entity('IntegrationSystem')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var newsCategories = nga.entity('NewsCategory')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var roles = nga.entity('Role')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var unitTypes = nga.entity('UnitType')
+            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
+			
+		var counties = nga.entity('County')
+            .readOnly() // a readOnly entity has disabled creation, edition, and deletion views
+			.identifier(nga.field('code'));
 			
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
@@ -80,24 +83,6 @@
 		var contactAttributes = nga.entity('ContactAttribute')
 			.label('Metavariabler');			
 		
-		var newsCategories = nga.entity('NewsCategory')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
-		var roles = nga.entity('Role')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
-		var integrationSystems = nga.entity('IntegrationSystem')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
-		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
-		var unitTypes = nga.entity('UnitType')
-            .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
-		var counties = nga.entity('County')
-            .readOnly() // a readOnly entity has disabled creation, edition, and deletion views
-			.identifier(nga.field('code'));
 		
         // set the application entities
         app.addEntity(units)
@@ -107,21 +92,100 @@
 			.addEntity(publications)
 			.addEntity(contactAttributes);
 			
+		// ****** UNIT ******
+        units.dashboardView()
+            .title('Enheter')
+			.limit(10)
+            .fields([
+                nga.field('unitID').label('NDR-ID'),
+                nga.field('name').label('Enhetsnamn').map(truncate)
+            ]);
 			
-		//Menu
-		app.menu().getChildByTitle('Enheter')
-			.icon('<span class="glyphicon glyphicon-home"></span>');
-		app.menu().getChildByTitle('Användare')
-			.icon('<span class="glyphicon glyphicon-user"></span>');
-		app.menu().getChildByTitle('Användarkonton')
-			.icon('<span class="glyphicon glyphicon-erase"></span>');
-		app.menu().getChildByTitle('Nyheter')
-			.icon('<span class="glyphicon glyphicon-file"></span>');
-		app.menu().getChildByTitle('Forskningsprojekt')
-			.icon('<span class="glyphicon glyphicon-book"></span>');
-		app.menu().getChildByTitle('Metavariabler')
-			.icon('<span class="glyphicon glyphicon-list"></span>');
+        units.listView()
+            .title('Enheter')
+			.sortField('name')
+			.perPage(50)
+            .fields([
+                nga.field('unitID').label('NDR-ID'),
+                nga.field('name').label('Enhetsnamn').map(truncate),
+				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
+				nga.field('phone').label('Telefon').map(truncate)
+            ])
+            .listActions(['edit'])
+			.filters([
+				nga.field('q').label('Sök')
+					.pinned(true),
+				nga.field('countyCode', 'reference')
+					.pinned(true)
+					.label('Landsting')
+					.targetEntity(counties) // Select a target Entity
+					.targetField(nga.field('name')), // Select a label Field
+				nga.field('typeID', 'reference')
+					.pinned(true)
+					.label('Typ')
+					.targetEntity(unitTypes) // Select a target Entity
+					.targetField(nga.field('name')), // Select a label Field
+				nga.field('notActive', 'boolean')
+					.pinned(true)
+					.label('Visa inaktiva')
+			]);
 
+			
+		var ownership = [{value: 1, label: 'Offentlig'},
+						{value: 2, label: 'Privat'}];	
+			
+        units.creationView()
+			.title('Ny enhet')
+            .fields([
+                nga.field('name').label('Enhetsnamn'),
+				nga.field('isActive', 'boolean').label('Aktiv').defaultValue(true),
+				nga.field('countyCode', 'reference')
+					.label('Landsting')
+					.map(truncate) // Allows to truncate values in the select
+					.targetEntity(counties) // Select a target Entity
+					.targetField(nga.field('name')), // Select a label Field
+				nga.field('typeID', 'reference')
+					.label('Enhetstyp')
+					.map(truncate) // Allows to truncate values in the select
+					.targetEntity(unitTypes) // Select a target Entity
+					.targetField(nga.field('name')), // Select a label Field
+				nga.field('ownershipID', 'choice')
+					.label('Ägarskap')
+					.choices(ownership),
+				nga.field('hsaid').label('HSAID').map(truncate),
+				nga.field('senderID').label('Sänd-ID'),
+                nga.field('street').label('Gatuadress'),
+                nga.field('postalCode').label('Postadress'),
+                nga.field('postalLocation').label('Postort'),
+                nga.field('phone').label('Telefon'),
+				nga.field('contactPerson').label('Kontaktperson').map(truncate),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
+                nga.field('manager').label('Verksamhetschef'),
+				nga.field('systemIDs', 'reference_many')
+					.label('Överföringssystem')
+					.targetEntity(integrationSystems)
+					.targetField(nga.field('name')),
+				nga.field('optionalIDs', 'reference_many')
+					.label('Valbara frågor')
+					.targetEntity(contactOptionalMeta)
+					.targetField(nga.field('question')),
+				nga.field('lng').label('Longitud'),
+				nga.field('lat').label('Latitud'),
+				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false),
+				nga.field('comment','text').label('Kommentar')
+            ]);
+		
+        units.editionView()
+			.title('Uppdatera enhet')
+			.description('{{ entry.values.name }}')
+            .fields([
+                //new Field('newsID'),
+                units.creationView().fields()
+            ]);	
+			
+		units.deletionView().disable();
 		
 		// ****** METAVARIABLER ******
 		contactAttributes.listView()
@@ -165,8 +229,12 @@
 				nga.field('unitContactEmail').label('E-post').map(truncate)
              ])
 			.filters([
-				nga.field('q').label('Sök'),
-				nga.field('statusID', 'choice').label('Status')
+				nga.field('q')
+					.pinned(true)
+					.label('Sök'),
+				nga.field('statusID', 'choice')
+					.pinned(true)
+					.label('Status')
 					.choices(accountStatus)
 			])
 			.listActions(['edit']);
@@ -191,7 +259,8 @@
 					.label('Roller')
 					.targetEntity(roles) // the tag entity is defined later in this file
 					.targetField(nga.field('name')), // the field to be displayed in this list
-				nga.field('statusID', 'choice').label('Status')
+				nga.field('statusID', 'choice')
+					.label('Status')
 					.choices(accountStatus)
             ]);	
 		
@@ -223,7 +292,9 @@
 			])
 			.listActions(['edit'])
 			.filters([
-				nga.field('q').label('Sök'),
+				nga.field('q')
+					.pinned(true)
+					.label('Sök'),
 			]);
 
         users.creationView()
@@ -231,6 +302,7 @@
             .fields([
 				nga.field('userID').label('Användar-ID').editable(false).map(truncate),
 				nga.field('hsaid').label('HSAID').editable(false).map(truncate),
+				nga.field('socialNumber').attributes({ placeholder: 'krävs för inloggning med mobilt bank-ID' }).label('Personnummer').map(truncate),
                 nga.field('firstName').label('Förnamn').map(truncate),
 				nga.field('lastName').label('Efternamn').map(truncate),
 				nga.field('workTitle').label('Titel').map(truncate),
@@ -249,91 +321,6 @@
             ]);	
 		
 		users.deletionView().disable();
-		
-		// ****** UNIT ******
-        units.dashboardView()
-            .title('Enheter')
-			.limit(10)
-            .fields([
-                nga.field('unitID').label('NDR-ID'),
-                nga.field('name').label('Enhetsnamn').map(truncate)
-            ]);
-			
-        units.listView()
-            .title('Enheter')
-			.sortField('name')
-			.perPage(50)
-            .fields([
-                nga.field('unitID').label('NDR-ID'),
-                nga.field('name').label('Enhetsnamn').map(truncate),
-				nga.field('hsaid').label('HSAID').map(truncate),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
-				nga.field('phone').label('Telefon').map(truncate)
-            ])
-            .listActions(['edit'])
-			.filters([
-				nga.field('q').label('Sök'),
-				nga.field('countyCode', 'reference')
-					.label('Landsting')
-					.targetEntity(counties) // Select a target Entity
-					.targetField(nga.field('name')), // Select a label Field
-				nga.field('typeID', 'reference')
-					.label('Typ')
-					.targetEntity(unitTypes) // Select a target Entity
-					.targetField(nga.field('name')), // Select a label Field
-				nga.field('notActive', 'boolean').label('Visa inaktiva')
-			]);
-
-        units.creationView()
-			.title('Ny enhet')
-            .fields([
-                nga.field('name').label('Enhetsnamn'),
-				nga.field('isActive', 'boolean').label('Aktiv').defaultValue(true),
-				nga.field('countyCode', 'reference')
-					.label('Landsting')
-					.map(truncate) // Allows to truncate values in the select
-					.targetEntity(counties) // Select a target Entity
-					.targetField(nga.field('name')), // Select a label Field
-				nga.field('typeID', 'reference')
-					.label('Enhetstyp')
-					.map(truncate) // Allows to truncate values in the select
-					.targetEntity(unitTypes) // Select a target Entity
-					.targetField(nga.field('name')), // Select a label Field
-				nga.field('hsaid').label('HSAID').map(truncate),
-				nga.field('senderID').label('Sänd-ID'),
-                nga.field('street').label('Gatuadress'),
-                nga.field('postalCode').label('Postadress'),
-                nga.field('postalLocation').label('Postort'),
-                nga.field('phone').label('Telefon'),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
-                nga.field('manager').label('Verksamhetschef'),
-				nga.field('comment','text').label('Kommentar'),
-				nga.field('systemsText').label('Tidigare valda system').editable(false),
-				nga.field('systemIDs', 'reference_many')
-					.label('Överföringssystem')
-					.targetEntity(integrationSystems)
-					.targetField(nga.field('name')),
-				nga.field('optionalsText', 'text').label('Tidigare valda frågor').editable(false),
-				nga.field('optionalIDs', 'reference_many')
-					.label('Valbara frågor')
-					.targetEntity(contactOptionalMeta)
-					.targetField(nga.field('question')),
-				nga.field('lng').label('Longitud'),
-				nga.field('lat').label('Latitud'),
-				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false)
-            ]);
-		
-        units.editionView()
-			.title('Uppdatera enhet')
-			.description('{{ entry.values.name }}')
-            .fields([
-                //new Field('newsID'),
-                units.creationView().fields()
-            ]);	
-			
-		units.deletionView().disable();
 		
 		// ****** NEWS ******
         news.dashboardView()
@@ -361,9 +348,15 @@
             ])
             .listActions(['edit', 'delete'])
 			.filters([
-				nga.field('title').label('Sök rubrik'),
-				nga.field('includeOutsidePeriod', 'boolean').label('Inkludera opublicerat'),
-				nga.field('isInternal', 'boolean').label('Visa endast interna nyheter')
+				nga.field('title')
+					.pinned(true)
+					.label('Sök rubrik'),
+				nga.field('includeOutsidePeriod', 'boolean')
+					.pinned(true)
+					.label('Inkludera opublicerat'),
+				nga.field('isInternal', 'boolean')
+					.pinned(true)
+					.label('Visa endast interna nyheter')
 			]);	
 		
         news.creationView()
@@ -425,8 +418,12 @@
                  nga.field('name').label('Titel').map(truncate)
              ])
 			.filters([
-				nga.field('q').label('Sök'),
-				nga.field('status', 'choice').label('Status')
+				nga.field('q')
+					.pinned(true)
+					.label('Sök'),
+				nga.field('status', 'choice')
+					.pinned(true)
+					.label('Status')
 					.choices(status)
 			])
              .listActions(['edit', 'delete']);
@@ -447,7 +444,8 @@
 				nga.field('issue').label('Upplaga'),
 				nga.field('pages').label('Sidor'),
 				nga.field('image').label('Bild'),
-				nga.field('ethicsApprovalStatusID', 'choice').label('Etikprövat')
+				nga.field('ethicsApprovalStatusID', 'choice')
+					.label('Etikprövat')
 					.choices(ethicsApprovalStatus),
 				nga.field('pubMedURL').label('Länk till pubmed')
 			]);
@@ -458,7 +456,6 @@
             .fields([
                 publications.creationView().fields()
             ]);
-		
 
 		RestangularProvider.addElementTransformer('Account', true, function(elements) {
 			
@@ -480,7 +477,7 @@
 			return elements;
 		});
 		
-		RestangularProvider.addElementTransformer('Unit', false, function(element) {
+		/*RestangularProvider.addElementTransformer('Unit', false, function(element) {
 			
 			function GetTextString(array, property) {
 				
@@ -510,8 +507,22 @@
 			
 			return element;
 			
-		});
+		});*/
+		
+		//Menu
+		app.menu().getChildByTitle('Enheter')
+			.icon('<span class="glyphicon glyphicon-home"></span>');
+		app.menu().getChildByTitle('Användare')
+			.icon('<span class="glyphicon glyphicon-user"></span>');
+		app.menu().getChildByTitle('Användarkonton')
+			.icon('<span class="glyphicon glyphicon-erase"></span>');
+		app.menu().getChildByTitle('Nyheter')
+			.icon('<span class="glyphicon glyphicon-file"></span>');
+		app.menu().getChildByTitle('Forskningsprojekt')
+			.icon('<span class="glyphicon glyphicon-book"></span>');
+		app.menu().getChildByTitle('Metavariabler')
+			.icon('<span class="glyphicon glyphicon-list"></span>');
 		
         NgAdminConfigurationProvider.configure(app);
-    });
+    }]);
 }());
