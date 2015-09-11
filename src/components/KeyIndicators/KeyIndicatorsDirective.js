@@ -167,8 +167,23 @@ angular.module('ndrApp')
                             uKonf : countryData[key].statSet[0].stat.uKonf
                         };
 
-                        if (!obj.asc && o.geo < o.lKonf || obj.asc && o.geo > o.uKonf) o.status = 'worse';
-                        if (!obj.asc && o.geo > o.lKonf || obj.asc && o.geo < o.uKonf) o.status = 'better';
+                        if(obj.indicator.asc){
+                            if(o.geo > o.lKonf && o.geo > o.uKonf){
+                                o.status = 'worse';
+                            }
+                            else if(o.geo < o.lKonf && o.geo < o.uKonf){
+                                o.status = 'better';
+                            }
+                        }
+                        
+                        if(!obj.indicator.asc){
+                            if(o.geo > o.lKonf && o.geo > o.uKonf){
+                                o.status = 'better';
+                            }
+                            else if(o.geo < o.lKonf && o.geo < o.uKonf){
+                                o.status = 'worse';
+                            }
+                        }
 
                         keyIndicators.push(o);
                     });

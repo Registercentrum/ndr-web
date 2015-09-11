@@ -2,6 +2,11 @@ angular.module('ndrApp')
     .directive('autocomplete', ['$state', function ($state) {
             return {
                 controller: function ($scope, $element) {
+
+                    console.log("pp", $scope.model.options);
+
+                    //var opts = _.where($scope.model.options, {type : 'county'})
+
                     $scope.config = {
                         options          : $scope.model.options,
                         items            : [$scope.model.selected],
@@ -13,6 +18,7 @@ angular.module('ndrApp')
                         delimiter        : '|',
                         placeholder      : 'Landsting, sjukhus eller vårdcentral',
                         maxItems         : 1,
+                        maxOptions       : 2000,
                         lockOptgroupOrder: true,
                         optgroups        : [
                             {value: 'sweden', label: 'Riket'},

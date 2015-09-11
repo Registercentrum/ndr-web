@@ -15,9 +15,9 @@ angular.module('ndrApp')
 
 
                 var chart = jQuery('.chart-container', element).highcharts({
-                        chart: {
+                            chart: {
                             type: 'spline',
-                            height : 180,
+                            height : 130,
                            // width : 200,
                             marginTop : 20,
                             marginBottom : 30,
@@ -98,12 +98,15 @@ angular.module('ndrApp')
                             },
                             series : {
                                 marker: {
-                                    //fillColor: '#5999DA',
-                                    lineWidth: 1,
+                                    fillColor: '#000',
+
+                                    lineWidth: 2,
                                     radius : 2,
                                     lineColor: null // inherit from series
                                 }
                             },
+
+
                             spline: {
                                 /*marker: {
                                     enable: false

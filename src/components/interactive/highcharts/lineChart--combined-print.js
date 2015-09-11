@@ -17,7 +17,7 @@ angular.module('ndrApp')
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'spline',
-                            height : 180,
+                            height : 130,
                             // width : 200,
                             marginTop : 20,
                             marginBottom : 30,

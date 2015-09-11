@@ -17,11 +17,14 @@ angular.module('ndrApp')
         };
 
         dataService.getOne('unit', id).then(function (data){
-            console.log('dd', data.plain());
             $scope.model.unit = data.plain();
 
 
+
             function initialize() {
+
+                if($scope.model.unit.lat && $scope.model.unit.lng){
+
                 var mapOptions = {
                     center: { lat: $scope.model.unit.lat, lng: $scope.model.unit.lng},
                     zoom: 13,
@@ -78,10 +81,11 @@ angular.module('ndrApp')
                     });
 
                     marker.setMap(map);
-                })
 
 
+                    });
 
+                }
             }
             initialize();
 

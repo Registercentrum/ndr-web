@@ -1,4 +1,4 @@
-<div style="font-size: 13px">
+<div class="print-wrapper" style="font-size: 13px;background-color: white;padding: 30px">
 
 <div class="PatientProfile-Search">
 
@@ -13,26 +13,21 @@
     </div>
 </div>
 
-<div class="Panel">
+<div class="">
 
     <!-- Heading -->
 
     <div class="row">
         <div class="col-md-12">
 
-            <h3 style="margin-top: 0px">
+            <h4 style="margin-top: 0px">
                 <i class="fa fa-user"></i>  {{ subject.socialNumber }}
-            </h3>
-
-            <!--<div class="PatientHeader clearfix">
-                <div class="PatientHeader-personNumber col-md-5 u-noLeftPadding">
-                </div>
-            </div>-->
+            </h4>
         </div>
     </div>
 
     <!-- Basic data -->
-    <div class="row" id="printableArea" style="margin-top: 20px">
+    <div class="row" style="margin-top: 15px">
         <div class="col-md-4">
             <!--<p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>-->
             <p>{{ getDiabetesType(subject.diabetesType) }}</p>
@@ -62,39 +57,36 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 5px">
-
+    <div class="row" style="">
         <div class="col-md-12">
-         <h3>Kommentar</h3>
-            <textarea placeholder="Plats för kommentar" style="padding:5px; width:100%;height:150px"></textarea>
+         <h5 style="margin-top:0px">Kommentar</h5>
+            <textarea placeholder="Plats för kommentar" style="padding:5px; width:100%;height:60px"></textarea>
         </div>
     </div>
-
 
     <!-- HBA1C -->
     <div class="row">
-        <div class="col-md-12">
-            <h4>HbA1c <span>(Senaste värde: {{ model.latest.hba1c.value }} mmol/mol</span>)</h4>
+
+
+        <div class="col-md-6">
+            <!--<b>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></b>-->
+            <b>HbA1c <span>(Senaste värde: {{ model.latest.hba1c.value }} mmol/mol</span>)</b>
             <div class="" line-chart-print model="model.data.trend.hba1c"></div>
         </div>
-    </div>
 
-    <div class="page-break"></div>
-
-    <!-- BP -->
-    <div class="row" style="margin-top: 50px">
-        <div class="col-md-12">
-            <h4>Blodtryck <span>(Senaste värde: {{ model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} mm Hg</span>)</h4>
+        <div class="col-md-6">
+            <b>Blodtryck <span>(Senaste värde: {{ model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} mm Hg</span>)</b>
             <div class="" line-chart-combined-print model="model.data.trend.combinedBp"></div>
-            <div>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></div>
         </div>
     </div>
 
     <!-- Lipids -->
-    <div class="row" style="margin-top: 30px">
-        <h4>Blodlipider</h4>
+    <div class="row" style="margin-top: 10px">
+        <!--<div>Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>-->
 
             <div class="col-md-6">
+                <b>Blodlipider</b>
+
                 <div line-chart-combined-print title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
             </div>
 
@@ -102,7 +94,6 @@
                 <div line-chart-combined-print title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
             </div>
 
-            <div>Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>
 
     </div>
 
@@ -110,7 +101,7 @@
     <!-- FEET etc -->
 
     <div class="row" style="margin-top: 50px">
-        <div class="col-md-12">
+        <div class="col-md-4">
             <div class="">
                 <h4 class="Profile-heading">Fötter</h4>  <i class="Profile-latest-value fa fa-noun_4820_cc" class="" style="font-size: 55px;"></i>
                 <table class="table table-condensed">
@@ -131,7 +122,7 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-4">
             <div class="">
                 <h4 class="Profile-heading">Ögon</h4>  <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
                 <table class="table table-condensed">
@@ -159,7 +150,7 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-4">
             <div class="">
                 <h4 class="Profile-heading">Njurar</h4>  <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
                 <table class="table table-condensed">
@@ -182,15 +173,15 @@
 
     <div class="row">
 
-        <h2>Senaste 5 besök</h2>
+        <h4>Senaste 5 besök</h4>
         <div class="table-responsive">
             <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
-                <thead>
+               <!-- <thead>
                 <tr>
                     <th class="key"></th>
                     <th ng-repeat="date in model.data.tableHeader.values">{{ date | date : 'dd MMM yyyy'}}</th>
                 </tr>
-                </thead>
+                </thead>-->
                 <tbody>
                 <tr ng-repeat="contact in model.data.table | orderBy: 'sequence'">
                     <td class="key">{{ contact.label }}</td>

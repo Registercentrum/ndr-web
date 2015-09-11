@@ -8,39 +8,60 @@ angular.module('ndrApp')
             autocompleteModel : {
                 selected : undefined,
                 options: dataService.data.preparedGeoList
-            }
+            },
+            stats : {}
         };
 
         $scope.accountModel = accountService.accountModel;
 
         /* Get data for stats */
 
-        var query = dataService.queryFactory(
+        var query_smoking = dataService.queryFactory(
             {
-                ID : [202,221],
+                ID : [202],
                 level : 0,
                 fromYear    : new Date().getFullYear()-1,
                 toYear    : new Date().getFullYear(),
                 fromMonth   : new Date().getMonth(),
                 toMonth   : new Date().getMonth()
             }
-        )
+        );
 
-      /*  var query1 = dataService.queryFactory(
+        var query_hba1c_70 = dataService.queryFactory(
             {
-                ID : [202,221],
+                ID : [221],
                 level : 0,
-
+                diabetesType : 1,
                 fromYear    : new Date().getFullYear()-1,
                 toYear    : new Date().getFullYear(),
                 fromMonth   : new Date().getMonth(),
                 toMonth   : new Date().getMonth()
             }
-        )
-*/
-        dataService.getStats(query).then(function (data){
-            $scope.model.stats = data;
+        );
+
+        var query_hba1c_rep = dataService.queryFactory(
+            {
+                ID : [221],
+                level : 0,
+                fromYear    : new Date().getFullYear()-1,
+                toYear    : new Date().getFullYear(),
+                fromMonth   : new Date().getMonth(),
+                toMonth   : new Date().getMonth()
+            }
+        );
+
+        dataService.getStats(query_smoking).then(function (data){
+            $scope.model.stats.smoking = data;
         })
+
+        dataService.getStats(query_hba1c_70).then(function (data){
+            $scope.model.stats.hba1c_70 = data;
+        })
+
+        dataService.getStats(query_hba1c_rep).then(function (data){
+            $scope.model.stats.hba1c_rep = data;
+        })
+
 
         dataService.getList("news").then(function (data){
 
