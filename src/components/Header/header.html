@@ -12,6 +12,9 @@
                 <a ui-sref="main.forms" title="">Blanketter</a>
 
                 <a ui-sref="main.accountAbout" ng-show="!accountModel.activeAccount" title="">Konto / Inloggning</a>
+
+                <a ui-sref="main.bankid" ng-show="!accountModel.activeAccount" title="">Logga in med Bank-ID</a>
+
                 <a ui-sref="main.currentUser" ng-show="accountService.accountModel.user" title="">Mitt tjänstekort</a>
 
                 <div ng-show="accountModel.activeAccount" class="dropdown btn btn-default">

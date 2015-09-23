@@ -2,15 +2,30 @@
     <div class="row">
 
         <div class="col-md-12">
-
-            <h1 class="Page-title Autocomplete Autocomplete--bare Autocomplete--large">
+            <h1 class="Page-title Autocomplete Autocomplete--bare Autocomplete--large" style="margin-bottom: 0px">
                 <div model="model.autocompleteModel" autocomplete></div>
             </h1>
-
+            <select class="form-control" style="padding: 0 0 0 42%; font-size:17px;height: 40px; width:100%;margin-bottom: 10px" name="" id="" ng-model="model.unitType">
+                <option value="1">
+                    Primärvårdsenheter
+                </option>
+                <option value="2">
+                    Medicinkliniker
+                </option>
+            </select>
         </div>
+
+
+
     </div>
 </div>
 
+<!--
+        <pre>
+
+            {{ model.data | json }}
+
+        </pre>-->
 
 
 <div class="container">
@@ -30,8 +45,12 @@
             <div class="Panel u-equalHeight">
                 <h1 class="Panel-title">{{ model.data.noUnits }} vårdenheter</h1>
                     <table class="table">
-                        <tr><td>Primärvårdsenheter</td><td>{{  model.data.no['1'] }}</td></tr>
-                        <tr><td>Medicinkliniker</td><td>{{  model.data.no['2'] }}</td></tr>
+                        <tr><td ng-class="{ 'u_bold' : model.unitType == 1 }">
+                            Primärvårdsenheter</td><td>{{  model.data.no['1'] }}
+                        </td></tr>
+                        <tr><td ng-class="{ 'u_bold' : model.unitType == 2 }">
+                            Medicinkliniker</td><td>{{  model.data.no['2'] }}
+                        </td></tr>
                     </table>
 
                 <div class="text-center" style="margin-top: 32px">
@@ -59,19 +78,12 @@
 
 
 <!-- Nyckelindikatorer -->
-
 <div class="container">
     <div class="row">
-
         <div class="col-md-12">
-
             <div class="Panel">
-
-                <div key-indicators id="model.id" geo="model.geo"></div>
-
-
+                <div key-indicators model="model"></div>
             </div>
-
         </div>
     </div>
 
@@ -92,12 +104,10 @@
                 <p>Landstingets vårdenheter</p>
 
                 <select class="form-control" style="height: 40px; width:50%;margin-right:10px; float:left" name="" id="" ng-model="selectedUnit">
-
                     <option value="">Välj vårdenhet</option>
                     <option value="{{unit.unitID }}" ng-repeat="unit in model.county.units | orderBy : 'name' | filter : { isActive :true }">
                         {{ unit.name }}
                     </option>
-
                 </select>
 
                 <a ng-click="gotoUnit()" class="Button Button--info">Öppna profil</a>

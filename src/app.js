@@ -89,9 +89,15 @@ angular.module('ndrApp', [
                     url: '/konto',
                     //controller : 'GuidelinesController',
                     templateUrl: 'src/pages/About/aboutAccount.html',
-
                     resolve: {
+                    }
+                })
 
+                .state('main.bankid', {
+                    url: '/bankid',
+                    controller : 'BankIDController',
+                    templateUrl: 'src/pages/BankID/bankID.html',
+                    resolve: {
                     }
                 })
 

@@ -5,21 +5,34 @@ angular.module('ndrApp')
 
         function link (scope) {
 
-            if (!scope.id) return;
+            //if (!scope.id) return;
 
-            var id = scope.id;
-
-            console.log('un', scope.unitType);
+            console.log("load", scope.model.id);
             
-            scope.model = {
-                id : id,
-                geo : scope.geo,
-                selectedKeyIndicator: 201,
-                selectedKeyIndicatorName: undefined,
-                sex : 0,
-                unitType : scope.unitType || 0,
-                diabetesType : scope.unitType == 1 ? 0 : 1,
-            };
+            var id = scope.model.id;
+
+            scope.model.selectedKeyIndicator = 201;
+            scope.model.sex = 0;
+
+            //scope.model.diabetesType = scope.model.unitType === 1 ? 0 : 1;
+
+
+            //    selectedKeyIndicatorName: undefined,
+                //    sex : 0,
+                //    unitType : scope.unitType || 0,
+                //    diabetesType : scope.unitType == 1 ? 0 : 1,
+                //};
+
+
+            //scope.model = {
+            //    id : id,
+            //    geo : scope.geo,
+            //    selectedKeyIndicator: 201,
+            //    selectedKeyIndicatorName: undefined,
+            //    sex : 0,
+            //    unitType : scope.unitType || 0,
+            //    diabetesType : scope.unitType == 1 ? 0 : 1,
+            //};
 
             scope.data = {
                 keyIndicator : undefined,
@@ -28,13 +41,15 @@ angular.module('ndrApp')
 
             scope.$watch('model', function (newValue, oldValue){
                 getSelectedKeyIndicator();
-                console.log('test', dataService.data.indicators);
                 scope.model.selectedKeyIndicatorName = _.find(dataService.data.indicators.byType.target, {id : scope.model.selectedKeyIndicator}).name;
                 if(newValue.sex === oldValue.sex || newValue.diabetesType === oldValue.diabetesType) getKeyIndicators();
             }, true);
 
 
             function getSelectedKeyIndicator () {
+
+                //console.log("ABC", scope.model);
+
                 var selectedIndicator = scope.model.selectedKeyIndicator,
                     promises          = [],
                     queryCountry      = dataService.queryFactory({
@@ -42,25 +57,26 @@ angular.module('ndrApp')
                         level       : 0,
                         interval    : 'y',
                         fromYear    : 2010,
-                        toYear      : 2014,
+                        toYear      : new Date().getFullYear(),
                         sex         : scope.model.sex,
                         unitType    : scope.model.unitType,
                         diabetesType: scope.model.diabetesType
                     }),
                     queryGeo;
 
-                if (scope.geoType === 'unit') {
+                if (scope.model.geoType === 'unit') {
                     console.log('UNIT', scope.model);
                     queryGeo = dataService.queryFactory({
-                        unitID      : id,
+                        unitID      : scope.model.id,
                         level       : 2,
                         indicatorID : selectedIndicator,
                         interval    : 'y',
                         fromYear    : 2010,
-                        toYear      :2014,
+                        toYear      : new Date().getFullYear(),
                         sex         : scope.model.sex,
                         unitType    : scope.model.unitType,
-                        diabetesType: scope.model.diabetesType
+                        diabetesType: scope.model.diabetesType,
+                        countyCode  : null,
                     });
                     //var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
                 } else {
@@ -69,7 +85,7 @@ angular.module('ndrApp')
                         indicatorID : selectedIndicator,
                         interval    : 'y',
                         fromYear    : 2010,
-                        toYear      : 2014,
+                        toYear      : new Date().getFullYear(),
                         sex         : scope.model.sex,
                         unitType    : scope.model.unitType,
                         diabetesType: scope.model.diabetesType
@@ -102,7 +118,7 @@ angular.module('ndrApp')
                     });
 
                     scope.data.keyIndicator = [{
-                        name: scope.geo ? scope.geo.name : 'Enhet',
+                        name: scope.model.geo ? scope.model.geo.name : 'Enhet',
                         lineWidth: 3,
                         color : '#74BAD8',
                         data: seriesGeo
@@ -127,14 +143,15 @@ angular.module('ndrApp')
                         diabetesType: scope.model.diabetesType
                     });
 
-                if (scope.geoType === 'unit'){
+                if (scope.model.geoType === 'unit'){
                     query = dataService.queryFactory({
-                        unitID      : id,
+                        unitID      : scope.model.id,
                         level       : 2,
                         ID          : toInclude,
                         sex         : scope.model.sex,
                         unitType    : scope.model.unitType,
-                        diabetesType: scope.model.diabetesType
+                        diabetesType: scope.model.diabetesType,
+                        //countyCode  : null,
                     });
                 }
                 promises.push(dataService.getStats(query));
@@ -198,11 +215,13 @@ angular.module('ndrApp')
             templateUrl: 'src/components/KeyIndicators/KeyIndicators.html',
             link: link,
             scope: {
-                id     : '=',
-                geo    : '=',
-                geoType: '=',
-                light  : '=',
-                unitType: '='
+                model : '=',
+
+                //id     : '=',
+                //geo    : '=',
+                //geoType: '=',
+                //light  : '=',
+                //unitType: '='
             }
         };
     }]);

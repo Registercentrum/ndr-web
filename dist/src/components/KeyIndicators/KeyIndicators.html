@@ -1,12 +1,17 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="pull-left Panel-title">Nyckelindikatorer <i tooltip-html-unsafe='<h5>Förklaring</h5>
+        <h1 ng-if="model.geoType != 'unit'" class="pull-left Panel-title">Nyckelindikatorer {{ model.unitType == 1 ? ' för Primärdvårdsenheter' : ' för Medicinkliniker' }} <i tooltip-html-unsafe='<h5>Förklaring</h5>
         <table class="Table borderless" style="">
             <tr><td class="TableIndicators-row-status better">Signifikant bättre än riksgenomsnittet</td></tr>
             <tr><td class="TableIndicators-row-status equal">Resultat är i nivå med riksgenomsnittet</td></tr>
             <tr><td class="TableIndicators-row-status worse">Signifikant sämre än riksgenomsnittet</td></tr>
         </table>' class="fa fa-info-circle"></i></h1>
-
+        <h1 ng-if="model.geoType == 'unit'" class="pull-left Panel-title">Nyckelindikatorer <i tooltip-html-unsafe='<h5>Förklaring</h5>
+        <table class="Table borderless" style="">
+            <tr><td class="TableIndicators-row-status better">Signifikant bättre än riksgenomsnittet</td></tr>
+            <tr><td class="TableIndicators-row-status equal">Resultat är i nivå med riksgenomsnittet</td></tr>
+            <tr><td class="TableIndicators-row-status worse">Signifikant sämre än riksgenomsnittet</td></tr>
+        </table>' class="fa fa-info-circle"></i></h1>
     </div>
 </div>
 

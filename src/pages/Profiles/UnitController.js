@@ -5,16 +5,25 @@ angular.module('ndrApp')
         var autocompleteSelected = 'unit_' + id;
 
 
+        var unit = _.findWhere(dataService.data.units, {unitID: id});
+
+        var diabetesType = unit.typeID === 1 ? 0 : 1;
+
         $scope.model = {
             unit: _.findWhere(dataService.data.units, {unitID: id}),
             geo : _.findWhere(dataService.data.units, {unitID: id}),
+            geoType : 'unit',
+            unitType : unit.typeID,
             id: id,
             data: {},
+            diabetesType : diabetesType,
             autocompleteModel: {
                 selected: autocompleteSelected,
                 options: dataService.data.preparedGeoList
             }
         };
+        
+        console.log("aa", $scope.model);
 
         dataService.getOne('unit', id).then(function (data){
             $scope.model.unit = data.plain();

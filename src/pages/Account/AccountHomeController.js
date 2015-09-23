@@ -7,7 +7,10 @@ angular.module("ndrApp")
         $scope.socialnumber = undefined;
 
         $scope.model = {
-
+            id : Account.activeAccount.unit.unitID,
+            geoType : "unit",
+            unitType : Account.activeAccount.unit.typeID,
+            diabetesType : Account.activeAccount.unit.unitType === 1 ? 0 : 1
         }
 
         dataService.getAny("News", "?isInternal=true").then(function (data){

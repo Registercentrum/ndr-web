@@ -1,0 +1,34 @@
+<div class="container">
+
+    <h1 class="Page-title">Logga in med Bank-ID</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="Panel">
+                <h4>Ditt personnummer</h4>
+                <input type="text" ng-model="model.socialnumber" /> <button type="submit" ng-click="startLogin()" class="Button Button--info">Logga in</button>
+
+
+                <div ng-if="model.loginStarted">
+                    Öppna din Bank-ID-applikation och signera. Därefter blir du inloggad.
+                </div>
+
+                <p></p>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            <img src="images/bankid.png" class="" style="" alt=""/>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
