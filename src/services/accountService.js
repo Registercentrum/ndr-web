@@ -37,6 +37,9 @@ angular.module('ndrApp')
 
             return $http.get(url)
                 .then(function (response) {
+
+                    if(response.data.isUser == false) return false;
+
                     var user = response.data.user,
                         loginId;
 

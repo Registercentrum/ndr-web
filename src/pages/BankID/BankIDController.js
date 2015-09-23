@@ -71,7 +71,7 @@ angular.module('ndrApp')
                     .then(function (response) {
                         console.log("response login", response);
 
-                        $state.go('main.home', {}, {reload: true});
+                        $state.go('main.account.home', {}, {reload: true});
 
                     })
                     ['catch'](console.error.bind(console));
