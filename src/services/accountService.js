@@ -30,17 +30,17 @@ angular.module('ndrApp')
 
 
         this.login = function (accountID) {
-            var url = APIconfigService.baseURL + 'me?APIKey=' + APIconfigService.APIKey;
+            var url = APIconfigService.baseURL + 'CurrentUser?APIKey=' + APIconfigService.APIKey;
 
             console.log('LOGGING IN');
             isLoggingIn = true;
 
             return $http.get(url)
                 .then(function (response) {
-                    var user = response.data,
+                    var user = response.data.user,
                         loginId;
 
-                    console.log(user);
+                    console.log("user",user);
 
                     console.log('LOGIN SUCCESS');
 

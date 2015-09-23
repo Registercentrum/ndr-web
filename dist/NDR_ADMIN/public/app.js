@@ -10,9 +10,9 @@
 	{
 		$scope.isAdmin = null;
 		
-		var dfd = $http.get(baseApiUrl + 'me')	
+		var dfd = $http.get(baseApiUrl + 'currentuser')	
 		dfd.success(function(data, status, headers, config) {
-			$scope.isAdmin = data.isAdministrator;
+			$scope.isAdmin = data.user.isAdministrator;
 		})
 		.error(function(data, status, headers, config) {
 			$scope.isAdmin = false;
@@ -106,12 +106,36 @@
 			.sortField('name')
 			.perPage(50)
             .fields([
-                nga.field('unitID').label('NDR-ID'),
-                nga.field('name').label('Enhetsnamn').map(truncate),
-				nga.field('hsaid').label('HSAID').map(truncate),
-				nga.field('contactPerson').label('Kontaktperson').map(truncate),
-				nga.field('contactPersonEmail').label('Kontaktperson Epost').map(truncate),
-				nga.field('phone').label('Telefon').map(truncate)
+                nga.field('unitID').label('NDR-ID').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
+				}),
+                nga.field('name').label('Enhetsnamn').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
+				}),
+				nga.field('hsaid').label('HSAID').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
+				}),
+				nga.field('contactPerson').label('Kontaktperson').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
+				}),
+				nga.field('contactPersonEmail').label('Kontaktperson Epost').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
+				}),
+				nga.field('phone').label('Telefon').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
+				})
             ])
             .listActions(['edit'])
 			.filters([
@@ -219,14 +243,23 @@
              .title('Användarkonton')
 			 .perPage(50)
              .fields([
-				nga.field('unitID').label('Enhets-ID').map(truncate),
-				nga.field('unitName').label('Enhetsnamn').map(truncate),
-				nga.field('firstName').label('Anv. Förnamn').map(truncate),
-				nga.field('lastName').label('Anv. Efternamn').map(truncate),
-				nga.field('statusText').label('Status').map(truncate),
-				nga.field('unitContactPerson').label('Enhetskontakt').map(truncate), 
-				nga.field('unitContactPhone').label('Telefon').map(truncate), 
-				nga.field('unitContactEmail').label('E-post').map(truncate)
+				nga.field('unitID').label('Enhets-ID'),
+				nga.field('unitName').label('Enhetsnamn'),
+				nga.field('userID').label('Anv-ID'),
+				nga.field('hsaid').label('HSAID'),
+				nga.field('firstName').label('Anv. Förnamn'),
+				nga.field('lastName').label('Anv. Efternamn'),
+				nga.field('statusText').label('Status').cssClasses(function(entry) {
+					if (entry.values.statusID == 9) {
+						return 'inActive';
+					}
+					if (entry.values.statusID == 2 || entry.values.statusID == 3) {
+						return 'isPending';
+					}
+				}),
+				nga.field('unitContactPerson').label('Enhetskontakt'), 
+				nga.field('unitContactPhone').label('Telefon'), 
+				nga.field('unitContactEmail').label('E-post')
              ])
 			.filters([
 				nga.field('q')
@@ -288,7 +321,7 @@
 				nga.field('lastActiveAt').label('Senast aktiv'),
 				nga.field('isKAS','boolean').label('KAS'),
 				nga.field('isCoordinator','boolean').label('Koordinator'),
-				nga.field('isAdministrator','boolean').label('Administratör')
+				nga.field('isAdministrator','boolean').label('NDR-Administratör')
 			])
 			.listActions(['edit'])
 			.filters([
@@ -300,25 +333,34 @@
         users.creationView()
 			.title('Ny användare')
             .fields([
-				nga.field('userID').label('Användar-ID').editable(false).map(truncate),
-				nga.field('hsaid').label('HSAID').editable(false).map(truncate),
+				nga.field('hsaid').label('HSAID'),
 				nga.field('socialNumber').attributes({ placeholder: 'krävs för inloggning med mobilt bank-ID' }).label('Personnummer').map(truncate),
-                nga.field('firstName').label('Förnamn').map(truncate),
-				nga.field('lastName').label('Efternamn').map(truncate),
-				nga.field('workTitle').label('Titel').map(truncate),
-				nga.field('email','email').label('E-post').map(truncate),
-				nga.field('organization').label('Organisation').map(truncate),
-				nga.field('isKAS','boolean').label('KAS').map(truncate),
-				nga.field('isCoordinator','boolean').label('Koordinator').map(truncate),
-				nga.field('isAdministrator','boolean').label('Administratör').map(truncate)
+                nga.field('firstName').label('Förnamn'),
+				nga.field('lastName').label('Efternamn'),
+				nga.field('workTitle').label('Titel'),
+				nga.field('email','email').label('E-post'),
+				nga.field('organization').label('Organisation'),
+				nga.field('isKAS','boolean').label('KAS'),
+				nga.field('isCoordinator','boolean').label('Koordinator'),
+				nga.field('isAdministrator','boolean').label('NDR-Administratör')
             ]);
 		
         users.editionView()
 			.title('Uppdatera användare')
 			.description('"{{ entry.values.hsaid }}"')
             .fields([
-                users.creationView().fields()
-            ]);	
+				nga.field('userID').label('Användar-ID').editable(false),
+				nga.field('hsaid').label('HSAID'),
+				nga.field('socialNumber').attributes({ placeholder: 'krävs för inloggning med mobilt bank-ID' }).label('Personnummer').map(truncate),
+                nga.field('firstName').label('Förnamn'),
+				nga.field('lastName').label('Efternamn'),
+				nga.field('workTitle').label('Titel'),
+				nga.field('email','email').label('E-post'),
+				nga.field('organization').label('Organisation'),
+				nga.field('isKAS','boolean').label('KAS'),
+				nga.field('isCoordinator','boolean').label('Koordinator'),
+				nga.field('isAdministrator','boolean').label('NDR-Administratör')
+            ]);
 		
 		users.deletionView().disable();
 		
@@ -522,6 +564,8 @@
 			.icon('<span class="glyphicon glyphicon-book"></span>');
 		app.menu().getChildByTitle('Metavariabler')
 			.icon('<span class="glyphicon glyphicon-list"></span>');
+		
+		app.header('<div class="navbar-header"><a class="navbar-brand" href="#" ng-click="appController.displayHome()">NDR Admin</a></div>');
 		
         NgAdminConfigurationProvider.configure(app);
     }]);

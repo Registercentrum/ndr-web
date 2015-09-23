@@ -5,7 +5,8 @@ angular.module('ndrApp')
 
             $scope.model = {
                 orderRef : undefined,
-                socialnumber : "198510014833",
+                socialnumber : undefined,
+                loginStarted : false
             };
 
             $scope.startLogin = function (){
@@ -34,24 +35,9 @@ angular.module('ndrApp')
 
             function waitForLogin(){
 
+                $scope.model.loginStarted = true;
+
                 var waitFor = setInterval(function (){
-
-                  /*  $.ajax({
-                        url     : 'https://ndr.registercentrum.se/api/bid/ndr/collect?orderRef=' + $scope.model.orderRef,
-                        //data    : query,
-                        type    : 'GET',
-                        dataType: 'json',
-                        success : function (response){
-
-                        }
-                    }).done(function( response ) {
-                            console.log("response wait", response);
-                            //$scope.model.orderRef = response.data.orderRef;
-                            if(response.status === 200){
-                                clearInterval(waitFor);
-                                login();
-                            }
-                        });*/
 
                     var query = {
                         url: 'https://ndr.registercentrum.se/api/bid/ndr/collect?orderRef=' + $scope.model.orderRef,
@@ -85,6 +71,7 @@ angular.module('ndrApp')
                     .then(function (response) {
                         console.log("response login", response);
 
+                        $state.go('main.home', {}, {reload: true});
 
                     })
                     ['catch'](console.error.bind(console));
