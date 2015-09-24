@@ -1,94 +1,104 @@
 angular.module('ndrApp')
     .controller('BankIDController', ['$scope', '$http', '$stateParams', '$state', 'accountService', function ($scope, $http, $stateParams, $state, accountService) {
     
-            console.log('BankIDController: Init', accountService.accountModel.user);
+        console.log('BankIDController: Init', accountService.accountModel.user);
 
-            $scope.model = {
-                orderRef : undefined,
-                socialnumber : undefined,
-                loginStarted : false
+
+        $scope.model = {
+            orderRef : undefined,
+            socialnumber : undefined,
+            loginStarted : false
+        };
+
+        $scope.startLogin = function (){
+            console.log("start login");
+
+            var query = {
+                url: 'https://ndr.registercentrum.se/api/bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
+                method: 'GET',
             };
 
-            $scope.startLogin = function (){
-                console.log("start login");
+            $http(query)
+                .then(function (response) {
+                    console.log("response", response);
+                    $scope.model.orderRef = response.data.orderRef;
+
+                    waitForLogin();
+
+                    return response.data;
+
+                })
+                ['catch'](console.error.bind(console));
+        };
+
+
+        function waitForLogin(){
+
+            $scope.model.loginStarted = true;
+
+            var waitFor = setInterval(function (){
 
                 var query = {
-                    url: 'https://ndr.registercentrum.se/api/bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
+                    url: 'https://ndr.registercentrum.se/api/bid/ndr/collect?orderRef=' + $scope.model.orderRef,
                     method: 'GET',
                     //data: {socialNumber: socialNumber}
                 };
 
                 $http(query)
                     .then(function (response) {
-                        console.log("response", response);
-                        $scope.model.orderRef = response.data.orderRef;
-
-                        waitForLogin();
-
-                        return response.data;
-
+                        console.log("response wait", response);
+                        //$scope.model.orderRef = response.data.orderRef;
+                        if(response.status === 200){
+                            clearInterval(waitFor);
+                            login();
+                        }
+                        //return response.data;
                     })
                     ['catch'](console.error.bind(console));
+            },2000);
+        }
 
+        function login(){
+
+            var query = {
+                url: 'https://ndr.registercentrum.se/api/CurrentVisitor',
+                method: 'GET',
+                //data: {socialNumber: socialNumber}
             };
 
+            $http(query)
+                .then(function (response) {
+                    console.log("response login", response);
+                    checkForLoggedIn();
+                    $state.go('main.account.home', {}, {reload: true});
 
-            function waitForLogin(){
+                })
+                ['catch'](console.error.bind(console));
+        }
 
-                $scope.model.loginStarted = true;
+        function checkForLoggedIn(){
 
-                var waitFor = setInterval(function (){
-
-                    var query = {
-                        url: 'https://ndr.registercentrum.se/api/bid/ndr/collect?orderRef=' + $scope.model.orderRef,
-                        method: 'GET',
-                        //data: {socialNumber: socialNumber}
-                    };
-
-                    $http(query)
-                        .then(function (response) {
-                            console.log("response wait", response);
-                            //$scope.model.orderRef = response.data.orderRef;
-                            if(response.status === 200){
-                                clearInterval(waitFor);
-                                login();
-                            }
-                            //return response.data;
-                        })
-                        ['catch'](console.error.bind(console));
-                },2000)
-            }
-
-            function login(){
+            var waitFor = setInterval(function () {
 
                 var query = {
-                    url: 'https://ndr.registercentrum.se/api/CurrentUser',
+                    url: 'https://ndr.registercentrum.se/api/CurrentVisitor',
                     method: 'GET',
                     //data: {socialNumber: socialNumber}
                 };
 
                 $http(query)
                     .then(function (response) {
-                        console.log("response login", response);
+                        console.log("Checking if still logged in:", response);
 
-                        $state.go('main.account.home', {}, {reload: true});
+                        if(response.data.isUser == false){
+                            $state.go('main.home', {}, {reload: true});
+                        }
 
                     })
                     ['catch'](console.error.bind(console));
-            }
+
+            }, 10000) //900000); //every 15 minutes
+         }
 
 
-            //{
-             //orderRef: "6276d6ec-5b10-41de-822e-cef6eb7fc9bd"
-             //}
-        //https://ndr.registercentrum.se/api/bid/ndr/order?socialnumber={{personnummer}}
-
-            //https://ndr.registercentrum.se/api/bid/ndr/collect?orderRef=07bea919-8a68-4a2e-90d7-641f51a9afe2
-
-            //https://ndr.registercentrum/api/CurrentUser
-
-
-        //$scope.accountModel   = accountService.accountModel;
-            //$scope.accountHelpers = accountService.helpers;
-
-        }]);
+}]);
