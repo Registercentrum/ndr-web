@@ -7,11 +7,16 @@ angular.module('ndrApp')
         $scope.model = {
             orderRef : undefined,
             socialnumber : undefined,
-            loginStarted : false
+            loginStarted : false,
+            loginFailed : false,
         };
 
         $scope.startLogin = function (){
             console.log("start login");
+
+            $scope.model.loginStarted = true;
+            $scope.model.loginFailed = false;
+
 
             var query = {
                 url: 'https://ndr.registercentrum.se/api/bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
@@ -28,13 +33,16 @@ angular.module('ndrApp')
                     return response.data;
 
                 })
-                ['catch'](console.error.bind(console));
+                ['catch'](function (response){
+                    console.log("failed");
+                    $scope.model.loginStarted = false;
+                    $scope.model.loginFailed = true;
+                });
         };
 
 
         function waitForLogin(){
 
-            $scope.model.loginStarted = true;
 
             var waitFor = setInterval(function (){
 
@@ -91,13 +99,13 @@ angular.module('ndrApp')
                         console.log("Checking if still logged in:", response);
 
                         if(response.data.isUser == false){
-                            $state.go('main.home', {}, {reload: true});
+                            clearInterval(waitFor);
+                            accountService.logOut();
                         }
-
                     })
                     ['catch'](console.error.bind(console));
 
-            }, 10000) //900000); //every 15 minutes
+            }, 200000); //900000); //every 15 minutes
          }
 
 

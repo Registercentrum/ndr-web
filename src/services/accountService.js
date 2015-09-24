@@ -28,11 +28,11 @@ angular.module('ndrApp')
             $state.go($state.current, {}, {reload: true});
         };
 
-
         this.login = function (accountID) {
-            var url = APIconfigService.baseURL + 'CurrentUser?APIKey=' + APIconfigService.APIKey;
+            var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey;
 
             console.log('LOGGING IN');
+
             isLoggingIn = true;
 
             return $http.get(url)
@@ -43,9 +43,9 @@ angular.module('ndrApp')
                     var user = response.data.user,
                         loginId;
 
-                    console.log("user",user);
-
                     console.log('LOGIN SUCCESS');
+                    console.log("USER: ",user);
+
 
                     self.accountModel.user = user;
                     $rootScope.$broadcast('newUser');

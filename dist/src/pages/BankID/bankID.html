@@ -1,29 +1,28 @@
 <div class="container">
 
-    <h1 class="Page-title">Logga in med Bank-ID</h1>
+    <h1 class="Page-title">Logga in med Mobilt Bank-ID <img src="images/bankid_small.png" class="" style="" alt=""/>
+    </h1>
 
     <div class="row">
         <div class="col-md-8">
             <div class="Panel">
-                <h4>Ditt personnummer</h4>
-                <input type="text" ng-model="model.socialnumber" /> <button type="submit" ng-click="startLogin()" class="Button Button--info">Logga in</button>
+                <p>Om du har ett NDR-konto kopplat till ditt personnummer kan du logga in med Mobilt Bank-ID.</p>
+                <h5>Personnummer</h5>
+                <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" /> <button type="submit" ng-click="startLogin()" class="Button Button--info Button--mini">Logga in</button>
 
-
-                <div ng-if="model.loginStarted">
-                    Öppna din Bank-ID-applikation och signera. Därefter blir du inloggad.
+                <div class="alert well" style="margin-top: 20px" ng-if="model.loginStarted">
+                    Öppna din Bank-ID-applikation och signera. Därefter blir du automatiskt inloggad till Din NDR-Startsida.
                 </div>
 
-                <p></p>
+                <div class="warning well" style="margin-top: 20px" ng-if="model.loginFailed">
+                    Något gick fel, vänligen försök igen.
+                </div>
+
             </div>
         </div>
-        <div class="col-md-4">
-
-            <img src="images/bankid.png" class="" style="" alt=""/>
-
-        </div>
-
+       <!-- <div class="col-md-4">
+        </div>-->
     </div>
-
 </div>
 
 

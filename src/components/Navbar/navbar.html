@@ -25,7 +25,15 @@
                 <li ng-class="{active:$state == 'main.patient' || $state == 'main.prom' }"><a ui-sref="main.patient"><i class="fa fa-user"></i> För dig med diabetes</a></li>
                 <li ui-sref-active="active"><a ui-sref="main.improvement"><i class="fa fa-lightbulb-o"></i> Förbättringsprojekt</a></li>
                 <li ng-class="{active:$state == 'main.research' || $state == 'main.researchItem'}"><a ui-sref="main.research"><i class="fa fa-flash"></i> Forskning</a></li>
-                <li ui-sref-active="active"><a ui-sref="main.about"><i class="fa fa-map-marker"></i> Om NDR</a></li>
+                <!--<li ui-sref-active="active"><a ui-sref="main.about"><i class="fa fa-map-marker"></i> Om NDR</a></li>-->
+
+                <li ng-class="{active:$state == 'main.about' || $state == 'main.press' }" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200" data-close-others="false" ui-sref="main.about"><i class="fa fa-map-marker"></i> Om NDR</a>
+                    <ul class="dropdown-menu">
+                        <li class="" ng-class=""><a ui-sref="main.about">Kontakt</a>
+                        <li class="" ui-sref-active="active"><a ui-sref="main.press">Press</a>
+                    </ul>
+                </li>
 
                     <!--<li ui-sref-active="active"><a ui-sref="main.guidelines"><i class="fa fa-lightbulb-o"></i> Style guidelines</a></li>-->
                 <!--<span ng-show="params.debug=='true'">

@@ -3,36 +3,74 @@
         <div class="container">
             <a class="Logo pull-left" ui-sref="main.home" title="Start"><img src="images/logo.png" alt="Start"></a>
 
-            <div class="SecondaryMenu">
-                <a ui-sref="main.english" title="">In English</a>
-                <a ui-sref="main.about" title="">Kontakt</a>
-                <a ui-sref="main.press" title="">Press</a>
-                <a ui-sref="main.compare" title="">Knappen</a>
-                <a ui-sref="main.risk" title="">Riskmotor</a>
-                <a ui-sref="main.forms" title="">Blanketter</a>
 
-                <a ui-sref="main.accountAbout" ng-show="!accountModel.activeAccount" title="">Konto / Inloggning</a>
+            <div class="AccountMenu">
 
-                <a ui-sref="main.bankid" ng-show="!accountModel.activeAccount" title="">Logga in med Bank-ID</a>
-
-                <a ui-sref="main.currentUser" ng-show="accountService.accountModel.user" title="">Mitt tjänstekort</a>
-
-                <div ng-show="accountModel.activeAccount" class="dropdown btn btn-default">
-                    <!--  tooltip-placement="left"  tooltip="{{accountModel.activeAccount.unit.name}}" -->
-                    <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
-                        <i class="fa fa-user"></i> {{ accountModel.activeAccount.unit.name | characters:16 }}
+                <div ng-show="accountModel.activeAccount" class="dropdown">
+                    <a class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
+                        <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ', ' }} {{ accountModel.activeAccount.unit.name | characters:16 }}
                         <span class="caret"></span>
                     </a>
-                    <div style="font-size: 11px">{{ accountModel.user.firstName + ' ' + accountModel.user.lastName }}</div>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu2">
+
+                        <li role="presentation">
+                            <a ui-sref="main.account.home" title="">Översikt</a>
+                        </li>
+                        <li role="presentation">
+                            <a ui-sref="main.account.report" title="">Rapportera</a>
+                        </li>
+                        <li role="presentation">
+                            <a ui-sref="main.currentUser" title="">Mitt tjänstekort</a>
+                        </li>
+
+                        <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                            Mina enheter
+                        </li>
+
                         <li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
                             <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
                         </li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="accountService.logOut()">Logga ut</a></li>
-
                     </ul>
                 </div>
+
+                <div ng-show="!accountModel.activeAccount" class="dropdown">
+                    <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                        Logga in
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a ui-sref="main.bankid" title="">
+                                Logga in med Mobilt Bank-ID
+                                <img src="images/bankid_small.png" class="" style="margin-left:10px;width:20px;" alt=""/>
+
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" ui-sref="main.currentUser">
+                            Skaffa konto
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
             </div>
+
+            <!--<a ui-sref="main.accountAbout" ng-show="!accountModel.activeAccount" title="">Konto / Inloggning</a>-->
+            <!--<a ui-sref="main.bankid" ng-show="!accountModel.activeAccount" title="">Logga in med Bank-ID</a>-->
+            <!--<a ui-sref="main.currentUser" ng-show="accountService.accountModel.user" title="">Mitt tjänstekort</a>-->
+
+
+            <div class="SecondaryMenu">
+                <a ui-sref="main.english" title="">In English</a>
+                <a ui-sref="main.compare" title="">Knappen</a>
+                <a ui-sref="main.risk" title="">Riskmotor</a>
+                <a ui-sref="main.forms" title="">Filer</a>
+            </div>
+
         </div>
     </div>
 

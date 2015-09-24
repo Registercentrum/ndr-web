@@ -22,7 +22,7 @@ angular.module('ndrApp')
                 level : 0,
                 fromYear    : new Date().getFullYear()-1,
                 toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth(),
+                fromMonth   : new Date().getMonth()+1,
                 toMonth   : new Date().getMonth()
             }
         );
@@ -34,7 +34,7 @@ angular.module('ndrApp')
                 diabetesType : 1,
                 fromYear    : new Date().getFullYear()-1,
                 toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth(),
+                fromMonth   : new Date().getMonth()+1,
                 toMonth   : new Date().getMonth()
             }
         );
@@ -45,7 +45,7 @@ angular.module('ndrApp')
                 level : 0,
                 fromYear    : new Date().getFullYear()-1,
                 toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth(),
+                fromMonth   : new Date().getMonth()+1,
                 toMonth   : new Date().getMonth()
             }
         );
