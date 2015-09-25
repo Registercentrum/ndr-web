@@ -5,19 +5,23 @@ angular.module('ndrApp')
                 ['$scope', '$http', 'accountService', 'dataService', 'APIconfigService',
         function ($scope,   $http,   accountService,   dataService,   APIconfigService) {
 
-            console.log('CurrentUserController: Init', accountService.accountModel.user);
+            console.log('CurrentUserController: Init', accountService.accountModel);
 
             $scope.accountModel     = accountService.accountModel;
             $scope.accountHelpers   = accountService.helpers;
             $scope.filteredUnits    = [];
             $scope.unitSearchString = '';
-            $scope.user             = accountService.accountModel.user;
-
+			$scope.visitor			= accountService.accountModel.visitor;
+            $scope.user             = $scope.visitor.user; //fallback
+			
+			console.log($scope.user);
 
             $scope.$on('newUser', function () {
                 $scope.user = accountService.accountModel.user;
             });
-
+			
+			console.log(accountService.accountModel);
+			console.log($scope.user);
 
             dataService.getList('units').then(function (data) {
                 var units = data.plain();
@@ -146,6 +150,8 @@ angular.module('ndrApp')
                 $http(httpConfig)
                     .success(function (data) {
                         $scope.user = data;
+						$scope.visitor.isUser=true;
+						
                         $scope.setRoles();
                         $scope.newAccountSuccess = true;
                     })
