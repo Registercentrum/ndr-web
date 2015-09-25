@@ -156,7 +156,7 @@
 					.label('Typ')
 					.targetEntity(unitTypes) // Select a target Entity
 					.targetField(nga.field('name')), // Select a label Field
-				nga.field('notActive', 'boolean')
+				nga.field('includeNotActive', 'boolean')
 					.pinned(true)
 					.label('Visa inaktiva')
 			])
