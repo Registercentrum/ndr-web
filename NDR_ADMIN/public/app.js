@@ -1,4 +1,4 @@
-/*global angular*/
+﻿/*global angular*/
 (function () {
     "use strict";
 
@@ -8,14 +8,14 @@
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
-		$scope.isAdmin = null;
+		$scope.isAdmin = false;
 		
-		var dfd = $http.get(baseApiUrl + 'currentuser')	
+		var dfd = $http.get(baseApiUrl + 'currentvisitor')	
 		dfd.success(function(data, status, headers, config) {
 			$scope.isAdmin = data.user.isAdministrator;
 		})
 		.error(function(data, status, headers, config) {
-			$scope.isAdmin = false;
+
 		});
 	
 	});
@@ -135,6 +135,11 @@
 					if (!entry.values.isActive) {
 						return 'inActive';
 					}
+				}),
+				nga.field('lastUpdatedAt').label('Uppdaterad').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
 				})
             ])
             .listActions(['edit'])
@@ -154,7 +159,10 @@
 				nga.field('notActive', 'boolean')
 					.pinned(true)
 					.label('Visa inaktiva')
-			]);
+			])
+			.permanentFilters({
+				includeNotReporting: true
+			});
 
 			
 		var ownership = [{value: 1, label: 'Offentlig'},
@@ -259,7 +267,8 @@
 				}),
 				nga.field('unitContactPerson').label('Enhetskontakt'), 
 				nga.field('unitContactPhone').label('Telefon'), 
-				nga.field('unitContactEmail').label('E-post')
+				nga.field('unitContactEmail').label('E-post'),
+				nga.field('lastUpdatedAt').label('Uppdaterad')
              ])
 			.filters([
 				nga.field('q')
@@ -321,7 +330,8 @@
 				nga.field('lastActiveAt').label('Senast aktiv'),
 				nga.field('isKAS','boolean').label('KAS'),
 				nga.field('isCoordinator','boolean').label('Koordinator'),
-				nga.field('isAdministrator','boolean').label('NDR-Administratör')
+				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
+				nga.field('lastUpdatedAt').label('Uppdaterad')
 			])
 			.listActions(['edit'])
 			.filters([
