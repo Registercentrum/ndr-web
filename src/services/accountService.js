@@ -7,9 +7,10 @@ angular.module('ndrApp')
 
         var self = this,
             isLoggingIn = false;
-
+		
         this.accountModel = {
-            user         : null,
+            user         : null, //fallback
+			visitor		 : null, //use this instead
             activeAccount: null,
             tempAccount  : null,
             serverError  : ''
@@ -38,7 +39,9 @@ angular.module('ndrApp')
 
             return $http.get(url)
                 .then(function (response) {
-
+					
+					self.accountModel.visitor = response.data;
+					
                     if(response.data.isUser == false) return false;
 
                     var user = response.data.user,
@@ -47,8 +50,9 @@ angular.module('ndrApp')
                     console.log('LOGIN SUCCESS');
                     console.log("USER: ",user);
 
-
                     self.accountModel.user = user;
+					
+					
                     $rootScope.$broadcast('newUser');
 
                     loginId = accountID || user.defaultAccountID;

@@ -1,22 +1,41 @@
 <div class="container" style="font-size: 13px;">
 
-    <h1 class="Page-title">Mitt tjänstekort</h1>
+    <h1 class="Page-title">Användarkonto i NDR</h1>
     <style>
         .inputrow {
             padding: 5px;
         }
     </style>
     <div class="Panel">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Ett användarkonto i NDR</h3>
+				<p>För att få tillgång till en vårdenhets patientuppgifter, kunna rapportera in besöksdata och få tillträde till söklista och patientprofilen i NDR krävs det att man har ett personligt användarkonto. En person kan ha flera användarkonton om man tjänstgör vid flera vårdenheter.</p>
+				<h3>Inloggning med SITHS-kort</h3>
+				<p>För att kunna logga in i NDR med ett tjänstekort av typen SITHS krävs en dator med ett korrekt installerat Net iD. Om du har ett konto i NDR kommer du få möjlighet att autentisera dig via ditt tjänstekort när du besöker www.ndr.nu. Då får du skriva in din personliga kod och blir därefter inloggad. Då får då möjlighet att arbeta med din vårdenhets NDR-data och/eller ansöka om behörighet till andra enheter.</p>
+				<h3>Inloggning med Mobilt BankID</h3>
+				<p>Det finns också möjlighet att logga in i NDR med hjälp av ett mobilt BankID. Då krävs att du har ditt personnummer inlagt i NDR. En SITHS-kort användare kan själv lägga in sitt personnummer under sina användaruppgifter nedan. Då möjliggörs omedelbart inloggning med mobilt BankID. För att en användare skall kunna logga in med mobilt BankID utan tjänstekort krävs att NDRs support manuellt lägger in dina användaruppgifter. Kontakta i så fall NDRs support.</p>
+				<h3>Ansökan ny enhet</h3>
+				<p>Om du är en SITHS-kortanvändare eller om dina användaruppgifter är inlagda via NDRs support så kan du ansöka om ett konto nedan.</p>
+				<p>Under rubriken ”Tillgång till ny enhet” söker du fram namnet på den enhet som du behöver behörighet till. Markera enhetens namn i sökfältet och klickar sen på knappen ”Ansök om konto”. NDR kommer därefter att säkerställa att du är behörig att arbeta på enheten. När din ansökan blivit behandlad kommer du att få en bekräftelse per e-post. Detta sker normalt inom 24 timmar. OBS! Det är viktigt att du säkerställer att din e-postadress stämmer. Du hittar din e-postadress och andra användaruppgifter under ”Mina användaruppgifter”.</p>
+				<p>Du kan alltid följa dina användarkonton under ”Mina enheter". Här ses vilka användarkonton som du har och huruvida de är aktiva.</p>
+				<p>Behöver du ytterligare hjälp kan du kontakta NDRs support.</p>
+			</div>
+		</div>
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Mina uppgifter</h2>
+                        <h2>Mina användaruppgifter</h2>
                         <form name="userForm" class="Report-form form-horizontal" role="form">
-                            <fieldset ng-disabled="user == null || user.accounts.length == 0">
+                            <fieldset ng-disabled="!visitor.isUser">
                                 <div class="row inputrow" ng-class="{ 'has-error' : userForm.hsaid.$invalid && !userForm.hsaid.$pristine }">
                                     <label class="" for="hsaid">HSAID</label>
                                     <input name="hsaid" type="text" class="form-control" ng-disabled="true" ng-model="user.hsaid" ng-class="{ 'has-no-error' : user.hsaid != null}" placeholder="HSAID">
+                                </div>
+                                <div class="row inputrow" ng-class="{ 'has-error' : userForm.socialNumber.$invalid && !userForm.socialNumber.$pristine }">
+                                    <label class="" for="socialNumber">Personnummer (för inloggning med Mobilt BankID)</label>
+                                    <input name="socialNumber" type="text" class="form-control" ng-model="user.socialNumber" ng-class="{ 'has-no-error' : user.socialNumber != null}" placeholder="HSAID">
                                 </div>
                                 <div class="row inputrow" ng-class="{ 'has-error' : userForm.firstName.$invalid && !userForm.firstName.$pristine }">
                                     <label class="" for="firstName">Förnamn</label>
@@ -54,9 +73,9 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" ng-show="visitor.isUser">
                     <div class="col-md-12">
-                        <h2>Mina enhetskonton</h2>
+                        <h2>Mina enheter</h2>
                         <table class="table">
                             <tr>
                                 <th>Enhetsnamn</th>
@@ -79,8 +98,8 @@
                 </div>
             </div>
             <div class="col-md-6" ng-show="user">
-                <h2>Ansökan om nytt enhetskonto</h2>
-
+                <h2>Tillgång till ny enhet</h2>
+				
                 <div class="row Panel Panel--purple">
                     <form name="newAccount" class="Report-form form-horizontal" role="form" novalidate>
                         <div class="col-md-12">
