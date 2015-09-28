@@ -13,13 +13,12 @@
     </div>
 </div>
 
-<div class="">
+<div class="" style="width:900px">
 
     <!-- Heading -->
 
     <div class="row">
         <div class="col-md-12">
-
             <h4 style="margin-top: 0px">
                 <i class="fa fa-user"></i>  {{ subject.socialNumber }}
             </h4>
@@ -68,13 +67,13 @@
     <div class="row">
 
 
-        <div class="col-md-6">
+        <div style="width:900px">
             <!--<b>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></b>-->
             <b>HbA1c <span>(Senaste värde: {{ model.latest.hba1c.value }} mmol/mol</span>)</b>
             <div class="" line-chart-print model="model.data.trend.hba1c"></div>
         </div>
 
-        <div class="col-md-6">
+        <div style="width:900px">
             <b>Blodtryck <span>(Senaste värde: {{ model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} mm Hg</span>)</b>
             <div class="" line-chart-combined-print model="model.data.trend.combinedBp"></div>
         </div>
@@ -84,13 +83,12 @@
     <div class="row" style="margin-top: 10px">
         <!--<div>Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>-->
 
-            <div class="col-md-6">
+        <div style="width:900px">
                 <b>Blodlipider</b>
-
                 <div line-chart-combined-print title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
             </div>
 
-            <div class="col-md-6">
+        <div style="width:900px">
                 <div line-chart-combined-print title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
             </div>
 

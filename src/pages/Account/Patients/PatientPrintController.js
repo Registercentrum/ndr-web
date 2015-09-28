@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
     .controller('PatientPrintController', [
-                 '$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', 'accountService',
-        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService,   accountService) {
+                 '$scope', '$q', '$timeout', '$stateParams', '$state', '$log', '$filter', 'dataService', 'accountService',
+        function ($scope,   $q, $timeout,  $stateParams,   $state,   $log,   $filter,   dataService,   accountService) {
 
             $scope.subject      = undefined;
             $scope.subjectID    = false || $stateParams.patientID;
@@ -73,6 +73,9 @@ angular.module('ndrApp')
                 populateSeriesData();
                 populateTableData();
                 populateLatestData();
+                $timeout(function (){
+                    jQuery(window).resize();
+                }, 500);
             });
 
 

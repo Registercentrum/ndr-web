@@ -117,17 +117,36 @@ angular.module('ndrApp')
                         });
                     });
 
-                    scope.data.keyIndicator = [{
-                        name: scope.model.geo ? scope.model.geo.name : 'Enhet',
-                        lineWidth: 3,
-                        color : '#74BAD8',
-                        data: seriesGeo
-                    }, {
+
+                    scope.data.keyIndicator = [
+                        {
+                            name: scope.model.geo ? scope.model.geo.name : 'Enhet',
+                            lineWidth: 3,
+                            color : '#74BAD8',
+                            data: seriesGeo,
+                            zoneAxis: 'x',
+                            zones: [{
+                                value: Date.UTC(new Date().getFullYear()-1, 0),
+                                //dashstyle: "black"
+                            }, {
+                                value: Date.UTC(new Date().getFullYear(), 0),
+                                dashStyle: "dash",
+                            }]
+                        },
+                        {
                         name : 'Riket',
                         color: '#ccc',
-                        data : seriesCountry
-                    }];
-
+                        data : seriesCountry,
+                        zoneAxis: 'x',
+                        zones: [{
+                            value: Date.UTC(new Date().getFullYear()-1, 0),
+                            //dashstyle: "black"
+                        }, {
+                            value: Date.UTC(new Date().getFullYear(), 0),
+                            dashStyle: "dash",
+                        }]
+                    }
+                    ];
                 });
             }
 

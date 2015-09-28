@@ -16,7 +16,8 @@ angular.module('ndrApp')
         };
 
         this.helpers = {
-            pnrRegex: /\b(19\d{2}|20\d{2}|\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?\d{4}\b/
+            pnrRegex: /\b(19\d{2}|20\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[-+]?\d{4}\b/
+
         };
 
 
@@ -76,6 +77,7 @@ angular.module('ndrApp')
         this.logOut = function () {
             this.accountModel.user = null;
             this.accountModel.activeAccount = null;
+            //TODO:
             $state.go('main.home', {}, {reload: true});
         };
 

@@ -43,7 +43,7 @@ angular.module('ndrApp')
          * @return {Array} Array with filter options
          */
         this.getContactAttributes = function (filter) {
-            return endpoints.contactAttributes.get()
+            return endpoints.contactAttributes.get({'AccountID': accountService.accountModel.activeAccount.accountID})
                 .then(function (data) {
                     var filtered = [];
 
@@ -83,7 +83,7 @@ angular.module('ndrApp')
 
         this.getSubjectBySocialNumber = function (socialNumber) {
             var query = {
-                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+                url: APIconfigService.baseURL + 'Subject?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
                 method: 'POST',
                 data: {socialNumber: socialNumber}
             };

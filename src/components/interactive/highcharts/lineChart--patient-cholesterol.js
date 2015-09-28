@@ -15,8 +15,6 @@ angular.module('ndrApp')
 
 
                 scope.$watch('model', function(model) {
-
-                    console.log("Kol", model);
                     
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {

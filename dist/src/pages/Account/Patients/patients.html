@@ -29,7 +29,11 @@
                         <div class="col-sm-7 u-noLeftPadding Progressbar">
                             <progressbar value="( model.filteredSubjectsLength * 100 ) / model.allSubjectsLength" max="100"></progressbar>
                         </div>
-                        <div class="col-sm-2 u-noLeftPadding">{{ model.filteredSubjectsLength + " av " + model.allSubjectsLength }}</div>
+                        <div class="col-sm-2 u-noLeftPadding">
+                            {{ model.filteredSubjectsLength + " av " + model.allSubjectsLength }}
+                            <!--<span style="margin-left: 10px" ng-show="isLoadingSubjects">Laddar</span>-->
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -37,7 +41,7 @@
             <div class="MultiFilter-row">
                 <div class="row">
                     <div class="MultiFilter-row-label col-sm-3">Besöksperiod</div>
-                    <div class="MultiFilter-row-filterKnobs col-sm-6">
+                    <div class="MultiFilter-row-filterKnobs col-sm-7">
                         <div class="FilterDatePopup">
                             <div class="input-group FilterDatePopup-group">
                                 <span class="input-group-addon">
@@ -84,11 +88,16 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-sm-2 form-inline">
+                        <span class="checkbox"><label><input type="checkbox" ng-model="absence"> saknar besök</label></span>
+                    </div>
+
                 </div>
             </div>
 
             <!-- Additional filtering -->
-            <div
+            <div ng-hide="absence"
                 class="MultiFilter-row"
                 ng-repeat="(key, filter) in filters | orderBy: 'displayOrder'"
                 ng-if="isDisplayed(filter.columnName)"
@@ -197,9 +206,9 @@
                 </div>
             </div>
 
-            <div class="MultiFilter-row">
+            <div ng-hide="absence" class="MultiFilter-row">
                 <div class="row">
-                    <div class="MultiFilter-row-label col-sm-3">Valbar</div>
+                    <div class="MultiFilter-row-label col-sm-3">Lägg till</div>
                     <div class="MultiFilter-row-filterKnobs col-sm-6">
                         <select ng-options="filter.columnName as filter.question for filter in filters" ng-model="chosenFilter" name="" id="" class="form-control">
                             <option value="">Välj sökkriterium</option>

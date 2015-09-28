@@ -13,10 +13,16 @@ angular.module('ndrApp')
             link: function(scope, element, attrs) {
 
 
-                var chart = jQuery(".chart-container", element).highcharts({
+                scope.$watch('model', function(model) {
+                    console.log("Reloading Column Chart", model);
+
+                    if(typeof model == "undefined") return false;
+
+
+                    var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'column',
-                            height : 130,
+                            height : 120,
                             marginTop : 5,
                             spacingRight:10,
                             spacingLeft:10,
@@ -48,12 +54,12 @@ angular.module('ndrApp')
 
 
                         },
-                       yAxis: {
-                           gridLineWidth: 0,
-                           gridLineColor : "#eee",
-                           lineWidth: 0,
-                           min : 50,
-                           max : 70,
+                        yAxis: {
+                            gridLineWidth: 0,
+                            gridLineColor : "#eee",
+                            lineWidth: 0,
+                            min : 40,
+                            max : 70,
 
                             title: {
                                 text: '',
@@ -97,20 +103,14 @@ angular.module('ndrApp')
                         series: [{
                             color : "#ccc",
                             name: 'Amount',
-                            data: [
-                                {name : "a", y : 100},
-                                {name : "b", y : 120}
-                            ]
+                            data: model
                         }]
                     });
 
 
-                scope.$watch('model', function(model) {
-                    console.log("Reloading Column Chart", model);
-
-                    if(typeof model != "undefined")
-                    scope.selected = _.findWhere(model, {color : "#FFCC01"}).name;
-                    chart.highcharts().series[0].setData(model)
+                    //if(typeof model != "undefined")
+                    //scope.selected = _.findWhere(model, {color : "#FFCC01"}).name;
+                    //chart.highcharts().series[0].setData(model)
                 }, true);
             }
         };
