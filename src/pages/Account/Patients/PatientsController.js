@@ -7,11 +7,12 @@ angular.module('ndrApp')
 
             $log.debug('PatientsController: Init');
             var filterSettings = {
-                    exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate'],
+                    exclude: ['gfr', 'socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear'],
                     required: ['d', 'hba1c']
                 },
-                isLoadingSubjects = false,
                 filterDisplayIndex;
+
+            $scope.isLoadingSubjects = false;
 
             // If we don't want to restore filters, unset them
             if (!$stateParams.restoreFilters) dataService.setSearchFilters();
@@ -23,6 +24,9 @@ angular.module('ndrApp')
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
             $scope.datePickers = {
+
+                maxDate : new Date(),
+
                 from: {
                     date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
                     opened: false
@@ -170,8 +174,8 @@ angular.module('ndrApp')
 
                 if(!ready) { return false; }
 
-                if(isLoadingSubjects) return;
-                isLoadingSubjects = true;
+                if($scope.isLoadingSubjects) return;
+                $scope.isLoadingSubjects = true;
 
                 var query;
                 var selectedFilters = {};
@@ -191,7 +195,8 @@ angular.module('ndrApp')
                     limit   : 15,
                     offset  : 100,
                     count    : 'given-by-server',
-                    matching : 'given-by-server'
+                    matching : 'given-by-server',
+                    absence : $scope.absence
                 };
 
                 console.log('query on loaded', query);
@@ -202,7 +207,7 @@ angular.module('ndrApp')
                     allSubjects = data;
                     $scope.model.allSubjectsLength = allSubjects.length;
 
-                    isLoadingSubjects = false;
+                    $scope.isLoadingSubjects = false;
                     debouncedFilter();
 
                 });
@@ -237,6 +242,8 @@ angular.module('ndrApp')
                         // Normalize naming
                         if (filter.columnName === 'diabetesType' ) filter.columnName  = 'd';
                         if (filter.columnName === 'sex' ) filter.columnName  = 's';
+
+                        if(filter.sequence == null){ filter.sequence = 9999; }
 
                         // Fill out missing props
                         if (filter.columnName === 'age' ) {
@@ -307,6 +314,8 @@ angular.module('ndrApp')
 
 
                     // Set the available filters
+
+                    //filters.missing =
                     $scope.filters = filters;
 
                     ready = true;
@@ -379,7 +388,6 @@ angular.module('ndrApp')
 
                 $log.debug('Changed Filters');
 
-
                 var selectedFilters = {},
                     subjects = allSubjects;
 
@@ -393,45 +401,47 @@ angular.module('ndrApp')
 
                 dataService.setSearchFilters('values', selectedFilters);
 
+                if($scope.absence !== true) {
 
-                // Check additional filters
-                _.each(selectedFilters, function (filter, prop) {
+                    // Check additional filters
+                    _.each(selectedFilters, function (filter, prop) {
 
-                    if(_.isEmpty(filter)) return;
+                        if (_.isEmpty(filter)) return;
 
-                    subjects = _.filter(subjects, function (subject) {
+                        subjects = _.filter(subjects, function (subject) {
 
-                        //console.log(prop);
+                            //console.log(prop);
 
-                        var propValue = subject[prop],
-                            value;
+                            var propValue = subject[prop],
+                                value;
 
-                        // if filter.undef is true it means that option for searching undefined values is checked
-                        // so return only those that have null specified for this option
-                        if (filter.undef) {
+                            // if filter.undef is true it means that option for searching undefined values is checked
+                            // so return only those that have null specified for this option
+                            if (filter.undef) {
 
-                            return typeof subject[prop] === 'undefined';
+                                return typeof subject[prop] === 'undefined';
 
-                        // Handle range filtering
-                        } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {
-                            return typeof propValue === 'number' && (propValue >= filter.min && propValue <= filter.max);
+                                // Handle range filtering
+                            } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {
+                                return typeof propValue === 'number' && (propValue >= filter.min && propValue <= filter.max);
 
-                        // Handle date filtering
-                        } else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
-                            value = new Date(propValue);
-                            return (_.isDate(value) && (value >= new Date(filter.from.date) && value <= new Date(filter.to.date)));
+                                // Handle date filtering
+                            } else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
+                                value = new Date(propValue);
+                                return (_.isDate(value) && (value >= new Date(filter.from.date) && value <= new Date(filter.to.date)));
 
-                        // Handle value filtering
-                        } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
-                            value = parseInt(filter.value, 10);
-                            return propValue === value;
+                                // Handle value filtering
+                            } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
+                                value = parseInt(filter.value, 10);
+                                return propValue === value;
 
-                        // Nothing to filter, filter out only null values
-                        } else {
-                            return true;
-                        }
+                                // Nothing to filter, filter out only null values
+                            } else {
+                                return true;
+                            }
+                        });
                     });
-                });
+                }
 
                 //$scope.model.allSubjects = subjects;
 
@@ -448,7 +458,14 @@ angular.module('ndrApp')
             }, 400);
 
 
+            $scope.$watch('absence', function (){
+                console.log("CHANGED ABS");
+                loadSubjects();
+            });
+
             $scope.$watch('selectedFilters', function (){
+                console.log("CHANGED", $scope.selectedFilters);
+
                 debouncedFilter();
             }, true);
             // $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);

@@ -17,6 +17,7 @@ module.exports = function(grunt) {
         copy:{
             html: { expand: true, src: ['index.html', 'src/**/*.html'], dest: 'dist/'},
             img: { expand: true, src: ['images/**/*'], dest: 'dist/'},
+            fonts: { expand: true, src: ['fonts/**/*'], dest: 'dist/'},
             icons: { expand: true, src: ['icons/**/*'], dest: 'dist/'},
             pdfs: { expand: true, src: ['pdfs/**/*'], dest: 'dist/'},
             NDR_ADMIN: { expand: true, src: ['NDR_ADMIN/**/*'], dest: 'dist/'},
@@ -154,7 +155,8 @@ module.exports = function(grunt) {
 
     });
 
+    //imagemin:build'
     grunt.registerTask('default', ['concat:less', 'less']);
     grunt.registerTask('observe', ['watch']);
-    grunt.registerTask('build', ['copy', 'useminPrepare', 'concat:generated', 'uglify', 'cssmin', 'usemin', 'imagemin:build', 'clean:build']);
+    grunt.registerTask('build', ['copy', 'useminPrepare', 'concat:generated', 'uglify', 'cssmin', 'usemin', 'clean:build']);
 };

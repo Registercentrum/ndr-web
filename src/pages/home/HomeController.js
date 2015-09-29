@@ -65,9 +65,9 @@ angular.module('ndrApp')
 
         dataService.getList("news").then(function (data){
 
-            data.sort(function (a,b){
-                return new Date(b.publishedFrom) - new Date(a.publishedFrom);
-            })
+            //data.sort(function (a,b){
+            //    return new Date(a.publishedFrom) - new Date(a.publishedFrom);
+            //})
 
             data = data.splice(0,4);
 

@@ -1,5 +1,5 @@
 angular.module('ndrApp')
-    .controller('BankIDController', ['$scope', '$http', '$stateParams', '$state', 'accountService', function ($scope, $http, $stateParams, $state, accountService) {
+    .controller('BankIDController', ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService', function ($scope, $http, $stateParams, $state, accountService, APIconfigService) {
     
         console.log('BankIDController: Init', accountService.accountModel.user);
 
@@ -19,7 +19,7 @@ angular.module('ndrApp')
 
 
             var query = {
-                url: 'https://ndr.registercentrum.se/api/bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
+                url: APIconfigService.baseURL + 'bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
                 method: 'GET',
             };
 
@@ -47,7 +47,7 @@ angular.module('ndrApp')
             var waitFor = setInterval(function (){
 
                 var query = {
-                    url: 'https://ndr.registercentrum.se/api/bid/ndr/collect?orderRef=' + $scope.model.orderRef,
+                    url: APIconfigService.baseURL + 'bid/ndr/collect?orderRef=' + $scope.model.orderRef,
                     method: 'GET',
                     //data: {socialNumber: socialNumber}
                 };
@@ -69,7 +69,7 @@ angular.module('ndrApp')
         function login(){
 
             var query = {
-                url: 'https://ndr.registercentrum.se/api/CurrentVisitor',
+                url: APIconfigService.baseURL + 'CurrentVisitor',
                 method: 'GET',
                 //data: {socialNumber: socialNumber}
             };
@@ -89,7 +89,7 @@ angular.module('ndrApp')
             var waitFor = setInterval(function () {
 
                 var query = {
-                    url: 'https://ndr.registercentrum.se/api/CurrentVisitor',
+                    url: APIconfigService.baseURL + 'CurrentVisitor',
                     method: 'GET',
                     //data: {socialNumber: socialNumber}
                 };

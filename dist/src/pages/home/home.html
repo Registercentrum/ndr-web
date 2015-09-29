@@ -2,7 +2,7 @@
     <div ng-show="accountModel.activeAccount" class="row">
         <div class="col-md-12">
             <div class="Panel ServicesShortcuts">
-                <span>Du har blivit automatiskt inloggad. Genväger till våra e-tjänster:</span>
+                <span>Du har blivit automatiskt inloggad. Genvägar till våra e-tjänster:</span>
                 <a ui-sref="main.account.report" class="Button Button--default Button--strong">Rapportera</a>
                 <a ui-sref="main.account.patients" class="Button Button--default Button--strong">Söklista</a>
                 <a ui-sref="main.account.patient" class="Button Button--default Button--strong">Patientprofil</a>
@@ -156,7 +156,7 @@
 
     <div class="row col-wrap">
         <div class="col-md-4">
-            <div class="Panel u-equalHeight" style="background: white url('images/annual_report.png');">
+            <div class="Panel u-equalHeight" style="background: white url('images/annual_report.png');background-size: cover">
                 <div class="spacer" style="height:200px;"></div>
 
                 <a target="_blank" href="pdfs/Annual_Report_NDR_2013.pdf"
@@ -166,7 +166,7 @@
 
 
         <div class="col-md-4">
-            <div class="Panel u-equalHeight" style="background: white url('images/patient.png');">
+            <div class="Panel u-equalHeight" style="background: white url('images/patient.png');background-size: cover">
 
                 <div class="spacer" style="height:200px;"></div>
                 <h3 class="Panel-title"></h3>
@@ -243,11 +243,15 @@
                             </h3>
                         </div>
                     </li>
-
-
+                    <li class="List-item">
+                        <div class="List-item-inner">
+                            <p class="List-item-category"></p>
+                            <h3 class="List-item-title">
+                                <a target="_blank" href="http://cafegruppen.blogspot.se" class="List-item-link">Cafégruppen i Göteborg</a>
+                            </h3>
+                        </div>
+                    </li>
                 </ul>
-
-
             </div>
         </div>
 

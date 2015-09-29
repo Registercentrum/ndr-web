@@ -1,5 +1,5 @@
 angular.module("ndrApp")
-    .controller('AccountHomeController', ['$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout', '$http', function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout, $http) {
+    .controller('AccountHomeController', ['$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout', '$http', 'APIconfigService', function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout, $http, APIconfigService) {
 
         var Account = $scope.accountModel;
 
@@ -39,7 +39,7 @@ angular.module("ndrApp")
             console.log("Social", $scope.socialnumber);
 
             $http({
-                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
+                url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
                 method: "POST",
                 data: {socialNumber: $scope.socialnumber}
             })
@@ -56,7 +56,7 @@ angular.module("ndrApp")
             console.log("Social", $scope.socialnumber);
 
             $http({
-                url: 'https://ndr.registercentrum.se/api/Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
+                url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=LkUtebH6B428KkPqAAsV',
                 method: "POST",
                 data: {socialNumber: $scope.socialnumber}
             })

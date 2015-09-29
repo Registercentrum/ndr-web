@@ -1,4 +1,4 @@
-/*global angular*/
+﻿/*global angular*/
 (function () {
     "use strict";
 
@@ -8,14 +8,14 @@
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
-		$scope.isAdmin = null;
+		$scope.isAdmin = false;
 		
-		var dfd = $http.get(baseApiUrl + 'currentuser')	
+		var dfd = $http.get(baseApiUrl + 'currentvisitor')	
 		dfd.success(function(data, status, headers, config) {
 			$scope.isAdmin = data.user.isAdministrator;
 		})
 		.error(function(data, status, headers, config) {
-			$scope.isAdmin = false;
+
 		});
 	
 	});
@@ -135,6 +135,11 @@
 					if (!entry.values.isActive) {
 						return 'inActive';
 					}
+				}),
+				nga.field('lastUpdatedAt').label('Uppdaterad').cssClasses(function(entry) {
+					if (!entry.values.isActive) {
+						return 'inActive';
+					}
 				})
             ])
             .listActions(['edit'])
@@ -151,10 +156,13 @@
 					.label('Typ')
 					.targetEntity(unitTypes) // Select a target Entity
 					.targetField(nga.field('name')), // Select a label Field
-				nga.field('notActive', 'boolean')
+				nga.field('includeNotActive', 'boolean')
 					.pinned(true)
 					.label('Visa inaktiva')
-			]);
+			])
+			.permanentFilters({
+				includeNotReporting: true
+			});
 
 			
 		var ownership = [{value: 1, label: 'Offentlig'},
@@ -243,23 +251,72 @@
              .title('Användarkonton')
 			 .perPage(50)
              .fields([
-				nga.field('unitID').label('Enhets-ID'),
-				nga.field('unitName').label('Enhetsnamn'),
-				nga.field('userID').label('Anv-ID'),
-				nga.field('hsaid').label('HSAID'),
-				nga.field('firstName').label('Anv. Förnamn'),
-				nga.field('lastName').label('Anv. Efternamn'),
-				nga.field('statusText').label('Status').cssClasses(function(entry) {
-					if (entry.values.statusID == 9) {
+				nga.field('unitID').label('Enhets-ID').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
 						return 'inActive';
-					}
-					if (entry.values.statusID == 2 || entry.values.statusID == 3) {
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
-					}
 				}),
-				nga.field('unitContactPerson').label('Enhetskontakt'), 
-				nga.field('unitContactPhone').label('Telefon'), 
-				nga.field('unitContactEmail').label('E-post')
+				nga.field('unitName').label('Enhetsnamn').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('userID').label('Anv-ID').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('hsaid').label('HSAID').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('firstName').label('Anv. Förnamn').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('lastName').label('Anv. Efternamn').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('statusText').label('Status').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('unitContactPerson').label('Enhetskontakt').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}), 
+				nga.field('unitContactPhone').label('Telefon').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}), 
+				nga.field('unitContactEmail').label('E-post').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('lastUpdatedAt').label('Uppdaterad').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				})
              ])
 			.filters([
 				nga.field('q')
@@ -321,7 +378,8 @@
 				nga.field('lastActiveAt').label('Senast aktiv'),
 				nga.field('isKAS','boolean').label('KAS'),
 				nga.field('isCoordinator','boolean').label('Koordinator'),
-				nga.field('isAdministrator','boolean').label('NDR-Administratör')
+				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
+				nga.field('lastUpdatedAt').label('Uppdaterad')
 			])
 			.listActions(['edit'])
 			.filters([

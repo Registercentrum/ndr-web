@@ -8,7 +8,7 @@
 
                 <div ng-show="accountModel.activeAccount" class="dropdown">
                     <a class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
-                        <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ', ' }} {{ accountModel.activeAccount.unit.name | characters:16 }}
+                        <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ': ' }} <span style="font-size: 12px">{{ accountModel.activeAccount.unit.name | characters:26 }}</span>
                         <span class="caret"></span>
                     </a>
 
@@ -21,7 +21,7 @@
                             <a ui-sref="main.account.report" title="">Rapportera</a>
                         </li>
                         <li role="presentation">
-                            <a ui-sref="main.currentUser" title="">Mitt tjänstekort</a>
+                            <a ui-sref="main.currentUser" title="">Mitt användarkonto</a>
                         </li>
 
                         <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">

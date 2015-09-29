@@ -16,8 +16,8 @@ angular.module('ndrApp')
                 var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'area',
-                            height : 130,
-                            marginTop : 20,
+                            height : 140,
+                            marginTop : 5,
                             marginBottom : 30,
                             marginLeft : 35,
                             marginRight: 5,

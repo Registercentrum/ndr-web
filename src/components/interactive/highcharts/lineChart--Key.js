@@ -82,6 +82,7 @@ angular.module('ndrApp')
                             }
                         },
                         plotOptions: {
+
                             bar: {
                                 dataLabels: {
                                     enabled: true
