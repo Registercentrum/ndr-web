@@ -457,7 +457,10 @@
 				nga.field('isInternal', 'boolean')
 					.pinned(true)
 					.label('Visa endast interna nyheter')
-			]);	
+			])
+			.permanentFilters({
+				includeOutsidePeriod: true
+			});	
 		
         news.creationView()
 			.title('Ny')
