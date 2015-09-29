@@ -286,6 +286,7 @@ angular.module('ndrApp')
                     //dashStyle: "ShortDot",
                     color: 'black',
                     symbol : 'square',
+
                     fillColor : {
                         linearGradient: {
                             x1: 0,

@@ -17,11 +17,11 @@ angular.module('ndrApp')
                 var chart = jQuery('.chart-container', element).highcharts({
                             chart: {
                             type: 'spline',
-                            height : 130,
+                            height : 250,
                            // width : 200,
                             marginTop : 20,
                             marginBottom : 30,
-                            marginLeft : 35,
+                            marginLeft : 45,
                             marginRight: 5,
                             spacingLeft : 30,
 
@@ -34,56 +34,54 @@ angular.module('ndrApp')
                         },
 
 
-                        xAxis: {
 
+                    xAxis: {
 
-                            type: 'datetime',
-                           /* dateTimeLabelFormats: { // don't display the dummy year
-                                //month: '%e. %b',
-                                year: '%b'
-                            },*/
+                        type: 'datetime',
 
-                            dateTimeLabelFormats: {
-                                year: '%Y'
-                            },
-
-                            lineWidth: 0,
-                            gridLineWidth: 0.5,
-                            minorGridLineWidth: 0,
-                            lineColor: '#eee',
-                            labels: {
-                                style: {
-                                    color: 'black',
-                                    fontSize : '12px'
-                                }
-                            },
-                            minorTickLength: 0,
-                            tickLength: 0
-
+                        dateTimeLabelFormats: {
+                            year: '%y, %b'
                         },
 
-                        yAxis: {
-                           gridLineWidth: 0.5,
-                           gridLineColor : '#666',
-                           lineWidth: 0,
-
-                            minorGridLineWidth: 0,
-                            /*min : 55,
-                            max : 80,*/
-
-                            title: {
-                                text: '',
-                                align: 'high'
-                            },
-                            labels: {
-                                align : 'right',
-
-                                style: {
-                                    color: 'white',
-                                    fontSize : '10px'
-                                }
+                        lineWidth: 0,
+                        gridLineWidth: 0.5,
+                        minorGridLineWidth: 0,
+                        lineColor: '#eee',
+                        labels: {
+                            style: {
+                                color: '#666',
+                                fontSize : '10px'
                             }
                         },
+                        minorTickLength: 0,
+                        tickLength: 0
+
+                    },
+
+                    yAxis: {
+                        gridLineWidth: 0.5,
+                        gridLineColor : "#eee",
+                        lineWidth: 0,
+
+                        minorGridLineWidth: 0,
+                        /*min : 55,
+                         max : 80,*/
+
+                        title: {
+                            text: '',
+                            align: 'high'
+                        },
+                        labels: {
+                            x : -5,
+                            align : "right",
+
+                            style: {
+                                color: '#666',
+                                fontSize : '10px'
+                            }
+                        }
+                    },
+
                          tooltip: {
                             formatter: function() {
                                 var time = Highcharts.dateFormat('%Y', new Date(this.x))
@@ -91,7 +89,7 @@ angular.module('ndrApp')
                             }
                         },
                         plotOptions: {
-                            bar: {
+                            spline: {
                                 dataLabels: {
                                     enabled: true
                                 }
@@ -106,30 +104,6 @@ angular.module('ndrApp')
                                 }
                             },
 
-
-                            spline: {
-                                /*marker: {
-                                    enable: false
-                                }*/
-                            },
-
-                            area : {
-
-                                fillColor : {
-                                    linearGradient: {
-                                        x1: 0,
-                                        y1: 0,
-                                        x2: 0,
-                                        y2: 1
-                                    },
-                                    stops: [
-                                        [0, 'rgba(255,255,255,0.6)'],
-                                        [0.7, 'rgba(255,255,255,0.2)'],
-                                        [1, 'rgba(255,255,255,0)']
-
-                                    ]
-                                }
-                            }
                         },
                         legend: {
                             enabled: false,
@@ -141,7 +115,14 @@ angular.module('ndrApp')
                             //dashStyle: 'ShortDot',
                             color : 'black',
                             name: 'Värde',
-                            data : [{x: 1, y:10}, {x: 3, y:5}]
+                            data : [{x: 1, y:10}, {x: 3, y:5}],
+                            //marker: {
+                            //    fillColor: '#000',
+                            //    symbol : 'square',
+                            //    lineWidth: 2,
+                            //    radius : 3,
+                            //    lineColor: null // inherit from series
+                            //}
 
                         }]
                     });

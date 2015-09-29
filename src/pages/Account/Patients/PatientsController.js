@@ -24,6 +24,9 @@ angular.module('ndrApp')
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
             $scope.datePickers = {
+
+                maxDate : new Date(),
+
                 from: {
                     date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
                     opened: false

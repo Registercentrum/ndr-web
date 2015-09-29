@@ -17,13 +17,14 @@ angular.module('ndrApp')
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'spline',
-                            height : 130,
+                            height : 250,
                             // width : 200,
                             marginTop : 20,
                             marginBottom : 30,
                             marginLeft : 25,
                             marginRight: 5,
-                            spacingLeft : 0,
+                            spacingLeft : 20,
+                            //spacingBottom : 60,
 
                             style : {
                                 color: "#666"
@@ -87,19 +88,28 @@ angular.module('ndrApp')
                         },
                         plotOptions: {
 
-                            series: {
+                            spline: {
+                                dataLabels: {
+                                    enabled: true
+                                }
+                            },
 
+                            series: {
                                 marker: {
+                                    enabled:true,
                                     fillColor: '#000',
-                                    lineWidth: 2,
+                                    //lineWidth: 1,
+                                    radius: 5,
                                     lineColor: null // inherit from series
                                 }
                             }
-
-
                         },
                         legend: {
                             enabled: true,
+                            align:'center',
+                            margin: 16,
+                            verticalAlign: 'top',
+
                         },
                         credits: {
                             enabled: false

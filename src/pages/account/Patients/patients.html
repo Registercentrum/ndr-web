@@ -29,9 +29,11 @@
                         <div class="col-sm-7 u-noLeftPadding Progressbar">
                             <progressbar value="( model.filteredSubjectsLength * 100 ) / model.allSubjectsLength" max="100"></progressbar>
                         </div>
-                        <div class="col-sm-2 u-noLeftPadding">
+                        <div class="col-sm-5 u-noLeftPadding">
                             {{ model.filteredSubjectsLength + " av " + model.allSubjectsLength }}
-                            <!--<span style="margin-left: 10px" ng-show="isLoadingSubjects">Laddar</span>-->
+                            <span style="margin-left: 10px" ng-show="isLoadingSubjects">
+                                <img src="images/ajax-loader.gif" alt=""/> Laddar
+                            </span>
                         </div>
 
                     </div>
@@ -59,7 +61,7 @@
                                         ng-model="datePickers.from.date"
                                         is-open="datePickers.from.opened"
                                         min-date="minDate"
-                                        max-date="'2015-06-22'"
+                                        max-date="datePickers.maxDate"
                                         datepicker-options="dateOptions"
                                         date-disabled="disabled(date, mode)"
                                         ng-required="true"
@@ -80,7 +82,7 @@
                                         ng-model="datePickers.to.date"
                                         is-open="datePickers.to.opened"
                                         min-date="minDate"
-                                        max-date="'2015-06-22'"
+                                        max-date="datePickers.maxDate"
                                         datepicker-options="dateOptions"
                                         date-disabled="disabled(date, mode)"
                                         ng-required="true"
@@ -262,46 +264,7 @@
             </li>
         </ul>
 
-        <!--  <pre>
-                  {{ selectedFilters | json }}
 
-          </pre>-->
-
-
-
-        <!--      <div class="table-responsive">
-                  <table id="Table--patients" datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" width="100%" class="table responsive table-striped table-bordered row-border hover">
-                      <thead>
-                      <tr>
-                          <td>Mer</td>
-                          <td>Personnummer</td>
-                          <td>Senaste besök</td>
-                          &lt;!&ndash; <td>Blodtryck</td> &ndash;&gt;
-                          <td>HbA1c</td>
-                          <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f.question }}</td>
-
-                          <td>Funktioner</td>
-
-                          <td ng-repeat="f in filters | filter:{isChosen:true}">{{ f }}</td>
-
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr ng-repeat="subject in model.filteredSubjects">
-                          <td class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>
-                          <td once-text="subject.aggregatedProfile.subject.socialNumber"></td>
-                          <td once-text="subject.aggregatedProfile.contactDate | date:'yyyy-MM-dd'"></td>
-                          &lt;!&ndash; <td once-text="subject.aggregatedProfile.bpDiastolic"</td> &ndash;&gt;
-                          <td once-text="subject.aggregatedProfile.hba1c"></td>
-                          &lt;!&ndash;<td ng-repeat="f in filters | filter:{isChosen:true}">{{ subject.aggregatedProfile[f.columnName] }}</td>&ndash;&gt;
-
-                          <td><a once-href="'#/inloggad/patient/' + subject.subjectID" class="Button Button--info Button--small">Visa profil</a></td>
-                      </tr>
-                      </tbody>
-                  </table>
-              </div>
-
-      -->
 
     </div>
 </div>

@@ -81,7 +81,7 @@ angular.module('ndrApp')
         this.logOut = function () {
             this.accountModel.user = null;
             this.accountModel.activeAccount = null;
-            //TODO:
+            document.cookie = "SESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
             $state.go('main.home', {}, {reload: true});
         };
 

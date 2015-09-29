@@ -59,23 +59,22 @@
     <div class="row" style="">
         <div class="col-md-12">
          <h5 style="margin-top:0px">Kommentar</h5>
-            <textarea placeholder="Plats för kommentar" style="padding:5px; width:100%;height:60px"></textarea>
+            <textarea placeholder="Plats för kommentar" style="padding:5px; width:800px;height:60px; margin-bottom: 25px"></textarea>
         </div>
     </div>
 
     <!-- HBA1C -->
     <div class="row">
 
-
-        <div style="width:900px">
+        <div style="width:430px; float:left">
             <!--<b>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></b>-->
-            <b>HbA1c <span>(Senaste värde: {{ model.latest.hba1c.value }} mmol/mol</span>)</b>
-            <div class="" line-chart-print model="model.data.trend.hba1c"></div>
+            <b style="margin-left: 20px">HbA1c <span>(Senaste värde: {{ model.latest.hba1c.value }} mmol/mol</span>)</b>
+            <div class="" style="width:430px" line-chart-print model="model.data.trend.hba1c"></div>
         </div>
 
-        <div style="width:900px">
+        <div style="width:430px;float:left;margin-left: 30px">
             <b>Blodtryck <span>(Senaste värde: {{ model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} mm Hg</span>)</b>
-            <div class="" line-chart-combined-print model="model.data.trend.combinedBp"></div>
+            <div class="" style="width:430px" line-chart-combined-print model="model.data.trend.combinedBp"></div>
         </div>
     </div>
 
@@ -83,12 +82,12 @@
     <div class="row" style="margin-top: 10px">
         <!--<div>Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>-->
 
-        <div style="width:900px">
-                <b>Blodlipider</b>
+        <div style="width:430px; float:left">
+                <b style="margin-left: 20px">Blodlipider</b>
                 <div line-chart-combined-print title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
             </div>
 
-        <div style="width:900px">
+        <div style="width:430px; float:left; margin-left: 30px">
                 <div line-chart-combined-print title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
             </div>
 
@@ -169,7 +168,7 @@
     </div>
 
 
-    <div class="row">
+    <div class="row" style="margin-top: 100px">
 
         <h4>Senaste 5 besök</h4>
         <div class="table-responsive">
