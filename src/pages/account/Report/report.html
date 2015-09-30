@@ -77,6 +77,7 @@
                       date-disabled="disabled(date, mode)"
                       datepicker-options="dateOptions"
                       datepicker-popup="{{format}}"
+                      max-date="datePickers.maxDate"
                       is-open="datePickers.contactDate.opened"
                       ng-required="true"
                       close-text="Stäng"
@@ -339,7 +340,7 @@
 
                             <div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.ldl.$invalid && !contactForm.ldl.$pristine }">
                               <label class="" for="ldl" class="">LDL</label><i class="fa fa-question-circle helpNote" ng-show="lists['ldl'].helpNote != null" tooltip="{{lists['ldl'].helpNote}}"></i>
-                              <input name="ldl" replace-comma type="number" min="0.5" max="10" class="form-control" placeholder="LDL" ng-model="contactModel.ldl" decimals="1" ng-class="{ 'has-no-error' : !contactForm.ldl.$invalid && contactModel.ldl != null}" ng-model-options="{ updateOn: 'blur' }">
+                              <input name="ldl" replace-comma type="number" min="0.5" max="10" class="form-control" placeholder="LDL" ng-model="contactModel.ldl" decimals="2 " ng-class="{ 'has-no-error' : !contactForm.ldl.$invalid && contactModel.ldl != null}" ng-model-options="{ updateOn: 'blur' }">
                               <p ng-show="contactForm.ldl.$error.min || contactForm.ldl.$error.max" class="Report-formItemHelp help-block">LDL kan anta ett värde mellan 0,5 och 10.</p>
                             </div>
                           </div>
@@ -612,7 +613,7 @@
 
         <div class="row">
           <div class="col-md-4 Report-submitWrapper pull-right" >
-            <br /><button type="submit" ng-click="saveContact()" class="Button Button--info btn-block" ng-disabled="!contactForm.$valid || !contactOptionalForm.$valid">Spara</button>
+            <br /><button type="submit" ng-click="saveContact()" class="Button Button--info btn-block" ng-disabled="!contactForm.contactDate.$valid || !contactOptionalForm.$valid">Spara</button>
           </div>
         </div>
 
