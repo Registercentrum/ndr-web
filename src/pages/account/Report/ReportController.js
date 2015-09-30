@@ -402,7 +402,7 @@ angular.module('ndrApp')
         socialNumber: $scope.subject != null ? $scope.subject.socialNumber : null,
         diabetesType: $scope.subject != null ? $scope.subject.diabetesType : null,
         yearOfOnset: $scope.subject != null ? $scope.subject.yearOfOnset : null,
-        contactDate: null,
+        contactDate: $filter('date')(new Date(), $scope.format),
         hba1c: null,
         treatment: lastContact != null ? lastContact.treatment : null,
         insulinMethod: lastContact != null ? lastContact.insulinMethod : null,
