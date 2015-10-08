@@ -27,7 +27,7 @@
                         ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts"
                         style="width:250px"
                         class="form-control">
-                        <option value="">Nytt besök</option>
+                        <option value="">Föregående besök</option>
                     </select>
                 </form>
                 <a href="#/inloggad/patient/{{ subject.subjectID }}" type="submit" class="Button Button--info pull-right">Gå till profil</a>

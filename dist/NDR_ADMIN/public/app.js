@@ -3,7 +3,7 @@
     "use strict";
 
     var app = angular.module('myApp', ['ng-admin']);
-	var baseApiUrl = 'https://ndr.registercentrum.se/api/';
+	var baseApiUrl = 'https://www.ndr.nu/api/';
 	//var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
