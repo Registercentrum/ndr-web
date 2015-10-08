@@ -152,16 +152,16 @@ angular.module('ndrApp')
         };
 
     $scope.tryCalculateGFR = function() {
-
+		
       if ($scope.contactModel.creatinine == null || $scope.contactModel.contactDate == null) {
         $scope.contactModel.gfr = null;
         return;
       }
 
       var femaleFactor = 0.742;
-      var contactDate = $scope.contactModel.contactDate;//new Date($scope.contactModel.contactDate.substring(0,4),$scope.contactModel.contactDate.substring(5,7)-1,$scope.contactModel.contactDate.substring(8,10));
+      var contactDate = new Date($scope.contactModel.contactDate.substring(0,4),$scope.contactModel.contactDate.substring(5,7)-1,$scope.contactModel.contactDate.substring(8,10));
       var birthDate = new Date($scope.subject.socialNumber.substring(0,4),$scope.subject.socialNumber.substring(4,6)-1,$scope.subject.socialNumber.substring(6,8));
-      var age = $scope.calculateAge(birthDate, contactDate);
+      var age = Math.floor($scope.calculateAge(birthDate, contactDate));
       var gfr = 175*Math.pow(($scope.contactModel.creatinine/88.4),-1.154)*Math.pow(age,-0.203)*($scope.subject.sex == 2 ? femaleFactor : 1);
 
       $scope.contactModel.gfr = parseFloat(gfr.toFixed(2));
