@@ -282,6 +282,8 @@ angular.module('ndrApp')
              * @param  {String} key What values are we looking for?
              * @return {Array} Array of key:value objects
              */
+
+			 
             function getSeries (key) {
                 var series = [],
                     now = moment();
@@ -308,15 +310,16 @@ angular.module('ndrApp')
              * @return {Object} A pair of value and the data
              */
             function getLatestValue (key) {
+			
                 var visit     = _.find($scope.subject.contacts, function (v) { return !_.isNull(v[key]); }),
                     attribute = _.find($scope.contactAttributes, {columnName: key}),
                     value;
 
-                if(key === 'diabetesType') return { value: 'inget värde', date: 'inget värde', label : 'inget värde' };
-                if(typeof visit === 'undefined') return { value: 'inget värde', date: 'inget värde', label : 'inget värde' };
-
+                if(key === 'diabetesType') return { value: 'saknas', date: 'inget värde', label : 'saknas' };
+                if(typeof visit === 'undefined') return { value: 'saknas', date: 'saknas', label : 'saknas' };
+				
                 if (_.isNull(visit[key]) ||  _.isUndefined(visit[key])   ) {
-                    value = 'inget värde';
+                    value = 'saknas';
 
                     // If it's a date, format it in a nice way
                 } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
@@ -329,11 +332,15 @@ angular.module('ndrApp')
                     // If it's a boolean, return proper translation (ja-nej)
                 } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
                     value = visit[key] ? 'Ja' : 'Nej';
-                }
-
-                return visit ?
+                } else {
+					value = visit[key] + ' ' + attribute.measureUnit;
+				}
+				
+				var ret = visit ?
                     { value: visit[key], date: visit.contactDate, label : value } :
-                    { value: 'inget värde', date: 'inget värde', label : value };
+                    { value: 'saknas', date: 'saknas', label : value };
+				
+                return ret;
             }
 
 

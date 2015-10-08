@@ -9,7 +9,9 @@ angular.module('ndrApp')
 
         $scope.cancel = function () {
           $('html, body').animate({scrollTop: 0}, 500, function () {
-            window.document.getElementById('socialnumber-input').select();
+			var socinput = document.getElementById('socialnumber-input');
+			if (socinput != null)
+				document.getElementById('socialnumber-input').select();
           });
           $modalInstance.dismiss('cancel');
         };
@@ -65,7 +67,10 @@ angular.module('ndrApp')
             dataService.getSubjectBySocialNumber($scope.socialnumber)
                 .then(function (subject) {
                     $scope.subject = subject;
-
+					
+					//senaste kontakt bara intressant vid nybesök
+					$scope.lastContact = $scope.subject.contacts.length>0 ? $scope.subject.contacts[0] : null;
+					
                     //Välj det senast kompletterade/skapade besöket
                     if (!newSocialnumber) {
                         $scope.contactToUpdate = $scope.getContactFromContactDate($scope.subject.contacts, $scope.contactModel.contactDate);
@@ -97,10 +102,8 @@ angular.module('ndrApp')
 
 
         $scope.setContact = function (contactToUpdate) {
+		
             $scope.method = !contactToUpdate ?  'POST' : 'PUT';
-
-            //senaste kontakt bara intressant vid nybesök
-            $scope.lastContact = !contactToUpdate ? $scope.subject.contacts[0] : null;
 
             //Skapa modell
             $scope.contactModel = !contactToUpdate ? $scope.getNewContactModel() : $scope.getUpdateModel();
@@ -224,15 +227,17 @@ angular.module('ndrApp')
       startingDay: 1
     };
 
-    $scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'yyyy.MM.dd', 'shortDate'];
     $scope.format = $scope.formats[0];
     //END datePicker
-
+	
     $scope.contactDateChanged = function() {
-
+	
       var valid = true;
       var m = $scope.contactModel;
-      var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate)
+      var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate);
+	  
+	  $scope.contactModel.contactDate = dateToCheck.replace('.','-');
 
       var compare = function(thisDate, thatDate) {
         if (thisDate == thatDate) {
@@ -444,7 +449,7 @@ angular.module('ndrApp')
         footExaminationDate: lastContact != null ? lastContact.footExaminationDate != null ? lastContact.footExaminationDate.split('T')[0] : null : null,
         footRiscCategory: null,
         diabeticRetinopathy: lastContact != null ? lastContact.diabeticRetinopathy : null,
-        smokingHabit: lastContact != null ? lastContact.smokingHabit : null,
+        smokingHabit: lastContact != null ? (lastContact.smokingHabit == 1 ? 1 : null ): null,
         smokingEndYear: null,
         physicalActivity: null,
         hypoglycemiaSevere: null,

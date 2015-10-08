@@ -241,6 +241,7 @@ angular.module('ndrApp')
                     _.each(filters, function (filter) {
                         // Normalize naming
                         if (filter.columnName === 'diabetesType' ) filter.columnName  = 'd';
+						if (filter.columnName === 'yearOfOnset' ) filter.columnName  = 'y';
                         if (filter.columnName === 'sex' ) filter.columnName  = 's';
 
                         if(filter.sequence == null){ filter.sequence = 9999; }
