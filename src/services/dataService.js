@@ -113,9 +113,9 @@ angular.module('ndrApp')
               data: data
             };
 
-            return $http(query)
-                .then(function (response) { return response.data; })
-                ['catch'](console.error.bind(console));
+            return $http(query);
+                //.then(function (response) { return response.data; })
+                //['catch'](console.error.bind(console));
 
         };
 

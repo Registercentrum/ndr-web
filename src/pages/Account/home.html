@@ -11,11 +11,11 @@
     <form class="col-sm-9 text-right" role="search" name="subjectForm" novalidate>
         <div class="PatientSearch">
             <div class="PatientSearch-inner">
-            <span class="PatientSearch-icon">
-              <i class="fa fa-search" style="color:#999"></i>
-            </span>
+				<span class="PatientSearch-icon">
+				  <i class="fa fa-search" style="color:#999"></i>
+				</span>
                 <input class="PatientSearch-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
-                <button class="PatientSearch-searchButton" ng-click="gotoReport()" ng-disabled="!subjectForm.$valid">Rapportera</button>
+                <button class="PatientSearch-searchButton" ng-click="gotoReport()" ng-disabled="!subjectForm.$valid">Rapportera / Komplettera</button>
                 <button ng-click="gotoProfile()" style="border-left: 1px solid white;" class="PatientSearch-reportButton" ng-disabled="!subjectForm.$valid">Diabetesprofil</button>
             </div>
         </div>

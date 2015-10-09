@@ -11,7 +11,7 @@ angular.module('ndrApp')
           $('html, body').animate({scrollTop: 0}, 500, function () {
 			var socinput = document.getElementById('socialnumber-input');
 			if (socinput != null)
-				document.getElementById('socialnumber-input').select();
+				window.document.getElementById('socialnumber-input').focus();
           });
           $modalInstance.dismiss('cancel');
         };
@@ -52,8 +52,10 @@ angular.module('ndrApp')
 
         if ($scope.subjectID) {
             dataService.getSubjectById($scope.subjectID).then(function (subject) {
-                $scope.socialnumber = subject.socialNumber;
-                $scope.getSubject(true);
+				if (subject.socialNumber != undefined) {
+					$scope.socialnumber = subject.socialNumber;
+					$scope.getSubject(true);	
+				}
             });
         }
 
@@ -66,9 +68,12 @@ angular.module('ndrApp')
 
             dataService.getSubjectBySocialNumber($scope.socialnumber)
                 .then(function (subject) {
+				
                     $scope.subject = subject;
 					
-					//senaste kontakt bara intressant vid nybesök
+					setTimeout(function(){ window.document.getElementById('bnNewContact').focus(); }, 100);
+					
+					//spara senaste kontakt för iterering av värden
 					$scope.lastContact = $scope.subject.contacts.length>0 ? $scope.subject.contacts[0] : null;
 					
                     //Välj det senast kompletterade/skapade besöket
@@ -76,8 +81,10 @@ angular.module('ndrApp')
                         $scope.contactToUpdate = $scope.getContactFromContactDate($scope.subject.contacts, $scope.contactModel.contactDate);
                         $scope.setContact($scope.contactToUpdate);
                     } else {
-                        $scope.contactModel = $scope.getNewContactModel();
+                        //$scope.contactModel = $scope.getNewContactModel();
+						$scope.contactModel = null;
                     }
+					
                 })
                 ['catch'](function(data, status, headers, config) {
                     $scope.subject = null;
@@ -90,8 +97,7 @@ angular.module('ndrApp')
                     }
                 });
         };
-
-
+		
         $scope.deleteContact = function (contactID) {
             dataService.deleteContact(contactID)
                 .then(function () {
@@ -112,10 +118,13 @@ angular.module('ndrApp')
             $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReason > 0;
             $scope.contactDateChanged();
         };
-
-
+		$scope.newContact = function () {
+			$scope.setContact(0);
+			//$scope.contactModel = $scope.getNewContactModel();
+		};
         $scope.getNewContactModel = function () {
             $scope.contactForm.$setPristine();
+			$scope.contactToUpdate = null;//.$setPristine();
             return $scope.getNewModel($scope.lastContact);
         };
 
@@ -471,10 +480,12 @@ angular.module('ndrApp')
       $scope.setDateValues();
       $scope.contactModel.optionals = $scope.getOptionals();
 
-      console.log($scope.contactModel);
-
-      dataService.saveContact($scope.contactModel)
-        .then(function () {
+      var dfd = dataService.saveContact($scope.contactModel)
+        .then(function (response) {
+		
+			console.log('gets OK');
+			console.log(response);
+		
             $scope.getSubject(false);
             $scope.isSaving = false;
 
@@ -485,8 +496,11 @@ angular.module('ndrApp')
               scope      : $scope
             });
         })
-        ['catch'](function (data) {
+        ['catch'](function (response) {
             //todo behöver utökas
+			
+			var data = response.data;
+			
             if (data.ModelState != null) {
               for (var prop in data.ModelState) {
                 if (data.ModelState.hasOwnProperty(prop)) $scope.serverSaveErrors.push(data.ModelState[prop][0]);
@@ -494,6 +508,8 @@ angular.module('ndrApp')
             } else {
               $scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
             }
+			
+			$scope.isSaving = false;
         });
     };
 

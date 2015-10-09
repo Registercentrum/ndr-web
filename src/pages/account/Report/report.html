@@ -1,6 +1,6 @@
 <div class="row Report">
     <div class="col-md-5">
-        <h1 class="Page-title">Rapportera</h1>
+        <h2 class="Page-title">Rapportera/Komplettera</h1>
     </div>
 
     <div class="col-md-7 text-right">
@@ -8,7 +8,7 @@
             <div class="PatientSearch-inner">
                 <span class="PatientSearch-icon"><i class="fa fa-search" style="color:#999"></i></span>
                 <input class="PatientSearch-input" id="socialnumber-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
-                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera</button>
+                <button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera / Komplettera</button>
             </div>
         </form>
     </div>
@@ -17,9 +17,10 @@
 <div class="row" ng-show="subject != null">
     <div class="col-md-12">
         <div class="PatientHeader clearfix">
-            <div class="PatientHeader-personNumber col-md-6 u-noLeftPadding">{{ subject.socialNumber }}</div>
+            <div class="PatientHeader-personNumber col-md-3 u-noLeftPadding">{{ subject.socialNumber }}</div>
 
-            <div class="col-md-6">
+            <div class="col-md-9">
+				<button ng-click="newContact()" id="bnNewContact" type="submit" class="Button pull-left" style="margin-right: 25px; background: #7c4791; color: white; font-style:bold;">Ny rapportering</button>
                 <form id="contactSelect" class="PatientHeader-showVisit form-horizontal pull-left" role="form">
                     <select
                         ng-model="contactToUpdate"
@@ -27,25 +28,25 @@
                         ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts"
                         style="width:250px"
                         class="form-control">
-                        <option value="">Föregående besök</option>
+                        <option value="">Komplettera</option>
                     </select>
                 </form>
                 <a href="#/inloggad/patient/{{ subject.subjectID }}" type="submit" class="Button Button--info pull-right">Gå till profil</a>
             </div>
         </div>
 
-        <div class="Panel" ng-class="isSaving ? 'Panel-loading' : ''">
+        <div class="Panel" ng-class="isSaving ? 'Panel-loading' : ''" ng-show="subject != null && contactModel != null">
             <div class="Panel-loading-overlay"></div>
 
             <div class="col-md-12 alert alert-danger" ng-show="serverSubjectError != null">
                 {{serverSubjectError}}
             </div>
 
-            <div ng-show="subject != null">
+            <div>
         <form name="contactForm" class="Report-form form-horizontal" role="form" novalidate>
 
           <div class="row">
-            <h3 class="Panel-title Report-title col-md-4">Rapportera nytt besök</h3>
+            <h3 class="Panel-title Report-title col-md-4">{{contactModel.contactID ? 'Komplettera' : 'Rapportera nytt'}} besök</h3>
 
             <div class="col-md-6 Report-patientMeta">
             </div>
@@ -592,17 +593,6 @@
             </div>
           </div>
 
-          <div class="row" ng-show="serverSaveErrors.length>0">
-            <div class="col-md-12 alert alert-danger">
-              <ul>
-                <li ng-repeat="s in serverSaveErrors">
-                  {{s}}
-                </li>
-              </ul>
-            </div>
-          </div>
-
-
         </form>
         <div ng-show="optionalQuestions.length>0">
           <h4>Enhetens valbara frågor <i class="fa fa-lightbulb-o"></i></h4>
@@ -611,6 +601,18 @@
           </form>
         </div>
 
+          <div class="row" ng-show="serverSaveErrors.length>0">
+			<div class="col-md-12">
+				<div class="col-md-12 alert alert-danger">
+				  <ul>
+					<li ng-repeat="s in serverSaveErrors">
+					  {{s}}
+					</li>
+				  </ul>
+				</div>
+			</div>
+          </div>
+		
         <div class="row">
           <div class="col-md-4 Report-submitWrapper pull-right" >
             <br /><button type="submit" ng-click="saveContact()" class="Button Button--info btn-block" ng-disabled="!contactForm.contactDate.$valid || !contactOptionalForm.$valid">Spara</button>
