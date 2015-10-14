@@ -27,7 +27,8 @@ angular.module('ndrApp')
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount   = activeAccount;
 
-            $state.go($state.current, {}, {reload: true});
+            //$state.go($state.current, {}, {reload: true}); BUG 2015-10-14, page can´t reload since then active account then is reset
+			$state.go('main.account.home');
         };
 
         this.login = function (accountID) {
