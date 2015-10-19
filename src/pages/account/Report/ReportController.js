@@ -145,6 +145,12 @@ angular.module('ndrApp')
             }
         };
 
+        $scope.treatmentChanged = function () {
+            if (!($scope.contactModel.treatment == 3 || $scope.contactModel.treatment == 4 || $scope.contactModel.treatment == 9 || $scope.contactModel.treatment == 10)) {
+                $scope.contactModel.insulinMethod = null;
+            }
+        };
+
 
         $scope.calculateLDL = function () {
             var calculatedLDL = parseFloat(parseFloat($scope.contactModel.cholesterol - $scope.contactModel.hdl - 0.45 * $scope.contactModel.triglyceride).toFixed(1));
