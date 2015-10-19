@@ -39,7 +39,7 @@ angular.module("ndrApp")
             console.log("Social", $scope.socialnumber);
 
             $http({
-                url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey= ' + APIconfigService.APIKey,
+                url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
                 method: "POST",
                 data: {socialNumber: $scope.socialnumber}
             })
@@ -56,7 +56,7 @@ angular.module("ndrApp")
             console.log("Social", $scope.socialnumber);
 
             $http({
-                url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey= ' + APIconfigService.APIKey,
+                url: APIconfigService.baseURL + 'Subject?AccountID=' + Account.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
                 method: "POST",
                 data: {socialNumber: $scope.socialnumber}
             })
