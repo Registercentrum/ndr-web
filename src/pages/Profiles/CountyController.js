@@ -79,14 +79,12 @@ angular.module("ndrApp")
                     toMonth : new Date().getMonth(),
                     indicatorID: 101
                 });
+
+
+
             dataService.getStats(queryTrendChart).then(function (data){
-
                 var series = [];
-
                 _.each(data.statSet[0].intervalSet, function(obj, key){
-
-                    console.log(obj);
-
                     var o = {
                         // name : obj.unit.name,
                         // color : obj.unit.levelID != id ? "#D4D4D4" : "#F1AD0F",
@@ -94,14 +92,28 @@ angular.module("ndrApp")
                         y : obj.stat.r,
                         cRep : obj.stat.cRep,
                     }
-
                     series.push(o);
                 })
-
-                $scope.model.data.noPatients = _.last(series).cRep;
                 $scope.model.data.trendhba1c = series;
             });
 
+            // GET DATA FOR NUMBER OF PATIENTS
+            var queryPatients = dataService.queryFactory(
+                {
+                    unitType : $scope.model.unitType,
+                    countyCode : id,
+                    //interval : "m",
+                    fromYear    : new Date().getFullYear()-1,
+                    toYear    : new Date().getFullYear(),
+                    fromMonth   : new Date().getMonth()+1,
+                    toMonth   : new Date().getMonth(),
+                    indicatorID: 101
+                });
+
+
+            dataService.getStats(queryPatients).then(function (data){
+                $scope.model.data.noPatients = data.statSet[0].stat.cRep;
+            });
         }
     }]);
 

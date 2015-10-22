@@ -104,7 +104,14 @@ angular.module('ndrApp')
 
 
         // GET DATA FOR TREND CHART
-        var query = dataService.queryFactory({unitID : id, level : 2, interval : 'y', fromYear: 2000, toYear : new Date().getFullYear(), indicatorID: 101});
+        var query = dataService.queryFactory({
+            unitID : id,
+            level : 2,
+            interval : 'y',
+            fromYear: 2000,
+            toYear : new Date().getFullYear(),
+            indicatorID: 101
+        });
         dataService.getStats(query).then(function (data){
 
             var series = [];
@@ -123,9 +130,23 @@ angular.module('ndrApp')
 
                 series.push(o);
             });
-
-            $scope.model.data.noPatients = _.last(series).cRep;
             $scope.model.data.trendhba1c = series;
+        });
+
+        // GET DATA FOR NUMBER OF PATIENTS
+        var queryPatients = dataService.queryFactory(
+            {
+                unitID : id,
+                level : 2,
+                fromYear    : new Date().getFullYear()-1,
+                toYear    : new Date().getFullYear(),
+                fromMonth   : new Date().getMonth()+1,
+                toMonth   : new Date().getMonth(),
+                indicatorID: 101
+            });
+
+        dataService.getStats(queryPatients).then(function (data){
+            $scope.model.data.noPatients = data.statSet[0].stat.cRep;
         });
 
     }]);

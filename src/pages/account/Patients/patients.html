@@ -123,8 +123,8 @@
                                 class="RangeSlider">
                             </div>
                             <div class="MultiFilter-row-filterKnobs--inputs">
-                                <input type="number" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].min" ng-model-options="{debounce: 850}">
-                                <input type="number" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].max" ng-model-options="{debounce: 850}">
+                                <input type="number" decimals="1" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].min" ng-model-options="{debounce: 850}">
+                                <input type="number" decimals="1" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].max" ng-model-options="{debounce: 850}">
                             </div>
                         </div>
 

@@ -160,6 +160,9 @@ angular.module('ndrApp')
                         } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
                             value = value ? 'Ja' : 'Nej';
                         }
+                        else{
+                            value = $filter('number')(value);
+                        }
 
                         table[keyIndex].values.push(value);
                     });
@@ -172,47 +175,14 @@ angular.module('ndrApp')
 
             function populateFullTableData () {
                 var table = [],
-                    included = [
-                        'contactDate',
-                        'hba1c',
-                        'weight',
-                        'height',
-                        'bmi',
-                        'waist', //Midjemått cm
-                        'bpSystolic',
-                        'bpDiastolic',
-                        'cholesterol',
-                        'triglyceride',
-                        'hdl',
-                        'ldl',
-                        'microscopicProteinuria',
-                        'macroscopicProteinuria',
-                        'fundusExaminationDate',
-                        'footExamination',
-                        'footRiscCategory',
-                        'physicalActivity',
-                        'smokingHabit'
-
-                        //Blodtryck systoliskt
-                        //Blodtryck diastoliskt
-                        //Kolesterol  mmol/l
-                        //Triglycerider  mmol/l
-                        //HDL ("goda" kolesterolet) mmol/l
-                        //LDL ("onda" kolesterolet) mmol/l
-                        //Mikroalbuminuri
-                        //Makroalbuminuri
-                        //Datum för senaste ögonbottenundersökning
-                        //Datum för senaste fotundersökning
-                        //Riskkategori fot
-                        //Fysisk aktivitet
-                        //Rökvanor
-                    ],
-
+                    exluded = ['unit','contactDate', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
                     contacts, keys;
 
-                //if(typeID == 2){
-                //    include.push()
-                //}
+                var typeID = _.find(dataService.data.units, {unitID : accountService.accountModel.activeAccount.unit.unitID}).typeID;
+
+                if(typeID == 1){
+                    exluded = exluded.concat(['pumpIndication', 'pumpOngoing', 'pumpOngoingSerial','pumpProblemKeto', 'pumpProblemHypo','pumpProblemSkininfection','pumpProblemSkinreaction','pumpNew','pumpProblemPumperror','pumpNewSerial','pumpClosureReason']);
+                }
 
                 if (!$scope.subject) return false;
 
@@ -231,6 +201,7 @@ angular.module('ndrApp')
                         sequence = attribute ? attribute.sequence : 0;
 
                     table[keyIndex] = {
+                        columnName     : key,
                         label   : label,
                         sequence: sequence,
                         values  : []
@@ -254,13 +225,22 @@ angular.module('ndrApp')
                         } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
                             value = value ? 'Ja' : 'Nej';
                         }
+                        else{
+                            value = $filter('number')(value);
+                        }
 
-                        table[keyIndex].values.push(value);
+                        table[keyIndex].values.push( value );
                     });
                 });
 
-                $scope.model.data.fullTable = table;
                 $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
+
+                table = _.filter(table, function (obj, key) {
+                    return _.indexOf(exluded, obj.columnName) === -1;
+                });
+
+
+                $scope.model.data.fullTable = table;
             }
 
 

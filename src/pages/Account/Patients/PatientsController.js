@@ -62,7 +62,7 @@ angular.module('ndrApp')
 
             $scope.lookupName = function (filter, value){
                 if (filter.domain.isEnumerated) return _.result(_.find(filter.domain.domainValues, {code : value}), 'text', '');
-                return value;
+                return $filter('number')(value);
             };
 
             /* DATA TABLE */

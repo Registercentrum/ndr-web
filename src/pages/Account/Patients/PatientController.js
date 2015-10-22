@@ -337,7 +337,7 @@ angular.module('ndrApp')
 				}
 				
 				var ret = visit ?
-                    { value: visit[key], date: visit.contactDate, label : value } :
+                    { value: visit[key], date: visit.contactDate, label : $filter('number')(value) } :
                     { value: 'saknas', date: 'saknas', label : value };
 				
                 return ret;
