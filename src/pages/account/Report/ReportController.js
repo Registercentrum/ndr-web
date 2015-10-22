@@ -25,6 +25,72 @@ angular.module('ndrApp')
         var account = $scope.accountModel;
         console.log('ReportController: Init',  $stateParams.patientID);
 
+        $scope.filterValue = function($event){
+            console.log($event.keyCode);
+            if(isNaN(String.fromCharCode($event.keyCode)) && $event.keyCode !== 44 && $event.keyCode !== 46){
+                $event.preventDefault();
+            }
+        };
+
+        $scope.patternTriglyceride = (function() {
+            return {
+                test: function(input) {
+                    if(input < 0.1 || input > 40){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            };
+        })();
+
+        $scope.patternBMI = (function() {
+            return {
+                test: function(input) {
+                    if(input < 15 || input > 62){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            };
+        })();
+
+        $scope.patternCholesterol = (function() {
+            return {
+                test: function(input) {
+                    if(input < 1 || input > 20){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            };
+        })();
+
+        $scope.patternHDL = (function() {
+            return {
+                test: function(input) {
+                    if(input < 0.1 || input > 5){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            };
+        })();
+
+        $scope.patternLDL = (function() {
+            return {
+                test: function(input) {
+                    if(input < 0.5 || input > 10){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            };
+        })();
 
         $scope.socialnumber = '',//'19121212-1212'; //för test
         $scope.subjectID         = $stateParams.patientID;

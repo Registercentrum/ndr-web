@@ -14,6 +14,45 @@ angular.module('ndrApp')
             }
         };
     })
+
+    .directive('parseCommas', function () {
+        return {
+            // $parsers/$formatters live on the
+            // ngModel controller, so we need this!
+            require: 'ngModel',
+            link: function (scope, elem, attrs, ngModel) {
+                ngModel.$parsers.push(function toModel(input) {
+                    console.log('parsing', input, input.replace(/,/g , '.'));
+                    // do something to format user input
+                    // to be more "computer-friendly"
+                    return input.replace(/,/g , '.');
+                });
+            }
+        };
+    })
+
+    //.directive('onlyDigits', function () {
+    //    return {
+    //        require: 'ngModel',
+    //        restrict: 'A',
+    //        link: function (scope, element, attr, ctrl) {
+    //            function inputValue(val) {
+    //                if (val) {
+    //                    var digits = val.replace(/[^0-9.,]/g, '');
+    //
+    //                    if (digits !== val) {
+    //                        ctrl.$setViewValue(digits);
+    //                        ctrl.$render();
+    //                    }
+    //                    return parseFloat(digits);
+    //                }
+    //                return undefined;
+    //            }
+    //            ctrl.$parsers.push(inputValue);
+    //        }
+    //    };
+    //})
+
     .directive('asNumber', ['$locale', function ($locale) {
         return {
             restrict: 'A',

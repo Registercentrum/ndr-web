@@ -72,6 +72,7 @@ angular.module('ndrApp')
             $scope.$watchCollection('subject', function () {
                 populateSeriesData();
                 populateTableData();
+                populateFullTableData();
                 populateLatestData();
                 $timeout(function (){
                     jQuery(window).resize();
@@ -116,10 +117,6 @@ angular.module('ndrApp')
                         //Fysisk aktivitet
                         //Rökvanor
                     ],
-
-
-
-
 
                 contacts, keys;
 
@@ -169,6 +166,100 @@ angular.module('ndrApp')
                 });
 
                 $scope.model.data.table = table;
+                $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
+            }
+
+
+            function populateFullTableData () {
+                var table = [],
+                    included = [
+                        'contactDate',
+                        'hba1c',
+                        'weight',
+                        'height',
+                        'bmi',
+                        'waist', //Midjemått cm
+                        'bpSystolic',
+                        'bpDiastolic',
+                        'cholesterol',
+                        'triglyceride',
+                        'hdl',
+                        'ldl',
+                        'microscopicProteinuria',
+                        'macroscopicProteinuria',
+                        'fundusExaminationDate',
+                        'footExamination',
+                        'footRiscCategory',
+                        'physicalActivity',
+                        'smokingHabit'
+
+                        //Blodtryck systoliskt
+                        //Blodtryck diastoliskt
+                        //Kolesterol  mmol/l
+                        //Triglycerider  mmol/l
+                        //HDL ("goda" kolesterolet) mmol/l
+                        //LDL ("onda" kolesterolet) mmol/l
+                        //Mikroalbuminuri
+                        //Makroalbuminuri
+                        //Datum för senaste ögonbottenundersökning
+                        //Datum för senaste fotundersökning
+                        //Riskkategori fot
+                        //Fysisk aktivitet
+                        //Rökvanor
+                    ],
+
+                    contacts, keys;
+
+                //if(typeID == 2){
+                //    include.push()
+                //}
+
+                if (!$scope.subject) return false;
+
+                contacts = angular.copy($scope.subject.contacts).splice(0, 5);
+
+                // Get tha keys for the table
+                keys = _.keys(contacts[0]);
+
+                // Filter included
+                //keys = _.filter(keys, function (key) { return _.indexOf(included, key) !== -1; });
+
+                // Construct the table data
+                _.each(keys, function (key, keyIndex) {
+                    var attribute = _.find($scope.contactAttributes, {columnName: key}),
+                        label = attribute ? attribute.question : key,
+                        sequence = attribute ? attribute.sequence : 0;
+
+                    table[keyIndex] = {
+                        label   : label,
+                        sequence: sequence,
+                        values  : []
+                    };
+
+                    _.each(contacts, function (contact) {
+                        var value = contact[key];
+
+                        if (_.isNull(value)) {
+                            value = '-';
+
+                            // If it's a date, format it in a nice way
+                        } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
+                            value = $filter('date')(new Date(value), 'yyyy-MM-dd');
+
+                            // Get proper label for the id value
+                        } else if (attribute && attribute.domain && attribute.domain.isEnumerated) {
+                            value = _.find(attribute.domain.domainValues, {code: value}).text;
+
+                            // If it's a boolean, return proper translation (ja-nej)
+                        } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
+                            value = value ? 'Ja' : 'Nej';
+                        }
+
+                        table[keyIndex].values.push(value);
+                    });
+                });
+
+                $scope.model.data.fullTable = table;
                 $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
             }
 

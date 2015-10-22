@@ -54,13 +54,13 @@
                             </div>
 
                             <div class="col-md-4" style="color:#278470">
-                                <h3 style="font-weight: 700">{{ model.stats.hba1c_70.statSet[0].stat.r + "%" }}</h3>
+                                <h3 style="font-weight: 700">{{ model.stats.hba1c_70.statSet[0].stat.r | number }}%</h3>
 
                                 <p style="font-weight: 500">andel med typ 1-diabetes och senaste HbA1c >70 mmol/mol</p>
                             </div>
 
                             <div class="col-md-4" style="color:#E14274">
-                                <h3 style="font-weight: 700">{{ model.stats.smoking.statSet[0].stat.r + "%" }}</h3>
+                                <h3 style="font-weight: 700">{{ model.stats.smoking.statSet[0].stat.r | number }}%</h3>
 
                                 <p style="font-weight: 500">andel som röker, senaste 12 månaderna</p>
                             </div>

@@ -270,8 +270,8 @@
                       <div class="col-md-5 Report-formGroup-form">
                         <label class="" for="bmi" class="">BMI</label><i class="fa fa-question-circle helpNote" ng-show="lists['bmi'].helpNote != null" tooltip="{{lists['bmi'].helpNote}}"></i>
                         <div ng-class="{ 'has-error' : contactForm.bmi.$invalid && !contactForm.bmi.$pristine }">
-                          <input name="bmi" replace-comma type="number" min="15" max="62" decimals="1" class="form-control" placeholder="BMI" ng-model="contactModel.bmi" ng-class="{ 'has-no-error' : !contactForm.bmi.$invalid && contactModel.bmi != null}" ng-model-options="{ updateOn: 'blur' }">
-                          <p ng-show="contactForm.bmi.$error.min || contactForm.bmi.$error.max" class="Report-formItemHelp help-block">BMI kan anta ett värde mellan 15 och 62.</p>
+                          <input name="bmi" type="text" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternBMI" decimals="1" class="form-control" placeholder="BMI" ng-model="contactModel.bmi" ng-class="{ 'has-no-error' : !contactForm.bmi.$invalid && contactModel.bmi != null}" ng-model-options="{ updateOn: 'blur' }">
+                          <p ng-show="contactForm.bmi.$invalid" class="Report-formItemHelp help-block">BMI kan anta ett värde mellan 15 och 62.</p>
                         </div>
                       </div>
 
@@ -321,28 +321,28 @@
                     <div class="row">
                       <div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.cholesterol.$invalid && !contactForm.cholesterol.$pristine }">
                         <label class="" for="height" class="">Kolesterol</label><i class="fa fa-question-circle helpNote" ng-show="lists['cholesterol'].helpNote != null" tooltip="{{lists['cholesterol'].helpNote}}"></i>
-                        <input name="cholesterol" replace-comma type="number" min="1" max="20" class="form-control" placeholder="Kolesterol" ng-model="contactModel.cholesterol" decimals="1" ng-class="{ 'has-no-error' : !contactForm.cholesterol.$invalid && contactModel.cholesterol != null}" ng-model-options="{ updateOn: 'blur' }">
-                        <p ng-show="contactForm.cholesterol.$error.min || contactForm.cholesterol.$error.max" class="Report-formItemHelp help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
+                        <input name="cholesterol" type="text" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternCholesterol" class="form-control" placeholder="Kolesterol" ng-model="contactModel.cholesterol" decimals="1" ng-class="{ 'has-no-error' : !contactForm.cholesterol.$invalid && contactModel.cholesterol != null}" ng-model-options="{ updateOn: 'blur' }">
+                        <p ng-show="contactForm.cholesterol.$invalid" class="Report-formItemHelp help-block">Kolesterol kan anta ett värde mellan 1 och 20.</p>
                       </div>
 
 
                         <div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.triglyceride.$invalid && !contactForm.triglyceride.$pristine }">
                           <label class="" for="triglyceride" class="">Triglycerider</label><i class="fa fa-question-circle helpNote" ng-show="lists['triglyceride'].helpNote != null" tooltip="{{lists['triglyceride'].helpNote}}"></i>
-                          <input name="triglyceride" replace-comma type="number" min="0.1" max="40" class="form-control" placeholder=" Triglycerider" ng-model="contactModel.triglyceride" decimals="1" ng-class="{ 'has-no-error' : !contactForm.triglyceride.$invalid && contactModel.triglyceride != null}" ng-model-options="{ updateOn: 'blur' }">
-                          <p ng-show="contactForm.triglyceride.$error.min || contactForm.triglyceride.$error.max" class="Report-formItemHelp help-block">Triglycerider kan anta ett värde mellan 0,1 och 40.</p>
+                          <input name="triglyceride" type="text" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternTriglyceride" class="form-control" placeholder=" Triglycerider" ng-model="contactModel.triglyceride" decimals="1" ng-class="{ 'has-no-error' : !contactForm.triglyceride.$invalid && contactModel.triglyceride != null}" ng-model-options="{ updateOn: 'blur' }">
+                          <p ng-show="contactForm.triglyceride.$invalid" class="Report-formItemHelp help-block">Triglycerider kan anta ett värde mellan 0,1 och 40.</p>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.hdl.$invalid && !contactForm.hdl.$pristine }">
                           <label class="" for="hdl" class="">HDL</label><i class="fa fa-question-circle helpNote" ng-show="lists['hdl'].helpNote != null" tooltip="{{lists['hdl'].helpNote}}"></i>
-                          <input name="hdl" replace-comma type="number" min="0.1" max="5" class="form-control" placeholder="HDL" ng-model="contactModel.hdl" decimals="1" ng-class="{ 'has-no-error' : !contactForm.hdl.$invalid && contactModel.hdl != null}" ng-model-options="{ updateOn: 'blur' }">
-                          <p ng-show="contactForm.hdl.$error.min || contactForm.hdl.$error.max" class="Report-formItemHelp help-block">HDL kan anta ett värde mellan 0,1 och 5.</p>
+                          <input name="hdl" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternHDL" class="form-control" placeholder="HDL" ng-model="contactModel.hdl" decimals="1" ng-class="{ 'has-no-error' : !contactForm.hdl.$invalid && contactModel.hdl != null}" ng-model-options="{ updateOn: 'blur' }">
+                          <p ng-show="contactForm.hdl.$invalid" class="Report-formItemHelp help-block">HDL kan anta ett värde mellan 0,1 och 5.</p>
                         </div>
 
                             <div class="col-md-5 Report-formGroup-form" ng-class="{ 'has-error' : contactForm.ldl.$invalid && !contactForm.ldl.$pristine }">
                               <label class="" for="ldl" class="">LDL</label><i class="fa fa-question-circle helpNote" ng-show="lists['ldl'].helpNote != null" tooltip="{{lists['ldl'].helpNote}}"></i>
-                              <input name="ldl" replace-comma type="number" min="0.5" max="10" class="form-control" placeholder="LDL" ng-model="contactModel.ldl" decimals="2 " ng-class="{ 'has-no-error' : !contactForm.ldl.$invalid && contactModel.ldl != null}" ng-model-options="{ updateOn: 'blur' }">
-                              <p ng-show="contactForm.ldl.$error.min || contactForm.ldl.$error.max" class="Report-formItemHelp help-block">LDL kan anta ett värde mellan 0,5 och 10.</p>
+                              <input name="ldl" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternLDL" class="form-control" placeholder="LDL" ng-model="contactModel.ldl" decimals="2 " ng-class="{ 'has-no-error' : !contactForm.ldl.$invalid && contactModel.ldl != null}" ng-model-options="{ updateOn: 'blur' }">
+                              <p ng-show="contactForm.ldl.$invalid" class="Report-formItemHelp help-block">LDL kan anta ett värde mellan 0,5 och 10.</p>
                             </div>
                           </div>
                           <div class="row">
