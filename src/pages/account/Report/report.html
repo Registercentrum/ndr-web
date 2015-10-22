@@ -118,7 +118,7 @@
             <div class="row">
               <div class="col-md-5 Report-formGroup-form">
                 <label class="" for="treatment" class="">Diabetesbehandling</label><i class="fa fa-question-circle helpNote" ng-show="lists['treatment'].helpNote != null" tooltip="{{lists['treatment'].helpNote}}"></i>
-                <select name="treatment" class="form-control" ng-model="contactModel.treatment" ng-class="{ 'has-no-error' : contactModel.treatment != null}" ng-options="type.code as type.text for type in lists.treatment.domain.domainValues">
+                <select name="treatment" class="form-control" ng-model="contactModel.treatment" ng-change="treatmentChanged()" ng-class="{ 'has-no-error' : contactModel.treatment != null}" ng-options="type.code as type.text for type in lists.treatment.domain.domainValues">
                   <option value="">-- välj behandling --</option>
                 </select>
                 <p ng-show="contactForm.treatment.$pristine && contactModel.treatment != null && contactModel.treatment == lastContact.treatment && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
