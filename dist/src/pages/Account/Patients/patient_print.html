@@ -7,13 +7,18 @@
             <h1 class="Page-title">Patientprofil <span style="font-size: 22px">(anpassad för utskrift)</span></h1>
             <!--<p>Fyll i en kommentar och klicka därefter skriv ut.</p>-->
         </div>
+
         <div class="col-md-4 text-right">
-            <a class="Button--tight Button Button--dark" ng-click="print()"><i class="fa fa-print"></i> Skriv ut</a>
+            <div class="btn-group pull-right">
+                <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</label>
+                <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </label>
+            </div>
+            <a style="margin-right: 10px;" class="Button--tight Button Button--dark pull-right" ng-click="print()"><i class="fa fa-print"></i> Skriv ut</a>
         </div>
     </div>
 </div>
 
-<div class="" style="width:900px">
+<div class="" style="width:900px" ng-show="model.mode == 'visual'">
 
     <!-- Heading -->
 
@@ -189,47 +194,40 @@
         </div>
 
     </div>
+</div>
 
+    <div class="" style="width:900px" ng-show="model.mode == 'table'">
 
-  <!--
-
-
-
-
-
+        <!-- Heading -->
         <div class="row">
-            <div class="col-md-6">
-                <h4>Blodlipider</h4>
-                <div class="col-sm-6" line-chart-patient-cholesterol title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
-                <div class="col-sm-6" line-chart-patient-cholesterol title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
-                <div> Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>
-            </div>
-
-            <div class="col-md-6">
-                <h4 class="Profile-heading">Blodtryck</h4><h4 class="Profile-latest-value">{{model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} mm Hg</span></h4>
-                <div class="" line-chart-patient-bp model="model.data.trend.combinedBp"></div>
-                <div>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></div>
+            <div class="col-md-12">
+                <h4 style="margin-right:10px;display:inline-block;margin-top: 0px">
+                    <span class="visible-print">Patientprofil: </span><i class="fa fa-user"></i>  {{ subject.socialNumber }}
+                </h4>
+                <p style="margin-right:10px;display: inline-block">{{ getDiabetesType(subject.diabetesType) }}</p>
+                <p style="display: inline-block">Debutår: <span class="strong">{{ subject.yearOfOnset }}</span></p>
             </div>
         </div>
 
-        <div class="table-responsive">
-            <h2>Besök</h2>
-            <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
-                <thead>
+        <div class="row" style="margin-top: 10px">
+
+            <div class="table-responsive">
+                <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
+
+                    <thead>
                     <tr>
                         <th class="key"></th>
                         <th ng-repeat="date in model.data.tableHeader.values">{{ date | date : 'dd MMM yyyy'}}</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="contact in model.data.table | orderBy: 'sequence'">
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="contact in model.data.fullTable | orderBy: 'sequence'">
                         <td class="key">{{ contact.label }}</td>
                         <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
--->
-</div>
 </div>
