@@ -4,7 +4,7 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	var baseApiUrl = 'https://www.ndr.nu/api/';
-	//var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
+	var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
@@ -287,12 +287,6 @@
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
 				}),
-				nga.field('email').label('Anv. E-post').cssClasses(function(entry) {
-					if (entry.values.statusID == 9)
-						return 'inActive ';
-					if (entry.values.statusID == 2 || entry.values.statusID == 3)
-						return 'isPending';
-				}),
 				nga.field('statusText').label('Status').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
 						return 'inActive';
@@ -305,13 +299,13 @@
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
 				}), 
-				/*nga.field('unitContactPhone').label('Telefon').cssClasses(function(entry) {
+				nga.field('unitContactPhone').label('Telefon').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
 						return 'inActive';
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
-				}), */
-				nga.field('unitContactEmail').label('Kontakt E-post').cssClasses(function(entry) {
+				}), 
+				nga.field('unitContactEmail').label('E-post').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
 						return 'inActive';
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
@@ -574,7 +568,6 @@
 			  elements[i].hsaid=elements[i].user.hsaid;
 			  elements[i].firstName=elements[i].user.firstName;
 			  elements[i].lastName=elements[i].user.lastName;
-			  elements[i].email=elements[i].user.email;
 			  elements[i].unitID=elements[i].unit.unitID;
 			  elements[i].unitName=elements[i].unit.name;
 			  elements[i].unitContactPerson=elements[i].unit.contactPerson;
