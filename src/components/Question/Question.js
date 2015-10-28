@@ -2,7 +2,7 @@ angular.module('ndrApp')
     .directive('ndrQuestion', [function() {
 		
 		return {
-			restrict: 'E',
+			restrict: 'A',
 			template: [	'<div class="row Report-formGroup" ><div class="col-md-5 Report-formGroup-form">',
 						'<label>{{ question.question }}</label><i class="fa fa-question-circle helpNote" ng-show="question.helpNote != null" tooltip="{{question.helpNote}}"></i>',
 						'<div ndr-Question-List ng-if="question.domain.isEnumerated" question="question"></div>',
