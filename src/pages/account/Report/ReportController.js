@@ -3,17 +3,22 @@
 angular.module('ndrApp')
     .controller('ModalInstanceCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 
-        $scope.ok = function () {
-            $modalInstance.close($scope.selected.item);
+        $scope.close = function () {
+            //$modalInstance.close($scope.selected.item);
+			$modalInstance.dismiss('cancel');
         };
 
-        $scope.cancel = function () {
+        $scope.clear = function () {
           $('html, body').animate({scrollTop: 0}, 500, function () {
 			var socinput = document.getElementById('socialnumber-input');
 			if (socinput != null)
 				window.document.getElementById('socialnumber-input').focus();
           });
           $modalInstance.dismiss('cancel');
+		  
+		  $scope.__proto__.subject = null;
+		  $scope.__proto__.socialnumber = null;
+
         };
     }]);
 

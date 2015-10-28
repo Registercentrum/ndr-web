@@ -633,8 +633,8 @@
     <h3>Sparat</h3>
     <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
 
-    <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="cancel()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
-    <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Rapportera för en annan patient</a>
-    <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Avsluta rapportering</a>
+    <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="close()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
+    <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="clear()">Rapportera för en annan patient</a>
+    <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="close()">Avsluta rapportering</a>
   </div>
 </script>
