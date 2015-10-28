@@ -4,8 +4,7 @@ angular.module('ndrApp')
     .controller('ModalInstanceCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
 
         $scope.close = function () {
-            //$modalInstance.close($scope.selected.item);
-			$modalInstance.dismiss('cancel');
+            $modalInstance.close($scope.selected.item);
         };
 
         $scope.clear = function () {
