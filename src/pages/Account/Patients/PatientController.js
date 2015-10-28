@@ -8,6 +8,7 @@ angular.module('ndrApp')
             $scope.subject      = undefined;
             $scope.subjectID    = false || $stateParams.patientID;
             $scope.pnrRegex     = accountService.helpers.pnrRegex;
+			$scope.unitTypeID	= accountService.accountModel.activeAccount.unit.typeID;
 
             // When user navigated here from the search page,
             // allow him/her to go back and restore the filter settings
@@ -83,7 +84,10 @@ angular.module('ndrApp')
                 var table = [],
                     exluded = ['unit', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
                     contacts, keys;
-
+				
+				if ($scope.unitTypeID == 1) //Remove pumpinfo for "primärdsvårdsenheter"
+					exluded = exluded.concat(['pumpIndication','pumpOngoing','pumpOngoingSerial','pumpProblemKeto','pumpProblemHypo','pumpProblemSkininfection','pumpProblemSkinreaction','pumpProblemPumperror','pumpNew','pumpNewSerial','pumpClosureReason']);
+				
                 if (!$scope.subject) return false;
 
                 contacts = angular.copy($scope.subject.contacts).splice(0, 5);
