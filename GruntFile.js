@@ -147,8 +147,9 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['concat:less', 'less'],
                 options: {
+
                     spawn: false,
-                    livereload: true
+                    livereload: 1343
                 }
             }
         }

@@ -21,7 +21,6 @@
 <div class="" style="width:900px" ng-show="model.mode == 'visual'">
 
     <!-- Heading -->
-
     <div class="row">
         <div class="col-md-12">
             <h4 style="margin-top: 0px">
@@ -99,7 +98,6 @@
 
     </div>
 
-
     <!-- FEET etc -->
 
     <div class="row" style="margin-top: 50px">
@@ -162,6 +160,7 @@
                     </tr>
                     <tr>
                         <td>Makroalbuminuri</td>
+
                         <td>{{ model.latest.macroscopicProteinuria.label }}</td>
                     </tr>
                     <tr ng-hide="model.latest.macroscopicProteinuria.label == 'Ja'">
@@ -172,8 +171,9 @@
         </div>
     </div>
 
+    <div style="clear:both"></div>
 
-    <div class="row" style="clear:both;margin-top: 250px">
+    <div class="row new-page" style="clear:both;">
 
         <h4>Senaste 5 besök</h4>
         <div class="table-responsive">
