@@ -19,7 +19,7 @@
         <div class="PatientHeader clearfix">
             <div class="PatientHeader-personNumber col-md-3 u-noLeftPadding">{{ subject.socialNumber }}</div>
 
-            <div class="col-md-9">
+            <div class="pull-right">
 				<button ng-click="newContact()" id="bnNewContact" type="submit" class="Button pull-left" style="margin-right: 25px; background: #7c4791; color: white; font-style:bold;">Ny rapportering</button>
                 <form id="contactSelect" class="PatientHeader-showVisit form-horizontal pull-left" role="form">
                     <select
@@ -31,7 +31,6 @@
                         <option value="">Komplettera</option>
                     </select>
                 </form>
-                <a href="#/inloggad/patient/{{ subject.subjectID }}" type="submit" class="Button Button--info pull-right">Gå till profil</a>
             </div>
         </div>
 
@@ -597,7 +596,7 @@
         <div ng-show="optionalQuestions.length>0">
           <h4>Enhetens valbara frågor <i class="fa fa-lightbulb-o"></i></h4>
           <form name="contactOptionalForm" class="Report-form form-horizontal" role="form" novalidate>
-            <ndr-Question ng-repeat="q in optionalQuestions" question="q"></ndr-Question>
+            <div ndr-Question ng-repeat="q in optionalQuestions" question="q"></div>
           </form>
         </div>
 
@@ -634,8 +633,8 @@
     <h3>Sparat</h3>
     <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
 
-    <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="cancel()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
-    <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Rapportera för en annan patient</a>
-    <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Avsluta rapportering</a>
+    <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="close()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
+    <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="clear()">Rapportera för en annan patient</a>
+    <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="close()">Avsluta rapportering</a>
   </div>
 </script>
