@@ -337,11 +337,11 @@ angular.module('ndrApp')
                 } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
                     value = visit[key] ? 'Ja' : 'Nej';
                 } else {
-					value = visit[key] + ' ' + attribute.measureUnit;
+					value = $filter('number')(visit[key]) + (attribute.measureUnit != null ? ' ' + attribute.measureUnit : '');
 				}
 				
 				var ret = visit ?
-                    { value: visit[key], date: visit.contactDate, label : $filter('number')(value) } :
+                    { value: visit[key], date: visit.contactDate, label : value } : //$filter('number')(value)
                     { value: 'saknas', date: 'saknas', label : value };
 				
                 return ret;
