@@ -45,10 +45,15 @@ angular.module('ndrApp')
                     return d.countyCode === $scope.model.unit.countyCode;
                 })
 
+                sameCountyUnits = _.filter(sameCountyUnits, function (d){
+                    return typeof d.lat === 'number' && typeof d.lng === 'number';
+                })
+
                 _.each(sameCountyUnits, function(obj){
 
                     var latLong = new google.maps.LatLng(obj.lat, obj.lng);
                     var contentString = '<h5>' + obj.name + '</h5>';
+
 
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
@@ -77,6 +82,7 @@ angular.module('ndrApp')
                         });
                     }
 
+
                     google.maps.event.addListener(marker, 'mouseover', function() {
                         infowindow.open(map, this);
                     });
@@ -92,7 +98,12 @@ angular.module('ndrApp')
                     marker.setMap(map);
 
 
-                    });
+
+
+
+                });
+
+
 
                 }
             }
