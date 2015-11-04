@@ -42,6 +42,7 @@
             <p ng-show="model.latest.insulinMethod.label == 'Insulinpump'">
                 Pågående pumpmodell: <span class="strong">{{ model.latest.pumpOngoing.label }}</span>
             </p>
+			<p>Senaste besök: <span class="strong">{{ model.latest.contactDate.label }}</span></p>
         </div>
 
         <div class="col-md-4">
@@ -156,7 +157,7 @@
                 <table class="table table-condensed">
                     <tr>
                         <td>Senaste S-Kreatininvärde</td>
-                        <td>{{ model.latest.serumCreatinine.label }}</td>
+                        <td>{{ model.latest.creatinine.label }}</td>
                     </tr>
                     <tr>
                         <td>Makroalbuminuri</td>
@@ -176,6 +177,14 @@
     <div class="row new-page" style="clear:both;">
 
         <h4>Senaste 5 besök</h4>
+		<!-- Heading -->
+		<div class="row">
+			<div class="col-md-12">
+				<h4 style="margin-top: 0px">
+					<i class="fa fa-user"></i>  {{ subject.socialNumber }}
+				</h4>
+			</div>
+		</div>
         <div class="table-responsive">
             <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
                <!-- <thead>
