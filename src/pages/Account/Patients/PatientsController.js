@@ -76,7 +76,7 @@ angular.module('ndrApp')
                 $scope.Header = ['','',''];
 
                 //By Default sort ny Name
-                $scope.sort ('name');
+                $scope.sort('snr');
             });
 
             function paged (valLists, pageSize) {
@@ -94,6 +94,8 @@ angular.module('ndrApp')
                         retVal[Math.floor(i / pageSize)].push(valLists[i]);
                     }
                 }
+				console.log(retVal);
+				
                 return retVal;
             }
 
@@ -140,15 +142,15 @@ angular.module('ndrApp')
 
                 iconName = $scope.reverse ? 'glyphicon glyphicon-chevron-up' : 'glyphicon glyphicon-chevron-down';
 
-                if(sortBy === 'EmpId') {
+                if(sortBy === 'snr') {
                     $scope.Header[0] = iconName;
-                } else if (sortBy === 'name') {
+                } else if (sortBy === 'snr') {
                     $scope.Header[1] = iconName;
                 } else {
                     $scope.Header[2] = iconName;
                 }
 
-                $scope.reverse = !$scope.reverse;
+                $scope.reverse = false;// !$scope.reverse;
 
                 $scope.pagination();
             };
@@ -203,7 +205,7 @@ angular.module('ndrApp')
 
 
                 dataService.getSubjects(query, function (data){
-
+					
                     allSubjects = data;
                     $scope.model.allSubjectsLength = allSubjects.length;
 
@@ -445,7 +447,6 @@ angular.module('ndrApp')
                 }
 
                 //$scope.model.allSubjects = subjects;
-
                 $scope.model.filteredSubjects = subjects;
                 $scope.model.filteredSubjectsLength = subjects.length;
 
