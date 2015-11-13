@@ -230,6 +230,7 @@
 
 
         <div class="table-responsive">
+			<img src="images/export-to-csv.png" ng-click="exportToCSV()" class="pull-right" />
             <table id="Table--patients" width="100%" class="data-table table responsive table-striped table-bordered row-border hover">
                 <thead>
                         <tr>
@@ -251,7 +252,7 @@
                 </tbody>
             </table>
         </div>
-
+		
         <ul class="pagination pagination-sm" ng-show="ItemsByPage.length > 1" style="cursor: pointer">
             <li ng-class="{active:0}"><a ng-click="firstPage()">Sida 1</a>
 

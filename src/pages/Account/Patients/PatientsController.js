@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
     .controller('PatientsController', [
-                 '$scope', '$state', '$stateParams', '$log', '$filter', 'dataService', '$timeout',
-        function ($scope,   $state,   $stateParams,   $log,   $filter,   dataService,   $timeout) {
+                 '$scope', '$state', '$stateParams', '$log', '$filter', 'dataService', '$timeout', '$window', '$http',
+        function ($scope,   $state,   $stateParams,   $log,   $filter,   dataService,   $timeout, $window, $http) {
 
             $log.debug('PatientsController: Init');
             var filterSettings = {
@@ -26,7 +26,6 @@ angular.module('ndrApp')
             $scope.datePickers = {
 
                 maxDate : new Date(),
-
                 from: {
                     date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
                     opened: false
@@ -36,7 +35,7 @@ angular.module('ndrApp')
                     opened: false
                 }
             };
-
+			
             $scope.today = function () {
                 $scope.dt = new Date();
             };
@@ -75,7 +74,7 @@ angular.module('ndrApp')
                 $scope.currentPage = 0;
                 $scope.Header = ['','',''];
 
-                //By Default sort ny Name
+                //By Default sort ny SocialNumber
                 $scope.sort('snr');
             });
 
@@ -220,10 +219,19 @@ angular.module('ndrApp')
             if(!Modernizr.svg){
                 delayStartTime = 6000;
             }
+			function validateDates() {
+				return ($scope.datePickers.to.date >=$scope.datePickers.from.date)
+			}	
+			
             $timeout(function (){
-                $scope.$watch('datePickers.to.date', loadSubjects);
-                $scope.$watch('datePickers.from.date', loadSubjects);
-                loadSubjects();
+                $scope.$watch('datePickers.to.date', function() {
+					if (validateDates())
+						loadSubjects();
+				});
+                $scope.$watch('datePickers.from.date', function() {
+					if (validateDates())
+						loadSubjects();
+				});
             }, delayStartTime)
 
 
@@ -470,6 +478,75 @@ angular.module('ndrApp')
 
                 debouncedFilter();
             }, true);
+			
+			$scope.exportToCSV = function() {
+							
+				var textFile = {
+					content: $scope.getCSVText('test'),
+					name: 'NDR-lista',
+					fileType: 'csv'
+				};
+				
+				dataService.getFile(textFile);
+			
+			};
+			$scope.getCSVText = function() {
+				var ret = '';
+				var row = 1;
+				
+				//Attribut som skall skrivas ut
+				var attributes = [];
+				
+				//hämta valda attribut
+				var selectedattributes = $scope.filters.filter(function (el) { return el.isChosen; }); //dataService.getSearchFilters();
+
+				//lägg till obligatoriska attribut
+				attributes.push({columnName: 'snr', question: 'Personnummer', domain: {isEnumerated: false, domainID:106}});
+				attributes.push({columnName: 'contactDate', question: 'Senaste besök', domain: {isEnumerated: false, domainID:105}});
+				//lägg till valda attribut
+				for (var i = 0; i < selectedattributes.length; i++) { 
+					attributes.push({columnName: selectedattributes[i].columnName, question: selectedattributes[i].question, domain: selectedattributes[i].domain});
+				}
+				
+				//Skriv rubriker
+				var first = true;
+				for (var i = 0; i < attributes.length; i++) { 
+					if (first)
+						ret = ret + '"' + attributes[i].question + '"';
+					else
+						ret = ret + ';' + '"' + attributes[i].question + '"';
+						
+					first = false;
+				}
+				
+				//Lägg patientrad
+				function addContent(first, attribute, subject) {
+					var ret = '';
+			
+					if (attribute.domain.isEnumerated) //listvärde
+						ret = ret + (first ? '' : ';') + '"' + $scope.lookupName(attributes[j], subject[attribute.columnName]) + '"';
+					else if (attribute.domain.domainID == 105) { //datum
+						ret = ret + (first ? '' : ';') + '"' + subject[attribute.columnName].split('T')[0] + '"';
+					}
+					else //numeriskt värde
+						ret = ret + (first ? '' : ';') + '"' + subject[attribute.columnName].toString().replace('.',',') + '"';
+					
+					return ret;
+				}
+				
+				//Skriv datainnehåll
+				for (var i = 0; i < $scope.model.filteredSubjects.length; i++) { 
+					ret = ret + '\r\n';
+					first = true;
+				
+					for (var j = 0; j < attributes.length; j++) { 	
+						ret = ret + addContent(first, attributes[j], $scope.model.filteredSubjects[i])
+						first = false;
+					}
+				}
+				
+				return ret;
+			};
             // $scope.$watch('selectedFilters.hbMax', debouncedFilter, true);
             // $scope.$watch('selectedFilters.diabetesTypes', filter, true);
             // $scope.$watch('selectedFilters.additional', filter, true);
