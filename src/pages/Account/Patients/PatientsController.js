@@ -16,7 +16,6 @@ angular.module('ndrApp')
 
             // If we don't want to restore filters, unset them
             if (!$stateParams.restoreFilters) dataService.setSearchFilters();
-            console.log($stateParams);
 
             var allSubjects;
 
@@ -245,7 +244,6 @@ angular.module('ndrApp')
                 .then(function (filters) {
                     var selected,
                         preselected = dataService.getSearchFilters();
-                        console.log(preselected);
 
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
                     _.each(filters, function (filter) {
@@ -420,8 +418,6 @@ angular.module('ndrApp')
                         if (_.isEmpty(filter)) return;
 
                         subjects = _.filter(subjects, function (subject) {
-
-                            //console.log(prop);
 
                             var propValue = subject[prop],
                                 value;
