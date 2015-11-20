@@ -326,7 +326,6 @@ angular.module('ndrApp')
 
                     //filters.missing =
                     $scope.filters = filters;
-
                     ready = true;
                     loadSubjects();
 
@@ -360,7 +359,7 @@ angular.module('ndrApp')
                 $timeout(function () { $scope.highlightedFilter = null; }, 1000);
 
                 dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
-
+				
                 // Load subjects only if it's a new filter
                 if (!alreadySelected) loadSubjects();
             });
@@ -480,7 +479,7 @@ angular.module('ndrApp')
 				var textFile = {
 					content: $scope.getCSVText('test'),
 					name: 'NDR-lista',
-					fileType: 'csv'
+					extension: 'csv'
 				};
 				
 				dataService.getFile(textFile);
@@ -490,21 +489,22 @@ angular.module('ndrApp')
 				var ret = '';
 				var row = 1;
 				
-				//Attribut som skall skrivas ut
+				//To collect attributes
 				var attributes = [];
 				
-				//hämta valda attribut
-				var selectedattributes = $scope.filters.filter(function (el) { return el.isChosen; }); //dataService.getSearchFilters();
+				//Get selected attributes
+				var selectedAttributes = $scope.filters.filter(function (el) { return el.isChosen; }); //dataService.getSearchFilters();
 
-				//lägg till obligatoriska attribut
+				//Add compulsory attributes
 				attributes.push({columnName: 'snr', question: 'Personnummer', domain: {isEnumerated: false, domainID:106}});
 				attributes.push({columnName: 'contactDate', question: 'Senaste besök', domain: {isEnumerated: false, domainID:105}});
-				//lägg till valda attribut
-				for (var i = 0; i < selectedattributes.length; i++) { 
-					attributes.push({columnName: selectedattributes[i].columnName, question: selectedattributes[i].question, domain: selectedattributes[i].domain});
+				
+				//Add selected attributes
+				for (var i = 0; i < selectedAttributes.length; i++) { 
+					attributes.push({columnName: selectedAttributes[i].columnName, question: selectedAttributes[i].question, domain: selectedAttributes[i].domain});
 				}
 				
-				//Skriv rubriker
+				//Write headers
 				var first = true;
 				for (var i = 0; i < attributes.length; i++) { 
 					if (first)
@@ -515,8 +515,8 @@ angular.module('ndrApp')
 					first = false;
 				}
 				
-				//Lägg patientrad
-				function addContent(first, attribute, subject) {
+				//Add row for patient
+				function addPatientRow(first, attribute, subject) {
 					var ret = '';
 			
 					if (attribute.domain.isEnumerated) //listvärde
@@ -530,13 +530,13 @@ angular.module('ndrApp')
 					return ret;
 				}
 				
-				//Skriv datainnehåll
+				//Iterate patients
 				for (var i = 0; i < $scope.model.filteredSubjects.length; i++) { 
 					ret = ret + '\r\n';
 					first = true;
 				
 					for (var j = 0; j < attributes.length; j++) { 	
-						ret = ret + addContent(first, attributes[j], $scope.model.filteredSubjects[i])
+						ret = ret + addPatientRow(first, attributes[j], $scope.model.filteredSubjects[i])
 						first = false;
 					}
 				}
