@@ -41,8 +41,8 @@ angular.module("ndrApp")
                     unitType : $scope.model.unitType,
                     fromYear: new Date().getFullYear()-1,
                     toYear : new Date().getFullYear(),
-                    //fromMonth : new Date().getMonth(),
-                    //toMonth : new Date().getMonth(),
+                    fromMonth : new Date().getMonth()+1,
+                    toMonth : new Date().getMonth(),
                     indicatorID: 101,
 
                 }
@@ -75,8 +75,8 @@ angular.module("ndrApp")
                     interval : "y",
                     fromYear: 2000,
                     toYear : new Date().getFullYear(),
-                    fromMonth : new Date().getMonth(),
-                    toMonth : new Date().getMonth(),
+                    //fromMonth : new Date().getMonth(),
+                    //toMonth : new Date().getMonth(),
                     indicatorID: 101
                 });
 
