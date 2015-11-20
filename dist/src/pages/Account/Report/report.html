@@ -45,11 +45,8 @@
         <form name="contactForm" class="Report-form form-horizontal" role="form" novalidate>
 
           <div class="row">
-            <h3 class="Panel-title Report-title col-md-4">{{contactModel.contactID ? 'Komplettera' : 'Rapportera nytt'}} besök</h3>
-
-            <div class="col-md-6 Report-patientMeta">
-            </div>
-
+			<h5 class="col-md-12 text-info">{{accountModel.activeAccount.unit.name}}</h5>
+            <h3 class="Panel-title Report-title col-md-12">{{contactModel.contactID ? 'Komplettera' : 'Rapportera nytt'}} besök</h3>
           </div>
 
           <div class="Report-formGroup">
