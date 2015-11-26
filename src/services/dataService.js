@@ -270,14 +270,27 @@ angular.module('ndrApp')
         // Store the state of the selected filters for the search list
         // so the user is able to come back to the page from the user profile
         // and get the same state of the search list
-        var selectedSearchFilters = {};
+		
+        var preSelectedSearchFilters = {
+			values: {
+				hba1c: {
+					min: 20,
+					max: 177,
+				}
+			}
+		};
+		
+        var selectedSearchFilters = preSelectedSearchFilters;// preSelectedSearchFilters;
+		
         this.setSearchFilters = function (prop, value) {
             // If no prop and value, reset the object
             if (!prop && !value) {
-                selectedSearchFilters = {};
+                selectedSearchFilters = selectedSearchFilters;
             } else {
                 selectedSearchFilters[prop] = value;
             }
+			
+			console.log(selectedSearchFilters[prop]);
         };
 
         this.getSearchFilters = function (prop) {

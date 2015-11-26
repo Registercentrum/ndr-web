@@ -26,11 +26,11 @@
                         Antal matchande patienter:
                     </div>
                     <div class="MultiFilter-row-filterKnobs col-sm-9">
-                        <div class="col-sm-7 u-noLeftPadding Progressbar">
+                        <div class="col-sm-7 u-noLeftPadding Progressbar" >
                             <progressbar value="( model.filteredSubjectsLength * 100 ) / model.allSubjectsLength" max="100"></progressbar>
                         </div>
-                        <div class="col-sm-5 u-noLeftPadding">
-                            {{ model.filteredSubjectsLength + " av " + model.allSubjectsLength }}
+                        <div class="col-sm-5 u-noLeftPadding" ng-show="!isLoadingSubjects">
+                            {{ model.filteredSubjectsLength + (absence ? '' : " av " + model.allSubjectsLength) }}
                             <span style="margin-left: 10px" ng-show="isLoadingSubjects">
                                 <img src="images/ajax-loader.gif" alt=""/> Laddar
                             </span>

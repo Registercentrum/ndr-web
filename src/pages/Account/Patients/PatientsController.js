@@ -8,7 +8,7 @@ angular.module('ndrApp')
             $log.debug('PatientsController: Init');
             var filterSettings = {
                     exclude: ['socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear','subjectID'],
-                    required: ['d', 'hba1c']
+                    required: ['d']
                 },
                 filterDisplayIndex;
 
@@ -273,11 +273,10 @@ angular.module('ndrApp')
                             filter.max   = 2020;
                             filter.range = [1900, 2020];
                         }
-
-
+						
                         // If the filter is required or preselected choose it instantly
                         filter.isChosen = $scope.isRequired(filter.columnName) || _.keys(preselected.values).indexOf(filter.columnName) !== -1;
-
+						
                         $scope.selectedFilters[filter.columnName] = {};
 
 
@@ -340,13 +339,21 @@ angular.module('ndrApp')
                 var filter, alreadySelected;
 
                 if (!name) return;
-
+				
+				console.log(name);
+				
                 alreadySelected = $scope.isDisplayed(name);
-
+				
+				console.log(alreadySelected);
+				
                 // Select the filter, only if it's not already displayed
                 if (!alreadySelected) {
                     filter = _.find($scope.filters, {columnName: name});
+					console.log(filter);
                     if (filter) {
+						//filter.min 		= filter.minValue;
+						//filter.max 		= filter.maxValue;
+						//filter.range 	= [filter.minValue,filter.maxValue];
                         filter.isChosen = true;
                         filter.displayOrder = filterDisplayIndex;
                         filterDisplayIndex += 1;
@@ -357,9 +364,8 @@ angular.module('ndrApp')
                 // Realy simple highlight
                 $scope.highlightedFilter = name;
                 $timeout(function () { $scope.highlightedFilter = null; }, 1000);
-
                 dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
-				
+
                 // Load subjects only if it's a new filter
                 if (!alreadySelected) loadSubjects();
             });
@@ -374,17 +380,23 @@ angular.module('ndrApp')
 
             // Chosen filters can be removed by the user
             $scope.removeChosenFilter = function (name) {
+				
                 _.find($scope.filters, {columnName: name}).isChosen = false;
                 filterDisplayIndex -= 1;
 
                 // Reset the selected filters
                 // Reset range values
-                if ($scope.selectedFilters[name].range) {
+				
+                /*if ($scope.selectedFilters[name].range) {
                     $scope.selectedFilters[name].min = $scope.selectedFilters[name].range[0];
                     $scope.selectedFilters[name].max = $scope.selectedFilters[name].range[1];
                 } else {
-                    $scope.selectedFilters[name] = {};
-                }
+                    $scope.selectedFilters[name] = null;
+                }*/
+				
+				dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
+				filter();
+
             };
 
             $scope.selectedFilters = {};
@@ -406,7 +418,9 @@ angular.module('ndrApp')
                         selectedFilters[filterKey] = filter;
                     }
                 });
-
+				
+				console.log(selectedFilters);
+				
                 dataService.setSearchFilters('values', selectedFilters);
 
                 if($scope.absence !== true) {
@@ -504,28 +518,34 @@ angular.module('ndrApp')
 					attributes.push({columnName: selectedAttributes[i].columnName, question: selectedAttributes[i].question, domain: selectedAttributes[i].domain});
 				}
 				
+				console.log(attributes);
+				
 				//Write headers
-				var first = true;
+				var firstInRow = true;
 				for (var i = 0; i < attributes.length; i++) { 
-					if (first)
+					if (firstInRow)
 						ret = ret + '"' + attributes[i].question + '"';
 					else
 						ret = ret + ';' + '"' + attributes[i].question + '"';
 						
-					first = false;
+					firstInRow = false;
 				}
 				
+				console.log($scope.model.filteredSubjects);
+				
 				//Add row for patient
-				function addPatientRow(first, attribute, subject) {
+				function addPatientValue(firstInRow, attribute, subject) {
 					var ret = '';
-			
-					if (attribute.domain.isEnumerated) //listvärde
-						ret = ret + (first ? '' : ';') + '"' + $scope.lookupName(attributes[j], subject[attribute.columnName]) + '"';
+					
+					if (subject[attribute.columnName] == undefined)
+						ret = ';';
+					else if (attribute.domain.isEnumerated) //listvärde
+						ret = (firstInRow ? '' : ';') + '"' + $scope.lookupName(attributes[j], subject[attribute.columnName]) + '"';
 					else if (attribute.domain.domainID == 105) { //datum
-						ret = ret + (first ? '' : ';') + '"' + subject[attribute.columnName].split('T')[0] + '"';
+						ret = (firstInRow ? '' : ';') + '"' + subject[attribute.columnName].split('T')[0] + '"';
 					}
 					else //numeriskt värde
-						ret = ret + (first ? '' : ';') + '"' + subject[attribute.columnName].toString().replace('.',',') + '"';
+						ret = (firstInRow ? '' : ';') + '"' + subject[attribute.columnName].toString().replace('.',',') + '"';
 					
 					return ret;
 				}
@@ -533,11 +553,11 @@ angular.module('ndrApp')
 				//Iterate patients
 				for (var i = 0; i < $scope.model.filteredSubjects.length; i++) { 
 					ret = ret + '\r\n';
-					first = true;
+					firstInRow = true;
 				
 					for (var j = 0; j < attributes.length; j++) { 	
-						ret = ret + addPatientRow(first, attributes[j], $scope.model.filteredSubjects[i])
-						first = false;
+						ret = ret + addPatientValue(firstInRow, attributes[j], $scope.model.filteredSubjects[i])
+						firstInRow = false;
 					}
 				}
 				
