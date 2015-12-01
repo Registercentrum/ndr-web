@@ -9,11 +9,11 @@ angular.module('ndrApp')
 						'<div ndr-Question-Numeric ng-if="question.domain.domainID == 101" question="question"></div>',
 						'<div ndr-Question-Decimal1 ng-if="question.domain.domainID == 102" question="question"></div>',
 						'<div ndr-Question-Decimal2 ng-if="question.domain.domainID == 103" question="question"></div>',
-						'<div ndr-Question-Date ng-if="question.domain.domainID == 105" question="question"></div>',
+						'<p ng-show="question.iterate && form.{{question.columnName}}.$pristine && question.value != null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>',
 						'</div></div>'].join(''),
 			require:"^form", //inject parent form as the forth parameter to the link function
 			link: function(scope, iElement, iAttrs, form) {
-				//scope.form = form;				
+				scope.form = form;				
 			},
 			replace: true,
 			scope: {

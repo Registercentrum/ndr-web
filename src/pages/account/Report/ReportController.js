@@ -178,7 +178,7 @@ angular.module('ndrApp')
 
 
         $scope.setContact = function (contactToUpdate) {
-		
+			
             $scope.method = !contactToUpdate ?  'POST' : 'PUT';
 
             //Skapa modell
@@ -187,13 +187,16 @@ angular.module('ndrApp')
             $scope.showPumpProblem = $scope.contactModel.pumpProblemKeto || $scope.contactModel.pumpProblemHypo || $scope.contactModel.pumpProblemSkininfection || $scope.contactModel.pumpProblemSkinreaction;
             $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReason > 0;
             $scope.contactDateChanged();
+			
+            $scope.contactForm.$setPristine();
+			$scope.contactOptionalForm.$setPristine();
+			
         };
 		$scope.newContact = function () {
 			$scope.setContact(0);
 			//$scope.contactModel = $scope.getNewContactModel();
 		};
         $scope.getNewContactModel = function () {
-            $scope.contactForm.$setPristine();
 			$scope.contactToUpdate = null;//.$setPristine();
             return $scope.getNewModel($scope.lastContact);
         };
@@ -414,15 +417,28 @@ angular.module('ndrApp')
       $scope.contactModel.pumpNewSerial = null;
     };
     $scope.setOptionalQuestionsValue = function() {
-      angular.forEach($scope.optionalQuestions, function(q) {
+      
+	  var iterateAttributes = ['dal','das'];
+	  
+	  angular.forEach($scope.optionalQuestions, function(q) {
         q.value = "";
-        if ($scope.contactToUpdate != null) {
+		
+        if ($scope.contactToUpdate != null) { //update contact
           if ($scope.contactToUpdate.optionals != null) {
-            if ($scope.contactToUpdate.optionals[q.columnName] != undefined)
-              q.value = $scope.contactToUpdate.optionals[q.columnName];
+            if ($scope.contactToUpdate.optionals[q.columnName] != undefined) {
+				q.iterate = false;
+				q.value = $scope.contactToUpdate.optionals[q.columnName];
+			}
           }
-        }
-
+        } else { //new contact => iterate values
+			if (iterateAttributes.indexOf(q.columnName) != -1) {
+				if ($scope.lastContact.optionals != null)
+					if ($scope.lastContact.optionals[q.columnName] != undefined) {
+						q.iterate = true;
+						q.value = $scope.lastContact.optionals[q.columnName];
+					}
+			}
+		}
       });
     }
     $scope.getUpdateModel = function() {
