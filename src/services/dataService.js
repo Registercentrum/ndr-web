@@ -13198,7 +13198,7 @@ angular.module('ndrApp')
 
             if (!useStaticUnits) {
                 return $q.all([
-                        endpoints.units.getList({exposeMode:'minified', isActive : true}),
+                        endpoints.units.getList({exposeMode:'minified', isActive : true, useCache: true}),
                         endpoints.counties.getList(),
                         endpoints.indicator.get()
                     ]).then(function (data) {
