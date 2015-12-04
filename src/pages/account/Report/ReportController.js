@@ -432,11 +432,12 @@ angular.module('ndrApp')
           }
         } else { //new contact => iterate values
 			if (iterateAttributes.indexOf(q.columnName) != -1) {
-				if ($scope.lastContact.optionals != null)
-					if ($scope.lastContact.optionals[q.columnName] != undefined) {
-						q.iterate = true;
-						q.value = $scope.lastContact.optionals[q.columnName];
-					}
+				if ($scope.lastContact != null)
+					if ($scope.lastContact.optionals != null)
+						if ($scope.lastContact.optionals[q.columnName] != undefined) {
+							q.iterate = true;
+							q.value = $scope.lastContact.optionals[q.columnName];
+						}
 			}
 		}
       });
