@@ -30,7 +30,7 @@
                             <progressbar value="( model.filteredSubjectsLength * 100 ) / model.allSubjectsLength" max="100"></progressbar>
                         </div>
                         <div class="col-sm-5 u-noLeftPadding" ng-show="!isLoadingSubjects">
-                            {{ model.filteredSubjectsLength + (absence ? '' : " av " + model.allSubjectsLength) }}
+                            {{ absence ? model.allSubjectsLength : model.filteredSubjectsLength + " av " + model.allSubjectsLength }}
                             <span style="margin-left: 10px" ng-show="isLoadingSubjects">
                                 <img src="images/ajax-loader.gif" alt=""/> Laddar
                             </span>
@@ -120,6 +120,7 @@
                                 ng-disabled="selectedFilters[filter.columnName].undef"
                                 floor="{{ filter.minValue || 0 }}"
                                 ceiling="{{ filter.maxValue }}"
+								step="0.1"
                                 class="RangeSlider">
                             </div>
                             <div class="MultiFilter-row-filterKnobs--inputs">

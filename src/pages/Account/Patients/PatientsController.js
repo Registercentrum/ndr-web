@@ -27,10 +27,12 @@ angular.module('ndrApp')
                 maxDate : new Date(),
                 from: {
                     date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
+					//date: new Date(new Date()-dateOffset),
                     opened: false
                 },
                 to: {
                     date: $filter('date')(new Date(), $scope.format),
+					//date: new Date(),
                     opened: false
                 }
             };
@@ -206,7 +208,7 @@ angular.module('ndrApp')
 					
                     allSubjects = data;
                     $scope.model.allSubjectsLength = allSubjects.length;
-
+					console.log(allSubjects.length);
                     $scope.isLoadingSubjects = false;
                     debouncedFilter();
 
@@ -219,17 +221,49 @@ angular.module('ndrApp')
                 delayStartTime = 6000;
             }
 			function validateDates() {
-				return ($scope.datePickers.to.date >=$scope.datePickers.from.date)
-			}	
 			
+				var from = $scope.datePickers.from.date;
+				var to = $scope.datePickers.to.date;
+				
+				console.log('rawDate: ' + from);
+				console.log('rawDate: ' + to);
+				
+				if (!from || !to)
+					return false;
+
+				var from = $filter('date')(from, $scope.format);
+				var to = $filter('date')(to, $scope.format);
+				
+				console.log('stringDate: ' + from);
+				console.log('stringDate: ' + to);
+				
+				if (from.length !== 10 && to.length !== 10)
+					return false;
+				
+				//component can freely generate unrealistic dates, so this secures 2000-XX-XX-dates 
+				if (from < '2000' || to < '2000')
+					return false;
+			
+			
+				return (to >= from)
+			}	
+			function clearResult() {
+				$scope.ItemsByPage = [];
+				$scope.model.allSubjectsLength = 0;
+			}
             $timeout(function (){
-                $scope.$watch('datePickers.to.date', function() {
+			
+				var tryLoad = function() {
+					clearResult();
 					if (validateDates())
-						loadSubjects();
+						loadSubjects();	
+				}
+			
+                $scope.$watch('datePickers.to.date', function() {
+					tryLoad();
 				});
                 $scope.$watch('datePickers.from.date', function() {
-					if (validateDates())
-						loadSubjects();
+					tryLoad();
 				});
             }, delayStartTime)
 
@@ -340,16 +374,11 @@ angular.module('ndrApp')
 
                 if (!name) return;
 				
-				console.log(name);
-				
                 alreadySelected = $scope.isDisplayed(name);
-				
-				console.log(alreadySelected);
 				
                 // Select the filter, only if it's not already displayed
                 if (!alreadySelected) {
                     filter = _.find($scope.filters, {columnName: name});
-					console.log(filter);
                     if (filter) {
 						//filter.min 		= filter.minValue;
 						//filter.max 		= filter.maxValue;
@@ -418,9 +447,7 @@ angular.module('ndrApp')
                         selectedFilters[filterKey] = filter;
                     }
                 });
-				
-				console.log(selectedFilters);
-				
+
                 dataService.setSearchFilters('values', selectedFilters);
 
                 if($scope.absence !== true) {
@@ -462,7 +489,7 @@ angular.module('ndrApp')
                         });
                     });
                 }
-
+				
                 //$scope.model.allSubjects = subjects;
                 $scope.model.filteredSubjects = subjects;
                 $scope.model.filteredSubjectsLength = subjects.length;
@@ -518,8 +545,6 @@ angular.module('ndrApp')
 					attributes.push({columnName: selectedAttributes[i].columnName, question: selectedAttributes[i].question, domain: selectedAttributes[i].domain});
 				}
 				
-				console.log(attributes);
-				
 				//Write headers
 				var firstInRow = true;
 				for (var i = 0; i < attributes.length; i++) { 
@@ -530,8 +555,6 @@ angular.module('ndrApp')
 						
 					firstInRow = false;
 				}
-				
-				console.log($scope.model.filteredSubjects);
 				
 				//Add row for patient
 				function addPatientValue(firstInRow, attribute, subject) {
