@@ -26,9 +26,12 @@ angular.module('ndrApp')
             var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID : accountID});
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount   = activeAccount;
-
-            //$state.go($state.current, {}, {reload: true}); BUG 2015-10-14, page can´t reload since then active account then is reset
-			$state.go('main.account.home');
+			
+			$state.go($state.current, {}, { reload: true });
+            //$state.go($state.current, {}, {reload: true}); //BUG 2015-10-14, page can´t reload since then active account then is reset
+			//$state.go('main.account.home');
+			//$state.go('main.account.home', {}, { reload: true });
+			
         };
 
         this.login = function (accountID) {
@@ -52,8 +55,7 @@ angular.module('ndrApp')
                     console.log("USER: ",user);
 
                     self.accountModel.user = user;
-					
-					
+
                     $rootScope.$broadcast('newUser');
 
                     loginId = accountID || user.defaultAccountID;
@@ -61,8 +63,12 @@ angular.module('ndrApp')
                     user.activeAccounts = _.filter(user.accounts, function (account) {
                         return account.status.id === 1;
                     });
-
-                    self.accountModel.activeAccount = user.activeAccounts[0];
+					
+					//if many units redirect to home page to choose unit
+					if (self.accountModel.activeAccount == null && user.activeAccounts.length > 1)
+						$state.go('main.home');
+					else
+						self.accountModel.activeAccount = user.activeAccounts[0];
 
                     if (self.accountModel.tempAccount) {
                         self.accountModel.activeAccount = self.accountModel.tempAccount;

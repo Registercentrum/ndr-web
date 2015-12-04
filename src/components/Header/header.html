@@ -41,7 +41,10 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation">
+						<li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
+                            <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
+                        </li>
+                        <li role="presentation" ng-if="accountModel.visitor.principal.method != 'SITHS'">
                             <a ui-sref="main.bankid" title="">
                                 Logga in med Mobilt Bank-ID
                                 <img src="images/bankid_small.png" class="" style="margin-left:10px;width:20px;" alt=""/>
