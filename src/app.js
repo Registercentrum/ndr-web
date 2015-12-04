@@ -218,8 +218,8 @@ angular.module('ndrApp', [
 
                 .state('main.about', {
                     url: '/om-ndr',
-                    templateUrl: 'src/pages/About/about.html'
-                    //controller : 'ResearchController'
+                    templateUrl: 'src/pages/About/about.html',
+                    controller : 'AboutController'
                 })
 
                 .state('main.forms', {
