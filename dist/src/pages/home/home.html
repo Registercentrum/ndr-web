@@ -12,11 +12,22 @@
     <div ng-show="accountModel.activeAccount" class="row">
         <div class="col-md-12">
             <div class="Panel ServicesShortcuts">
-                <span>Du har blivit automatiskt inloggad. Genvägar:</span>
+                <span>Du är inloggad på {{accountModel.activeAccount.unit.name}}. Genvägar:</span>
                 <a ui-sref="main.account.report" class="Button Button--default Button--strong">Rapportera/Komplettera</a>
                 <a ui-sref="main.account.patients" class="Button Button--default Button--strong">Söklista</a>
                 <a ui-sref="main.account.patient" class="Button Button--default Button--strong">Patientprofil</a>
 				<a ui-sref="main.account.home" class="Button Button--default Button--strong">Översikt</a>
+            </div>
+        </div>
+    </div>
+	
+	<div ng-show="accountModel.user.activeAccounts.length > 1 && accountModel.activeAccount == null" class="row">
+        <div class="col-md-12">
+            <div class="Panel ChooseUnit">
+                <span>Du har användarkonton på flera enheter. Vilken enhet arbetar du på idag?</span>
+                <select id="unitSelect" ng-model="selectedAccountID" ng-change="AccountIsSelected()" ng-options="account.accountID as account.unit.name for account in accountModel.user.activeAccounts">
+					<option value="">Välj enhet</option>
+				</select>
             </div>
         </div>
     </div>
