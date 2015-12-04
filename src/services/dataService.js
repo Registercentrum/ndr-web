@@ -275,12 +275,12 @@ angular.module('ndrApp')
 			values: {
 				hba1c: {
 					min: 20,
-					max: 177,
+					max: 177
 				}
 			}
 		};
 		
-        var selectedSearchFilters = preSelectedSearchFilters;// preSelectedSearchFilters;
+        var selectedSearchFilters = preSelectedSearchFilters;
 		
         this.setSearchFilters = function (prop, value) {
             // If no prop and value, reset the object
