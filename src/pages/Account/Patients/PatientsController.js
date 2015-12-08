@@ -222,34 +222,31 @@ angular.module('ndrApp')
             }
 			function validateDates() {
 			
+				//collect response
 				var from = $scope.datePickers.from.date;
 				var to = $scope.datePickers.to.date;
 				
-				console.log('rawDate: ' + from);
-				console.log('rawDate: ' + to);
-				
-				if (!from || !to)
+				//check if undefined
+				if ((from === undefined) || (to === undefined))
 					return false;
-
+				
+				//create strings
 				var from = $filter('date')(from, $scope.format);
 				var to = $filter('date')(to, $scope.format);
 				
-				console.log('stringDate: ' + from);
-				console.log('stringDate: ' + to);
-				
-				if (from.length !== 10 && to.length !== 10)
-					return false;
+				//console.log(moment(from, [$scope.format.toUpperCase()], true).isValid()); // false
+				//console.log(moment(to, [$scope.format.toUpperCase()], true).isValid()); // false		
 				
 				//component can freely generate unrealistic dates, so this secures 2000-XX-XX-dates 
 				if (from < '2000' || to < '2000')
 					return false;
-			
 			
 				return (to >= from)
 			}	
 			function clearResult() {
 				$scope.ItemsByPage = [];
 				$scope.model.allSubjectsLength = 0;
+				$scope.model.filteredSubjectsLength = 0;
 			}
             $timeout(function (){
 			

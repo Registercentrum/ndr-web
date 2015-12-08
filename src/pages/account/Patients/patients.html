@@ -59,6 +59,8 @@
                                         class="FilterDatePopup-input form-control"
                                         datepicker-popup="{{ format }}"
                                         ng-model="datePickers.from.date"
+										ng-minlength="10"
+										ng-maxlength="10"
                                         is-open="datePickers.from.opened"
                                         min-date="minDate"
                                         max-date="datePickers.maxDate"
@@ -80,6 +82,8 @@
                                         class="FilterDatePopup-input form-control"
                                         datepicker-popup="{{ format }}"
                                         ng-model="datePickers.to.date"
+										ng-minlength="10"
+										ng-maxlength="10"
                                         is-open="datePickers.to.opened"
                                         min-date="minDate"
                                         max-date="datePickers.maxDate"
@@ -121,6 +125,7 @@
                                 floor="{{ filter.minValue || 0 }}"
                                 ceiling="{{ filter.maxValue }}"
 								step="0.1"
+								precision="{{filter.domain.domainID  === 101 ? 0 : 1}}"
                                 class="RangeSlider">
                             </div>
                             <div class="MultiFilter-row-filterKnobs--inputs">
