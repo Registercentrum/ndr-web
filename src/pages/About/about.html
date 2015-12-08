@@ -284,18 +284,24 @@
                 <p>Registercentrum Västra Götaland<br>413 45 Göteborg<br>010 – 441 29 29</p>
             </div>
 
-            <div class="Panel" ng-if="accountModel.activeAccount">
+            <div class="Panel Panel--blue">
 			
-                <h3 class="Panel-title">Listor</h3>
+                <h3 class="Panel-title">Kontaktpersoner</h3>
 				
                 <article class="">
-                    <h4><a href="pdfs/NDR_KASlista_20151125.pdf" target="_blank">KAS-lista</a></h4>
+                    <h5><img src="images/icon_pdf.png" style="width:30px;height:30px;margin-right: 10px" alt=""/><a href="pdfs/javsdeklaration.pdf" target="_blank">Jävsdeklaration</a></h5>
                 </article>
+				
+				<div ng-if="accountModel.activeAccount">
+					<article class="" >
+						<h5><img src="images/icon_pdf.png" style="width:30px;height:30px;margin-right: 10px" alt=""/><a href="pdfs/NDR_KASlista_20151125.pdf" target="_blank">KAS-lista</a></h5>
+					</article>
 
-                <article class="">
-                    <h4><a href="pdfs/NDR_Koordinatorer_20151125.pdf" target="_blank">Koordinator-lista</a></h4>
-                </article>
-				
+					<article class="" ng-if="accountModel.activeAccount">
+						<h5><img src="images/icon_pdf.png" style="width:30px;height:30px;margin-right: 10px" alt=""/><a href="pdfs/NDR_Koordinatorer_20151125.pdf" target="_blank">Koordinator-lista</a></h5>
+					</article>
+				</div>
+			
             </div>
 			
         </div>
