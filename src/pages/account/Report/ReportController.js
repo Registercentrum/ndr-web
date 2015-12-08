@@ -319,10 +319,17 @@ angular.module('ndrApp')
     $scope.format = $scope.formats[0];
     //END datePicker
 	
+	//Todo, this could use an overview
     $scope.contactDateChanged = function() {
 	
       var valid = true;
       var m = $scope.contactModel;
+	  
+	if ($scope.contactModel.contactDate === undefined) {
+		$scope.contactForm.contactDate.$setValidity('checkContactDate', valid);
+		return;
+	}
+	  
       var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate);
 	  
 	  $scope.contactModel.contactDate = dateToCheck.replace('.','-');

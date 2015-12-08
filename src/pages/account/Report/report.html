@@ -63,27 +63,36 @@
                         <i class="fa fa-calendar"></i>
                       </button>
                     </span>
-                    <input
-                      name="contactDate"
-                      type="text"
-                      class="form-control"
-                      ng-model="contactModel.contactDate"
-                      ng-class="{ 'has-error' : !contactForm.contactDate.$error.checkContactDate && contactModel.contactDate != null}"
-                      ng-change="contactDateChanged();tryCalculateGFR()"
-                      ng-model-options="{ updateOn: 'blur' }"
-                      date-disabled="disabled(date, mode)"
-                      datepicker-options="dateOptions"
-                      datepicker-popup="{{format}}"
-                      max-date="datePickers.maxDate"
-                      is-open="datePickers.contactDate.opened"
-                      ng-required="true"
-                      close-text="Stäng"
-                      current-text="Idag"
-                      clear-text="Rensa"
-                      placeholder="ÅÅÅÅ-MM-DD">
+					<div ng-class="{ 'has-error' : (contactForm.contactDate.$invalid || contactForm.contactDate.$error.checkContactDate) }">
+						<input
+							name="contactDate"
+							type="text"
+							class="form-control"
+							ng-model="contactModel.contactDate"
+							ng-class="{ 'has-error' : (contactForm.contactDate.$invalid || contactForm.contactDate.$error.checkContactDate) }"
+							ng-change="contactDateChanged();tryCalculateGFR()"
+							ng-model-options="{ updateOn: 'blur' }"
+							ng-minlength="10"
+							ng-maxlength="10"
+							date-disabled="disabled(date, mode)"
+							datepicker-options="dateOptions"
+							datepicker-popup="{{format}}"
+							max-date="datePickers.maxDate"
+							is-open="datePickers.contactDate.opened"
+							ng-required="true"
+							close-text="Stäng"
+							current-text="Idag"
+							clear-text="Rensa"
+							placeholder="ÅÅÅÅ-MM-DD">
+					  </div>
                   </div>
-                  <p class="Report-formItemHelphelp-block" ng-show="contactForm.contactDate.$error.checkContactDate">Det finns redan ett besök på detta datum! Komplettera det befintliga besöket eller skriv in ett nytt datum.</p>
-                </div>
+					<div ng-show="contactForm.contactDate.$error.checkContactDate" class="has-error">
+						<p class="Report-formItemHelp help-block" >Det finns redan ett besök på detta datum! Komplettera det befintliga besöket eller skriv in ett nytt datum.</p>
+					</div>
+					<div ng-show="contactForm.contactDate.$invalid && !contactForm.contactDate.$error.checkContactDate" class="has-error">
+						<p class="Report-formItemHelp help-block" >Kontrollera besökdatum!</p>
+					</div>
+				</div>
               </div>
             </div>
           </div>
@@ -440,7 +449,7 @@
           <div class="Report-formGroup">
             <div class="row">
               <div class="col-md-5 Report-formGroup-form">
-                <label class="" for="fundusExaminationDate" class="">Datum för senaste ögonbottenundersökning</label><i class="fa fa-question-circle helpNote" ng-show="lists['fundusExaminationDate'].helpNote != null" tooltip="{{lists['fundusExaminationDate'].helpNote}}"></i>
+                <label class="" for="fundusExaminationDate" class="">Datum senaste ögonbottenundersökning</label><i class="fa fa-question-circle helpNote" ng-show="lists['fundusExaminationDate'].helpNote != null" tooltip="{{lists['fundusExaminationDate'].helpNote}}"></i>
                 <div class="input-group FilterDatePopup-group">
                   <span class="input-group-addon">
                     <button
@@ -508,7 +517,7 @@
             <div class="row">
 
               <div class="col-md-5 Report-formGroup-form">
-                <label class="" for="footExaminationDate" class="">Datum för senaste fotundersökning</label><i class="fa fa-question-circle helpNote" ng-show="lists['footExaminationDate'].helpNote != null" tooltip="{{lists['footExaminationDate'].helpNote}}"></i>
+                <label class="" for="footExaminationDate" class="">Datum senaste fotundersökning</label><i class="fa fa-question-circle helpNote" ng-show="lists['footExaminationDate'].helpNote != null" tooltip="{{lists['footExaminationDate'].helpNote}}"></i>
                 <div class="input-group FilterDatePopup-group">
                   <span class="input-group-addon">
                     <button
