@@ -385,10 +385,10 @@ angular.module('ndrApp')
                 $scope.model.latest.footRiscCategory    = getLatestValue('footRiscCategory');
                 $scope.model.latest.footExaminationDate = getLatestValue('footExaminationDate');
 
-                _.each($scope.contactAttributes, function (obj) {
+                _.each($scope.contactAttributes, function (obj) {			
                     $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
                 });
-				console.log($scope.model.latest);
+
             }
 
 
