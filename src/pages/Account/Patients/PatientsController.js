@@ -221,9 +221,6 @@ angular.module('ndrApp')
 				var from = $scope.searchForm.fromDate;
 				var to = $scope.searchForm.toDate;
 				
-				console.log(from);
-				console.log(to);
-				
 				if ($scope.ValidateOneInputDate(from, 'checkFromDate') && $scope.ValidateOneInputDate(to, 'checkToDate'))
 					return true;
 					
