@@ -199,7 +199,6 @@ angular.module('ndrApp')
             $scope.showPumpProblem = $scope.contactModel.pumpProblemKeto || $scope.contactModel.pumpProblemHypo || $scope.contactModel.pumpProblemSkininfection || $scope.contactModel.pumpProblemSkinreaction;
             $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReason > 0;
             $scope.contactDateChanged();
-			
             $scope.contactForm.$setPristine();
 			$scope.contactOptionalForm.$setPristine();
 			
@@ -244,6 +243,7 @@ angular.module('ndrApp')
 
 
         $scope.tryCalculateBMI = function () {
+			console.log('trying');
             if ($scope.contactModel.weight > 0 && $scope.contactModel.height > 0) {
                 $scope.contactModel.bmi = parseFloat(($scope.contactModel.weight / Math.pow($scope.contactModel.height/100,2)).toFixed(1));
             } else {
@@ -353,7 +353,8 @@ angular.module('ndrApp')
 		
 		var isValid = true;
 		var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate);
-
+		var m = $scope.contactModel;
+		
 		$scope.contactModel.contactDate = dateToCheck.replace('.','-');
 
 		var compare = function(thisDate, thatDate) {
@@ -394,9 +395,6 @@ angular.module('ndrApp')
 		$scope.maxYear = $scope.getStringDate($scope.contactModel.contactDate).substring(0,4);
 	}
     $scope.contactDateChanged = function() {
-	
-		var valid = true;
-		var m = $scope.contactModel;
 
 		if (!$scope.validateContactDateInput())
 			return;
