@@ -251,22 +251,15 @@
 
                 <div class="Report-formGroup">
                   <div class="row">
-                    <!--<div class="col-md-5 Report-formGroup-form">
-                      <label class="" for="weight" class="">Vikt, kg</label><i class="fa fa-question-circle helpNote" ng-show="lists['weight'].helpNote != null" tooltip="{{lists['weight'].helpNote}}"></i>
-                      <div ng-class="{ 'has-error' : contactForm.weight.$invalid && !contactForm.weight.$pristine }">
-                        <input name="weight" type="number" min="1" max="350" class="form-control" placeholder="Vikt" ng-model="contactModel.weight" decimals="0" ng-class="{ 'has-no-error' : !contactForm.weight.$invalid && contactModel.weight != null}" ng-change="tryCalculateBMI()" ng-model-options="{ updateOn: 'blur' }">
-                        <p ng-show="contactForm.weight.$error.min || contactForm.weight.$error.max" class="Report-formItemHelp help-block">Vikt kan anta ett värde mellan 1 och 350.</p>
-                      </div>
-                    </div>-->
+
                       <div class="col-md-5 Report-formGroup-form">
                         <label class="" for="weight" class="">Vikt, kg</label><i class="fa fa-question-circle helpNote" ng-show="lists['weight'].helpNote != null" tooltip="{{lists['weight'].helpNote}}"></i>
                         <div ng-class="{ 'has-error' : contactForm.weight.$invalid && !contactForm.weight.$pristine }">
-                          <input name="weight" type="text" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternWeight" decimals="1" class="form-control" placeholder="Vikt" ng-model="contactModel.weight" ng-class="{ 'has-no-error' : !contactForm.weight.$invalid && contactModel.weight != null}" ng-model-options="{ updateOn: 'blur' }">
+                          <input name="weight" type="text" parse-commas ng-keypress="filterValue($event)" ng-pattern="patternWeight" decimals="1" class="form-control" placeholder="Vikt" ng-model="contactModel.weight" ng-class="{ 'has-no-error' : !contactForm.weight.$invalid && contactModel.weight != null}"  ng-change="tryCalculateBMI()" ng-model-options="{ updateOn: 'blur' }">
                           <p ng-show="contactForm.weight.$invalid" class="Report-formItemHelp help-block">Vikt kan anta ett värde mellan 1 och 350.</p>
                         </div>
                       </div>
-					
-					
+					  
 
                     <div class="col-md-5 Report-formGroup-form">
                       <label class="" for="height" class="">Längd, cm</label><i class="fa fa-question-circle helpNote" ng-show="lists['height'].helpNote != null" tooltip="{{lists['height'].helpNote}}"></i>
