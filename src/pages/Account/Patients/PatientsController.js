@@ -46,7 +46,6 @@ angular.module('ndrApp')
                 formatYear: 'yy',
                 startingDay: 1
             };
-
             $scope.open = function ($event, picker) {
                 $event.preventDefault();
                 $event.stopPropagation();
@@ -93,9 +92,7 @@ angular.module('ndrApp')
                     } else {
                         retVal[Math.floor(i / pageSize)].push(valLists[i]);
                     }
-                }
-				console.log(retVal);
-				
+                }				
                 return retVal;
             }
 
@@ -215,47 +212,84 @@ angular.module('ndrApp')
                 });
             }
 
-
             var delayStartTime = 200;
             if(!Modernizr.svg){
                 delayStartTime = 6000;
             }
-			function validateDates() {
+			$scope.ValidateDateInput = function(viewVal) {
+				
+				var from = $scope.searchForm.fromDate;
+				var to = $scope.searchForm.toDate;
+				
+				console.log(from);
+				console.log(to);
+				
+				if ($scope.ValidateOneInputDate(from, 'checkFromDate') && $scope.ValidateOneInputDate(to, 'checkToDate'))
+					return true;
+					
+				return false;
+						
+			};
+			$scope.ValidateOneInputDate = function(formCmp, valKey) {
 			
+				var input = formCmp.$viewValue;
+				var isValid = true;
+				
+				if (typeof input === 'string')
+					if (input.length !== 10)
+						isValid = false;
+				
+				formCmp.$setValidity(valKey,isValid);	
+				
+				return isValid;
+				
+			}
+			function validateDateValues() {
+							
 				//collect response
 				var from = $scope.datePickers.from.date;
 				var to = $scope.datePickers.to.date;
 				
 				//check if undefined
-				if ((from === undefined) || (to === undefined))
+				if (from === undefined) {
+					$scope.searchForm.fromDate.$setValidity('checkFromDate',false);	
 					return false;
+				}
+				
+				//check if undefined
+				if (to === undefined) {
+					$scope.searchForm.toDate.$setValidity('checkToDate',false);	
+					return false;
+				}
 				
 				//create strings
-				var from = $filter('date')(from, $scope.format);
-				var to = $filter('date')(to, $scope.format);
+				from = $filter('date')(from, $scope.format);
+				to = $filter('date')(to, $scope.format);
 				
-				//console.log(moment(from, [$scope.format.toUpperCase()], true).isValid()); // false
-				//console.log(moment(to, [$scope.format.toUpperCase()], true).isValid()); // false		
-				
-				//component can freely generate unrealistic dates, so this secures 2000-XX-XX-dates 
-				if (from < '2000' || to < '2000')
+				if ((to < from)) {
+					$scope.searchForm.fromDate.$setValidity('checkFromDate',false);	
+					$scope.searchForm.toDate.$setValidity('checkToDate',false);
 					return false;
-			
-				return (to >= from)
-			}	
+				}
+				
+				$scope.searchForm.fromDate.$setValidity('checkFromDate',true);	
+				$scope.searchForm.toDate.$setValidity('checkToDate',true);	
+				
+				return true;
+				
+			};
 			function clearResult() {
 				$scope.ItemsByPage = [];
 				$scope.model.allSubjectsLength = 0;
 				$scope.model.filteredSubjectsLength = 0;
 			}
-            $timeout(function (){
-			
-				var tryLoad = function() {
-					clearResult();
-					if (validateDates())
-						loadSubjects();	
-				}
-			
+			function tryLoad() {
+
+				clearResult();
+				if ($scope.ValidateDateInput() && validateDateValues())
+					loadSubjects();	
+			}
+            $timeout(function (){	
                 $scope.$watch('datePickers.to.date', function() {
 					tryLoad();
 				});
@@ -398,8 +432,7 @@ angular.module('ndrApp')
 
             $scope.isDisplayed = function (name) {
                 return $scope.isRequired(name) || _.find($scope.filters, {columnName: name}).isChosen;
-            };
-
+            };		
             $scope.isRequired = function (name) {
                 return _.indexOf(filterSettings.required, name) !== -1;
             };
@@ -503,7 +536,7 @@ angular.module('ndrApp')
 
             $scope.$watch('absence', function (){
                 console.log("CHANGED ABS");
-                loadSubjects();
+                tryLoad();
             });
 
             $scope.$watch('selectedFilters', function (){

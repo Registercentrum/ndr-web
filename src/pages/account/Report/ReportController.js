@@ -59,6 +59,18 @@ angular.module('ndrApp')
                 }
             };
         })();
+		
+        $scope.patternWeight = (function() {
+            return {
+                test: function(input) {
+                    if(input < 1 || input > 350){
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            };
+        })();
 
         $scope.patternCholesterol = (function() {
             return {
@@ -320,56 +332,78 @@ angular.module('ndrApp')
     //END datePicker
 	
 	//Todo, this could use an overview
+	$scope.validateContactDateInput = function() {
+		var date = $scope.contactForm.contactDate.$viewValue;
+		var isValid = true;
+		
+		if ($scope.contactModel.contactDate === undefined) {
+			isValid = false;
+		}
+		
+		if (typeof date === 'string')
+			if (date.length !== 10)
+				isValid = false;
+				
+		$scope.contactForm.contactDate.$setValidity('checkInput',isValid);
+		
+		return isValid;
+		
+	};	
+	$scope.validatePreviousContacts = function() {
+		
+		var isValid = true;
+		var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate);
+
+		$scope.contactModel.contactDate = dateToCheck.replace('.','-');
+
+		var compare = function(thisDate, thatDate) {
+		
+			if (thisDate == thatDate) {
+				return false;
+			}
+				return true;
+		};
+
+		if (!($scope.subject.contacts  === undefined)) {
+			for (var i = 0; i < $scope.subject.contacts.length; i++) {
+
+				var c = $scope.subject.contacts[i];
+
+				if($scope.contactToUpdate != null) {
+					if (!(c.contactID == m.contactID)) {
+						isValid = compare(c.contactDate.split('T')[0],dateToCheck)
+					}
+					} else {
+						if ($scope.subject.contacts[i].contactDate.split('T')[0] == dateToCheck) {
+						isValid = compare(c.contactDate.split('T')[0],dateToCheck)
+					}
+				}
+
+				if(!isValid)
+					break;
+
+			}
+		}
+
+		$scope.contactForm.contactDate.$setValidity('checkContactDate', isValid);
+		
+		return isValid;
+		
+	};
+	$scope.setMaxYear = function() {
+		$scope.maxYear = $scope.getStringDate($scope.contactModel.contactDate).substring(0,4);
+	}
     $scope.contactDateChanged = function() {
 	
-      var valid = true;
-      var m = $scope.contactModel;
-	  
-	if ($scope.contactModel.contactDate === undefined) {
-		$scope.contactForm.contactDate.$setValidity('checkContactDate', valid);
-		return;
-	}
-	  
-      var dateToCheck = $scope.getStringDate($scope.contactModel.contactDate);
-	  
-	  $scope.contactModel.contactDate = dateToCheck.replace('.','-');
+		var valid = true;
+		var m = $scope.contactModel;
 
-      var compare = function(thisDate, thatDate) {
-        if (thisDate == thatDate) {
-          return false;
-        }
-        return true;
-      }
+		if (!$scope.validateContactDateInput())
+			return;
 
-      if ($scope.subject.contacts  == undefined)
-        valid = true
-      else {
-        for (var i = 0; i < $scope.subject.contacts.length; i++) {
-
-          var c = $scope.subject.contacts[i];
-
-          if($scope.contactToUpdate != null) {
-            if (!(c.contactID == m.contactID)) {
-              valid = compare(c.contactDate.split('T')[0],dateToCheck)
-            }
-          } else {
-            if ($scope.subject.contacts[i].contactDate.split('T')[0] == dateToCheck) {
-              valid = compare(c.contactDate.split('T')[0],dateToCheck)
-            }
-          }
-
-          if(!valid)
-            break;
-
-        }
-      }
-
-      $scope.contactForm.contactDate.$setValidity('checkContactDate', valid);
-	  
-	if (valid)
-		$scope.maxYear = $scope.getStringDate($scope.contactModel.contactDate).substring(0,4);
-	else
-		$scope.maxYear = new Date().getFullYear()
+		if (!$scope.validatePreviousContacts())
+			return;
+	
 	
     }
     $scope.getStringDate = function(date) {

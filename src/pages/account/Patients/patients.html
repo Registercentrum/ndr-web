@@ -17,8 +17,8 @@
         <h1 class="Page-title">Söklista</h1>
         <p>Välj besöksperiod och andra sökkriterier.</p>
     </div>
-
-    <div class="col-md-12">
+	<form name="searchForm">
+		<div class="col-md-12">
         <div class="MultiFilter">
             <div class="MultiFilter-row MultiFilter-row--header">
                 <div class="row">
@@ -54,21 +54,21 @@
                                         <i class="fa fa-calendar"></i>
                                     </button>
                                 </span>
-                                <input
-                                        type="text"
-                                        class="FilterDatePopup-input form-control"
-                                        datepicker-popup="{{ format }}"
-                                        ng-model="datePickers.from.date"
-										ng-minlength="10"
-										ng-maxlength="10"
-                                        is-open="datePickers.from.opened"
-                                        min-date="minDate"
-                                        max-date="datePickers.maxDate"
-                                        datepicker-options="dateOptions"
-                                        date-disabled="disabled(date, mode)"
-                                        ng-required="true"
-                                        close-text="Close">
-
+								<div ng-class="{ 'has-error' : searchForm.fromDate.$error.checkFromDate }">
+									<input
+											type="text"
+											class="FilterDatePopup-input form-control"
+											name="fromDate"
+											datepicker-popup="{{ format }}"
+											ng-model="datePickers.from.date"
+											is-open="datePickers.from.opened"
+											min-date="minDate"
+											max-date="datePickers.maxDate"
+											datepicker-options="dateOptions"
+											date-disabled="disabled(date, mode)"
+											ng-required="true"
+											close-text="Close">
+								</div>
                                  <span class="input-group-addon">
                                    <button
                                            type="button"
@@ -77,20 +77,21 @@
                                        <i class="fa fa-calendar"></i>
                                    </button>
                                  </span>
-                                <input
-                                        type="text"
-                                        class="FilterDatePopup-input form-control"
-                                        datepicker-popup="{{ format }}"
-                                        ng-model="datePickers.to.date"
-										ng-minlength="10"
-										ng-maxlength="10"
-                                        is-open="datePickers.to.opened"
-                                        min-date="minDate"
-                                        max-date="datePickers.maxDate"
-                                        datepicker-options="dateOptions"
-                                        date-disabled="disabled(date, mode)"
-                                        ng-required="true"
-                                        close-text="Close">
+								 <div ng-class="{ 'has-error' : searchForm.toDate.$error.checkToDate }">
+									<input
+											type="text"
+											class="FilterDatePopup-input form-control"
+											name="toDate"
+											datepicker-popup="{{ format }}"
+											ng-model="datePickers.to.date"
+											is-open="datePickers.to.opened"
+											min-date="minDate"
+											max-date="datePickers.maxDate"
+											datepicker-options="dateOptions"
+											date-disabled="disabled(date, mode)"
+											ng-required="true"
+											close-text="Close">
+								</div>
                             </div>
                         </div>
                     </div>
@@ -275,6 +276,7 @@
 
 
     </div>
-</div>
+	</form>
+	</div>
 
 
