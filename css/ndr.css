@@ -9274,9 +9274,6 @@ fieldset[disabled] .IndicatorButton {
   border: none;
   -webkit-user-select: none;
 }
-.FilterDatePopup-input {
-  border-left: 0;
-}
 .FilterDropdown .selectize-input,
 .FilterDropdown.selectize-dropdown {
   border-color: #555555;
