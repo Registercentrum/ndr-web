@@ -69,9 +69,9 @@
                     <div class="Panel--profile col-md-4 text-center">
                         <div class="col-md-7">
                             <ul style="list-style-type: none; text-align: right; line-height: 40px;padding:0px">
-                                <li><i class="fa"></i> <span class="unit">Vikt</span>  {{model.latest.weight.value }} <span ng-if="model.latest.weight.value>0" class="unit">kg</span></li>
+                                <li><i class="fa"></i> <span class="unit">Vikt</span>  {{model.latest.weight.value.toString().replace('.',',') }} <span ng-if="model.latest.weight.value>0" class="unit">kg</span></li>
                                 <li><i class="fa"></i> <span class="unit">Längd</span> {{ model.latest.height.value }} <span ng-if="model.latest.height.value>0" class="unit">cm</span></li>
-                                <li><i class="fa"></i> <span class="unit">BMI</span> {{ model.latest.bmi.value }} <span ng-if="model.latest.bmi.value>0" class="unit">kg/m <sup>2</sup></span></li>
+                                <li><i class="fa"></i> <span class="unit">BMI</span> {{ model.latest.bmi.value.toString().replace('.',',') }} <span ng-if="model.latest.bmi.value>0" class="unit">kg/m <sup>2</sup></span></li>
                                 <li><i class="fa"></i> <span class="unit">Midjemått</span> {{ model.latest.waist.value }} <span ng-if="model.latest.waist.value>0" class="unit">cm</span></li>
                             </ul>
 
