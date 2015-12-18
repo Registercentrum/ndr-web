@@ -5,10 +5,12 @@ angular.module("ndrApp")
 
         $scope.subject = undefined;
         $scope.socialnumber = undefined;
+		$scope.unitInIQV = undefined;
         
         console.log("Active Account", Account.activeAccount);
         
-
+		$scope.unitInIQV = dataService.isInProject('iqv');
+		
         $scope.model = {
             id : Account.activeAccount.unit.unitID,
             geoType : "unit",
