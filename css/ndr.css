@@ -10447,11 +10447,11 @@ p.lead {
   margin: 1em 0;
 }
 .Panel--alert {
-	color: #a94442;
-	background-color: #ffb3b3;
+	color: #990000;
+	background-color: #ffe580;
 	padding: 10px;
-	font-size: 12px !important;
-	border: 1px solid #ff4d4d;
+	font-size: 13px !important;
+	border: 1px solid #ffb366;
 }
 #unitSelect {
 	/*background-color: #fff;*/
@@ -10470,6 +10470,11 @@ p.lead {
 }
 .Panel--blue a {
 	color: #fff;
+}
+.projectList {
+	font-size: 12px;
+	list-style-type: none;
+	padding: 0;
 }
 
 
