@@ -35,13 +35,69 @@ angular.module('ndrApp')
             subject          : Restangular.all('subject')
         };
 
-
+		this.projects = [
+			{
+				name: 'IQV',
+				units: [
+					26, //Kvarnbyn Väst
+					718, //Mitt Hjärta i Bergslagen AB
+					1302, //LäkarGruppen Boris Klanger
+					1071, //Ullvi-Tuna Vårdcentral
+					1174, //Oxbacken Skultuna Vårdcentral
+					831, //CityPraktiken
+					1200, //Hallstahammar Vårdcentral
+					1130, //Capio vårdcentral Vallby
+					985, //HerrgärdetsVårdcentral
+					1221, //Ängsgårdens Vårdcentral
+					1004, //Viksäng-Irsta familjeläkarmottagning
+					1199, //Hemdal Vårdcentral
+					1260, //Sala Väsby Vårdcentral
+					1254, //Odensvi Familjeläkarmottagning
+					1222, //Prima Familjeläkarmottagning
+					1231, //Capio Vårdcentral Västerås City
+					1184, //Grindberga familjeläkarenhet
+					1292, //Familjeläkarna Önsta-Gryta
+					1006, //Servicehälsan i Västerås
+					1056, //Byjordens familjeläkarmottagning
+					910, //Åbågens Vårdcentral
+					1325, //Kungsörs Vårdcentral
+					1193, //Achima Care Sala Vårdcentral
+					1363, //Kolbäcks familjeläkarmottagning
+					696, //Norbergs Vårdcentral
+					1229, //Skinnskattebergs Vårdcentral
+					1265, //Bäckby familjeläkarmottagning
+					1082, //Achima Care Köping Vårdcentral
+					1270, //Kolsva Vårdcentral
+					1376 //Asyl och Integrationshälsan		
+				]
+			}
+		];
 
         /**
          * Get the list of possible choices for filtering option
          * @param  {Object} filter Object with filter ids to include or exclude from the result
          * @return {Array} Array with filter options
          */
+		 
+        this.getUserProjects = function () {
+			var unitID = accountService.accountModel.activeAccount.unit.unitID
+			var projects = _.filter(this.projects, function (d) { 
+				return d.units.indexOf(unitID) !== -1; 
+			});
+			
+			return projects;
+        };
+        this.isInProject = function (name) {
+			
+			var userProjects = this.getUserProjects();
+			var ret = false;
+			
+			ret = _.filter(userProjects, function (d) { 
+				return d.name.toLowerCase() === name.toLowerCase(); 
+			}).length>0;
+			
+			return ret;
+        };
         this.getContactAttributes = function (filter) {
             return endpoints.contactAttributes.get({'AccountID': accountService.accountModel.activeAccount.accountID})
                 .then(function (data) {
@@ -211,7 +267,6 @@ angular.module('ndrApp')
                 return data.plain();
             });
         };
-
 
         this.prepareGeoList = function () {
             var preparedGeoList = [];
