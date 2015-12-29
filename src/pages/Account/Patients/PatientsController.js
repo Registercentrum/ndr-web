@@ -60,7 +60,14 @@ angular.module('ndrApp')
             };
 
             $scope.lookupName = function (filter, value){
+			
+				if (!value)
+					return '';
+					
                 if (filter.domain.isEnumerated) return _.result(_.find(filter.domain.domainValues, {code : value}), 'text', '');
+				
+				if (filter.domain.domainID == 105) return value.split('T')[0];
+				
                 return $filter('number')(value);
             };
 
@@ -205,7 +212,6 @@ angular.module('ndrApp')
 					
                     allSubjects = data;
                     $scope.model.allSubjectsLength = allSubjects.length;
-					console.log(allSubjects.length);
                     $scope.isLoadingSubjects = false;
                     debouncedFilter();
 
@@ -216,46 +222,72 @@ angular.module('ndrApp')
             if(!Modernizr.svg){
                 delayStartTime = 6000;
             }
-			$scope.ValidateDateInput = function(viewVal) {
+			$scope.dateAttributeIsValid = function(attribute) {
+			
+				var from = $scope.searchForm[attribute + 'From'];
+				var to = $scope.searchForm[attribute + 'To'];		
 				
-				var from = $scope.searchForm.fromDate;
-				var to = $scope.searchForm.toDate;
+				if (!$scope.oneDateInputIsValid(from, attribute + 'FromInValid') || !$scope.oneDateInputIsValid(to, attribute + 'ToInValid'))
+					return false;
 				
-				if ($scope.ValidateOneInputDate(from, 'checkFromDate') && $scope.ValidateOneInputDate(to, 'checkToDate'))
-					return true;
-					
-				return false;
-						
-			};
-			$scope.ValidateOneInputDate = function(formCmp, valKey) {
+				return true;
+			}
+			$scope.oneDateInputIsValid = function(formCmp, valKey) {
 			
 				var input = formCmp.$viewValue;
 				var isValid = true;
 				
-				if (typeof input === 'string')
+				if (typeof input === 'string') {
 					if (input.length !== 10)
+						isValid = false;	
+					else if (new Date(input) == 'Invalid Date')
 						isValid = false;
+				}
 				
 				formCmp.$setValidity(valKey,isValid);	
 				
 				return isValid;
 				
-			}
-			function validateDateValues() {
+			};
+			$scope.contactDateInputIsValid = function() {
+				
+				if (!$scope.dateAttributeIsValid('date'))
+					return false;
+				
+				if (!$scope.contactDateValuesIsValid())
+					return false;
+				
+				return true;
+						
+			};
+			$scope.filterDateIsValid = function() {
+				
+				if ($scope.searchForm['fundusExaminationDateTo'])
+					if (!$scope.dateAttributeIsValid('fundusExaminationDate'))
+						return false;
+				
+				if ($scope.searchForm['footExaminationDateTo'])				
+					if (!$scope.dateAttributeIsValid('footExaminationDate'))
+						return false;
+						
+				return true;
+						
+			};
+			$scope.contactDateValuesIsValid = function() {
 							
 				//collect response
-				var from = $scope.datePickers.from.date;
-				var to = $scope.datePickers.to.date;
+				var from = $scope.datePickers.from;
+				var to = $scope.datePickers.to;
 				
 				//check if undefined
 				if (from === undefined) {
-					$scope.searchForm.fromDate.$setValidity('checkFromDate',false);	
+					$scope.searchForm.dateFrom.$setValidity('dateFromInValid',false);	
 					return false;
 				}
 				
 				//check if undefined
 				if (to === undefined) {
-					$scope.searchForm.toDate.$setValidity('checkToDate',false);	
+					$scope.searchForm.dateTo.$setValidity('dateToInValid',false);	
 					return false;
 				}
 				
@@ -264,26 +296,31 @@ angular.module('ndrApp')
 				to = $filter('date')(to, $scope.format);
 				
 				if ((to < from)) {
-					$scope.searchForm.fromDate.$setValidity('checkFromDate',false);	
-					$scope.searchForm.toDate.$setValidity('checkToDate',false);
+					$scope.searchForm.dateFrom.$setValidity('dateFromInValid',false);	
+					$scope.searchForm.dateTo.$setValidity('dateToInValid',false);
 					return false;
 				}
 				
-				$scope.searchForm.fromDate.$setValidity('checkFromDate',true);	
-				$scope.searchForm.toDate.$setValidity('checkToDate',true);	
+				$scope.searchForm.dateFrom.$setValidity('dateFromInValid',true);	
+				$scope.searchForm.dateTo.$setValidity('dateToInValid',true);	
 				
 				return true;
 				
 			};
-			function clearResult() {
-				$scope.ItemsByPage = [];
+			$scope.clearSearch = function() {
+				$scope.clearResultList();
 				$scope.model.allSubjectsLength = 0;
+				$scope.ItemsByPage = [];
+			}
+			$scope.clearResultList = function() {
+				$scope.model.filteredSubjects = [];
 				$scope.model.filteredSubjectsLength = 0;
 			}
 			function tryLoad() {
 
-				clearResult();
-				if ($scope.ValidateDateInput() && validateDateValues())
+				$scope.clearSearch();
+				
+				if ($scope.contactDateInputIsValid() && $scope.contactDateValuesIsValid())
 					loadSubjects();	
 			}
             $timeout(function (){	
@@ -343,7 +380,7 @@ angular.module('ndrApp')
 
 
                         // If the filter was preselected, use those values
-                        if (_.keys(preselected.values).indexOf(filter.columnName) !== -1) {
+                        if (_.keys(preselected.values).indexOf(filter.columnName) !== -1) {			
                             $scope.selectedFilters[filter.columnName] = preselected.values[filter.columnName];
 
                         // Otherwise fill out some defaults
@@ -388,7 +425,7 @@ angular.module('ndrApp')
                     //filters.missing =
                     $scope.filters = filters;
                     ready = true;
-                    loadSubjects();
+                    tryLoad();
 
                 });
 
@@ -424,7 +461,7 @@ angular.module('ndrApp')
                 dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
 
                 // Load subjects only if it's a new filter
-                if (!alreadySelected) loadSubjects();
+                if (!alreadySelected) tryLoad();
             });
 
             $scope.isDisplayed = function (name) {
@@ -458,7 +495,7 @@ angular.module('ndrApp')
             $scope.selectedFilters = {};
 
             function filter () {
-
+				
                 // Check if there is anything to filter
                 if (!$scope.model.allSubjectsLength) return;
 
@@ -474,9 +511,7 @@ angular.module('ndrApp')
                         selectedFilters[filterKey] = filter;
                     }
                 });
-
-                dataService.setSearchFilters('values', selectedFilters);
-
+				
                 if($scope.absence !== true) {
 
                     // Check additional filters
@@ -495,27 +530,37 @@ angular.module('ndrApp')
 
                                 return typeof subject[prop] === 'undefined';
 
-                                // Handle range filtering
+							// Handle range filtering
                             } else if (typeof filter.min === 'number' && typeof filter.max === 'number') {
                                 return typeof propValue === 'number' && (propValue >= filter.min && propValue <= filter.max);
 
-                                // Handle date filtering
-                            } else if (filter.from && (_.isDate(filter.from.date) || _.isDate(filter.to.date))) {
-                                value = new Date(propValue);
-                                return (_.isDate(value) && (value >= new Date(filter.from.date) && value <= new Date(filter.to.date)));
+							// Handle date filtering
+                            } else if (filter.from) { //&& (_.isDate(filter.from.date) || _.isDate(filter.to.date))
+								if (!propValue)
+									return false;
+									
+								value = propValue.split('T')[0];
+								
+								//changes filter to textbased date
+								filter.from.date = $filter('date')(filter.from.date, $scope.format)
+								filter.to.date = $filter('date')(filter.to.date, $scope.format)
 
-                                // Handle value filtering
+                                return ((value >= filter.from.date) && (value <= filter.to.date));
+
+							// Handle value filtering
                             } else if (!_.isNull(filter.value) && !_.isUndefined(filter.value)) {
                                 value = parseInt(filter.value, 10);
                                 return propValue === value;
 
-                                // Nothing to filter, filter out only null values
+							// Nothing to filter, filter out only null values
                             } else {
                                 return true;
                             }
                         });
                     });
                 }
+				
+				dataService.setSearchFilters('values', selectedFilters);
 				
                 //$scope.model.allSubjects = subjects;
                 $scope.model.filteredSubjects = subjects;
@@ -535,11 +580,18 @@ angular.module('ndrApp')
                 console.log("CHANGED ABS");
                 tryLoad();
             });
-
+			$scope.tryFilter = function() {
+				
+				$scope.clearResultList();
+				
+				if ($scope.filterDateIsValid()) {
+					debouncedFilter();
+				}
+			};
             $scope.$watch('selectedFilters', function (){
                 console.log("CHANGED", $scope.selectedFilters);
 
-                debouncedFilter();
+                $scope.tryFilter();
             }, true);
 			
 			$scope.exportToCSV = function() {
@@ -555,7 +607,6 @@ angular.module('ndrApp')
 			};
 			$scope.getCSVText = function() {
 				var ret = '';
-				var row = 1;
 				
 				//To collect attributes
 				var attributes = [];
