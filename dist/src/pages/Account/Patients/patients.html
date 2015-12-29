@@ -54,11 +54,11 @@
                                         <i class="fa fa-calendar"></i>
                                     </button>
                                 </span>
-								<div ng-class="{ 'has-error' : searchForm.fromDate.$error.checkFromDate }">
+								<div ng-class="{ 'has-error' : searchForm.dateFrom.$error.dateFromInValid }">
 									<input
 											type="text"
 											class="FilterDatePopup-input form-control"
-											name="fromDate"
+											name="dateFrom"
 											datepicker-popup="{{ format }}"
 											ng-model="datePickers.from.date"
 											is-open="datePickers.from.opened"
@@ -77,11 +77,11 @@
                                        <i class="fa fa-calendar"></i>
                                    </button>
                                  </span>
-								 <div ng-class="{ 'has-error' : searchForm.toDate.$error.checkToDate }">
+								 <div ng-class="{ 'has-error' : searchForm.dateTo.$error.dateToInValid }">
 									<input
 											type="text"
 											class="FilterDatePopup-input form-control"
-											name="toDate"
+											name="dateTo"
 											datepicker-popup="{{ format }}"
 											ng-model="datePickers.to.date"
 											is-open="datePickers.to.opened"
@@ -172,18 +172,19 @@
                                         <i class="fa fa-calendar"></i>
                                     </button>
                                 </span>
+								<div ng-class="{ 'has-error' : searchForm[filter.columnName + 'From'].$error[filter.columnName + 'FromInValid'] }">
                                 <input
                                         type="text"
                                         class="FilterDatePopup-input form-control"
+										name="{{ filter.columnName }}From"
                                         datepicker-popup="{{ format }}"
                                         ng-model="selectedFilters[filter.columnName].from.date"
                                         is-open="selectedFilters[filter.columnName].from.opened"
-                                        min-date="minDate"
-                                        max-date="'2015-06-22'"
                                         datepicker-options="dateOptions"
                                         date-disabled="disabled(date, mode)"
                                         ng-required="true"
                                         close-text="Close">
+								</div>
 
                                  <span class="input-group-addon">
                                    <button
@@ -193,18 +194,19 @@
                                        <i class="fa fa-calendar"></i>
                                    </button>
                                  </span>
+								 <div ng-class="{ 'has-error' : searchForm[filter.columnName + 'To'].$error[filter.columnName + 'ToInValid'] }">
                                 <input
                                         type="text"
                                         class="FilterDatePopup-input form-control"
+										name="{{ filter.columnName }}To"
                                         datepicker-popup="{{ format }}"
                                         ng-model="selectedFilters[filter.columnName].to.date"
                                         is-open="selectedFilters[filter.columnName].to.opened"
-                                        min-date="minDate"
-                                        max-date="'2015-06-22'"
                                         datepicker-options="dateOptions"
                                         date-disabled="disabled(date, mode)"
                                         ng-required="true"
                                         close-text="Close">
+								</div>
                             </div>
                         </div>
 
