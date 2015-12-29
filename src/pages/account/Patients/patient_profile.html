@@ -25,8 +25,10 @@
         </form>
     </div>
 </div>
-
-<div id="patient" ng-show="subject">
+<div id="patient" ng-show="hasError">
+	<span>{{ errorMessage }}</span>
+</div>
+<div id="patient" ng-show="subject && !hasError">
     <div class="row">
         <div class="col-md-12">
             <div class="PatientHeader clearfix">

@@ -9,6 +9,8 @@ angular.module('ndrApp')
             $scope.subjectID    = false || $stateParams.patientID;
             $scope.pnrRegex     = accountService.helpers.pnrRegex;
 			$scope.unitTypeID	= accountService.accountModel.activeAccount.unit.typeID;
+			$scope.hasError 	= false;
+			$scope.errorMessage	= '';
 
             // When user navigated here from the search page,
             // allow him/her to go back and restore the filter settings
@@ -61,12 +63,28 @@ angular.module('ndrApp')
                 return _.find(attribute.domain.domainValues, {code: id}).text;
             };
 
-
             $scope.getSubject = function () {
                 if (!$scope.socialnumber) return;
 
                 dataService.getSubjectBySocialNumber($scope.socialnumber)
-                    .then(function (subject) { getPatient(subject.subjectID); });
+                    .then(function (data) { 
+						
+						if (data)
+							if (data.contacts) {
+								if (data.contacts.length>0) {
+									$scope.hasError = false;
+									getPatient(data.subjectID); 
+									return;
+								} else {
+									$scope.hasError = true;
+									$scope.errorMessage = 'Personen finns inte rapporterad på din enhet.';
+									return;
+								}
+							}
+
+						$scope.hasError = true;
+						$scope.errorMessage = 'Felaktigt personnummer. Kontrollera inmatning.';
+					});
             };
 
 
