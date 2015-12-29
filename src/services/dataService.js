@@ -145,8 +145,11 @@ angular.module('ndrApp')
             };
 
             return $http(query)
-                .then(function (response) { return response.data; })
-                ['catch'](console.error.bind(console));
+                .then(function (response) { 
+					return response.data; })
+                ['catch'](function(error) {
+                    return error;
+                });
         };
 
 
