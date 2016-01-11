@@ -24,15 +24,17 @@ angular.module('ndrApp')
 			}
 		};
 		
+		var date = new Date();
+		
 		/* Get data for stats */
         var query_smoking = dataService.queryFactory(
             {
                 ID : [202],
                 level : 0,
-                fromYear    : new Date().getFullYear()-1,
-                toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth()+1,
-                toMonth   : new Date().getMonth()
+                fromYear    : date.getFullYear()-1,
+                toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+                fromMonth   : date.getMonth()+1,
+                toMonth   : date.getMonth() == 0 ? 12 : date.getMonth()
             }
         );
 
@@ -41,10 +43,10 @@ angular.module('ndrApp')
                 ID : [221],
                 level : 0,
                 diabetesType : 1,
-                fromYear    : new Date().getFullYear()-1,
-                toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth()+1,
-                toMonth   : new Date().getMonth()
+                fromYear    : date.getFullYear()-1,
+                toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+                fromMonth   : date.getMonth()+1,
+                toMonth   : date.getMonth() == 0 ? 12 : date.getMonth()
             }
         );
 
@@ -52,10 +54,10 @@ angular.module('ndrApp')
             {
                 ID : [221],
                 level : 0,
-                fromYear    : new Date().getFullYear()-1,
-                toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth()+1,
-                toMonth   : new Date().getMonth()
+                fromYear    : date.getFullYear()-1,
+                toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+                fromMonth   : date.getMonth()+1,
+                toMonth   : date.getMonth() == 0 ? 12 : date.getMonth()
             }
         );
 

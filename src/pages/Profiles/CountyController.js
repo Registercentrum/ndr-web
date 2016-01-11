@@ -34,15 +34,17 @@ angular.module("ndrApp")
         })
 
         function updateKeyStats(){
-
+			
+			var date = new Date();
+			
             // GET DATA FOR BAR CHART
             var query = dataService.queryFactory(
                 {
                     unitType : $scope.model.unitType,
-                    fromYear: new Date().getFullYear()-1,
-                    toYear : new Date().getFullYear(),
-                    fromMonth : new Date().getMonth()+1,
-                    toMonth : new Date().getMonth(),
+					fromYear    : date.getFullYear()-1,
+					toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+					fromMonth   : date.getMonth()+1,
+					toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
                     indicatorID: 101,
 
                 }
@@ -103,10 +105,10 @@ angular.module("ndrApp")
                     unitType : $scope.model.unitType,
                     countyCode : id,
                     //interval : "m",
-                    fromYear    : new Date().getFullYear()-1,
-                    toYear    : new Date().getFullYear(),
-                    fromMonth   : new Date().getMonth()+1,
-                    toMonth   : new Date().getMonth(),
+					fromYear    : date.getFullYear()-1,
+					toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+					fromMonth   : date.getMonth()+1,
+					toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
                     indicatorID: 101
                 });
 

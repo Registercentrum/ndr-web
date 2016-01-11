@@ -143,16 +143,17 @@ angular.module('ndrApp')
             });
             $scope.model.data.trendhba1c = series;
         });
-
+		
+		var date = new Date();
         // GET DATA FOR NUMBER OF PATIENTS
         var queryPatients = dataService.queryFactory(
             {
                 unitID : id,
                 level : 2,
-                fromYear    : new Date().getFullYear()-1,
-                toYear    : new Date().getFullYear(),
-                fromMonth   : new Date().getMonth()+1,
-                toMonth   : new Date().getMonth(),
+				fromYear    : date.getFullYear()-1,
+				toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+				fromMonth   : date.getMonth()+1,
+				toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
                 indicatorID: 101
             });
 
