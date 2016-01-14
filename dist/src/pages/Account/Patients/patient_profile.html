@@ -52,16 +52,14 @@
         <div class="row" id="printableArea">
             <div class="col-md-12">
                 <div class="Panel Panel--blue clearfix" style="padding: 0px; height:auto">
-                    <div class="Panel--profile col-md-4" style="line-height: 26px; font-size: 15px;font-weight: 300">
+                    <div class="Panel--profile col-md-4" style="line-height: 22px; font-size: 14px;font-weight: 300">
                         <p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>
                         <p>{{ getDiabetesType(subject.diabetesType) }}</p>
                         <p>Debutår: {{ subject.yearOfOnset }}</p>
                         <p>Diabetesbehandling: {{ model.latest.treatment.label }}</p>
-
-                        <p ng-show="model.latest.treatment.label == 'Insulin'">
+                        <p ng-show="model.latest.insulinMethod.value == 2">
                             Metod att ge insulin: {{ model.latest.insulinMethod.label }}
                         </p>
-
                         <p ng-show="model.latest.insulinMethod.label == 'Insulinpump'">
                             Pågående pumpmodell: {{ model.latest.pumpOngoing.label }}
                         </p>
