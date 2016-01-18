@@ -296,7 +296,7 @@ angular.module('ndrApp')
 
             self.data.preparedGeoList = preparedGeoList;
         };
-
+		
 
         this.queryFactory = function (params) {
             var defaults = {
@@ -304,10 +304,10 @@ angular.module('ndrApp')
                 countyCode  : 0,
                 unitID      : 0,
                 indicatorID : null,
-                fromYear    : 2014,
+                fromYear    : 2015,
                 fromQuartal : 0,
                 fromMonth   : 0,
-                toYear      : 2014,
+                toYear      : 2015,
                 toQuartal   : 0,
                 toMonth     : 0,
                 diabetesType: 0,
