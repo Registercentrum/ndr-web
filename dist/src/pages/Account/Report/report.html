@@ -429,19 +429,11 @@
           <div class="Report-formGroup">
             <div class="row">
               <div class="col-md-5 Report-formGroup-form">
-                <label class="" for="aspirin" class="">ASA (obs ej Waran)</label><i class="fa fa-question-circle helpNote" ng-show="lists['aspirin'].helpNote != null" tooltip="{{lists['aspirin'].helpNote}}"></i>
+                <label class="" for="aspirin" class="">ASA</label><i class="fa fa-question-circle helpNote" ng-show="lists['aspirin'].helpNote != null" tooltip="{{lists['aspirin'].helpNote}}"></i>
                 <select name="aspirin" class="form-control" ng-model="contactModel.aspirin" ng-class="{ 'has-no-error' : contactModel.aspirin != null}" ng-options="type.code as type.text for type in lists.aspirin.domain.domainValues">
                   <option value="">-- välj --</option>
                 </select>
                 <p ng-show="contactForm.aspirin.$pristine && contactModel.aspirin != null && contactModel.aspirin == lastContact.aspirin && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
-              </div>
-
-              <div class="col-md-5 Report-formGroup-form">
-                <label class="" for="waran" class="">Waran</label><i class="fa fa-question-circle helpNote" ng-show="lists['waran'].helpNote != null" tooltip="{{lists['waran'].helpNote}}"></i>
-                <select name="waran" class="form-control" ng-model="contactModel.waran" ng-class="{ 'has-no-error' : contactModel.waran != null}" ng-options="type.code as type.text for type in lists.waran.domain.domainValues">
-                  <option value="">-- välj --</option>
-                </select>
-                <p ng-show="contactForm.waran.$pristine && contactModel.waran != null && contactModel.waran == lastContact.waran && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
               </div>
             </div>
           </div>
