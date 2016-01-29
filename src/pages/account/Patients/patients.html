@@ -248,6 +248,7 @@
                             <th class="EmpId">Personnummer</th>
                             <th class="EmpId">Senaste besök</th>
                             <th ng-repeat="f in filters | filter:{isChosen:true}" once-text="f.question"></th>
+							<th class="EmpId">Avliden</th>
                             <th>Funktioner</th>
                         </tr>
                     </thead>
@@ -257,6 +258,7 @@
                         <td once-text="subject.snr"></td>
                         <td once-text="subject.contactDate | date:'yyyy-MM-dd'"></td>
                         <td ng-repeat="f in filters | filter:{isChosen:true}" once-text='lookupName(f, subject[f.columnName])'></td>
+						<td once-text="subject.isDead ? 'X' : ''" style="text-align:center;"></td>
                         <td><a ui-sref="main.account.patient({patientID: subject.subjectID, backToSearchVisible: 'yes'})" class="Button Button--info Button--small">Visa profil</a></td>
                     </tr>
                 </tbody>

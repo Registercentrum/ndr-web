@@ -623,6 +623,15 @@ angular.module('ndrApp')
 					attributes.push({columnName: selectedAttributes[i].columnName, question: selectedAttributes[i].question, domain: selectedAttributes[i].domain});
 				}
 				
+				attributes.push({columnName: 'isDead', question: 'Avliden', domain: {isEnumerated: false, domainID:107}});
+				
+				//Dina kolumner
+				//console.log(attributes);
+				
+				//För uthämtning av sökkriterier
+				//console.log(dataService.getSearchFilters());
+				
+				
 				//Write headers
 				var firstInRow = true;
 				for (var i = 0; i < attributes.length; i++) { 
@@ -644,6 +653,8 @@ angular.module('ndrApp')
 						ret = (firstInRow ? '' : ';') + '"' + $scope.lookupName(attributes[j], subject[attribute.columnName]) + '"';
 					else if (attribute.domain.domainID == 105) { //datum
 						ret = (firstInRow ? '' : ';') + '"' + subject[attribute.columnName].split('T')[0] + '"';
+					} else if (attribute.domain.domainID == 107) { //bool
+						ret = (firstInRow ? '' : ';') + '"' + (subject[attribute.columnName] ? 'Ja' : '') + '"';
 					}
 					else //numeriskt värde
 						ret = (firstInRow ? '' : ';') + '"' + subject[attribute.columnName].toString().replace('.',',') + '"';
