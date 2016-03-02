@@ -10476,6 +10476,26 @@ p.lead {
 	list-style-type: none;
 	padding: 0;
 }
+.PROMQuestion {
+	margin: 20px 30px 5px;
+}
+.PROMQuestion .QuestionText {
+	font-weight:bold;
+}
+.PROMQuestion .PROMradio {
+	margin-left:20px;
+}
+.PROMQuestion .helpNote {
+	font-weight:bold;
+	color: #0000FF;
+	font-size: smaller;
+}
+#PROMForm h4 {
+	font-weight: bolder;
+}
+#PROMFormPanel .intro {
+	font-weight: bold;
+}
 
 
 

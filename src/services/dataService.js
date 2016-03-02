@@ -11,7 +11,8 @@ angular.module('ndrApp')
             units          : [],
             counties       : [],
             indicators     : [],
-            preparedGeoList: []
+            preparedGeoList: [],
+			promFormMeta: null
         };
 
 
@@ -32,7 +33,8 @@ angular.module('ndrApp')
             news             : Restangular.all('news'),
             researchproject  : Restangular.all('researchproject'),
             contacts         : Restangular.all('Contact'),
-            subject          : Restangular.all('subject')
+            subject          : Restangular.all('subject'),
+			promForm          : Restangular.all('PROMForm')
         };
 
 		this.projects = [
@@ -177,6 +179,18 @@ angular.module('ndrApp')
                 //['catch'](console.error.bind(console));
 
         };
+        this.savePROM = function (data) {
+            var query = {
+              url: APIconfigService.baseURL + 'PROM/?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+              method: 'POST',
+              data: data
+            };
+
+            return $http(query);
+                //.then(function (response) { return response.data; })
+                //['catch'](console.error.bind(console));
+
+        };
 		this.getFile = function(textfile) {
 		
 			/*Example Textfile
@@ -195,9 +209,7 @@ angular.module('ndrApp')
 				var id = response.data;
 				$window.location = 'API/Textfile/?id=' + id;
 			}, function errorCallback(response) {
-				//console.log(response);
-				// called asynchronously if an error occurs
-				// or server returns response with an error status.
+
 			});
 		};
 
@@ -214,6 +226,26 @@ angular.module('ndrApp')
                 });
         };
 
+		this.getPROMFormMeta = function (callback) {
+            var query = query || {};
+            var self = this;
+			query.APIKey = APIconfigService.APIKey;
+			
+			if (this.data.promFormMeta != null)
+				callback(this.data.promFormMeta);
+			else {
+				$.ajax({
+					url     : APIconfigService.baseURL + 'PROMForm',
+					data    : query,
+					type    : 'GET',
+					dataType: 'json',
+					success : function(d) {
+						self.data.promFormMeta = d;
+						callback(d);
+					}
+				});
+			}
+        };
 
         this.getUnits = function (callback) {
             var query = query || {};

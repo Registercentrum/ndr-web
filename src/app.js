@@ -180,8 +180,6 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Profiles/profiles.unit.html'
                 })
 
-
-
                 .state('main.research', {
                     url: '/forskning',
                     templateUrl: 'src/pages/Research/research.html',
@@ -194,9 +192,6 @@ angular.module('ndrApp', [
                     controller : 'PublicationController'
                 })
 
-
-
-
                 .state('news', {
                     url: '/nyheter',
                     templateUrl: 'src/pages/News/news.html',
@@ -208,7 +203,6 @@ angular.module('ndrApp', [
                     templateUrl: 'src/components/Article/article.html',
                     controller: 'NewsItemController'
                 })
-
 
                 .state('main.improvement', {
                     url: '/forbattringsprojekt',
@@ -264,7 +258,12 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Account/Report/report.html',
                     controller : 'ReportController'
                 })
-
+				
+                .state('main.reportPROM', {
+                    url: '/rapporteraPROM/:patientID',
+                    templateUrl: 'src/pages/Account/Report/reportPROM.html',
+                    controller : 'ReportPROMController'
+                })
 
                 .state('main.account.patients', {
                     url: '/patienter',
