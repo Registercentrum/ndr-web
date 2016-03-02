@@ -60,10 +60,10 @@ angular.module('ndrApp')
             };
 
             $scope.lookupName = function (filter, value){
-			
-				if (!value)
+								
+				if (value != 0 && !value) //0 is a valid code
 					return '';
-					
+				
                 if (filter.domain.isEnumerated) return _.result(_.find(filter.domain.domainValues, {code : value}), 'text', '');
 				
 				if (filter.domain.domainID == 105) return value.split('T')[0];
@@ -561,6 +561,8 @@ angular.module('ndrApp')
                 }
 				
 				dataService.setSearchFilters('values', selectedFilters);
+				
+				console.log(subjects);
 				
                 //$scope.model.allSubjects = subjects;
                 $scope.model.filteredSubjects = subjects;
