@@ -9063,8 +9063,8 @@ fieldset[disabled] .Button {
   box-shadow: none;
 }
 .Button--default {
-  border: 1px solid #74bad8;
-  color: #74bad8;
+  border: 1px solid #389cc7;
+  color: #389cc7;
   background-color: transparent;
 }
 .Button--info {

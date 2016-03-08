@@ -2,6 +2,7 @@ angular.module('ndrApp')
     .directive('list', [function() {
 
         function link(scope, element, attrs) {
+		
         }
 
         return {

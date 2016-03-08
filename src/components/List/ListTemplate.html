@@ -2,9 +2,9 @@
 
     <li ng-repeat="item in model.data" class="List-item">
 
-        <div class="List-item-inner">
+        <div class="List-item-inner"><!-- <i class="fa fa-star" style="color: #ffcc01" ng-if="item.isNew"></i> -->
 
-            <p class="List-item-category"> {{ item.categoryNames.join(', ') }}</p>
+            <p class="List-item-category"><span ng-if="item.isNew" style="background:#ffcc01; padding: 0px 5px;">Ny</span> {{ item.publishedFrom.split('T')[0] + ' - ' + item.categoryNames.join(', ') }}</p> <!-- item.categoryNames.join(', ')  -->
 
             <h3 class="List-item-title">
                 <a href="{{ item.link }}" class="List-item-link">{{ item.title }}</a>
