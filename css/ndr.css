@@ -10496,6 +10496,10 @@ p.lead {
 #PROMFormPanel .intro {
 	font-weight: bold;
 }
+.highlight {
+	background:#ffcc01;
+	padding: 0px 5px;
+}
 
 
 
