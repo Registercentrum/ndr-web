@@ -31,7 +31,7 @@ angular.module('ndrApp')
             units            : Restangular.all('unit'),
             counties         : Restangular.all('county'),
             news             : Restangular.all('news'),
-            researchproject  : Restangular.all('researchproject'),
+            publications  : Restangular.all('publication'),
             contacts         : Restangular.all('Contact'),
             subject          : Restangular.all('subject'),
 			promForm          : Restangular.all('PROMForm')

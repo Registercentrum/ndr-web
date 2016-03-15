@@ -32,7 +32,7 @@ angular.module("ndrApp")
         })
 
 
-        dataService.getList("researchproject").then(function (data){
+        dataService.getList("publications").then(function (data){
             console.log(data);
             angular.forEach(data, function(item) {
                 item.link = '#/forskning/' + item.id;

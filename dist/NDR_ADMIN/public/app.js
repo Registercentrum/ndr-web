@@ -4,7 +4,7 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	var baseApiUrl = 'https://www.ndr.nu/api/';
-	//var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
+	var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
@@ -64,9 +64,9 @@
             .identifier(nga.field('newsID'))
 			.label('Nyheter');
 		
-        var publications = nga.entity('ResearchProject')
+        var publications = nga.entity('Publication')
              .identifier(nga.field('id'))
-			 .label('Forskningsprojekt');
+			 .label('Publikationer');
 			 
         var units = nga.entity('Unit')
              .identifier(nga.field('unitID'))
@@ -433,7 +433,7 @@
             .title('Nyheter')
 			.limit(5)
             .fields([
-                nga.field('newsID').label('ID'),
+                nga.field('publishedFrom','date').label('Publicerat'),
                 nga.field('title').label('Rubrik').map(truncate)
             ]);
 
@@ -502,61 +502,42 @@
             ]);
 		
 		// ****** PUBLICATIONS ******
-		var status = [{value: 1, label: 'Pågår'},
-						{value: 2, label: 'Manus'},
-						{value: 3, label: 'Submitterat'},
-						{value: 4, label: 'Accepterat'},
-						{value: 5, label: 'Publicerat'}];
-						
-		var ethicsApprovalStatus = [{value: 1, label: 'Godkänt'},
-						{value: 2, label: 'Ej relevant'}];
-		
 		
         publications.dashboardView()
-             .title('Forskningsprojekt')
+             .title('Publikationer')
 			 .limit(5)
              .fields([
-                 nga.field('id').label('ID'),
-                 nga.field('name').map(truncate)
+				nga.field('dateOfPublication', 'date').label('Publiceringsdatum'),
+				nga.field('name').label('Titel'),
              ]);
 
         publications.listView()
-             .title('Forskningsprojekt')
+             .title('Publikationer')
              .fields([
-                 nga.field('id').label('ID'),
-                 nga.field('name').label('Titel').map(truncate)
+				nga.field('dateOfPublication', 'date').label('Publiceringsdatum'),
+				nga.field('name').label('Titel'),
+				nga.field('published').label('Publicerad')
              ])
 			.filters([
 				nga.field('q')
 					.pinned(true)
-					.label('Sök'),
-				nga.field('status', 'choice')
-					.pinned(true)
-					.label('Status')
-					.choices(status)
+					.label('Sök')
 			])
              .listActions(['edit', 'delete']);
 
         publications.creationView()
 			.title('Ny')
 			.fields([
-				nga.field('statusID', 'choice').label('Status')
-					.choices(status),
 				nga.field('name').label('Titel'),
 				nga.field('laymansDescription','text').label('Beskrivning'),
 				nga.field('firstAuthor').label('Första författare'),
 				nga.field('lastAuthor').label('Sista Författare'),
 				nga.field('otherAuthor').label('Andra Författare'),
-				nga.field('dateOfSubmission','date').label('Submitteringssdatum'),
 				nga.field('dateOfPublication','date').label('Publiceringsdatum'),
-				nga.field('magazine').label('Tidning'),
-				nga.field('issue').label('Upplaga'),
-				nga.field('pages').label('Sidor'),
-				nga.field('image').label('Bild'),
-				nga.field('ethicsApprovalStatusID', 'choice')
-					.label('Etikprövat')
-					.choices(ethicsApprovalStatus),
-				nga.field('pubMedURL').label('Länk till pubmed')
+				nga.field('published').label('Publicerad'),
+				nga.field('pubMedURL').label('Länk till pubmed'),
+				nga.field('pubMedID').label('ID PubMed'),
+				nga.field('doi').label('DOI')
 			]);
 		
         publications.editionView()
@@ -628,7 +609,7 @@
 			.icon('<span class="glyphicon glyphicon-erase"></span>');
 		app.menu().getChildByTitle('Nyheter')
 			.icon('<span class="glyphicon glyphicon-file"></span>');
-		app.menu().getChildByTitle('Forskningsprojekt')
+		app.menu().getChildByTitle('Publikationer')
 			.icon('<span class="glyphicon glyphicon-book"></span>');
 		app.menu().getChildByTitle('Metavariabler')
 			.icon('<span class="glyphicon glyphicon-list"></span>');
