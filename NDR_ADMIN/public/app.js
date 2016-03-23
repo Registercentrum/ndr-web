@@ -4,7 +4,7 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	var baseApiUrl = 'https://www.ndr.nu/api/';
-	var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
+	//var baseApiUrl = 'https://w10-038.rcvg.local/api/';// Henrik local development
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
