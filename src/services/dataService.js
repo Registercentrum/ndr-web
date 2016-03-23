@@ -31,10 +31,10 @@ angular.module('ndrApp')
             units            : Restangular.all('unit'),
             counties         : Restangular.all('county'),
             news             : Restangular.all('news'),
-            publications  : Restangular.all('publication'),
+            publications	 : Restangular.all('publication'),
             contacts         : Restangular.all('Contact'),
             subject          : Restangular.all('subject'),
-			promForm          : Restangular.all('PROMForm')
+			promForm	     : Restangular.all('PROMForm')
         };
 
 		this.projects = [
