@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('PublicationController',['$scope', '$stateParams', 'dataService', function($scope, $stateParams, dataService) {
 
-        dataService.getOne("researchproject", $stateParams.id).then(function (data){
+        dataService.getOne("publication", $stateParams.id).then(function (data){
 
             var authors = [
                 data.firstAuthor,
