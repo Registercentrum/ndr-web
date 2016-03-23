@@ -4,7 +4,7 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	var baseApiUrl = 'https://www.ndr.nu/api/';
-	var baseApiUrl = 'https://w8-038.rcvg.local/api/';// Henrik local development
+	//var baseApiUrl = 'https://w10-038.rcvg.local/api/';// Henrik local development
 	
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
@@ -533,7 +533,9 @@
 				nga.field('firstAuthor').label('Första författare'),
 				nga.field('lastAuthor').label('Sista Författare'),
 				nga.field('otherAuthor').label('Andra Författare'),
-				nga.field('dateOfPublication','date').label('Publiceringsdatum'),
+                nga.field('dateOfPublication', 'date')
+                    .label('Publiceringsdatum')
+					.format('yyyy-MM-dd'), // preset fields in creation view with defaultValue
 				nga.field('published').label('Publicerad'),
 				nga.field('pubMedURL').label('Länk till pubmed'),
 				nga.field('pubMedID').label('ID PubMed'),

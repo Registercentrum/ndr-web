@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container Panel">
     <div class="row">
-        <div class="col-md-12 About Panel" id="PROMFormPanel">
+        <div class="col-md-12" id="PROMFormPanel">
 			<h1 class="Page-title">Enkät till dig som har diabetes</h1>
 			<p class="intro">
 				Den här enkäten har två delar. Den första delen handlar om hur du mår och hur du har det med din diabetes. Den andra delen handlar om hur diabetesvården stödjer dig i att ta hand om din diabetes. 
@@ -18,19 +18,25 @@
 					<h3>DEL {{$index+1}}: {{ a.description }}</h3>
 					<div ng-repeat="g in a.questiongroups">
 						<h4>{{ g.description }}</h4>
-						<div ng-repeat="q in g.questions" class="PROMQuestion">
-							<div class="QuestionText" >{{q.sortorder}}. {{ q.question }} </div>
+						<div ng-repeat="q in g.questions" class="PROMQuestion" ng-class="{highlighted:model.highlightedQuestion === q.columnName }">
+							<hr ng-if="$index !== 0">
+							<div id="anchor{{q.columnName}}" class="QuestionText" >{{q.sortorder}}. {{ q.question }} </div>
 							<p class="helpNote" ng-if="q.helpNote != null">{{q.helpNote}}</p>
 							<span ng-repeat="v in q.domain.domainValues" ng-click="click(q.columnName,v.code)">
 								<input type="checkbox" ng-checked="model.answers[q.columnName]==v.code" name="{{q.columnName}}"  class="PROMradio"> {{v.text}}<br /> <!-- ng-model="model.answers[q.columnName]"  value="{{v.code}}" -->
 							</span>
-							<hr> <!-- ng-if="$index !== 0" -->
 						</div>
 					</div>
 				</div>
 				<br />
-				<div class="col-md-4 col-sm-12 Report-submitWrapper" >
-					<button type="submit" ng-click="" class="Button Button--info btn-block" ng-disabled="">Spara</button>
+				<div class="col-sm-12" ng-if="model.missingAnswers.length">
+					<h4 style="margin-bottom: 20px">Följande frågor är obesvarade</h4>
+					<div ng-repeat="q in model.missingAnswers" class="col-md-4 col-sm-12" style="list-style-type: none; ">
+						<a class="Button Button--default Button--small Button--centered" ng-click="gotoAnchor(q.columnName)">Fråga {{q.no}}</a>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-12 Report-submitWrapper" style="margin-top: 20px;" >
+					<button type="submit" ng-click="save()" class="Button Button--info btn-block" ng-disabled="">Skicka in</button>
 				</div>
 				<br />
 				<br />
@@ -38,3 +44,14 @@
 		</div>
     </div>
 </div>
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-body text-center">
+    <a ui-sref="main.home" class="pull-right" ng-click="close()"><i style="color:#333" class="fa fa-close"></i></a>
+
+    <h3>Inskickad</h3>
+    <p>Din enkät är nu inskickad!</p>
+
+    <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="cancel()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa din profil</a>
+    <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="close()">Avsluta rapportering</a>
+  </div>
+</script>
