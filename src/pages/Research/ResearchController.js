@@ -30,9 +30,8 @@ angular.module("ndrApp")
                 data : data
             }
         })
-
-
-        dataService.getList("publications").then(function (data){
+		// Return only publications with dates
+        dataService.getAny("publication", "?hasDate=true").then(function (data){
             console.log(data);
             angular.forEach(data, function(item) {
                 item.link = '#/forskning/' + item.id;
@@ -42,6 +41,18 @@ angular.module("ndrApp")
             $scope.publications = data;
 
         })
+		/*
+		Old return all publications
+        dataService.getList("publications").then(function (data){
+            console.log(data);
+            angular.forEach(data, function(item) {
+                item.link = '#/forskning/' + item.id;
+                item.title = item.name;
+            });
+
+            $scope.publications = data;
+
+        })*/
 
 
 
