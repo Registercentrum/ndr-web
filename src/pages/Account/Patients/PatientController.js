@@ -89,14 +89,35 @@ angular.module('ndrApp')
 
 
             $scope.$watchCollection('subject', function () {
-                populateSeriesData();
+                
+				populateSeriesData();
+				setTablePaging();
                 populateTableData();
                 populateLatestData();
                 $timeout(function (){
                     jQuery(window).resize();
                 }, 500);
             });
-
+			
+			$scope.tableForward = function() {
+				$scope.tableIndex--;
+				populateTableData();
+			};
+			
+			$scope.tableBack = function() {
+				$scope.tableIndex++;
+				populateTableData();
+			};
+			
+			function setTablePaging() {
+				if ($scope.subject !== undefined){
+					$scope.tableCount = Math.ceil($scope.subject.contacts.length/5);
+					$scope.tableIndex = 1;
+				} else {
+					$scope.tableCount = 0;
+					$scope.tableIndex = 0;
+				}
+			};
 
             function populateTableData () {
                 var table = [],
@@ -107,9 +128,11 @@ angular.module('ndrApp')
 					exluded = exluded.concat(['pumpIndication','pumpOngoing','pumpOngoingSerial','pumpProblemKeto','pumpProblemHypo','pumpProblemSkininfection','pumpProblemSkinreaction','pumpProblemPumperror','pumpNew','pumpNewSerial','pumpClosureReason']);
 				
                 if (!$scope.subject) return false;
-
-                contacts = angular.copy($scope.subject.contacts).splice(0, 5);
-
+				
+				var startIndex = 0+(5*($scope.tableIndex-1));
+				
+                contacts = angular.copy($scope.subject.contacts).splice(startIndex, 5);
+				
                 // Get tha keys for the table
                 keys = _.keys(contacts[0]);
 
@@ -293,8 +316,22 @@ angular.module('ndrApp')
                 _.each($scope.contactAttributes, function (obj) {
                     $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
                 });
-
-
+				
+				//pumpOngoing should be pumpNew if reported later
+				if ($scope.model.latest['pumpNew'] != undefined) {
+					if ($scope.model.latest['pumpNew'].date >= $scope.model.latest['pumpOngoing'].date) {
+						$scope.model.latest['pumpOngoing'] = $scope.model.latest['pumpNew'];
+					}
+				}
+				
+				//pumpOngoing should be reset if closure reported later
+				if ($scope.model.latest['pumpClosureReason'] != undefined) {
+					if ($scope.model.latest['pumpClosureReason'].date >= $scope.model.latest['pumpOngoing'].date) {
+						$scope.model.latest['pumpOngoing'] = { value: 'saknas', date: 'saknas', label : 'saknas' };
+					}
+				}
+				
+				console.log($scope.model.latest);
             }
 
 
