@@ -17,6 +17,10 @@
                 <div class="warning well" style="margin-top: 20px" ng-if="model.loginFailed">
                     Något gick fel, vänligen försök igen.
                 </div>
+				
+                <div class="warning well" style="margin-top: 20px" ng-if="model.message">
+                    {{model.message}}
+                </div>
 
             </div>
         </div>

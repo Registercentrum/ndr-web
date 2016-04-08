@@ -3,12 +3,12 @@ angular.module('ndrApp')
     
         console.log('BankIDController: Init', accountService.accountModel.user);
 
-
         $scope.model = {
             orderRef : undefined,
             socialnumber : undefined,
             loginStarted : false,
             loginFailed : false,
+			message: null
         };
 
         $scope.startLogin = function (){
@@ -16,7 +16,6 @@ angular.module('ndrApp')
 
             $scope.model.loginStarted = true;
             $scope.model.loginFailed = false;
-
 
             var query = {
                 url: APIconfigService.baseURL + 'bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
@@ -77,8 +76,15 @@ angular.module('ndrApp')
             $http(query)
                 .then(function (response) {
                     console.log("response login", response);
-                    checkForLoggedIn();
-                    $state.go('main.account.home', {}, {reload: true});
+					
+					if (response.data.isUser){
+						$scope.model.message = null;
+						checkForLoggedIn();
+						$state.go('main.account.home', {}, {reload: true});
+					} else {
+						$scope.model.loginStarted = false;
+						$scope.model.message = 'Du är inte en användare i NDR.';
+					}
 
                 })
                 ['catch'](console.error.bind(console));
