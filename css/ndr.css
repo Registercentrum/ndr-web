@@ -8589,6 +8589,12 @@ img {
   margin-top: 0;
   font-size: 30px;
 }
+.Article-excerpt {
+	margin: 10px 0;
+}
+.Article-excerpt p {
+	font-weight: 500;
+}
 .Article-metadata-image {
   border-radius: 100%;
   display: block;
