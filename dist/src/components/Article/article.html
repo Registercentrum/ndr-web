@@ -11,6 +11,7 @@
       <article class="col-md-9 pull-right">
 
         <h1 class="Article-title">{{ article.title }}</h1>
+		<div class="Article-excerpt" ng-bind-html="article.excerpt"></div>
         <div class="Article-body" ng-bind-html="article.body"></div>
 
       </article>

@@ -239,6 +239,12 @@
 
     <div ng-show="model.mode == 'table'" class="Panel">
         <h2>Besök</h2>
+		<div class="row">
+			<div class="btn-group pull-right" style="margin: 0 16px 10px 0;">
+				<a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="tableCount>1 && tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
+				<a class="Button Button--info Button--small" ng-click="tableBack()"  ng-show="tableCount>1 && tableIndex<tableCount" >Bakåt  <i class="fa fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
         <div class="table-responsive">
             <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
                 <thead>

@@ -489,7 +489,7 @@
                 nga.field('author').label('Av'),
                 nga.field('title').label('Titel'),
                 nga.field('image').label('Bild'),
-				nga.field('excerpt','text').label('Ingress'),
+				nga.field('excerpt','wysiwyg').label('Ingress'),
                 nga.field('body','wysiwyg').label('Brödtext'),
                 nga.field('priority').label('Prioritet?')
             ]);
