@@ -149,6 +149,12 @@
                                     {{ option.text }}
                                 </label>
                             </span>
+							<span class="radio">
+								<label>
+									<input type="radio" ng-value="null" ng-model="selectedFilters[filter.columnName].value" >
+									Alla
+								</label>
+							</span>
                         </div>
 
                         <!-- If domain is enumerable and have more than two options, display them as a select -->
