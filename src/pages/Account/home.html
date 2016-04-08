@@ -35,7 +35,7 @@
 
                     <div class="List-item-inner">
 
-                        <div style="font-size:13px"> <span>{{ item.createdAt | date: 'mediumDate' }}</span></div>
+                        <div style="font-size:13px"><span ng-if="item.isNew" class="highlight">Ny</span><span> {{ item.createdAt | date: 'mediumDate' }}</span></div>
                         <div class="List-item-title"><strong>{{ item.title }}</strong></div>
                         <p class="News-text-date"></p>
                         <p ng-bind-html="item.body">
