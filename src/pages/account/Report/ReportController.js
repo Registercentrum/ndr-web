@@ -149,9 +149,17 @@ angular.module('ndrApp')
             $scope.serverSaveErrors   = [];
 
             dataService.getSubjectBySocialNumber($scope.socialnumber)
-                .then(function (subject) {
-				
-                    $scope.subject = subject;
+                .then(function (data) {
+					
+					if (data.status) { //something has gone wrong
+						$scope.subject=null;
+						$scope.serverSubjectError = 'Ingen patient hittades. Kontrollera personnummer.';
+						return;
+					} else {
+						$scope.serverSubjectError = null;
+					}
+
+                    $scope.subject = data;
 					
 					setTimeout(function(){ window.document.getElementById('bnNewContact').focus(); }, 100);
 					
@@ -163,20 +171,13 @@ angular.module('ndrApp')
                         $scope.contactToUpdate = $scope.getContactFromContactDate($scope.subject.contacts, $scope.contactModel.contactDate);
                         $scope.setContact($scope.contactToUpdate);
                     } else {
-                        //$scope.contactModel = $scope.getNewContactModel();
 						$scope.contactModel = null;
                     }
 					
                 })
                 ['catch'](function(data, status, headers, config) {
                     $scope.subject = null;
-
-                    if (status === 400) {
-                        window.alert('Ingen patient hittades');
-                        $scope.serverSubjectError = data;
-                    } else {
-                        $scope.serverSubjectError = 'Ett okänt fel inträffade';
-                    }
+					$scope.serverSubjectError = 'Ett okänt fel inträffade';
                 });
         };
 		

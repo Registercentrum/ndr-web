@@ -12,6 +12,10 @@
             </div>
         </form>
     </div>
+	
+	<div class="col-md-12" ng-show="serverSubjectError">
+		<span>{{serverSubjectError}}</span>
+	</div>
 </div>
 
 <div class="row" ng-show="subject != null">
@@ -36,12 +40,7 @@
 
         <div class="Panel" ng-class="isSaving ? 'Panel-loading' : ''" ng-show="subject != null && contactModel != null">
             <div class="Panel-loading-overlay"></div>
-
-            <div class="col-md-12 alert alert-danger" ng-show="serverSubjectError != null">
-                {{serverSubjectError}}
-            </div>
-
-            <div>
+		<div>
         <form name="contactForm" class="Report-form form-horizontal" role="form" novalidate>
 
           <div class="row">
