@@ -317,19 +317,30 @@ angular.module('ndrApp')
                     $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
                 });
 				
+				console.log($scope.model.latest['pumpNew']);
+				console.log($scope.model.latest['pumpOngoing']);
+				
 				//pumpOngoing should be pumpNew if reported later
-				if ($scope.model.latest['pumpNew'] != undefined) {
+				if ($scope.model.latest['pumpNew']) {
 					if ($scope.model.latest['pumpNew'].date >= $scope.model.latest['pumpOngoing'].date) {
 						$scope.model.latest['pumpOngoing'] = $scope.model.latest['pumpNew'];
 					}
 				}
 				
+				console.log($scope.model.latest['pumpNew']);
+				console.log($scope.model.latest['pumpOngoing']);
+				console.log($scope.model.latest['pumpClosureReason']);
+				
 				//pumpOngoing should be reset if closure reported later
-				if ($scope.model.latest['pumpClosureReason'] != undefined) {
+				if ($scope.model.latest['pumpClosureReason']) {
 					if ($scope.model.latest['pumpClosureReason'].date >= $scope.model.latest['pumpOngoing'].date) {
-						$scope.model.latest['pumpOngoing'] = { value: 'saknas', date: 'saknas', label : 'saknas' };
+						$scope.model.latest['pumpOngoing'] = { value: null, date: null, label : 'saknas' };
 					}
 				}
+				
+				console.log($scope.model.latest['pumpNew']);
+				console.log($scope.model.latest['pumpOngoing']);
+				console.log($scope.model.latest['pumpClosureReason']);
 				
 				console.log($scope.model.latest);
             }
@@ -374,8 +385,8 @@ angular.module('ndrApp')
                     attribute = _.find($scope.contactAttributes, {columnName: key}),
                     value;
 
-                if(key === 'diabetesType') return { value: 'saknas', date: 'inget värde', label : 'saknas' };
-                if(typeof visit === 'undefined') return { value: 'saknas', date: 'saknas', label : 'saknas' };
+                if(key === 'diabetesType') return { value: null, date: null, label : 'saknas' };
+                if(typeof visit === 'undefined') return { value: null, date: null, label : 'saknas' };
 				
                 if (_.isNull(visit[key]) ||  _.isUndefined(visit[key])   ) {
                     value = 'saknas';
@@ -397,8 +408,8 @@ angular.module('ndrApp')
 				
 				var ret = visit ?
                     { value: visit[key], date: visit.contactDate, label : value } : //$filter('number')(value)
-                    { value: 'saknas', date: 'saknas', label : value };
-				
+                    { value: null, date: null, label : value };
+								
                 return ret;
             }
 

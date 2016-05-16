@@ -13,26 +13,28 @@ angular.module('ndrApp')
                 filterDisplayIndex;
 
             $scope.isLoadingSubjects = false;
-
+			
+			console.log($stateParams.restoreFilters);
             // If we don't want to restore filters, unset them
             if (!$stateParams.restoreFilters) dataService.setSearchFilters();
 
             var allSubjects;
 
             var dateOffset = (24*60*60*1000) * 365; //365
+			
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
+			var filters = dataService.getSearchFilters('values');
+			
             $scope.datePickers = {
 
                 maxDate : new Date(),
                 from: {
-                    date: $filter('date')(new Date(new Date()-dateOffset), $scope.format),
-					//date: new Date(new Date()-dateOffset),
+                    date: $filter('date')(filters.dateFrom, $scope.format),
                     opened: false
                 },
                 to: {
-                    date: $filter('date')(new Date(), $scope.format),
-					//date: new Date(),
+                    date: $filter('date')(filters.dateTo, $scope.format),
                     opened: false
                 }
             };
@@ -207,7 +209,6 @@ angular.module('ndrApp')
 
                 console.log('query on loaded', query);
 
-
                 dataService.getSubjects(query, function (data){
 					
                     allSubjects = data;
@@ -343,7 +344,9 @@ angular.module('ndrApp')
                 .then(function (filters) {
                     var selected,
                         preselected = dataService.getSearchFilters();
-
+					
+					console.log(filters);
+					
                     // Make placeholder objects for the rest of the filters in the selectedFilters.additional
                     _.each(filters, function (filter) {
                         // Normalize naming
@@ -559,6 +562,8 @@ angular.module('ndrApp')
                         });
                     });
                 }
+				selectedFilters.dateFrom = $scope.datePickers.from.date;
+				selectedFilters.dateTo = $scope.datePickers.to.date;
 				
 				dataService.setSearchFilters('values', selectedFilters);
 				
