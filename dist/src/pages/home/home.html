@@ -10,13 +10,16 @@
 
 
     <div ng-show="accountModel.activeAccount" class="row">
-        <div class="col-md-12">
+        <div class="hidden-xs hidden-sm hidden-md col-lg-12">
             <div class="Panel ServicesShortcuts">
-                <span>Du är inloggad på {{accountModel.activeAccount.unit.name}}. Genvägar:</span>
+                <span style="display: inline-block;min-width: 300px;">Inloggad på {{accountModel.activeAccount.unit.name}}. Genvägar:</span>
                 <a ui-sref="main.account.report" class="Button Button--default Button--strong">Rapportera/Komplettera</a>
                 <a ui-sref="main.account.patients" class="Button Button--default Button--strong">Söklista</a>
                 <a ui-sref="main.account.patient" class="Button Button--default Button--strong">Patientprofil</a>
 				<a ui-sref="main.account.home" class="Button Button--default Button--strong">Översikt</a>
+				<div ng-if="accountModel.activeAccount.unit.contactPerson" style="line-height: 0">
+					<span style="font-size: 13px;">Kontaktperson på din enhet är <span style="color:#428bca">{{accountModel.activeAccount.unit.contactPerson}}</span></span>
+				</div>
             </div>
         </div>
     </div>
