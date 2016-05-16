@@ -36,7 +36,7 @@
             return value.length > 75 ? value.substr(0, 75) + '...' : value;
         }
 		
-        RestangularProvider.setDefaultRequestParams({APIKey: 'jEGPvHoP7G4eMkjLQwE5'});
+        RestangularProvider.setDefaultRequestParams({APIKey: 'G6jlpk43DvnMkrWcggjk'});//jEGPvHoP7G4eMkjLQwE5
 				
         var app = nga.application('NDR Admin') // application main title
 			.baseApiUrl(baseApiUrl);
@@ -264,16 +264,10 @@
 						return 'isPending';
 				}),
 				nga.field('userID').label('Anv-ID').cssClasses(function(entry) {
-					if (entry.values.statusID == 9)
-						return 'inActive';
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
-				}),
-				nga.field('hsaid').label('HSAID').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
 						return 'inActive';
-					if (entry.values.statusID == 2 || entry.values.statusID == 3)
-						return 'isPending';
 				}),
 				nga.field('firstName').label('Anv. Förnamn').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
@@ -317,7 +311,13 @@
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
 				}),
-				nga.field('lastUpdatedAt').label('Uppdaterad').cssClasses(function(entry) {
+				nga.field('lastActiveAt').label('Senast aktiv').cssClasses(function(entry) {
+					if (entry.values.statusID == 9)
+						return 'inActive';
+					if (entry.values.statusID == 2 || entry.values.statusID == 3)
+						return 'isPending';
+				}),
+				nga.field('lastUpdatedAt').label('Uppdaterad', 'date').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
 						return 'inActive';
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
@@ -381,10 +381,10 @@
 				nga.field('firstName').label('Förnamn'),
 				nga.field('lastName').label('Efternamn'),
 				nga.field('email','email').label('E-post'),
-				nga.field('lastActiveAt').label('Senast aktiv'),
 				nga.field('isKAS','boolean').label('KAS'),
 				nga.field('isCoordinator','boolean').label('Koordinator'),
 				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
+				nga.field('lastActiveAt').label('Senast aktiv'),
 				nga.field('lastUpdatedAt').label('Uppdaterad')
 			])
 			.listActions(['edit'])
@@ -392,6 +392,15 @@
 				nga.field('q')
 					.pinned(true)
 					.label('Sök'),
+				nga.field('onlyKAS', 'boolean')
+					.pinned(true)
+					.label('Visa KAS'),
+				nga.field('onlyKOO', 'boolean')
+					.pinned(true)
+					.label('Visa Koordinator'),
+				nga.field('onlyAdmin', 'boolean')
+					.pinned(true)
+					.label('Visa Administratör')
 			]);
 
         users.creationView()
@@ -402,11 +411,33 @@
                 nga.field('firstName').label('Förnamn'),
 				nga.field('lastName').label('Efternamn'),
 				nga.field('workTitle').label('Titel'),
-				nga.field('email','email').label('E-post'),
 				nga.field('organization').label('Organisation'),
-				nga.field('isKAS','boolean').label('KAS'),
-				nga.field('isCoordinator','boolean').label('Koordinator'),
-				nga.field('isAdministrator','boolean').label('NDR-Administratör')
+				nga.field('email','email').label('E-post'),
+				nga.field('kasCountyCode', 'reference')
+					.label('KAS-landsting')
+					.map(truncate)
+					.targetEntity(counties)
+					.targetField(nga.field('name')),
+				nga.field('kasUnitTypeID', 'reference')
+					.label('KAS-Enhetstyp')
+					.map(truncate)
+					.targetEntity(unitTypes)
+					.targetField(nga.field('name')),
+				nga.field('kooCountyCode', 'reference')
+					.label('Koordinator-landsting')
+					.map(truncate)
+					.targetEntity(counties)
+					.targetField(nga.field('name')),
+				nga.field('kooUnitTypeID', 'reference')
+					.label('Koordinator-Enhetstyp')
+					.map(truncate)
+					.targetEntity(unitTypes)
+					.targetField(nga.field('name')),
+				nga.field('phone').label('Tel'),
+				//nga.field('isKAS','boolean').label('KAS'),
+				//nga.field('isCoordinator','boolean').label('Koordinator'),
+				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
+				nga.field('comment','text').label('Kommentar')
             ]);
 		
         users.editionView()
@@ -419,11 +450,37 @@
                 nga.field('firstName').label('Förnamn'),
 				nga.field('lastName').label('Efternamn'),
 				nga.field('workTitle').label('Titel'),
-				nga.field('email','email').label('E-post'),
 				nga.field('organization').label('Organisation'),
-				nga.field('isKAS','boolean').label('KAS'),
-				nga.field('isCoordinator','boolean').label('Koordinator'),
-				nga.field('isAdministrator','boolean').label('NDR-Administratör')
+				nga.field('email','email').label('E-post'),
+				nga.field('kasCountyCode', 'reference')
+					.label('KAS-landsting')
+					.map(truncate)
+					.targetEntity(counties)
+					.targetField(nga.field('name'))
+					.defaultValue(null),
+				nga.field('kasUnitTypeID', 'reference')
+					.label('KAS-Enhetstyp')
+					.map(truncate)
+					.targetEntity(unitTypes)
+					.targetField(nga.field('name'))
+					.defaultValue(null),
+				nga.field('kooCountyCode', 'reference')
+					.label('Koordinator-landsting')
+					.map(truncate)
+					.targetEntity(counties)
+					.targetField(nga.field('name'))
+					.defaultValue(null),
+				nga.field('kooUnitTypeID', 'reference')
+					.label('Koordinator-Enhetstyp')
+					.map(truncate)
+					.targetEntity(unitTypes)
+					.targetField(nga.field('name'))
+					.defaultValue(null),	
+				nga.field('phone').label('Tel'),
+				//nga.field('isKAS','boolean').label('KAS'),
+				//nga.field('isCoordinator','boolean').label('Koordinator'),
+				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
+				nga.field('comment','text').label('Kommentar')
             ]);
 		
 		users.deletionView().disable();
@@ -444,6 +501,7 @@
                 nga.field('newsID').label('ID'),
                 nga.field('title').label('Rubrik').map(truncate),
                 nga.field('isInternal','boolean').label('Intern'),
+				nga.field('readCount').label('Läst'),
                 nga.field('publishedFrom', 'date').label('Från'),
 				nga.field('publishedTo', 'date').label('Till')
                 // new Field() // template fields don't need a name in dashboard view
@@ -538,6 +596,7 @@
 					.format('yyyy-MM-dd'), // preset fields in creation view with defaultValue
 				nga.field('published').label('Publicerad'),
 				nga.field('pubMedURL').label('Länk till pubmed'),
+				nga.field('image').label('Bild-URL'),
 				nga.field('pubMedID').label('ID PubMed'),
 				nga.field('doi').label('DOI')
 			]);
