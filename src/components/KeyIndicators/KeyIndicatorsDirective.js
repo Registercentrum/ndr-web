@@ -112,8 +112,8 @@ angular.module('ndrApp')
                         seriesGeo.push({
                             color : '#74BAD8',
                             x : new Date(obj.interval),
-                            y : obj.stat.r,
-                            cRep : obj.stat.cRepInd
+                            y : obj.stat != null ? obj.stat.r : null,
+                            cRep : obj.stat != null ? obj.stat.cRepInd : null
                         });
                     });
 
@@ -194,33 +194,24 @@ angular.module('ndrApp')
                     _.each(geoData, function (obj, key) {
 
                         var o = {
-                            riket : countryData[key].statSet[0].stat.r,
-                            geo   : obj.statSet[0].stat.r,
-                            status: 'equal',
-                            name  : obj.indicator.name,
-                            id    : obj.indicator.id,
-                            lKonf : countryData[key].statSet[0].stat.lKonf,
-                            uKonf : countryData[key].statSet[0].stat.uKonf
+                            riket 		: countryData[key].statSet[0].stat.r,
+                            riketLKonf	: countryData[key].statSet[0].stat.lKonf,
+                            riketUKonf 	: countryData[key].statSet[0].stat.uKonf,
+                            geo   		: obj.statSet[0].stat.r,
+                            geoLKonf	: obj.statSet[0].stat.lKonf,
+                            geoUKonf	: obj.statSet[0].stat.uKonf,
+                            status		: 'equal',
+                            name  		: obj.indicator.name,
+                            id    		: obj.indicator.id
                         };
-
-                        if(obj.indicator.asc){
-                            if(o.geo > o.lKonf && o.geo > o.uKonf){
-                                o.status = 'worse';
-                            }
-                            else if(o.geo < o.lKonf && o.geo < o.uKonf){
-                                o.status = 'better';
-                            }
-                        }
-                        
-                        if(!obj.indicator.asc){
-                            if(o.geo > o.lKonf && o.geo > o.uKonf){
-                                o.status = 'better';
-                            }
-                            else if(o.geo < o.lKonf && o.geo < o.uKonf){
-                                o.status = 'worse';
-                            }
-                        }
-
+						
+						if (o.geoLKonf > o.riketUKonf){
+							o.status = (obj.indicator.asc ? 'worse' : 'better');
+						}
+						else if (o.geoUKonf < o.riketLKonf){
+							o.status = (obj.indicator.asc ? 'better' : 'worse');
+						}
+						
                         keyIndicators.push(o);
                     });
 
