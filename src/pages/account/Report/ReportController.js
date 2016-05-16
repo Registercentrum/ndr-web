@@ -551,7 +551,7 @@ angular.module('ndrApp')
         contactDate: $filter('date')(new Date(), $scope.format),
         hba1c: null,
         treatment: lastContact != null ? lastContact.treatment : null,
-        insulinMethod: lastContact != null ? lastContact.insulinMethod : null,
+        insulinMethod: lastContact != null ? (lastContact.treatment == 3 || lastContact.treatment == 9) ? lastContact.insulinMethod : null : null,
         pumpIndication: lastContact != null ? lastContact.pumpIndication : null,
         pumpOngoing: lastContact != null ? (lastContact.pumpNew != null ? lastContact.pumpNew : lastContact.pumpOngoing) : null,
         pumpOngoingSerial: lastContact != null ? (lastContact.pumpNew != null ? lastContact.pumpNewSerial : lastContact.pumpOngoingSerial) : null,
