@@ -9751,6 +9751,7 @@ fieldset[disabled] .IndicatorButton {
 .Panel-title {
   margin: 0px 0 20px 0px;
   font-size: 25px;
+  font-weight: 300;
 }
 .Panel-subline {
   margin-bottom: 0;
