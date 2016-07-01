@@ -41,7 +41,7 @@
       <h2 class="Panel-title">Publikationer</h2>
 
       <article ng-repeat="publication in publications" class="Research clearfix">
-        <img src="images/placeholder_publ.png" style="width:100px;margin:25px 20px 0 20px" class="Research-image col-md-4 u-noLeftPadding">
+        <img src="{{ publication.image ? publication.image : 'images/placeholder_publ.png' }}" style="width:100px;margin:25px 20px 0 20px" class="Research-image col-md-4 u-noLeftPadding">
 
         <div class="Research-text col-md-8 u-noRightPadding">
         <p class="Research-text-date">{{publication.dateOfPublication | date: 'mediumDate' }}</p><!--/*'d MMMM, yyyy'*/ -->
