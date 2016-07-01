@@ -9951,7 +9951,6 @@ button[disabled=disabled] {
   margin-bottom: 40px;
 }
 .Publication-metadata-image {
-  border-radius: 100%;
   display: block;
   margin: 0 auto 20px auto;
 }
@@ -10518,6 +10517,20 @@ p.lead {
 }
 .highlighted {
   background-color: #ffcc01;
+}
+.documents {
+	list-style-type: none;
+}
+.documents img{
+	width: 40px;
+    height: 40px;
+	margin-right: 20px;
+}
+.documents li{
+	margin: 25px 0;
+}
+.documents.yearreports li{
+	margin: 5px 0;
 }
 
 
