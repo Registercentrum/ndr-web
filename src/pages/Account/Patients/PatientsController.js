@@ -209,14 +209,19 @@ angular.module('ndrApp')
 
                 console.log('query on loaded', query);
 
-                dataService.getSubjects(query, function (data){
-					
-                    allSubjects = data;
-                    $scope.model.allSubjectsLength = allSubjects.length;
-                    $scope.isLoadingSubjects = false;
-                    debouncedFilter();
-
-                });
+                dataService.getSubjects(query)
+					.then(function (data){
+						allSubjects = data;
+						$scope.model.allSubjectsLength = allSubjects.length;
+						$scope.isLoadingSubjects = false;
+						debouncedFilter();
+					})
+					.fail(function (data){
+						allSubjects = null;
+						$scope.model.allSubjectsLength = 0;
+						$scope.isLoadingSubjects = false;
+						debouncedFilter();
+					});
             }
 
             var delayStartTime = 200;
