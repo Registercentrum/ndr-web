@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="Page-title">KAS (kvalitetsansvarig diabetessjuksköterska)</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="Panel">
+				<h3>KAS per landsting</h3>
+				<br />
+				<div ng-repeat="c in model.counties">
+					<h4>{{ c.name }}</h4>
+					<h5 ng-if="c.kas.primary.length" style="margin-left: 8px">Primärvård</h6>
+					<div ng-if="c.kas.primary.length" class="row" style="font-size: 13px">
+						<div class="col-md-12" ng-repeat="k in c.kas.primary">
+							<div class="col-md-3">{{ k.firstName + ' ' + k.lastName }}</div>
+							<div class="col-md-5"><a href="mailto:{{ k.email }}" target="_top">{{ k.email }}</a></div>
+							<div class="col-md-4">{{ k.phone }}</div>
+						</div>
+					</div>
+					<h5 ng-if="c.kas.hospital.length" style="margin-left: 8px">Medicinklinik</h6>
+					<div ng-if="c.kas.hospital.length" class="row" style="font-size: 13px">
+						<div class="col-md-12" ng-repeat="k in c.kas.hospital">
+							<div class="col-md-3">{{ k.firstName + ' ' + k.lastName }}</div>
+							<div class="col-md-5"><a href="mailto:{{ k.email }}" target="_top">{{ k.email }}</a></div>
+							<div class="col-md-4">{{ k.phone }}</div>
+						</div>
+					</div>
+					<hr >
+					<!--<table class="Table" style="">
+						<tr ng-repeat="k in c.kas.primary">
+							<td style="width: 120px">{{ k.firstName + ' ' + k.lastName }}</td>
+							<td style="width: 120px">{{ k.email }}</td>
+							<td style="width: 60px">{{ k.phone }}</td>
+						</tr>
+					</table>
+					<span ng-if="c.kas.hospital.length">Medicinklinik</span>
+					<table class="Table">
+						<tr ng-repeat="k in c.kas.hospital">
+							<td style="width: 120px">{{ k.firstName + ' ' + k.lastName }}</td>
+							<td style="width: 120px">{{ k.email }}</td>
+							<td style="width: 60px">{{ k.phone }}</td>
+						</tr>
+					</table>-->
+				</div>
+			</div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="Panel">
+				<h3>Uppdrag</h3>
+				<p>
+				Samtliga landsting är representerade i NDR av en KAS och en landstingskoordinator men målet är att ha minst en KAS och en koordinator för medicinkliniker respektive primärvård inom varje landsting.
+				</p>
+				<p>
+				Uppdraget avser att:
+				</p>
+				<ul>
+					<li>delta vid det årliga KAS/koordinatormötet</li>
+					<li>informera om NDR lokalt</li>
+					<li>stimulera rapportering till NDR</li>
+					<li>stimulera och verka för att resultaten i NDR används till lokala uppföljningar och förbättringsarbeten</li>
+					<li>återföra information från NDR till vårdenheterna</li>
+				</ul>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

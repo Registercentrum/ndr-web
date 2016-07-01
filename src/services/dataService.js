@@ -12,7 +12,9 @@ angular.module('ndrApp')
             counties       : [],
             indicators     : [],
             preparedGeoList: [],
-			promFormMeta: null
+			promFormMeta: 	null,
+			koo: 			null,
+			kas:			null
         };
 
 
@@ -34,7 +36,9 @@ angular.module('ndrApp')
             publications	 : Restangular.all('publication'),
             contacts         : Restangular.all('Contact'),
             subject          : Restangular.all('subject'),
-			promForm	     : Restangular.all('PROMForm')
+			promForm	     : Restangular.all('PROMForm'),
+			koo				 : Restangular.all('KOO'),
+			kas	     		 : Restangular.all('KAS')
         };
 
 		this.projects = [
@@ -247,6 +251,48 @@ angular.module('ndrApp')
 			}
         };
 
+		this.getKOO = function (callback) {
+            var query = query || {};
+            var self = this;
+			query.APIKey = APIconfigService.APIKey;
+			
+			if (this.data.koo != null)
+				callback(this.data.koo);
+			else {
+				$.ajax({
+					url     : APIconfigService.baseURL + 'KOO',
+					data    : query,
+					type    : 'GET',
+					dataType: 'json',
+					success : function(d) {
+						self.data.koo = d;
+						callback(d);
+					}
+				});
+			}
+        };
+		
+		this.getKAS = function (callback) {
+            var query = query || {};
+            var self = this;
+			query.APIKey = APIconfigService.APIKey;
+			
+			if (this.data.kas != null)
+				callback(this.data.kas);
+			else {
+				$.ajax({
+					url     : APIconfigService.baseURL + 'KAS',
+					data    : query,
+					type    : 'GET',
+					dataType: 'json',
+					success : function(d) {
+						self.data.kas = d;
+						callback(d);
+					}
+				});
+			}
+        };
+		
         this.getUnits = function (callback) {
             var query = query || {};
             query.APIKey = APIconfigService.APIKey;
@@ -259,7 +305,6 @@ angular.module('ndrApp')
                 success : callback
             });
         };
-
 
         this.getOptionalQuestionsMeta = function (accountID, callback) {
             var query = query || {};
@@ -275,18 +320,16 @@ angular.module('ndrApp')
             });
         };
 
-
-        this.getSubjects = function (query, callback) {
+        this.getSubjects = function (query) {
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
 
-            $.ajax({
+            return $.ajax({
                 url: APIconfigService.baseURL + 'subject',
                 data: query,
                 type: 'GET',
-                dataType: 'json',
-                success: callback
+                dataType: 'json'
             });
         };
 
@@ -360,33 +403,34 @@ angular.module('ndrApp')
         // Store the state of the selected filters for the search list
         // so the user is able to come back to the page from the user profile
         // and get the same state of the search list
-		
+		var dateOffset = (24*60*60*1000) * 365; //365
+
         var preSelectedSearchFilters = {
 			values: {
 				hba1c: {
 					min: 20,
 					max: 177
-				}
+				},
+				dateFrom: new Date(new Date()-dateOffset),
+				dateTo: new Date(),
 			}
 		};
 		
         var selectedSearchFilters = preSelectedSearchFilters;
 		
         this.setSearchFilters = function (prop, value) {
+		
             // If no prop and value, reset the object
             if (!prop && !value) {
                 selectedSearchFilters = selectedSearchFilters;
             } else {
                 selectedSearchFilters[prop] = value;
             }
-			
-			console.log(selectedSearchFilters[prop]);
         };
 
         this.getSearchFilters = function (prop) {
             return prop ? selectedSearchFilters[prop] : selectedSearchFilters;
         };
-
 
         this.bootstrap = function () {
 
