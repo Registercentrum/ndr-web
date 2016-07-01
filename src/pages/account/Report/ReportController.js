@@ -28,9 +28,9 @@ angular.module('ndrApp')
 
         var account = $scope.accountModel;
         console.log('ReportController: Init',  $stateParams.patientID);
-
+	
+		
         $scope.filterValue = function($event){
-            console.log($event.keyCode);
             if(isNaN(String.fromCharCode($event.keyCode)) && $event.keyCode !== 44 && $event.keyCode !== 46){
                 $event.preventDefault();
             }
@@ -233,6 +233,8 @@ angular.module('ndrApp')
         $scope.treatmentChanged = function () {
             if (!($scope.contactModel.treatment == 3 || $scope.contactModel.treatment == 4 || $scope.contactModel.treatment == 9 || $scope.contactModel.treatment == 10)) {
                 $scope.contactModel.insulinMethod = null;
+				$scope.contactModel.cgm = null;
+				$scope.contactModel.cgmType = null;
             }
         };
 
@@ -244,7 +246,6 @@ angular.module('ndrApp')
 
 
         $scope.tryCalculateBMI = function () {
-			console.log('trying');
             if ($scope.contactModel.weight > 0 && $scope.contactModel.height > 0) {
                 $scope.contactModel.bmi = parseFloat(($scope.contactModel.weight / Math.pow($scope.contactModel.height/100,2)).toFixed(1));
             } else {
@@ -493,6 +494,8 @@ angular.module('ndrApp')
         yearOfOnset: $scope.subject.yearOfOnset,
         contactDate: $scope.contactToUpdate.contactDate.split('T')[0],
         hba1c: $scope.contactToUpdate.hba1c,
+		cgm: $scope.contactToUpdate.cgm,
+		cgmType: $scope.contactToUpdate.cgmType,
         treatment: $scope.contactToUpdate.treatment,
         insulinMethod: $scope.contactToUpdate.insulinMethod,
         pumpIndication: $scope.contactToUpdate.pumpIndication,
@@ -550,6 +553,8 @@ angular.module('ndrApp')
         yearOfOnset: $scope.subject != null ? $scope.subject.yearOfOnset : null,
         contactDate: $filter('date')(new Date(), $scope.format),
         hba1c: null,
+		cgm: lastContact != null ? lastContact.cgm : null,
+		cgmType: lastContact != null ? lastContact.cgmType : null,
         treatment: lastContact != null ? lastContact.treatment : null,
         insulinMethod: lastContact != null ? (lastContact.treatment == 3 || lastContact.treatment == 9) ? lastContact.insulinMethod : null : null,
         pumpIndication: lastContact != null ? lastContact.pumpIndication : null,
@@ -614,9 +619,6 @@ angular.module('ndrApp')
       var dfd = dataService.saveContact($scope.contactModel)
         .then(function (response) {
 		
-			console.log('gets OK');
-			console.log(response);
-		
             $scope.getSubject(false);
             $scope.isSaving = false;
 
@@ -666,6 +668,11 @@ angular.module('ndrApp')
 		if ($scope.contactModel.diabeticRetinopathy != 1)
 			if ($scope.contactModel.diagnosisWorseSeeingEye != null)
 				$scope.contactModel.diagnosisWorseSeeingEye = null;
+    };
+    $scope.cgmChanged = function() {
+		if ($scope.contactModel.cgm != 1)
+			if ($scope.contactModel.cgmType != null)
+				$scope.contactModel.cgmType = null;
     };
     $scope.getOptionals = function() {
 
