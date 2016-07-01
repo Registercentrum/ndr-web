@@ -53,9 +53,9 @@
             <div class="col-md-12">
                 <div class="Panel Panel--blue clearfix" style="padding: 0px; height:auto">
                     <div class="Panel--profile col-md-4" style="line-height: 22px; font-size: 14px;font-weight: 300">
-                        <p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>
+                        <p>{{ subject.sexText + ', ' + calculateAge(subject.dateOfBirth) }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}</p>
                         <p>{{ getDiabetesType(subject.diabetesType) }}</p>
-                        <p>Debutår: {{ subject.yearOfOnset }}</p>
+                        <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
                         <p>Diabetesbehandling: {{ model.latest.treatment.label }}</p>
                         <p ng-show="model.latest.insulinMethod.value == 2">
                             Metod att ge insulin: {{ model.latest.insulinMethod.label }}
@@ -63,6 +63,9 @@
                         <p ng-show="model.latest.insulinMethod.label == 'Insulinpump'">
                             Pågående pumpmodell: {{ model.latest.pumpOngoing.label }}
                         </p>
+						<p ng-show="model.latest.cgm.value">
+							CGM/FGM: {{ model.latest.cgm.label + ((model.latest.cgmType.value && model.latest.cgm.value) ? ', ' + model.latest.cgmType.label : '') }}
+						</p>
 						<p>Senaste besök: <span class="strong">{{ model.latest.contactDate.label }}</span></p>
                     </div>
 
