@@ -115,18 +115,27 @@
                         {{ filter.question }}
                     </div>
                     <div class="MultiFilter-row-filterKnobs col-sm-7">
-
-                        <!-- If there is max value, display as range slider -->
-                        <div ng-if="filter.maxValue !== null">
+						
+						<!-- Quickfix exclude debut -->
+						<div ng-if="filter.minValue === 1920">
+							<div class="MultiFilter-row-filterKnobs--inputs">
+								<input type="number" decimals="0" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].min" ng-model-options="{debounce: 850}">
+								<input type="number" decimals="0" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].max" ng-model-options="{debounce: 850}">
+							</div>
+						</div>
+						
+                        <!-- If there is max value, display as range slider, debut excluded-->
+                        <div ng-if="filter.maxValue !== null && filter.minValue !== 1920">
                             <div
                                 slider
                                 ng-model="selectedFilters[filter.columnName].min"
                                 ng-model-range="selectedFilters[filter.columnName].max"
                                 ng-disabled="selectedFilters[filter.columnName].undef"
-                                floor="{{ filter.minValue || 0 }}"
+                                floor="{{ filter.minValue === 1920 ? 2000 : (filter.minValue || 0) }}"
                                 ceiling="{{ filter.maxValue }}"
 								step="0.1"
 								precision="{{filter.domain.domainID  === 101 ? 0 : 1}}"
+								ng-change="sliderChange(this)"
                                 class="RangeSlider">
                             </div>
                             <div class="MultiFilter-row-filterKnobs--inputs">
