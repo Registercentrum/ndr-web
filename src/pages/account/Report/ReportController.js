@@ -542,10 +542,27 @@ angular.module('ndrApp')
         optionals: null
       }
     };
+	//hardcoded since this is the ony need variable with need for this functionality in report form
+	$scope.getSmokingHabitText = function(code) {
+		
+		switch(code) {
+			case 1:
+				return "Aldrig varit rökare"
+			case 2:
+				return "Röker dagligen"
+			case 3:
+				return "Röker, men ej dagligen"
+			case 4:
+				return "Slutat röka"
+		}
+		
+	};
     $scope.getNewModel = function(lastContact) {
 
       $scope.setOptionalQuestionsValue();
-
+	  
+	  console.log(lastContact);
+	  
       return {
         contactID: null,
         socialNumber: $scope.subject != null ? $scope.subject.socialNumber : null,
