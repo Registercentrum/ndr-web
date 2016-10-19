@@ -33,7 +33,7 @@
         <div class="col-md-12">
             <div class="PatientHeader clearfix">
                 <div class="PatientHeader-personNumber col-md-4 u-noLeftPadding">
-                    <i class="fa fa-user"></i>  {{ subject.socialNumber }}
+                    <i class="fa fa-user"></i>  {{ subject.socialNumber }} <span style="font-size:14px">{{ subject.dateOfDeath ? '(avliden)' : '' }}</span>
                 </div>
                 <div class="PatientHeader-navigation col-md-8 u-noRightPadding text-right">
                     <a class="Button--tight Button Button--dark" ui-sref="main.account.patientPrint({patientID: subject.subjectID})"><i class="fa fa-print"></i> Skriv ut</a>

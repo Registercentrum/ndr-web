@@ -526,11 +526,13 @@
 									<option value="">-- välj rökvanor --</option>
 								</select>
 								<p ng-show="contactForm.smokingHabit.$pristine && contactModel.smokingHabit != null && contactModel.smokingHabit == lastContact.smokingHabit && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+								<p ng-show="contactToUpdate == null && lastContact.smokingHabit" class="Report-formItemHelp help-block">{{lastContact.smokingHabit != null ? 'Senaste uppgift: ' + getSmokingHabitText(lastContact.smokingHabit) : ''}}</p>
 							</div>
 							<div class="col-md-5 Report-formGroup-form">
 								<label class="" for="smokingEndYear" class="">Slutat År</label><i class="fa fa-question-circle helpNote" ng-show="lists['smokingEndYear'].helpNote != null" tooltip="{{lists['smokingEndYear'].helpNote}}"></i>
 								<input name="smokingEndYear" type="number" min="{{minYear}}" max="{{maxYear}}" class="form-control" ng-model="contactModel.smokingEndYear" ng-disabled="contactModel.smokingHabit != 4" ng-class="{ 'has-no-error' : !contactForm.smokingEndYear.$invalid && contactModel.smokingEndYear != null && contactModel.smokingHabit == 4}" decimals="0" placeholder="ÅÅÅÅ">
 								<p ng-show="contactForm.smokingEndYear.$error.min || contactForm.smokingEndYear.$error.max" class="Report-formItemHelp help-block">Kontrollera slutår. Slutår kan inte vara i framtiden.</p>
+								<p ng-show="contactToUpdate == null && lastContact.smokingEndYear != null" class="Report-formItemHelp help-block">{{lastContact.smokingEndYear != null ? 'Senaste uppgift: ' + lastContact.smokingEndYear : ''}}</p>
 							</div>
 						</div>
 					</div>
