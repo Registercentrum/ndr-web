@@ -7,7 +7,7 @@ angular.module('ndrApp')
 
             $log.debug('PatientsController: Init');
             var filterSettings = {
-                    exclude: ['socialNumber', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear','subjectID'],
+                    exclude: ['socialNumber', 'pumpNew', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear','subjectID'],
                     required: ['d']
                 },
                 filterDisplayIndex;
