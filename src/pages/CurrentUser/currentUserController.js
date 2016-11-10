@@ -123,8 +123,9 @@ angular.module('ndrApp')
                 });
 
 				if ($scope.newAccountError.length) return;
-
-				if (reActivateAccount != null) {
+				
+				//Removed since alla requests for new or newed accounts handled through POST
+				/*if (reActivateAccount != null) {
 					httpConfig = {
 						method: 'PUT',
 						data  : {
@@ -132,19 +133,21 @@ angular.module('ndrApp')
 						},
 						url   : APIconfigService.baseURL + 'Account/' + reActivateAccount.accountID + '?APIKey=' + APIconfigService.APIKey
 					};
-				} else {
-					accountModel = {
-						unitID  : unitID,
-						userID  : $scope.user.userID,
-						statusID: 3,
-						roleIDs : []
-					};
+				} else {*/
+				
+				/*};*/
+				
+				accountModel = {
+					unitID  : unitID,
+					userID  : $scope.user.userID,
+					statusID: 3,
+					roleIDs : []
+				};
 
-					var httpConfig = {
-						method: 'POST',
-						data  : accountModel,
-						url   : APIconfigService.baseURL + 'Account/?APIKey=' + APIconfigService.APIKey
-					};
+				var httpConfig = {
+					method: 'POST',
+					data  : accountModel,
+					url   : APIconfigService.baseURL + 'Account/?APIKey=' + APIconfigService.APIKey
 				};
 
                 $http(httpConfig)

@@ -1,4 +1,4 @@
-<div class="row Report">
+﻿<div class="row Report">
 	<div class="col-md-5">
 		<h2 class="Page-title">
 		Rapportera/Komplettera</h1>
@@ -142,7 +142,7 @@
 							<div class="row">
 								<div class="col-md-5 Report-formGroup-form">
 									<br /><!-- extra space -->
-									<label class="" for="pumpOngoing" class="">Pågående pumpmodell</label><i class="fa fa-question-circle helpNote" ng-show="lists['pumpOngoing'].helpNote != null" tooltip="{{lists['pumpOngoing'].helpNote}}"></i>
+									<label class="" for="pumpOngoing" class="">Pågående pump</label><i class="fa fa-question-circle helpNote" ng-show="lists['pumpOngoing'].helpNote != null" tooltip="{{lists['pumpOngoing'].helpNote}}"></i>
 									<select name="pumpOngoing" class="form-control" ng-model="contactModel.pumpOngoing" ng-change="pumpOngoingChanged()" ng-class="{ 'has-no-error' : contactModel.pumpOngoing != null}" ng-options="type.code as type.text for type in lists.pumpOngoing.domain.domainValues">
 										<option value="">-- välj pumpmodell --</option>
 									</select>
@@ -184,7 +184,7 @@
 							<div class="row">
 								<div class="col-md-5 Report-formGroup-form">
 									<br /><!-- extra space -->
-									<label class="" for="pumpNew" class="">Ny pumpmodell</label><i class="fa fa-question-circle helpNote" ng-show="lists['pumpNew'].helpNote != null" tooltip="{{lists['pumpNew'].helpNote}}"></i>
+									<label class="" for="pumpNew" class="">Ny pump</label><i class="fa fa-question-circle helpNote" ng-show="lists['pumpNew'].helpNote != null" tooltip="{{lists['pumpNew'].helpNote}}"></i>
 									<select name="pumpNew" class="form-control" ng-model="contactModel.pumpNew" ng-change="pumpNewChanged()" ng-class="{ 'has-no-error' : contactModel.pumpNew != null }" ng-options="type.code as type.text for type in lists.pumpNew.domain.domainValues">
 										<option value="">-- välj pumpmodell --</option>
 									</select>
