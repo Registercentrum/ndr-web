@@ -23,12 +23,16 @@
 			</div>
 		</div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Mina användaruppgifter</h2>
                         <form name="userForm" class="Report-form form-horizontal" role="form">
-                            <fieldset ng-disabled="!visitor.isUser">
+							<div class="row inputrow" ng-class="{ 'has-error' : userForm.email.$invalid }">
+								<label class="" for="email">E-postadress</label>
+								<input type="email" name="email" class="form-control" required ng-model="user.email" placeholder="E-postadress">
+							</div>
+							<fieldset ng-disabled="!visitor.isUser">
                                 <div class="row inputrow" ng-class="{ 'has-error' : userForm.hsaid.$invalid && !userForm.hsaid.$pristine }">
                                     <label class="" for="hsaid">HSAID</label>
                                     <input name="hsaid" type="text" class="form-control" ng-disabled="true" ng-model="user.hsaid" ng-class="{ 'has-no-error' : user.hsaid != null}" placeholder="HSAID">
@@ -48,10 +52,6 @@
                                 <div class="row inputrow" ng-class="{ 'has-error' : userForm.workTitle.$invalid && !userForm.workTitle.$pristine }">
                                     <label class="" for="workTitle">Arbetsroll</label>
                                     <input name="workTitle" type="text" class="form-control" required ng-model="user.workTitle" ng-class="{ 'has-no-error' : user.workTitle != null}" placeholder="Arbetsroll">
-                                </div>
-                                <div class="row inputrow" ng-class="{ 'has-error' : userForm.email.$invalid && user.userID>0 }">
-                                    <label class="" for="email">E-postadress</label>
-                                    <input type="email" name="email" class="form-control" required ng-model="user.email" placeholder="E-postadress" required>
                                 </div>
                                 <div class="row inputrow">
                                     <div class="Report-submitWrapper pull-right">
@@ -97,8 +97,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" ng-show="user">
-                <h2>Tillgång till ny enhet</h2>
+            <div class="col-md-7" ng-show="user">
+                <h2>Enhet som jag söker behörighet till</h2>
 				
                 <div class="row Panel Panel--purple">
                     <form name="newAccount" class="Report-form form-horizontal" role="form" novalidate>
@@ -110,14 +110,14 @@
                 </div>
 
                 <div class="row">
-                    <div ng-show="user.accounts.length > 0" class="">
+                    <div class="">
                         <div class="col-md-12">
                             <p><strong><i class="fa fa-exclamation-circle blue"></i> För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress stämmer.</strong></p>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div ng-show="newAccountError.length>0" class="">
+                <div class="row" >
+                    <div ng-show="newAccountError.length>0" class="alertText">
                         <div class="col-md-12">
                             <p><strong><i class="fa fa-exclamation-circle blue"></i> {{newAccountError[0]}}</strong></p>
                         </div>
