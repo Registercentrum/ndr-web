@@ -111,7 +111,16 @@ angular.module('ndrApp')
 				var httpConfig;
 
                 $scope.resetAccountErrors();
-
+				
+				console.log($scope.user.email);
+				
+				if ($scope.userForm.email.$invalid) {
+					$scope.newAccountError.push('En korrekt e-postadress krävs för att kunna ansöka om konto.');
+					console.log($scope.userForm.email.$invalid);
+					//$scope.userForm.$setSubmitted();
+					return;
+				}
+				
                 angular.forEach($scope.user.accounts, function (account) {
                     if (account.unit.unitID === unitID && account.status.id === 1) {
                         $scope.newAccountError.push('Du har redan ett konto på denna enhet.');
@@ -121,7 +130,9 @@ angular.module('ndrApp')
 						reActivateAccount = account;
 					}
                 });
-
+				
+				console.log($scope.newAccountError);
+				
 				if ($scope.newAccountError.length) return;
 				
 				//Removed since alla requests for new or newed accounts handled through POST
@@ -141,6 +152,7 @@ angular.module('ndrApp')
 					unitID  : unitID,
 					userID  : $scope.user.userID,
 					statusID: 3,
+					email: $scope.user.email,
 					roleIDs : []
 				};
 
