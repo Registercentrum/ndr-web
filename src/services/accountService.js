@@ -7,10 +7,10 @@ angular.module('ndrApp')
 
         var self = this,
             isLoggingIn = false;
-		
+
         this.accountModel = {
             user         : null, //fallback
-			visitor		 : null, //use this instead
+            visitor      : null, //use this instead
             activeAccount: null,
             tempAccount  : null,
             serverError  : ''
@@ -26,16 +26,17 @@ angular.module('ndrApp')
             var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID : accountID});
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount   = activeAccount;
-			
-			$state.go($state.current, {}, { reload: true });
+
+            $state.go($state.current, {}, { reload: true });
             //$state.go($state.current, {}, {reload: true}); //BUG 2015-10-14, page can´t reload since then active account then is reset
-			//$state.go('main.account.home');
-			//$state.go('main.account.home', {}, { reload: true });
-			
+            //$state.go('main.account.home');
+            //$state.go('main.account.home', {}, { reload: true });
+
         };
 
         this.login = function (accountID) {
-            var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey;
+            var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey +
+                      '&SESSIONID=4dc5661f-71b9-434f-8205-26f4cf286643';
 
             console.log('LOGGING IN');
 
@@ -43,9 +44,9 @@ angular.module('ndrApp')
 
             return $http.get(url)
                 .then(function (response) {
-					
-					self.accountModel.visitor = response.data;
-					
+
+                    self.accountModel.visitor = response.data;
+
                     if(response.data.isUser == false) return false;
 
                     var user = response.data.user,
@@ -63,12 +64,12 @@ angular.module('ndrApp')
                     user.activeAccounts = _.filter(user.accounts, function (account) {
                         return account.status.id === 1;
                     });
-					
-					//if many units redirect to home page to choose unit
-					if (self.accountModel.activeAccount == null && user.activeAccounts.length > 1)
-						$state.go('main.home');
-					else
-						self.accountModel.activeAccount = user.activeAccounts[0];
+
+                    //if many units redirect to home page to choose unit
+                    if (self.accountModel.activeAccount == null && user.activeAccounts.length > 1)
+                        $state.go('main.home');
+                    else
+                        self.accountModel.activeAccount = user.activeAccounts[0];
 
                     if (self.accountModel.tempAccount) {
                         self.accountModel.activeAccount = self.accountModel.tempAccount;

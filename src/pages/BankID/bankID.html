@@ -8,7 +8,12 @@
             <div class="Panel">
                 <p>Om du har ett NDR-konto kopplat till ditt personnummer kan du logga in med Mobilt Bank-ID.</p>
                 <h5>Personnummer</h5>
-                <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" /> <button type="submit" ng-click="startLogin()" class="Button Button--info Button--mini">Logga in</button>
+                <form ng-submit="startLogin()">
+                    <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" />
+                    <button type="submit" class="Button Button--info Button--mini">
+                        Logga in
+                    </button>
+                </form>
 
                 <div class="alert well" style="margin-top: 20px" ng-if="model.loginStarted">
                     Öppna din Bank-ID-applikation för att legitimera dig. Därefter blir du automatiskt inloggad till Din NDR-Startsida.
@@ -17,7 +22,7 @@
                 <div class="warning well" style="margin-top: 20px" ng-if="model.loginFailed">
                     Något gick fel, vänligen försök igen.
                 </div>
-				
+
                 <div class="warning well" style="margin-top: 20px" ng-if="model.message">
                     {{model.message}}
                 </div>

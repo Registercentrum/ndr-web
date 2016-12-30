@@ -74,7 +74,7 @@ angular.module('ndrApp')
 					1265, //Bäckby familjeläkarmottagning
 					1082, //Achima Care Köping Vårdcentral
 					1270, //Kolsva Vårdcentral
-					1376 //Asyl och Integrationshälsan		
+					1376 //Asyl och Integrationshälsan
 				]
 			}
 		];
@@ -84,24 +84,24 @@ angular.module('ndrApp')
          * @param  {Object} filter Object with filter ids to include or exclude from the result
          * @return {Array} Array with filter options
          */
-		 
+
         this.getUserProjects = function () {
 			var unitID = accountService.accountModel.activeAccount.unit.unitID
-			var projects = _.filter(this.projects, function (d) { 
-				return d.units.indexOf(unitID) !== -1; 
+			var projects = _.filter(this.projects, function (d) {
+				return d.units.indexOf(unitID) !== -1;
 			});
-			
+
 			return projects;
         };
         this.isInProject = function (name) {
-			
+
 			var userProjects = this.getUserProjects();
 			var ret = false;
-			
-			ret = _.filter(userProjects, function (d) { 
-				return d.name.toLowerCase() === name.toLowerCase(); 
+
+			ret = _.filter(userProjects, function (d) {
+				return d.name.toLowerCase() === name.toLowerCase();
 			}).length>0;
-			
+
 			return ret;
         };
         this.getContactAttributes = function (filter) {
@@ -151,7 +151,7 @@ angular.module('ndrApp')
             };
 
             return $http(query)
-                .then(function (response) { 
+                .then(function (response) {
 					return response.data; })
                 ['catch'](function(error) {
                     return error;
@@ -196,7 +196,7 @@ angular.module('ndrApp')
 
         };
 		this.getFile = function(textfile) {
-		
+
 			/*Example Textfile
 				var textFile = {
 					content: 'This is the content of the file ....',
@@ -204,7 +204,7 @@ angular.module('ndrApp')
 					fileType: 'csv'
 				};
 			*/
-				
+
 			$http({
 				method: 'POST',
 				url: 'API/Textfile/',
@@ -234,7 +234,7 @@ angular.module('ndrApp')
             var query = query || {};
             var self = this;
 			query.APIKey = APIconfigService.APIKey;
-			
+
 			if (this.data.promFormMeta != null)
 				callback(this.data.promFormMeta);
 			else {
@@ -255,7 +255,7 @@ angular.module('ndrApp')
             var query = query || {};
             var self = this;
 			query.APIKey = APIconfigService.APIKey;
-			
+
 			if (this.data.koo != null)
 				callback(this.data.koo);
 			else {
@@ -271,12 +271,12 @@ angular.module('ndrApp')
 				});
 			}
         };
-		
+
 		this.getKAS = function (callback) {
             var query = query || {};
             var self = this;
 			query.APIKey = APIconfigService.APIKey;
-			
+
 			if (this.data.kas != null)
 				callback(this.data.kas);
 			else {
@@ -292,7 +292,7 @@ angular.module('ndrApp')
 				});
 			}
         };
-		
+
         this.getUnits = function (callback) {
             var query = query || {};
             query.APIKey = APIconfigService.APIKey;
@@ -324,6 +324,7 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
+            query.SESSIONID = '4dc5661f-71b9-434f-8205-26f4cf286643';
 
             return $.ajax({
                 url: APIconfigService.baseURL + 'subject',
@@ -371,7 +372,7 @@ angular.module('ndrApp')
 
             self.data.preparedGeoList = preparedGeoList;
         };
-		
+
 
         this.queryFactory = function (params) {
             var defaults = {
@@ -415,11 +416,11 @@ angular.module('ndrApp')
 				dateTo: new Date(),
 			}
 		};
-		
+
         var selectedSearchFilters = preSelectedSearchFilters;
-		
+
         this.setSearchFilters = function (prop, value) {
-		
+
             // If no prop and value, reset the object
             if (!prop && !value) {
                 selectedSearchFilters = selectedSearchFilters;
@@ -11807,7 +11808,7 @@ angular.module('ndrApp')
         "lat": 58.03115463256836
     }
 ];
-                
+
                 var indicators = {
                     all: [
                         {

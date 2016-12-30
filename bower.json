@@ -1,5 +1,5 @@
 {
-  "name": "ndrApp",
+  "name": "ndr-app",
   "version": "0.0.0",
   "homepage": "",
   "authors": [
@@ -14,6 +14,7 @@
     "tests"
   ],
   "dependencies": {
+    "angular": "1.3.*",
     "angular-loading-bar": "*",
     "angular-ui-router": "*",
     "angular-sanitize": "1.2.*",

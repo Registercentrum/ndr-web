@@ -10,7 +10,6 @@ angular.module('ndrApp', [
     //'datatables',
     'vr.directives.slider',
     'truncate',
-    'once',
     'angulartics',
     'angulartics.google.analytics'
 ])
@@ -258,7 +257,7 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Account/Report/report.html',
                     controller : 'ReportController'
                 })
-				
+
                 .state('main.reportPROM', {
                     url: '/rapporteraPROM/:patientID',
                     templateUrl: 'src/pages/Account/Report/reportPROM.html',

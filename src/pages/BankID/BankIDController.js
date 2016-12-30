@@ -1,6 +1,7 @@
-angular.module('ndrApp')
-    .controller('BankIDController', ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService', function ($scope, $http, $stateParams, $state, accountService, APIconfigService) {
-    
+angular.module('ndrApp').controller('BankIDController',
+            ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService',
+    function ($scope,   $http,   $stateParams,   $state,   accountService,   APIconfigService) {
+
         console.log('BankIDController: Init', accountService.accountModel.user);
 
         $scope.model = {
@@ -8,7 +9,7 @@ angular.module('ndrApp')
             socialnumber : undefined,
             loginStarted : false,
             loginFailed : false,
-			message: null
+            message: null
         };
 
         $scope.startLogin = function (){
@@ -68,7 +69,7 @@ angular.module('ndrApp')
         function login(){
 
             var query = {
-                url: APIconfigService.baseURL + 'CurrentVisitor',
+                url: APIconfigService.baseURL + 'CurrentVisitor?SESSIONID=4dc5661f-71b9-434f-8205-26f4cf286643',
                 method: 'GET',
                 //data: {socialNumber: socialNumber}
             };
@@ -76,15 +77,15 @@ angular.module('ndrApp')
             $http(query)
                 .then(function (response) {
                     console.log("response login", response);
-					
-					if (response.data.isUser){
-						$scope.model.message = null;
-						checkForLoggedIn();
-						$state.go('main.account.home', {}, {reload: true});
-					} else {
-						$scope.model.loginStarted = false;
-						$scope.model.message = 'Du är inte en användare i NDR.';
-					}
+
+                    if (response.data.isUser){
+                        $scope.model.message = null;
+                        checkForLoggedIn();
+                        $state.go('main.account.home', {}, {reload: true});
+                    } else {
+                        $scope.model.loginStarted = false;
+                        $scope.model.message = 'Du är inte en användare i NDR.';
+                    }
 
                 })
                 ['catch'](console.error.bind(console));
