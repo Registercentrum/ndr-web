@@ -1,36 +1,88 @@
 <div class="container">
+    <div class="Panel" style="text-align: center;">
+        <h1 class="Page-heading mt0" style="position: relative;">
+            Logga in
+            <small style="position: absolute; right: 0;"><a ui-sref="main.currentUser">Skyffa nytt konto?</a></small>
+        </h1>
+        <tabset justified>
+            <tab heading="För dig med diabetes">
+                <h4 class="col-md-6 col-md-offset-3 pv5-ns">
+                    Logga in med Mobilt BankID för att se och besvara Diabetesenkäten. Om du inte har
+                    Mobilt BankId kan du få engångskod av din vårdenhet.
+                </h4>
 
-    <h1 class="Page-title">Logga in med Mobilt Bank-ID <img src="images/bankid_small.png" class="" style="" alt=""/>
-    </h1>
+                <div class="row">
+                    <div class="col-md-5">
+                        <img src="images/bankid_small.png" class="" style="" alt=""/>
+                        <h5>Logga in med Mobilt Bank-ID </h5>
+                        <form ng-submit="startLogin()">
+                            <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" />
+                            <button type="submit" class="Button Button--info Button--mini">
+                                Logga in
+                            </button>
+                        </form>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="Panel">
-                <p>Om du har ett NDR-konto kopplat till ditt personnummer kan du logga in med Mobilt Bank-ID.</p>
-                <h5>Personnummer</h5>
-                <form ng-submit="startLogin()">
-                    <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" />
-                    <button type="submit" class="Button Button--info Button--mini">
-                        Logga in
-                    </button>
-                </form>
+                        <div class="alert well" style="margin-top: 20px" ng-if="model.loginStarted">
+                            Öppna din Bank-ID-applikation för att legitimera dig. Därefter blir du automatiskt inloggad till Din NDR-Startsida.
+                        </div>
 
-                <div class="alert well" style="margin-top: 20px" ng-if="model.loginStarted">
-                    Öppna din Bank-ID-applikation för att legitimera dig. Därefter blir du automatiskt inloggad till Din NDR-Startsida.
+                        <div class="warning well" style="margin-top: 20px" ng-if="model.loginFailed">
+                            Något gick fel, vänligen försök igen.
+                        </div>
+
+                        <div class="warning well" style="margin-top: 20px" ng-if="model.message">
+                            {{model.message}}
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <em>eller</em>
+                    </div>
+                    <div class="col-md-5">
+                        <img src="images/lock_small.png" class="" style="max-height: 50px;" alt=""/>
+                        <h5>Logga in med engångskod</h5>
+                        <form ng-submit="loginPROMKey()">
+                            <input placeholder="DIN KOD (10 SIFFROR)" type="text" ng-model="model.PROMKey" />
+                            <button type="submit" class="Button Button--info Button--mini">
+                                Logga in
+                            </button>
+                        </form>
+                        <div class="warning well" style="margin-top: 20px" ng-if="model.loginPROMKeyFailed">
+                            Något gick fel, vänligen försök igen.
+                        </div>
+                    </div>
                 </div>
+            </tab>
+            <tab heading="Vårdpersonal">
+              <h4 class="col-md-8 col-md-offset-2 pv5-ns">
+                  Logga in med Mobilt BankID (Har du SITHS+kort blir du automatiskt inloggad.)
+                  Som ingloddag användare kan du använda e-thänsterna: 'Registrera', 'Söklistan', 'Diabetesprofilen' m.fl.
+              </h4>
 
-                <div class="warning well" style="margin-top: 20px" ng-if="model.loginFailed">
-                    Något gick fel, vänligen försök igen.
-                </div>
+              <div class="row">
+                  <div class="col-md-6 col-md-offset-3">
+                      <img src="images/bankid_small.png" class="" style="" alt=""/>
+                      <h5>Mobilt Bank-ID </h5>
+                      <form ng-submit="startLogin()">
+                          <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" />
+                          <button type="submit" class="Button Button--info Button--mini">
+                              Logga in
+                          </button>
+                      </form>
 
-                <div class="warning well" style="margin-top: 20px" ng-if="model.message">
-                    {{model.message}}
-                </div>
+                      <div class="alert well" style="margin-top: 20px" ng-if="model.loginStarted">
+                          Öppna din Bank-ID-applikation för att legitimera dig. Därefter blir du automatiskt inloggad till Din NDR-Startsida.
+                      </div>
 
-            </div>
-        </div>
-       <!-- <div class="col-md-4">
-        </div>-->
+                      <div class="warning well" style="margin-top: 20px" ng-if="model.loginFailed">
+                          Något gick fel, vänligen försök igen.
+                      </div>
+
+                      <div class="warning well" style="margin-top: 20px" ng-if="model.message">
+                          {{model.message}}
+                      </div>
+                  </div>
+            </tab>
+        </tabset>
     </div>
 </div>
 

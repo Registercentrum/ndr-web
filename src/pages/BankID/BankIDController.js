@@ -7,20 +7,25 @@ angular.module('ndrApp').controller('BankIDController',
         $scope.model = {
             orderRef : undefined,
             socialnumber : undefined,
+            PROMKey: undefined,
             loginStarted : false,
             loginFailed : false,
+            loginPROMKeyFailed : false,
             message: null
         };
 
         $scope.startLogin = function (){
             console.log("start login");
 
+            if (!$scope.model.socialnumber) return;
+
             $scope.model.loginStarted = true;
             $scope.model.loginFailed = false;
 
             var query = {
-                url: APIconfigService.baseURL + 'bid/ndr/order?socialnumber=' + $scope.model.socialnumber,
-                method: 'GET',
+                url: APIconfigService.baseURL + 'bid/ndr/order?socialnumber=' + $scope.model.socialnumber +
+                    '&SESSIONID=ee28dcf9-02db-4d0b-a7cf-c06050e8bc57',
+                method: 'GET'
             };
 
             $http(query)
@@ -39,6 +44,27 @@ angular.module('ndrApp').controller('BankIDController',
                     $scope.model.loginFailed = true;
                 });
         };
+
+        $scope.loginPROMKey = function () {
+            if (!$scope.model.PROMKey) return;
+
+            $scope.model.loginFailed = false;
+
+            var query = {
+                url: APIconfigService.baseURL + 'prom?PROMKey=' + $scope.model.PROMKey +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=ee28dcf9-02db-4d0b-a7cf-c06050e8bc57',
+                method: 'GET',
+            };
+
+            $http(query)
+                .then(function (response) {
+                    console.log(response);
+                })
+                ['catch'](function (response){
+                    $scope.model.loginPROMKeyFailed = true;
+                });
+        }
 
 
         function waitForLogin(){
@@ -69,7 +95,7 @@ angular.module('ndrApp').controller('BankIDController',
         function login(){
 
             var query = {
-                url: APIconfigService.baseURL + 'CurrentVisitor?SESSIONID=4dc5661f-71b9-434f-8205-26f4cf286643',
+                url: APIconfigService.baseURL + 'CurrentVisitor?SESSIONID=ee28dcf9-02db-4d0b-a7cf-c06050e8bc57',
                 method: 'GET',
                 //data: {socialNumber: socialNumber}
             };

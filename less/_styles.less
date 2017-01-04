@@ -1,5 +1,6 @@
 @import "../bower_components/bootstrap/less/bootstrap";
 @import "_variables";
+@import "_spacing";
 
 @media print {
   .Header, .NavbarVertical-container, .Footer, .PatientProfile-Header, .Button{
@@ -2610,3 +2611,38 @@ img {
   content: "\e600";
 }
 
+// Tabs
+.nav-tabs {
+  border: none;
+}
+
+.nav-tabs > li {
+  float: none;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.nav-tabs > li > a {
+  padding: 20px 15px;
+  margin-right: 0;
+  border-width: 0 0 1px 0;
+  border-bottom-color: @nav-tabs-justified-link-border-color;
+  color: @gray-light;
+  font-weight: bold;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  border-width: 0 0 1px 0;
+  border-bottom-color: @nav-tabs-justified-link-border-color;
+  color: @gray-dark;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 8px;
+    background-color: @ndr-blue;
+  }
+}

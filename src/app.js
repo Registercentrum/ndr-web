@@ -252,6 +252,12 @@ angular.module('ndrApp', [
                     controller : 'AccountHomeController'
                 })
 
+                .state('main.account.survey', {
+                    url: '/diabetesenkaten',
+                    templateUrl: 'src/pages/Account/Survey/survey.html',
+                    controller : 'SurveyController'
+                })
+
                 .state('main.account.report', {
                     url: '/rapportera/:patientID',
                     templateUrl: 'src/pages/Account/Report/report.html',

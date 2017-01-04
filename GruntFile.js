@@ -136,18 +136,16 @@ module.exports = function(grunt) {
                 }
             },
 
-            scripts: {
+            less: {
                 files: [
                     'src/components/*/*.less',
-                    'src/components/*/*.html',
-                    'src/pages/*/*.html',
+                    // 'src/components/*/*.html',
+                    // 'src/pages/*/*.html',
                     'src/pages/**/*.less',
                     './less/*.less',
-                    'bower_components/bootstrap/less/*.less'
                 ],
                 tasks: ['concat:less', 'less'],
                 options: {
-
                     spawn: false,
                     livereload: 1343
                 }
