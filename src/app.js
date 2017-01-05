@@ -92,10 +92,10 @@ angular.module('ndrApp', [
                     }
                 })
 
-                .state('main.bankid', {
-                    url: '/bankid',
-                    controller : 'BankIDController',
-                    templateUrl: 'src/pages/BankID/bankID.html',
+                .state('main.login', {
+                    url: '/login',
+                    controller : 'LoginController',
+                    templateUrl: 'src/pages/Login/login.html',
                     resolve: {
                     }
                 })

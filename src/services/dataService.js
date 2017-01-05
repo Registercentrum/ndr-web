@@ -349,7 +349,7 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
-            query.SESSIONID = 'ee28dcf9-02db-4d0b-a7cf-c06050e8bc57';
+            query.SESSIONID = '125cb2c1-109e-4011-aa1e-b42e23fbbf77';
 
             return $.ajax({
                 url: APIconfigService.baseURL + 'subject',
