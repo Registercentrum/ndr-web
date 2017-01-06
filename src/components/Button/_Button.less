@@ -69,13 +69,13 @@
 .Button--info {
   &:extend(.btn-info);
   color: #fff;
-  background: @ndr-blue-dark;
+  background-color: @ndr-blue-dark;
   border: 1px solid @ndr-blue-dark;
   &:hover,
   &:focus,
   &.focus {
     text-decoration: none;
-    background-color: rgba(red(@ndr-blue), green(@ndr-blue), blue(@ndr-blue),0.8);
+    background-color: lighten(@ndr-blue-dark, 10%);
     color: @ndr-white;
   }
 }

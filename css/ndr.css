@@ -9149,14 +9149,14 @@ fieldset[disabled] .Button {
 }
 .Button--info {
   color: #fff;
-  background: #0058C3;
+  background-color: #0058C3;
   border: 1px solid #0058C3;
 }
 .Button--info:hover,
 .Button--info:focus,
 .Button--info.focus {
   text-decoration: none;
-  background-color: rgba(116, 186, 216, 0.8);
+  background-color: #006ff6;
   color: #FFFFFF;
 }
 .Button--white {
