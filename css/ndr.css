@@ -6681,6 +6681,11 @@ h3, .h3 {
     background-color: #eee;
   }
 }
+input {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-color: #999999;
+}
 input:-webkit-autofill {
   color: #fff !important;
 }
@@ -9096,7 +9101,7 @@ img {
   padding: 8px 30px;
   font-weight: 300;
   letter-spacing: 0.03em;
-  border-radius: 3px;
+  text-transform: uppercase;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -9143,9 +9148,9 @@ fieldset[disabled] .Button {
   background-color: transparent;
 }
 .Button--info {
-  background: #74BAD8;
   color: #fff;
-  border: 1px solid #74BAD8;
+  background: #0058C3;
+  border: 1px solid #0058C3;
 }
 .Button--info:hover,
 .Button--info:focus,

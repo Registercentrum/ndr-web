@@ -7,7 +7,7 @@
     <tabset justified>
       <tab heading="För dig med diabetes">
         <div ng-if="!model.loginStarted">
-          <h4 class="col-md-6 col-md-offset-3 pv5-ns">
+          <h4 class="col-md-6 col-md-offset-3 pv5-ns f2 lh-copy">
             Logga in med Mobilt BankID för att se och besvara Diabetesenkäten. Om du inte har
             Mobilt BankId kan du få engångskod av din vårdenhet.
           </h4>
@@ -15,11 +15,11 @@
           <div class="row">
             <div class="col-md-5">
               <img src="images/bankid_small.png" class="" style="" alt=""/>
-              <h5>Logga in med Mobilt Bank-ID </h5>
+              <h5 class="f2 fw2">Logga in med Mobilt Bank-ID </h5>
               <form ng-submit="startLogin()">
-                <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" />
-                <button type="submit" class="Button Button--info Button--mini">
-                  Logga in
+                <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
+                <button type="submit" class="Button Button--info">
+                  Förtsätt
                 </button>
               </form>
 
@@ -31,16 +31,16 @@
                 {{model.message}}
               </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 pt5 mt3 f2 fw2">
               <em>eller</em>
             </div>
             <div class="col-md-5">
               <img src="images/lock_small.png" class="" style="max-height: 50px;" alt=""/>
-              <h5>Logga in med engångskod</h5>
+              <h5 class="f2 fw2">Logga in med engångskod</h5>
               <form ng-submit="loginPROMKey()">
-                <input placeholder="DIN KOD (10 SIFFROR)" type="text" ng-model="model.PROMKey" />
-                <button type="submit" class="Button Button--info Button--mini">
-                  Logga in
+                <input placeholder="DIN KOD (10 SIFFROR)" type="text" class="db w-80 pa3 mb4 center" ng-model="model.PROMKey" />
+                <button type="submit" class="Button Button--info">
+                  Förtsätt
                 </button>
               </form>
               <div class="warning well" style="margin-top: 20px" ng-if="model.loginPROMKeyFailed">
@@ -55,7 +55,7 @@
         </div>
       </tab>
       <tab heading="Vårdpersonal">
-        <h4 class="col-md-8 col-md-offset-2 pv5-ns">
+        <h4 class="col-md-8 col-md-offset-2 pv5-ns f2 lh-copy">
           Logga in med Mobilt BankID (Har du SITHS+kort blir du automatiskt inloggad.)
           Som ingloddag användare kan du använda e-thänsterna: 'Registrera', 'Söklistan', 'Diabetesprofilen' m.fl.
         </h4>
@@ -63,11 +63,11 @@
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
             <img src="images/bankid_small.png" class="" style="" alt=""/>
-            <h5>Mobilt Bank-ID </h5>
+            <h5 class="f2 fw2">Mobilt Bank-ID </h5>
             <form ng-submit="startLogin()">
-              <input placeholder="19ÅÅMMDDXXXX" type="text" ng-model="model.socialnumber" />
-              <button type="submit" class="Button Button--info Button--mini">
-                Logga in
+              <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
+              <button type="submit" class="Button Button--info">
+                Förtsätt
               </button>
             </form>
 

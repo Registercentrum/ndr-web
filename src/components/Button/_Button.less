@@ -14,7 +14,7 @@
   padding: 8px 30px;
   font-weight: 300;
   letter-spacing: 0.03em;
-  border-radius: 3px;
+  text-transform: uppercase;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   .user-select(none);
 
@@ -68,9 +68,9 @@
 
 .Button--info {
   &:extend(.btn-info);
-  background: @ndr-blue;
   color: #fff;
-  border: 1px solid @ndr-blue;
+  background: @ndr-blue-dark;
+  border: 1px solid @ndr-blue-dark;
   &:hover,
   &:focus,
   &.focus {
