@@ -81,7 +81,12 @@ angular.module('ndrApp').controller('LoginController',
               login();
             }
           })
-          ['catch'](console.error.bind(console));
+          ['catch'](function (response) {
+            console.log("failed");
+            clearInterval(waitFor);
+            $scope.model.loginStarted = false;
+            $scope.model.loginFailed = true;
+          });
       }, 2000);
     }
 
@@ -105,7 +110,11 @@ angular.module('ndrApp').controller('LoginController',
             $scope.model.message = 'Du är inte en användare i NDR.';
           }
       })
-      ['catch'](console.error.bind(console));
+      ['catch'](function (response) {
+        console.log("failed");
+        $scope.model.loginStarted = false;
+        $scope.model.loginFailed = true;
+      });
     }
 
     function checkForLoggedIn () {
