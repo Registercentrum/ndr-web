@@ -1,5 +1,80 @@
-﻿<div class="row Survey">
-  <div class="col-md-5">
-    <h2 class="Page-title">Diabetsenkäten</h2>
+﻿<div class="Panel">
+  <div class="row Survey">
+    <h2 class="col-md-12 Page-title">Diabetsenkäten</h2>
+
+    <tabset justified>
+      <tab heading="Administrera enkäter">
+        <p class="pv5-ns pv4">Det finns {{ model.prominvites.length }} besvarade enkäter att signera</p>
+
+        <h5 class="bb b--light-gray pv1 mb4 gray">Filtering</h5>
+        <div class="row pb4">
+          <div class="col-sm-2">Personnummer</div>
+          <div class="col-sm-10">
+            <input
+              placeholder="19ÅÅMMDDXXXX"
+              type="text"
+              ng-model="model.promFilter.socialnumber"
+              ng-change="filterProm()"
+            />
+          </div>
+        </div>
+        <div class="row pb4">
+          <div class="col-sm-2">Visa</div>
+          <div class="col-sm-10">
+            <a href class="Button Button--info">Alla</a>
+            <a href class="Button Button--default">Nya</a>
+            <a href class="Button Button--default">Avböt enkät</a>
+          </div>
+        </div>
+
+        <h5 class="bb b--light-gray pv1 mv4 gray">Resultat</h5>
+        <table class="Table borderless" style="">
+          <thead>
+            <tr>
+              <th class="" width="15">Personnummer</th>
+              <th class="" width="15">Skickad</th>
+              <th class="" width="15">Öppen till</th>
+              <th class="" width="15">Besvarad</th>
+              <th class="" width="15">Signerad</th>
+              <th class="" width="25">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="invite in model.prominvites">
+              <td>{{ invite.subjectID }}</td>
+              <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
+              <td>{{ invite.openUntil | date:'yyyy-MM-dd' }}</td>
+              <td class="ttu b">
+                <span class="red" ng-if="!invite.submitted">nej</span>
+                <span class="green" ng-if="invite.submitted">ja</span>
+              </td>
+              <td class="ttu b">
+                <span class="red" ng-if="!invite.approvedNDR">nej</span>
+                <span class="green" ng-if="invite.approvedNDR">ja</span>
+              </td>
+              <td>
+                <a href class="Button Button--info Button--mini">Ibjudan</a>
+                <a ng-if="invite.submitted" href class="Button Button--info Button--mini">Enkätsvar</a>
+                <a ng-if="!invite.approvedNDR" href class="Button Button--warning Button--mini">Signera</a>
+                <a href class="Button Button--info Button--mini">Ta bort</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </tab>
+      <tab heading="Ny enkät">
+        <h4>Ny enkätinbjudan</h4>
+        <div class="col-md-3">
+          <label>Personnummer</label>
+          <input
+            placeholder="19ÅÅMMDDXXXX"
+            type="text"
+            class="db w-100"
+            ng-model="model.socialnumbers[0]"
+            ng-change="fetchSubject(0)"
+          />
+        </div>
+      </tab>
+    </tabset>
   </div>
 </div>

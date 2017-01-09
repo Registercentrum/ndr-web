@@ -145,7 +145,10 @@ angular.module('ndrApp')
 
         this.getSubjectBySocialNumber = function (socialNumber) {
             var query = {
-                url: APIconfigService.baseURL + 'Subject?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+                url: APIconfigService.baseURL + 'Subject' +
+                    '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=1ad3dcf8-9d5e-4337-a689-e142f15488ec',
                 method: 'POST',
                 data: {socialNumber: socialNumber}
             };
@@ -187,7 +190,10 @@ angular.module('ndrApp')
 
         this.getInvites = function () {
             var query = {
-                url: APIconfigService.baseURL + 'invite?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+                url: APIconfigService.baseURL + 'prominvite' +
+                    '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=1ad3dcf8-9d5e-4337-a689-e142f15488ec',
                 method: 'GET'
             }
 
@@ -349,7 +355,7 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
-            query.SESSIONID = '125cb2c1-109e-4011-aa1e-b42e23fbbf77';
+            query.SESSIONID = '1ad3dcf8-9d5e-4337-a689-e142f15488ec';
 
             return $.ajax({
                 url: APIconfigService.baseURL + 'subject',

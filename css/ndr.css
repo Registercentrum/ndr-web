@@ -6682,9 +6682,7 @@ h3, .h3 {
   }
 }
 input {
-  border-width: 0;
-  border-bottom-width: 1px;
-  border-color: #999999;
+  border: 1px solid #999999;
 }
 input:-webkit-autofill {
   color: #fff !important;
