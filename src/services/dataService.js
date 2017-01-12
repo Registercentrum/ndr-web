@@ -148,7 +148,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'Subject' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=1ad3dcf8-9d5e-4337-a689-e142f15488ec',
+                    '&SESSIONID=999b',
                 method: 'POST',
                 data: {socialNumber: socialNumber}
             };
@@ -193,7 +193,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'prominvite' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=1ad3dcf8-9d5e-4337-a689-e142f15488ec',
+                    '&SESSIONID=999b',
                 method: 'GET'
             }
 
@@ -205,12 +205,29 @@ angular.module('ndrApp')
 
         };
 
-        this.updateInvite = function (inviteId, accountId) {
+        this.updateInvite = function (inviteId, updatedInvite) {
+            var query = {
+                url: APIconfigService.baseURL + 'prominvite/' + inviteId +
+                    '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=999b',
+                method: 'PUT',
+                data: updatedInvite
+            }
 
+            return $http(query);
         };
 
-        this.deleteInvite = function (inviteId, accountId) {
+        this.deleteInvite = function (inviteId) {
+            var query = {
+                url: APIconfigService.baseURL + 'prominvite/' + inviteId +
+                    '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=999b',
+                method: 'DELETE'
+            }
 
+            return $http(query);
         };
 
 
@@ -261,26 +278,40 @@ angular.module('ndrApp')
                 });
         };
 
-        this.getPROMFormMeta = function (callback) {
-            var query = query || {};
-            var self = this;
-            query.APIKey = APIconfigService.APIKey;
-
-            if (this.data.promFormMeta != null)
-                callback(this.data.promFormMeta);
-            else {
-                $.ajax({
-                    url     : APIconfigService.baseURL + 'PROMForm',
-                    data    : query,
-                    type    : 'GET',
-                    dataType: 'json',
-                    success : function(d) {
-                        self.data.promFormMeta = d;
-                        callback(d);
-                    }
-                });
+        this.getPROMFormMeta = function () {
+            var query = {
+                url: APIconfigService.baseURL + 'promform' +
+                    '?APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=999b',
+                method: 'GET'
             }
+
+            if (!this.data.promFormMeta)
+                this.data.promFormMeta = $http(query);
+
+            return this.data.promFormMeta;
         };
+
+        // this.getPROMFormMeta = function (callback) {
+        //     var query = query || {};
+        //     var self = this;
+        //     query.APIKey = APIconfigService.APIKey;
+
+        //     if (this.data.promFormMeta != null)
+        //         callback(this.data.promFormMeta);
+        //     else {
+        //         $.ajax({
+        //             url     : APIconfigService.baseURL + 'PROMForm',
+        //             data    : query,
+        //             type    : 'GET',
+        //             dataType: 'json',
+        //             success : function(d) {
+        //                 self.data.promFormMeta = d;
+        //                 callback(d);
+        //             }
+        //         });
+        //     }
+        // };
 
         this.getKOO = function (callback) {
             var query = query || {};
@@ -355,7 +386,7 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
-            query.SESSIONID = '1ad3dcf8-9d5e-4337-a689-e142f15488ec';
+            query.SESSIONID = '999b';
 
             return $.ajax({
                 url: APIconfigService.baseURL + 'subject',

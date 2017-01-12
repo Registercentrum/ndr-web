@@ -4,7 +4,7 @@
 
     <tabset justified>
       <tab heading="Administrera enkäter">
-        <p class="pv5-ns pv4">Det finns {{ model.prominvites.length }} besvarade enkäter att signera</p>
+        <p class="pv5-ns pv4">Det finns {{ model.prominvites.new.length }} besvarade enkäter att signera</p>
 
         <h5 class="bb b--light-gray pv1 mb4 gray">Filtering</h5>
         <div class="row pb4">
@@ -13,17 +13,32 @@
             <input
               placeholder="19ÅÅMMDDXXXX"
               type="text"
-              ng-model="model.promFilter.socialnumber"
-              ng-change="filterProm()"
+              ng-model="model.socialNumberFilter"
+              ng-change="setDisplayed('socialnumber')"
             />
           </div>
         </div>
         <div class="row pb4">
           <div class="col-sm-2">Visa</div>
           <div class="col-sm-10">
-            <a href class="Button Button--info">Alla</a>
-            <a href class="Button Button--default">Nya</a>
-            <a href class="Button Button--default">Avböt enkät</a>
+            <button
+              ng-click="setDisplayed('all')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType !== 'new' && model.filterType !== 'declined'}">
+              Alla ({{ model.prominvites.all.length }})
+            </button>
+            <button
+              ng-click="setDisplayed('new')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'new'}">
+              Nya ({{ model.prominvites.new.length }})
+            </button>
+            <button
+              ng-click="setDisplayed('declined')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'declined'}">
+              Avbört enkät ({{ model.prominvites.declined.length }})
+            </button>
           </div>
         </div>
 
@@ -31,32 +46,53 @@
         <table class="Table borderless" style="">
           <thead>
             <tr>
-              <th class="" width="15">Personnummer</th>
-              <th class="" width="15">Skickad</th>
-              <th class="" width="15">Öppen till</th>
-              <th class="" width="15">Besvarad</th>
-              <th class="" width="15">Signerad</th>
-              <th class="" width="25">&nbsp;</th>
+              <th class="tc">Personnummer</th>
+              <th class="tc">Skickad</th>
+              <th class="tc">Öppen till</th>
+              <th class="tc">Besvarad</th>
+              <th class="tc">Signerad</th>
+              <th class="tc">&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="invite in model.prominvites">
-              <td>{{ invite.subjectID }}</td>
+            <tr ng-repeat="invite in model.prominvites.displayed" class="tc">
+              <td>{{ invite.subject.socialNumber }}</td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td>{{ invite.openUntil | date:'yyyy-MM-dd' }}</td>
-              <td class="ttu b">
-                <span class="red" ng-if="!invite.submitted">nej</span>
-                <span class="green" ng-if="invite.submitted">ja</span>
+              <td class="ttu">
+                <span ng-if="!invite.submittedAt && !invite.declined">ej besvarad</span>
+                <span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>
               </td>
-              <td class="ttu b">
+              <td class="ttu">
                 <span class="red" ng-if="!invite.approvedNDR">nej</span>
-                <span class="green" ng-if="invite.approvedNDR">ja</span>
+                <span ng-if="invite.approvedNDR">ja</span>
               </td>
-              <td>
-                <a href class="Button Button--info Button--mini">Ibjudan</a>
-                <a ng-if="invite.submitted" href class="Button Button--info Button--mini">Enkätsvar</a>
-                <a ng-if="!invite.approvedNDR" href class="Button Button--warning Button--mini">Signera</a>
-                <a href class="Button Button--info Button--mini">Ta bort</a>
+              <td class="tl">
+                <button
+                  ng-click="showInviteModal(invite)"
+                  ng-disabled="invite.submittedAt"
+                  class="Button Button--info Button--mini">
+                  Ibjudan
+                </button>
+                <button
+                  ng-click="showAnswersModal(invite)"
+                  ng-if="invite.submittedAt && invite.approvedNDR"
+                  class="Button Button--info Button--mini">
+                  Enkätsvar
+                </button>
+                <button
+                  ng-click="showAnswersModal(invite)"
+                  ng-if="!invite.approvedNDR"
+                  ng-disabled="!invite.submittedAt"
+                  class="Button Button--warning Button--mini">
+                  Signera
+                </button>
+                <button
+                  ng-click="deleteInvite(invite.inviteID)"
+                  ng-disabled="invite.submittedAt"
+                  class="Button Button--info Button--mini">
+                  Ta bort
+                </button>
               </td>
             </tr>
           </tbody>
@@ -78,3 +114,73 @@
     </tabset>
   </div>
 </div>
+
+<script type="text/ng-template" id="inviteModalTmpl">
+  <div class="modal-body text-center">
+    <div class="cf bb bw5 pb2 mb5">
+      <p class="fl f2 b">{{ model.selectedInvite.unit.name }}</p>
+      <p class="fr b">{{ model.selectedInvite.subject.socialNumber }}</p>
+    </div>
+
+
+    <h3 class="mb5">Inbjudan att besvara Diabetesenkäten</h3>
+    <div class="tc mw8 center">
+      <p class="f2 mb5">
+        Din diabetesmottagning önskar att du besvarar diabetesenkäten
+        inför ditt nästa besök.
+      </p>
+      <p class="f2 mb5">
+        Du hittar enkäten på www.ndr.nu och du kan logga in med Mobilt BankID
+        eller med detta engångslösenord:
+      </p>
+      <p class="dib f2 pa4 mb5 ba">{{ model.selectedInvite.key }}</p>
+      <p>
+        Engångslösenordet gäller i 24 timmar från det att du loggar in.
+        OBS! Engångslösenordet ger dig möjlighet att besvara enkäten men
+        av säkerhetsskäl kan du inte se din diabetesprofil. För att få tillgång
+        till den behöver du logga in med Mobilt BankID.
+      </p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="answersModalTmpl">
+  <div class="modal-body text-center">
+    <p class="cf f2 tl bb bw1 pb2 mb5">
+      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+    </p>
+
+    <h3 class="mb5 gray">Den här patienten har en enkät som inte är överförd till NDR</h3>
+    <h4 class="mb5 f-subheadline b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
+
+    <div class="cf b pb2 tl tc-ns bb b--gray">
+      <div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>
+      <div class="fl-ns pa2 w-40-ns">Värde</div>
+      <div class="fl-ns pa2 w-20-ns">Förändring</div>
+    </div>
+    <div ng-repeat="outcome in model.selectedInvite.outcomes" class="cf">
+      <div class="fl-ns pa2 w-40-ns tl tr-ns">{{ outcome.dimension.desc }}</div>
+      <div class="fl-ns pv2 w-40-ns tl relative br bl b--light-gray" style="padding-left: 1px; padding-right: 1px;">
+        <span class="dib bg-blue" style="height: 20px; width: {{ outcome.outcome }}%"></span>
+        <span class="absolute ml1" style="top: 2px; left: {{ outcome.outcome }}%">
+          {{ outcome.outcome | number: 0 }}
+        </span>
+      </div>
+      <div class="fl-ns pa2 w-20-ns tl tc-ns">n/a</div>
+    </div>
+
+    <!-- <textarea class="db w-100 h5">{{ model.selectedInvite.copyText }}</textarea> -->
+
+    <button
+      ng-click="toggleCopyView()"
+      class="Button Button--info mt2 mt4-ns mr4-ns">
+      Kopiera tabell till urklipp
+    </button>
+    <button
+      ng-if="!model.selectedInvite.approvedNDR"
+      ng-click="signInvite(model.selectedInvite)"
+      class="Button Button--info mt2 mt4-ns">
+      Signera (förs över till NDR)
+    </button>
+  </div>
+</script>
