@@ -1,10 +1,12 @@
 ﻿<div class="Panel">
   <div class="row Survey">
-    <h2 class="col-md-12 Page-title">Diabetsenkäten</h2>
+    <div class="row">
+      <h2 class="col-md-12 Page-title mt0">Diabetsenkäten</h2>
+    </div>
 
-    <tabset justified>
+    <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
       <tab heading="Administrera enkäter">
-        <p class="pv5-ns pv4">Det finns {{ model.prominvites.new.length }} besvarade enkäter att signera</p>
+        <p class="pv5-ns pv4">Det finns {{ model.invites.new.length }} besvarade enkäter att signera</p>
 
         <h5 class="bb b--light-gray pv1 mb4 gray">Filtering</h5>
         <div class="row pb4">
@@ -25,19 +27,19 @@
               ng-click="setDisplayed('all')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType !== 'new' && model.filterType !== 'declined'}">
-              Alla ({{ model.prominvites.all.length }})
+              Alla ({{ model.invites.all.length }})
             </button>
             <button
               ng-click="setDisplayed('new')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType === 'new'}">
-              Nya ({{ model.prominvites.new.length }})
+              Nya ({{ model.invites.new.length }})
             </button>
             <button
               ng-click="setDisplayed('declined')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType === 'declined'}">
-              Avbört enkät ({{ model.prominvites.declined.length }})
+              Avbört enkät ({{ model.invites.declined.length }})
             </button>
           </div>
         </div>
@@ -55,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="invite in model.prominvites.displayed" class="tc">
+            <tr ng-repeat="invite in model.invites.displayed" class="tc">
               <td>{{ invite.subject.socialNumber }}</td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td>{{ invite.openUntil | date:'yyyy-MM-dd' }}</td>
@@ -98,17 +100,99 @@
           </tbody>
         </table>
       </tab>
-      <tab heading="Ny enkät">
-        <h4>Ny enkätinbjudan</h4>
-        <div class="col-md-3">
-          <label>Personnummer</label>
-          <input
-            placeholder="19ÅÅMMDDXXXX"
-            type="text"
-            class="db w-100"
-            ng-model="model.socialnumbers[0]"
-            ng-change="fetchSubject(0)"
-          />
+
+      <tab heading="Ny enkät" active="true">
+        <div class="row">
+          <h4 class="col-md-12 b mt4-ns">Ny enkätinbjudan</h4>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <label class="normal f4">Personnummer</label>
+            <input
+              placeholder="19ÅÅMMDDXXXX"
+              type="text"
+              class="db w-100 pa2"
+              ng-model="model.newInvite.socialnumber"
+              ng-change="fetchSubject(0)"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="normal f4">Enäten är öppen till</label>
+            <div class="FilterDatePopup">
+              <div class="input-group FilterDatePopup-group">
+                <span class="input-group-addon">
+                  <button
+                    type="button"
+                    class="FilterDatePopup-button"
+                    ng-click="openDatePicker($event, 'from')"
+                  >
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  datepicker-popup="{{ model.datePicker.format}}"
+                  ng-model="model.newInvite.openUntil"
+                  is-open="model.datePicker.opened"
+                  min-date="model.datePicker.minDate"
+                  datepicker-options="model.datePicker.dateOptions"
+                  ng-required="true"
+                  close-text="Close"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="normal f4">Etikett (valfri)</label>
+            <input
+              placeholder="Pär"
+              type="text"
+              class="db w-100 pa2"
+              ng-model="model.newInvite.tag"
+              ng-change="fetchSubject(0)"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="normal f4">Diabetystyp (hämtas automatiskt)</label>
+            <input
+              type="text"
+              class="db w-100 pa2"
+              ng-model="model.newInvite.diabetesType"
+            />
+          </div>
+        </div>
+        <div class="row pt2 pt4-ns">
+          <div class="col-md-3">
+            <button
+              ng-click="createInvite()"
+              ng-disabled="!model.newInvite.subjectID || !model.newInvite.openUntil"
+              class="Button Button--info w-100">
+              Skappa
+            </button>
+          </div>
+          <div class="col-md-9 pt3">
+            <p ng-if="model.newInviteError" class="red">
+              {{ model.newInviteError }}
+            </p>
+            <p ng-if="model.newInviteDiabetesMissing">
+              <span class="red">Diabetes saknas.</span> Do behöver till Diabetestyp i
+              <a ui-sref="main.account.patient({patientID: model.newInvite.subjectID})">
+                patientens profil
+              </a> innan du kan fortsätta.
+            </p>
+          </div>
+        </div>
+        <div class="row" ng-if="model.createdInvite">
+          <div class="col-md-12 f2 green pt4">
+            Du har skapat ny enkät för:
+            <b>{{ model.createdInvite.subject.socialNumber }}</b>
+            <a
+              href
+              ng-click="showInviteModal(model.createdInvite)">
+              Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
+            </button>
+          </div>
         </div>
       </tab>
     </tabset>
@@ -169,7 +253,7 @@
       <div class="fl-ns pa2 w-20-ns tl tc-ns">n/a</div>
     </div>
 
-    <!-- <textarea class="db w-100 h5">{{ model.selectedInvite.copyText }}</textarea> -->
+    <!-- <textarea class="db w-100 pa2 h5">{{ model.selectedInvite.copyText }}</textarea> -->
 
     <button
       ng-click="toggleCopyView()"
@@ -177,7 +261,6 @@
       Kopiera tabell till urklipp
     </button>
     <button
-      ng-if="!model.selectedInvite.approvedNDR"
       ng-click="signInvite(model.selectedInvite)"
       class="Button Button--info mt2 mt4-ns">
       Signera (förs över till NDR)

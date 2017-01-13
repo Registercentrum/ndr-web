@@ -2,15 +2,31 @@
 
 angular.module('ndrApp')
   .controller('SurveyController', [
-                 '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService',
-        function ($scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService) {
+                 '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService', 'accountService',
+        function ($scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService,   accountService) {
 
         var account = $scope.accountModel;
         console.log('SurveyController: Init');
 
         $scope.model = {
-          socialnumbers: [],
-          prominvites: {
+          createdInvite: null,
+          newInvite: {
+            socialnumber: null,
+            subjectID: null,
+            openUntil: null,
+            tag: null,
+            diabetesType: null,
+          },
+          datePicker: {
+            opened: false,
+            format: "yyyy-MM-dd",
+            minDate: new Date(),
+            dateOptions: {
+              formatYear: 'yy',
+              startingDay: 1
+            }
+          },
+          invites: {
             all      : [], // all the invites
             displayed: [], // currently shown in the interface, can be set to new or declined
             new      : [], // answered but not signed yet
@@ -21,28 +37,36 @@ angular.module('ndrApp')
           selectedInvite: null
         };
 
-        dataService.getInvites()
-          .then(function (response) {
-            $scope.model.prominvites.all = response.data.slice();
-            $scope.model.prominvites.displayed = response.data.slice();
-            $scope.model.prominvites.new = _.filter(response.data, function (invite) {
-              return invite.submittedAt && !invite.approvedNDR;
+        // *********************************************************************
+        // List Tab
+        // *********************************************************************
+
+        getInvites();
+
+        function getInvites () {
+          dataService.getInvites()
+            .then(function (response) {
+              $scope.model.invites.all = response.data.slice();
+              $scope.model.invites.displayed = response.data.slice();
+              $scope.model.invites.new = _.filter(response.data, function (invite) {
+                return invite.submittedAt && !invite.approvedNDR;
+              });
+              $scope.model.invites.declined = _.filter(response.data, function (invite) {
+                return invite.declined;
+              });
             });
-            $scope.model.prominvites.declined = _.filter(response.data, function (invite) {
-              return invite.declined;
-            });
-          });
+        }
 
         $scope.setDisplayed = function (type) {
           $scope.model.filterType = type;
 
           if (type === "socialnumber") {
-            $scope.model.prominvites.displayed =
-              _.filter($scope.model.prominvites.all, function (invite) {
+            $scope.model.invites.displayed =
+              _.filter($scope.model.invites.all, function (invite) {
                 return invite.subject.socialNumber.indexOf($scope.model.socialNumberFilter) !== -1
               });
           } else {
-            $scope.model.prominvites.displayed = $scope.model.prominvites[type];
+            $scope.model.invites.displayed = $scope.model.invites[type];
           }
         }
 
@@ -95,18 +119,7 @@ angular.module('ndrApp')
         $scope.deleteInvite = function (inviteID) {
           dataService.deleteInvite(inviteID)
             .then(function (response) {
-              console.log(response)
-              // var invites = _.filter($scope.model.prominvites.all, function (invite) {
-              //   return inviteID !== invite.inviteID;
-              // });
-              // $scope.model.prominvites.all = invites;
-              // $scope.model.prominvites.new = _.filter(invites, function (invite) {
-              //   return invite.submittedAt && !invite.approvedNDR;
-              // });
-              // $scope.model.prominvites.declined = _.filter(invites, function (invite) {
-              //   return invite.declined;
-              // });
-              // $scope.setDisplayed($scope.model.filterType);
+              getInvites()
             })
             ["catch"](function (error) {
               console.log(error)
@@ -118,14 +131,70 @@ angular.module('ndrApp')
         }
 
 
-        $scope.fetchSubject = function (index) {
-          var sn = $scope.model.socialnumbers[index]
+        // *********************************************************************
+        // New Invite Tab
+        // *********************************************************************
 
-          if (!sn || sn.length !== 12) return false;
+        $scope.createInvite = function () {
+          var invite = $scope.model.newInvite;
+
+          if (!invite.subjectID || !invite.openUntil) return false;
+
+          dataService.createInvite({
+            subjectID: invite.subjectID,
+            openUntil: moment(invite.openUntil).format("YYYY-MM-DD")
+          })
+            .then(function (response) {
+              $scope.model.createdInvite = response.data;
+              $scope.model.newInvite ={
+                socialnumber: null,
+                subjectID: null,
+                openUntil: null,
+                tag: null,
+                diabetesType: null
+              };
+              getInvites();
+            })
+            ["catch"](function (error) {
+              $scope.model.newInviteError = "Något gick fel, vänligen försök igen.";
+            });
+        }
+
+
+        $scope.fetchSubject = function (index) {
+          var sn = $scope.model.newInvite.socialnumber
+
+          if (!sn || !sn.match(accountService.helpers.pnrRegex)) return false;
+
+          $scope.model.newInviteError = null;
+          $scope.model.newInviteDiabetesMissing = false;
+          $scope.model.newInvite.subjectID = null;
+          $scope.model.newInvite.diabetesType = null;
 
           dataService.getSubjectBySocialNumber(sn)
             .then(function (subject) {
-              console.log(subject)
+              if (!subject.subjectID) {
+                $scope.model.newInviteError = "Personnummer är felaktigt eller hittas inte i folkbokföringen.";
+                return false;
+              }
+
+              if (subject.diabetesType === null) {
+                $scope.model.newInviteDiabetesMissing = true;
+              } else {
+                $scope.model.newInvite.diabetesType = subject.diabetesTypeText;
+              }
+
+              $scope.model.newInvite.subjectID = subject.subjectID;
             })
+            ["catch"](function (error) {
+              $scope.model.newInviteError = "Något gick fel, vänligen försök igen.";
+            });
         };
+
+        $scope.openDatePicker = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.model.datePicker.opened = true;
+        };
+
   }])
