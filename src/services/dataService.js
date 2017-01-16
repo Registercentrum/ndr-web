@@ -176,7 +176,7 @@ angular.module('ndrApp')
 
         this.saveContact = function (data) {
             var query = {
-              url: APIconfigService.baseURL + 'Contact/' + (data.contactID || '') + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+              url: APIconfigService.baseURL + 'Contact/' + (data.contactID || '') + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey + '&SESSIONID=999b',
               method: data.contactID ? 'PUT' : 'POST',
               data: data
             };

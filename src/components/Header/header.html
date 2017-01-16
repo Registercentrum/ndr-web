@@ -21,7 +21,26 @@
                             <a ui-sref="main.account.report" title="">Rapportera</a>
                         </li>
                         <li role="presentation">
+                            <a ui-sref="main.account.survey" title="">Diabetesenkäten</a>
+                        </li>
+                        <li role="presentation">
                             <a ui-sref="main.currentUser" title="">Mitt användarkonto</a>
+                        </li>
+
+                        <li ng-show="accountModel.subject" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                            Subjekt
+                        </li>
+
+                        <li ng-show="accountModel.subject" role="presentation">
+                            <a ui-sref="main.subject.home" title="">Översikt</a>
+                        </li>
+
+                        <li ng-show="accountModel.subject" role="presentation">
+                            <a ui-sref="main.subject.surveys" title="">Enkäter</a>
+                        </li>
+
+                        <li ng-show="accountModel.subject" role="presentation">
+                            <a ui-sref="main.subject.profile" title="">Profil</a>
                         </li>
 
                         <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">

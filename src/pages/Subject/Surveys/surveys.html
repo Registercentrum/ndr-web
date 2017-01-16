@@ -1,7 +1,21 @@
 <div class="row">
   <div class="col-md-12">
     <div class="Panel">
-      <h3>Mina enkäter</h3>
+      <h1>Mina enkäter</h1>
+      <div ng-repeat="mainGroup in PROMFormMeta">
+        <div class="pv4 mv5 f2 b bb bt b--light-gray gray tc">{{ mainGroup.description }}</div>
+        <div ng-repeat="group in mainGroup.questiongroups | orderBy: 'sortorder'" class="mb5">
+          <div class="f2 light-blue">{{ group.description}}</div>
+          <div ng-repeat="question in group.questions" class="pb4 mb4 pl4">
+            <h4>{{ $index + 1}}. {{ question.question }}</h4>
+            <div class="pl4">
+              <label ng-repeat="answer in question.domain.domainValues" class="db mr4 normal">
+                <input type="radio" /> <span class="ml2 gray">{{ answer.text }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
