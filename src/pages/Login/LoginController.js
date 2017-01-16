@@ -14,7 +14,7 @@ angular.module('ndrApp').controller('LoginController',
       message           : null
     };
 
-    $scope.startLogin = function () {
+    $scope.startLogin = function (type) {
       console.log("start login");
 
       if (!$scope.model.socialnumber) return;
@@ -33,7 +33,7 @@ angular.module('ndrApp').controller('LoginController',
         .then(function (response) {
           console.log("response", response);
           $scope.model.orderRef = response.data.orderRef;
-          waitForLogin();
+          waitForLogin(type);
         })
         ['catch'](function (response) {
           console.log("failed");
@@ -64,7 +64,7 @@ angular.module('ndrApp').controller('LoginController',
       });
     }
 
-    function waitForLogin () {
+    function waitForLogin (type) {
       var waitFor = setInterval(function () {
         var query = {
           url: APIconfigService.baseURL + 'bid/ndr/collect' +
@@ -78,7 +78,7 @@ angular.module('ndrApp').controller('LoginController',
 
             if (response.status === 200) {
               clearInterval(waitFor);
-              login();
+              login(type);
             }
           })
           ['catch'](function (response) {
@@ -90,7 +90,7 @@ angular.module('ndrApp').controller('LoginController',
       }, 2000);
     }
 
-    function login () {
+    function login (type) {
 
       var query = {
         url: APIconfigService.baseURL + 'CurrentVisitor' +
@@ -101,13 +101,25 @@ angular.module('ndrApp').controller('LoginController',
       $http(query)
         .then(function (response) {
           console.log("response login", response);
-          if (response.data.isUser) {
-            $scope.model.message = null;
-            checkForLoggedIn();
-            $state.go('main.account.home', {}, {reload: true});
+          if (type === "user") {
+            if (response.data.isUser) {
+              $scope.model.message = null;
+              checkForLoggedIn();
+              $state.go('main.account.home', {}, {reload: true});
+            } else {
+              $scope.model.loginStarted = false;
+              $scope.model.message = 'Du är inte en användare i NDR.';
+            }
           } else {
-            $scope.model.loginStarted = false;
-            $scope.model.message = 'Du är inte en användare i NDR.';
+            if (response.data.isSubject) {
+              $scope.model.message = null;
+              checkForLoggedIn();
+              $state.go('main.subject.home', {}, {reload: true});
+            } else {
+              $scope.model.loginStarted = false;
+              $scope.model.message = 'Du är inte en användare i NDR.';
+            }
+
           }
       })
       ['catch'](function (response) {

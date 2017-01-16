@@ -53,12 +53,14 @@ angular.module('ndrApp')
                     if(response.data.isUser == false) return false;
 
                     var user = response.data.user,
+                        subject = response.data.subject,
                         loginId;
 
                     console.log('LOGIN SUCCESS');
                     console.log("USER: ",user);
 
                     self.accountModel.user = user;
+                    self.accountModel.subject = subject;
 
                     $rootScope.$broadcast('newUser');
 

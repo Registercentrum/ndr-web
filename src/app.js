@@ -233,6 +233,37 @@ angular.module('ndrApp', [
                     //controller : 'ResearchController'
                 })
 
+                /* Logged in states as a subject */
+
+                .state('main.subject', {
+                    url: '/subjekt',
+                    templateUrl: 'src/pages/Subject/subject.html',
+                    controller : 'SubjectController',
+                    resolve: {
+                        config: function (accountService) {
+                             return accountService.bootstrap();
+                        }
+                    }
+                })
+
+                .state('main.subject.home', {
+                    url: '/hem',
+                    templateUrl: 'src/pages/Subject/home.html',
+                    controller : 'SubjectHomeController'
+                })
+
+                .state('main.subject.surveys', {
+                    url: '/enkater',
+                    templateUrl: 'src/pages/Subject/Surveys/surveys.html',
+                    controller : 'SubjectSurveysController'
+                })
+
+                .state('main.subject.profile', {
+                    url: '/profil',
+                    templateUrl: 'src/pages/Subject/Profile/profile.html',
+                    controller : 'SubjectProfileController'
+                })
+
                 /* Logged in states */
 
                 .state('main.account', {

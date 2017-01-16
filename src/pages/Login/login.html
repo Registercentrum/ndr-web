@@ -2,21 +2,23 @@
   <div class="Panel" style="text-align: center;">
     <h1 class="Page-heading mt0" style="position: relative;">
       Logga in
-      <small style="position: absolute; right: 0;"><a ui-sref="main.currentUser">Skyffa nytt konto?</a></small>
+      <small style="position: absolute; right: 0;">
+        <a ui-sref="main.currentUser">Skyffa nytt konto?</a>
+      </small>
     </h1>
     <tabset justified>
       <tab heading="För dig med diabetes">
         <div ng-if="!model.loginStarted">
           <h4 class="col-md-6 col-md-offset-3 pv5-ns f2 lh-copy">
-            Logga in med Mobilt BankID för att se och besvara Diabetesenkäten. Om du inte har
-            Mobilt BankId kan du få engångskod av din vårdenhet.
+            Logga in med Mobilt BankID för att se och besvara Diabetesenkäten.
+            Om du inte har Mobilt BankId kan du få engångskod av din vårdenhet.
           </h4>
 
           <div class="row">
             <div class="col-md-5">
               <img src="images/bankid_small.png" class="" style="" alt=""/>
               <h5 class="f2 fw2">Logga in med Mobilt Bank-ID </h5>
-              <form ng-submit="startLogin()">
+              <form ng-submit="startLogin('subject')">
                 <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
                 <div class="red mb4" ng-if="model.loginFailed">
                   Något gick fel, vänligen försök igen.
@@ -63,7 +65,7 @@
               <div class="col-md-6 col-md-offset-3">
                 <img src="images/bankid_small.png" class="" style="" alt=""/>
                 <h5 class="f2 fw2">Mobilt Bank-ID </h5>
-                <form ng-submit="startLogin()">
+                <form ng-submit="startLogin('user')">
                   <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
                   <div class="red mb4" ng-if="model.loginFailed">
                     Något gick fel, vänligen försök igen.

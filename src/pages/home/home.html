@@ -8,6 +8,16 @@
 		</div>
 	</div>-->
 
+    <div ng-show="accountModel.subject" class="row">
+        <div class="hidden-xs hidden-sm hidden-md col-lg-12">
+            <div class="Panel ServicesShortcuts">
+                <span style="margin-right: 10px">Inloggad som patient. Genvägar:</span>
+                <a ui-sref="main.subject.surveys" class="Button Button--default Button--strong">Mina Enkänter</a>
+                <a ui-sref="main.account.profile" class="Button Button--default Button--strong">Min Diabetesprofil</a>
+                <a ui-sref="main.subject.home" class="Button Button--default Button--strong">Översikt</a>
+            </div>
+        </div>
+    </div>
 
     <div ng-show="accountModel.activeAccount" class="row">
         <div class="hidden-xs hidden-sm hidden-md col-lg-12">

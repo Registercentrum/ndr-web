@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 NavbarVertical-container" ng-class="{'hidden': is('main.account.patientPrint')}">
+            <ul class="NavbarVertical nav nav-pills nav-stacked" style="width: 100%">
+                <li ui-sref="main.subject.home" ui-sref-active="active" class="NavbarVertical-item">
+                    <a ui-sref="main.subject.home" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon"><i style="font-size: 50px" class="fa fa-icon_heart"></i></span></span>
+                        <span class="NavbarVertical-item-link-name">Översikt</span>
+                    </a>
+                </li>
+                <li ui-sref="main.subject.surveys" ui-sref-active="active" class="NavbarVertical-item">
+                    <a ui-sref="main.subject.surveys" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon" style="height: 50px"><i style="font-size: 50px" class="fa fa-list-alt"></i></span>
+                        <span class="NavbarVertical-item-link-name" style="line-height: 120%;">Mina <br/>enkäter</span>
+                    </a>
+                </li>
+                <li ui-sref="main.subject.profile" ui-sref-active="active" class="NavbarVertical-item">
+                    <a ui-sref="main.subject.profile" class="NavbarVertical-item-link">
+                        <span class="NavbarVertical-item-icon" style="height: 50px"><i style="font-size: 50px" class="fa fa-icon_user"></i></span></span>
+                        <span class="NavbarVertical-item-link-name" style="line-height: 120%;">Min <br/>diabetesprofil</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="" ng-class="is('main.account.patientPrint') ? 'col-md-12': 'col-md-10'">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
