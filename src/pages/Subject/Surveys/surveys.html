@@ -2,16 +2,57 @@
   <div class="col-md-12">
     <div class="Panel">
       <h1>Mina enkäter</h1>
-      <div ng-repeat="mainGroup in PROMFormMeta">
+      <div ng-repeat="mainGroup in model.PROMFormMeta">
         <div class="pv4 mv5 f2 b bb bt b--light-gray gray tc">{{ mainGroup.description }}</div>
         <div ng-repeat="group in mainGroup.questiongroups | orderBy: 'sortorder'" class="mb5">
           <div class="f2 light-blue">{{ group.description}}</div>
-          <div ng-repeat="question in group.questions" class="pb4 mb4 pl4">
+          <div
+            id="question-{{question.questionID}}"
+            ng-repeat="question in group.questions"
+            class="pb4 mb4 pl4"
+            ng-class="{'o-20': model.activeQuestion !== question.questionID}"
+          >
             <h4>{{ $index + 1}}. {{ question.question }}</h4>
             <div class="pl4">
-              <label ng-repeat="answer in question.domain.domainValues" class="db mr4 normal">
-                <input type="radio" /> <span class="ml2 gray">{{ answer.text }}</span>
-              </label>
+              <div ng-repeat="answer in question.domain.domainValues">
+                <label class="mr4 normal">
+                  <input
+                    type="radio"
+                    ng-model="model.answers[question.columnName]"
+                    name="{{ question.columnName }}"
+                    value="{{ answer.code }}"
+                    ng-click="handleAnswerChange(question.columnName, answer.code)"
+                  />
+                  <span class="ml2 gray">{{ answer.text }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed cf bottom-0 left-0 right-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+          <div class="cf pa4 bg-near-white blue bt b--light-gray">
+            <div class="fl">
+              {{ model.answersCount }} av {{ model.questionsCount }} frågor besvarade
+            </div>
+            <div class="fr">
+              <button
+                ng-click="setActiveQuestion(model.activeQuestion - 1)"
+                ng-disabled="model.activeQuestion === 1"
+                class="Button Button--info Button--mini">
+                <i class="fa fa-arrow-up"></i>
+              </button>
+              <button
+                ng-click="setActiveQuestion(model.activeQuestion + 1)"
+                ng-disabled="model.activeQuestion === model.questionsCount"
+                class="Button Button--info Button--mini">
+                <i class="fa fa-arrow-down"></i>
+              </button>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-2 NavbarVertical-container" ng-class="{'hidden': is('main.account.patientPrint')}">
+        <div class="col-md-2 NavbarVertical-container">
             <ul class="NavbarVertical nav nav-pills nav-stacked" style="width: 100%">
                 <li ui-sref="main.subject.home" ui-sref-active="active" class="NavbarVertical-item">
                     <a ui-sref="main.subject.home" class="NavbarVertical-item-link">
@@ -23,7 +23,7 @@
             </ul>
         </div>
 
-        <div class="" ng-class="is('main.account.patientPrint') ? 'col-md-12': 'col-md-10'">
+        <div class="col-md-10">
             <div ui-view></div>
         </div>
     </div>

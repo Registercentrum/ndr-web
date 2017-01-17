@@ -303,26 +303,18 @@ angular.module('ndrApp')
             return this.data.promFormMeta;
         };
 
-        // this.getPROMFormMeta = function (callback) {
-        //     var query = query || {};
-        //     var self = this;
-        //     query.APIKey = APIconfigService.APIKey;
+        this.savePROMForm = function (inviteID, PROMKey, data) {
+            var query = {
+                url: APIconfigService.baseURL + 'prom/' + inviteID +
+                    '?APIKey=' + APIconfigService.APIKey +
+                    '&PROMKey=' + PROMKey +
+                    '&SESSIONID=999b',
+                method: 'POST',
+                data: data
+            }
 
-        //     if (this.data.promFormMeta != null)
-        //         callback(this.data.promFormMeta);
-        //     else {
-        //         $.ajax({
-        //             url     : APIconfigService.baseURL + 'PROMForm',
-        //             data    : query,
-        //             type    : 'GET',
-        //             dataType: 'json',
-        //             success : function(d) {
-        //                 self.data.promFormMeta = d;
-        //                 callback(d);
-        //             }
-        //         });
-        //     }
-        // };
+            return $http(query);
+        };
 
         this.getKOO = function (callback) {
             var query = query || {};
