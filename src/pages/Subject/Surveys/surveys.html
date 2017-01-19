@@ -1,6 +1,14 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="Panel">
+    <div class="Panel" ng-show="!model.survey">
+      <h1 class="pb4 mb4 bb b--gray">Mina enkäter</h1>
+      <div class="row">
+        <div class="col-md-12 f2">
+          <p class="pb4 b">Du har inga öppna enkäter.</p>
+        </div>
+      </div>
+    </div>
+    <div class="Panel relative" id="SurveyForm" ng-show="model.survey">
       <h1 class="pb4 mb4 bb b--gray">Mina enkäter</h1>
       <div class="row">
         <div class="col-md-offset-2 col-md-8 f2">
@@ -40,7 +48,7 @@
           <div
             id="question-{{question.questionID}}"
             ng-repeat="question in group.questions"
-            class="question-holder pb6 mb6 pl4"
+            class="question-holder pb4 mb4 pl4"
             ng-class="{'o-20': model.activeQuestion !== question.questionID}"
           >
             <h4 class="b gray">{{ $index + 1}}. {{ question.question }}</h4>
@@ -61,29 +69,58 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="fixed cf bottom-0 left-0 right-0">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-offset-2 col-md-10">
-          <div class="cf pa4 bg-near-white blue bt b--light-gray">
-            <div class="fl">
-              {{ model.answersCount }} av {{ model.questionsCount }} frågor besvarade
-            </div>
-            <div class="fr">
-              <button
-                ng-click="setActiveQuestion(model.activeQuestion - 1)"
-                ng-disabled="model.activeQuestion === 1"
-                class="Button Button--info Button--mini">
-                <i class="fa fa-arrow-up"></i>
-              </button>
-              <button
-                ng-click="setActiveQuestion(model.activeQuestion + 1)"
-                ng-disabled="model.activeQuestion === model.questionsCount"
-                class="Button Button--info Button--mini">
-                <i class="fa fa-arrow-down"></i>
-              </button>
+
+      <div class="pb6 f2 gray tc">
+        Är du klar?<br/>
+        Du har inte svarat på
+        <span
+          ng-repeat="id in model.unansweredQuestions"
+          ng-click="setActiveQuestion(id)"
+          class="blue pointer"
+        ><span class="underline">fråga {{ id }}</span><span ng-show="!$last">, </span></span>.
+        <div class="pt4">
+          <button
+            ng-click="submitForm()"
+            class="Button Button--info ttu">
+            Skicka
+          </button>
+
+        </div>
+      </div>
+
+      <div
+        id="SurveyFormStatusBar"
+        class="cf bottom-0 left-0 right-0"
+        ng-class="{fixed: model.statusBarFixed, absolute: !model.statusBarFixed}"
+      >
+        <div ng-class="{container: model.statusBarFixed}">
+          <div class="row">
+            <div
+              ng-class="{
+                'col-md-offset-2': model.statusBarFixed && !accountModel.PROMSubject,
+                'col-md-10': model.statusBarFixed && !accountModel.PROMSubject,
+                'col-md-12': !model.statusBarFixed || accountModel.PROMSubject
+              }"
+            >
+              <div class="cf pa4 bg-near-white blue ba b--light-gray">
+                <div class="fl">
+                  {{ model.answersCount }} av {{ model.questionsCount }} frågor besvarade
+                </div>
+                <div class="fr">
+                  <button
+                    ng-click="setActiveQuestion(model.activeQuestion - 1)"
+                    ng-disabled="model.activeQuestion === 1"
+                    class="Button Button--info Button--mini">
+                    <i class="fa fa-arrow-up"></i>
+                  </button>
+                  <button
+                    ng-click="setActiveQuestion(model.activeQuestion + 1)"
+                    ng-disabled="model.activeQuestion === model.questionsCount"
+                    class="Button Button--info Button--mini">
+                    <i class="fa fa-arrow-down"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

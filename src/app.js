@@ -31,9 +31,67 @@ angular.module('ndrApp', [
         });
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
-            if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
-                $state.go('main.home', {}, {reload: true});
+            // prevent access to subject views if not logged in as a subject
+            if (toState.name.indexOf('main.subject') === 0) {
+                // further check for access to the survey from view
+                // for people with one time access code
+                if (toState.name === 'main.subject.surveys') {
+                    if (!accountService.accountModel.subject &&
+                        !accountService.accountModel.PROMSubject) {
+                        event.preventDefault();
+                        $state.go('main.login', {}, {reload: true});
+                        return;
+                    }
+                } else if (!accountService.accountModel.subject) {
+                    event.preventDefault();
+                    $state.go('main.login', {}, {reload: true});
+                    return;
+                }
             }
+
+            // prevent access to user views if not logged in as a user
+            if (toState.name.indexOf('main.account') === 0) {
+                    console.log("dupa3")
+                // if not logged in at all, redirect to login
+                if (!accountService.accountModel.user) {
+                    event.preventDefault();
+                    $state.go('main.login', {}, {reload: true});
+
+                // if logged in but no activeAccount is selected, redirect to home page
+                } else if (!accountService.accountModel.activeAccount) {
+                    event.preventDefault();
+                    $state.go('main.home', {}, {reload: true});
+                }
+            }
+        });
+
+        $rootScope.is = function(name){
+            return $state.is(name);
+        };
+
+        $rootScope.$on('$viewContentLoaded', function () {
+
+             var interval = setInterval(function(){
+                 if (document.readyState == 'complete') {
+
+                     window.scrollTo(0, 0);
+                     clearInterval(interval);
+
+                     $('input').placeholder();
+
+                     jQuery('.u-equalHeight').matchHeight(true);
+                     jQuery('.Intro--equalHeights').matchHeight(false);
+
+                     if ( jQuery(window).width() >= 700 ) {
+                         jQuery('.InfoGrid-equalHeightsGroup1').matchHeight(false);
+                         jQuery('.InfoGrid-equalHeightsGroup2').matchHeight(false);
+                         jQuery('.InfoGrid-equalHeightsGroup3').matchHeight(false);
+                         jQuery('.InfoGrid-equalHeightsGroup4').matchHeight(false);
+                     }
+
+                 }
+             },100);
+
         });
     })
 
@@ -351,35 +409,4 @@ angular.module('ndrApp', [
                         }*/
                     }
                 });
-         }])
-        .run(['$rootScope', '$state', function($rootScope, $state) {
-
-                $rootScope.is = function(name){
-                    return $state.is(name);
-                };
-
-                $rootScope.$on('$viewContentLoaded', function () {
-
-                     var interval = setInterval(function(){
-                         if (document.readyState == 'complete') {
-
-                             window.scrollTo(0, 0);
-                             clearInterval(interval);
-
-                             $('input').placeholder();
-
-                             jQuery('.u-equalHeight').matchHeight(true);
-                             jQuery('.Intro--equalHeights').matchHeight(false);
-
-                             if ( jQuery(window).width() >= 700 ) {
-                                 jQuery('.InfoGrid-equalHeightsGroup1').matchHeight(false);
-                                 jQuery('.InfoGrid-equalHeightsGroup2').matchHeight(false);
-                                 jQuery('.InfoGrid-equalHeightsGroup3').matchHeight(false);
-                                 jQuery('.InfoGrid-equalHeightsGroup4').matchHeight(false);
-                             }
-
-                         }
-                     },100);
-
-                });
-            }]);
+         }]);

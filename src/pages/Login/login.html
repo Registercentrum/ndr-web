@@ -41,7 +41,7 @@
               <form ng-submit="loginPROMKey()">
                 <input placeholder="DIN KOD (10 SIFFROR)" type="text" class="db w-80 pa3 mb4 center" ng-model="model.PROMKey" />
                 <div class="red mb4" ng-if="model.loginPROMKeyFailed">
-                  Något gick fel, vänligen försök igen.
+                  {{ model.loginPROMKeyFailedMessage || "Något gick fel, vänligen försök igen." }}
                 </div>
                 <button type="submit" class="Button Button--info">
                   Förtsätt

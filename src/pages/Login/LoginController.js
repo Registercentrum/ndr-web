@@ -25,18 +25,16 @@ angular.module('ndrApp').controller('LoginController',
       var query = {
         url: APIconfigService.baseURL + 'bid/ndr/order' +
             '?socialnumber=' + $scope.model.socialnumber +
-            '&SESSIONID=999b',
+            '&SESSIONID=999c',
         method: 'GET'
       };
 
       $http(query)
         .then(function (response) {
-          console.log("response", response);
           $scope.model.orderRef = response.data.orderRef;
           waitForLogin(type);
         })
         ['catch'](function (response) {
-          console.log("failed");
           $scope.model.loginStarted = false;
           $scope.model.loginFailed = true;
         });
@@ -46,20 +44,31 @@ angular.module('ndrApp').controller('LoginController',
       if (!$scope.model.PROMKey) return;
 
       $scope.model.loginFailed = false;
+      $scope.model.loginPROMKeyFailedMessage = "";
 
       var query = {
         url: APIconfigService.baseURL + 'prom' +
             '?PROMKey=' + $scope.model.PROMKey +
             '&APIKey=' + APIconfigService.APIKey +
-            '&SESSIONID=999b',
+            '&SESSIONID=999c',
         method: 'GET',
       };
 
       $http(query)
       .then(function (response) {
-        console.log(response);
+        accountService.accountModel.PROMSubject = response.data;
+        accountService.accountModel.PROMSubject.key = $scope.model.PROMKey;
+        $state.go('main.subject.surveys');
       })
       ['catch'](function (response){
+        var code = response.data ? response.data.code : null;
+        if (code === 1) {
+          $scope.model.loginPROMKeyFailedMessage = "Enkäten som redan lämnats in.";
+        } else if (code === 2) {
+          $scope.model.loginPROMKeyFailedMessage = "Enkäten är avslutad.";
+        } else if (code === 3) {
+          $scope.model.loginPROMKeyFailedMessage = "Enkäten har minskat.";
+        }
         $scope.model.loginPROMKeyFailed = true;
       });
     }
@@ -94,7 +103,7 @@ angular.module('ndrApp').controller('LoginController',
 
       var query = {
         url: APIconfigService.baseURL + 'CurrentVisitor' +
-            '?SESSIONID=999b',
+            '?SESSIONID=999c',
         method: 'GET'
       };
 
@@ -113,6 +122,7 @@ angular.module('ndrApp').controller('LoginController',
           } else {
             if (response.data.isSubject) {
               $scope.model.message = null;
+              accountService.accountModel.PROMSubject = null;
               checkForLoggedIn();
               $state.go('main.subject.home', {}, {reload: true});
             } else {

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-2 NavbarVertical-container">
+        <div class="col-md-2 NavbarVertical-container" ng-show="!accountModel.PROMSubject">
             <ul class="NavbarVertical nav nav-pills nav-stacked" style="width: 100%">
                 <li ui-sref="main.subject.home" ui-sref-active="active" class="NavbarVertical-item">
                     <a ui-sref="main.subject.home" class="NavbarVertical-item-link">
@@ -23,7 +23,11 @@
             </ul>
         </div>
 
-        <div class="col-md-10">
+        <div ng-class="{
+            'col-md-10': !accountModel.PROMSubject,
+            'col-md-12': accountModel.PROMSubject
+            }"
+        >
             <div ui-view></div>
         </div>
     </div>

@@ -140,6 +140,8 @@ angular.module('ndrApp')
 
           if (!invite.subjectID || !invite.openUntil) return false;
 
+          $scope.model.newInviteError = "";
+
           dataService.createInvite({
             subjectID: invite.subjectID,
             openUntil: moment(invite.openUntil).format("YYYY-MM-DD")
