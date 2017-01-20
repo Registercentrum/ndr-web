@@ -1,10 +1,15 @@
 angular.module("ndrApp")
   .controller('SubjectSurveysController',
-    ['$scope', '$timeout', 'dataService', function ($scope, $timeout, dataService) {
+            ['$scope', '$state', '$timeout', '$modal', 'accountService', 'dataService',
+    function ($scope,   $state,   $timeout,   $modal,   accountService,   dataService) {
+
+    $scope.accountService = accountService;
 
     $scope.model = {
       survey: $scope.accountModel.PROMSubject ||
-              _.find($scope.accountModel.subject.invites, function (invite) { return !invite.submittedAt; }),
+              _.find(
+                $scope.accountModel.subject.invites,
+                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
       statusBarFixed: true,
       questionsCount: 0,
       activeQuestion: null,
@@ -17,6 +22,9 @@ angular.module("ndrApp")
 
     // needed to unselect the answers
     var answers = $scope.model.answers ? _.clone($scope.model.answers) : {};
+
+    var declineModalInstance = null;
+    var confirmModalInstance = null;
 
     dataService.getPROMFormMeta()
       .then(function (response) {
@@ -47,7 +55,45 @@ angular.module("ndrApp")
     $scope.submitForm = function () {
       var answers = $scope.model.answers;
       answers.isSubmitted = true;
-      dataService.savePROMForm($scope.model.survey.inviteID, answers);
+      dataService.savePROMForm($scope.model.survey.inviteID, answers)
+        .then(function (response) {
+          confirmModalInstance = $modal.open({
+            templateUrl: "confirmModalTmpl",
+            backdrop   : true,
+            scope      : $scope,
+            size       : "lg"
+          });
+        })
+    };
+
+    $scope.showDeclineModal = function () {
+      declineModalInstance = $modal.open({
+        templateUrl: "declineModalTmpl",
+        backdrop   : true,
+        scope      : $scope,
+        size       : "lg"
+      });
+    }
+
+    $scope.closeAndLogout = function (stateName) {
+      if (!stateName) stateName = "main.home";
+
+      accountService.logOut();
+      $state.go(stateName, {}, {reload: true});
+
+      if (confirmModalInstance) confirmModalInstance.dismiss("cancel");
+      if (declineModalInstance) declineModalInstance.dismiss("cancel");
+    };
+
+    $scope.declineForm = function () {
+      var answers = $scope.model.answers;
+      answers.isDeclined = true;
+      dataService.savePROMForm($scope.model.survey.inviteID, answers)
+        .then(function (response) {
+          accountService.logOut();
+          $state.go("main.home", {}, {reload: true});
+          declineModalInstance.dismiss("cancel");
+        });
     };
 
     $scope.setActiveQuestion = function (id) {
@@ -122,10 +168,13 @@ angular.module("ndrApp")
         }
       }
 
-      $scope.$apply(function () {
-        $scope.model.activeQuestion = +positions[index].id;
-        $scope.model.statusBarFixed = scrollBottom - surveyFormBottom <= 0;
-      })
+      if (positions.length) {
+        $scope.$apply(function () {
+          $scope.model.activeQuestion = +positions[index].id;
+          $scope.model.statusBarFixed = scrollBottom - surveyFormBottom <= 0;
+        });
+      }
     });
-  }])
+  }]);
+
 

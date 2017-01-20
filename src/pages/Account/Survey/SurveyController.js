@@ -199,4 +199,4 @@ angular.module('ndrApp')
             $scope.model.datePicker.opened = true;
         };
 
-  }])
+  }]);

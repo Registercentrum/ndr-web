@@ -39,7 +39,7 @@
               ng-click="setDisplayed('declined')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType === 'declined'}">
-              Avbört enkät ({{ model.invites.declined.length }})
+              Avbört enkät ({{ model.invites.isDeclined.length }})
             </button>
           </div>
         </div>
@@ -62,7 +62,8 @@
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td>{{ invite.openUntil | date:'yyyy-MM-dd' }}</td>
               <td class="ttu">
-                <span ng-if="!invite.submittedAt && !invite.declined">ej besvarad</span>
+                <span ng-if="!invite.submittedAt && !invite.isDeclined">ej besvarad</span>
+                <span ng-if="invite.isDeclined" class="red">avböja</span>
                 <span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>
               </td>
               <td class="ttu">
@@ -72,7 +73,7 @@
               <td class="tl">
                 <button
                   ng-click="showInviteModal(invite)"
-                  ng-disabled="invite.submittedAt"
+                  ng-disabled="invite.submittedAt || invite.isDeclined"
                   class="Button Button--info Button--mini">
                   Ibjudan
                 </button>

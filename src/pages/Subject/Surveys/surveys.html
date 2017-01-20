@@ -38,6 +38,11 @@
               class="Button Button--info">
               OK, till första frågan
             </button>
+            <button
+              ng-click="showDeclineModal()"
+              class="Button Button--danger">
+              Nej tack, jag avböjer
+            </button>
           </p>
         </div>
       </div>
@@ -72,19 +77,20 @@
 
       <div class="pb6 f2 gray tc">
         Är du klar?<br/>
-        Du har inte svarat på
-        <span
-          ng-repeat="id in model.unansweredQuestions"
-          ng-click="setActiveQuestion(id)"
-          class="blue pointer"
-        ><span class="underline">fråga {{ id }}</span><span ng-show="!$last">, </span></span>.
+        <div ng-show="model.unansweredQuestions.length">
+          Du har inte svarat på
+          <span
+            ng-repeat="id in model.unansweredQuestions"
+            ng-click="setActiveQuestion(id)"
+            class="blue pointer"
+          ><span class="underline">fråga {{ id }}</span><span ng-show="!$last">, </span></span>.
+        </div>
         <div class="pt4">
           <button
             ng-click="submitForm()"
             class="Button Button--info ttu">
             Skicka
           </button>
-
         </div>
       </div>
 
@@ -128,3 +134,44 @@
     </div>
   </div>
 </div>
+
+<script type="text/ng-template" id="confirmModalTmpl">
+  <div class="modal-body text-center pa6">
+    <h3 class="mb5 f1">Klart!</h3>
+    <div class="tc mw8 center">
+      <p class="f2 mb5" ng-if="!accountModel.PROMSubject">
+        Se besvarade enkäter under <a ng-click="closeAndLogout('main.subject.profile')">Min Diabetesprofil</a>.
+      </p>
+      <p>
+        <button
+          ng-click="closeAndLogout()"
+          class="Button Button--info">
+          Logga ut
+        </button>
+      </p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="declineModalTmpl">
+  <div class="modal-body text-center pa6">
+    <h3 class="mb5">Du har avböjt att besvara enkäten.</h3>
+    <div class="tc mw8 center">
+      <p class="f2 mb5">
+        Vill du besvara enkäten vid ett senare tillfälle eller inte alls?
+      </p>
+      <p>
+        <button
+          ng-click="closeAndLogout()"
+          class="Button Button--info">
+          Ja, tack. Vid ett senare tillfälle
+        </button>
+        <button
+          ng-click="declineForm()"
+          class="Button Button--danger">
+          Nej. tack. Inte alls.
+        </button>
+      </p>
+    </div>
+  </div>
+</script>

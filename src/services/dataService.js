@@ -148,7 +148,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'Subject' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c',
+                    '&SESSIONID=999b',
                 method: 'POST',
                 data: {socialNumber: socialNumber}
             };
@@ -176,7 +176,7 @@ angular.module('ndrApp')
 
         this.saveContact = function (data) {
             var query = {
-              url: APIconfigService.baseURL + 'Contact/' + (data.contactID || '') + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey + '&SESSIONID=999c',
+              url: APIconfigService.baseURL + 'Contact/' + (data.contactID || '') + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey + '&SESSIONID=999b',
               method: data.contactID ? 'PUT' : 'POST',
               data: data
             };
@@ -193,7 +193,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'prominvite' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c',
+                    '&SESSIONID=999b',
                 method: 'GET'
             }
 
@@ -208,7 +208,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'prominvite/' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c',
+                    '&SESSIONID=999b',
                 method: 'POST',
                 data: data
             }
@@ -221,7 +221,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'prominvite/' + inviteId +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c',
+                    '&SESSIONID=999b',
                 method: 'PUT',
                 data: updatedInvite
             }
@@ -234,7 +234,7 @@ angular.module('ndrApp')
                 url: APIconfigService.baseURL + 'prominvite/' + inviteId +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c',
+                    '&SESSIONID=999b',
                 method: 'DELETE'
             }
 
@@ -293,7 +293,7 @@ angular.module('ndrApp')
             var query = {
                 url: APIconfigService.baseURL + 'promform' +
                     '?APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c',
+                    '&SESSIONID=999b',
                 method: 'GET'
             }
 
@@ -306,7 +306,7 @@ angular.module('ndrApp')
         this.savePROMForm = function (inviteID, data) {
             var url = APIconfigService.baseURL + 'prom/' + inviteID +
                     '?APIKey=' + APIconfigService.APIKey +
-                    '&SESSIONID=999c';
+                    '&SESSIONID=999b';
 
             if (accountService.accountModel.PROMSubject &&
                 accountService.accountModel.PROMSubject.key) {
@@ -395,7 +395,7 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
-            query.SESSIONID = '999c';
+            query.SESSIONID = '999b';
 
             return $.ajax({
                 url: APIconfigService.baseURL + 'subject',
