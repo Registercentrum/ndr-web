@@ -40,10 +40,11 @@
         </div>
       </tab>
 
-      <tab heading="Besvarade enkäter">
-        <div class="col-md-12">
-          <div ng-repeat="survey in subject.surveys" class="row pv4">
-            <h4>{{ survey.dimension.desc }}</h4>
+      <tab heading="Besvarade enkäter" active="true">
+        <div ng-repeat="group in PROMFormMeta" class="row">
+          <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
+          <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4">
+            <h4 class="col-md-12">{{ survey.dimension.desc }}</h4>
             <div class="col-md-9">
               <div
                 line-chart

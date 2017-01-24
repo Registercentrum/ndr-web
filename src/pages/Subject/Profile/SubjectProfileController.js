@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('SubjectProfileController',
-        ['$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout', '$http', 'APIconfigService',
-        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout, $http, APIconfigService) {
+                ['$scope', 'dataService',
+        function ($scope,   dataService) {
 
         $scope.subject = $scope.accountModel.subject;
 
@@ -13,13 +13,12 @@ angular.module("ndrApp")
         // get submitted surveys
         var submitted = _.filter($scope.subject.invites, function (i) { return !!i.submittedAt; });
         if (submitted.length) submitted = _.sortBy(submitted, function (s) { return +(new Date(s.submittedAt)); })
-        // group by dates
+        // create time series
         $scope.subject.surveys = !submitted.length ?
           [] :
           _.map(submitted[0].outcomes, function (outcome) {
-            var datum = {
-              dimension: outcome.dimension
-            };
+            var datum = { dimension: outcome.dimension };
+
             datum.series = _.map(submitted, function (s) {
               return {
                 x: +(new Date(s.submittedAt)),
@@ -29,11 +28,18 @@ angular.module("ndrApp")
               };
             });
             datum.latestOutcome = _.last(datum.series).y
-            datum.diffFromPrevious = datum.series.length > 1 && _.isNumber(datum.latestOutcome) && _.isNumber(datum.series[datum.series.length - 2].y) ?
-              datum.latestOutcome - datum.series[datum.series.length - 2].y :
-              null;
+
+            // calculate the diff from previous, if we have the data
+            if (datum.series.length > 1 &&
+                _.isNumber(datum.latestOutcome) &&
+                _.isNumber(datum.series[datum.series.length - 2].y))
+              datum.diffFromPrevious = datum.latestOutcome - datum.series[datum.series.length - 2].y;
+
             return datum;
           });
+
+        // group them by main group ids
+        $scope.subject.surveys = _.groupBy($scope.subject.surveys, function (s) { return s.dimension.area; });
 
         // get series for the profile charts
         var charts = [{
@@ -68,6 +74,11 @@ angular.module("ndrApp")
             }
           );
         }
+
+        dataService.getPROMFormMeta()
+          .then(function (response) {
+            $scope.PROMFormMeta = response.data;
+          });
 
         console.log($scope.subject);
 }]);
