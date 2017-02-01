@@ -20,7 +20,7 @@
                         <li role="presentation">
                             <a ui-sref="main.account.report" title="">Rapportera</a>
                         </li>
-                        <li role="presentation">
+                        <li ng-show="accountModel.activeAccount.unit.isUsingPROM" role="presentation">
                             <a ui-sref="main.account.survey" title="">Diabetesenkäten</a>
                         </li>
                         <li role="presentation">

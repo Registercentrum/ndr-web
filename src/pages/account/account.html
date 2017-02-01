@@ -20,7 +20,7 @@
                         <span class="NavbarVertical-item-link-name">Söklista</span>
                     </a>
                 </li>
-                <li ui-sref="main.account.survey" ui-sref-active="active" class="NavbarVertical-item">
+                <li ng-show="accountModel.activeAccount.unit.isUsingPROM" ui-sref="main.account.survey" ui-sref-active="active" class="NavbarVertical-item">
                     <a ui-sref="main.account.survey" class="NavbarVertical-item-link">
                         <span class="NavbarVertical-item-icon" style="height: 50px"><i style="font-size: 50px" class="fa fa-list-alt"></i></span>
                         <span class="NavbarVertical-item-link-name" style="line-height: 120%;">Diabetes-<br/>enkäten</span>

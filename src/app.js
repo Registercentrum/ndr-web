@@ -31,6 +31,7 @@ angular.module('ndrApp', [
         });
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+            console.log(accountService.accountModel)
             // prevent access to subject views if not logged in as a subject
             if (toState.name.indexOf('main.subject') === 0) {
                 // further check for access to the survey from view
@@ -51,7 +52,6 @@ angular.module('ndrApp', [
 
             // prevent access to user views if not logged in as a user
             if (toState.name.indexOf('main.account') === 0) {
-                    console.log("dupa3")
                 // if not logged in at all, redirect to login
                 if (!accountService.accountModel.user) {
                     event.preventDefault();
@@ -59,6 +59,12 @@ angular.module('ndrApp', [
 
                 // if logged in but no activeAccount is selected, redirect to home page
                 } else if (!accountService.accountModel.activeAccount) {
+                    event.preventDefault();
+                    $state.go('main.home', {}, {reload: true});
+
+                // further check if isUsingPROM: true for the survey administration page
+                } else if (toState.name.indexOf('main.account.survey') === 0 &&
+                    !accountService.accountModel.activeAccount.unit.isUsingPROM) {
                     event.preventDefault();
                     $state.go('main.home', {}, {reload: true});
                 }
