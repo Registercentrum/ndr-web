@@ -39,7 +39,10 @@ angular.module("ndrApp")
           });
 
         // group them by main group ids
-        $scope.subject.surveys = _.groupBy($scope.subject.surveys, function (s) { return s.dimension.area; });
+        $scope.subject.surveys = _.groupBy(
+          $scope.subject.surveys,
+          function (s) { return s.dimension.isPREM ? 2 : 1; }
+        );
 
         // get series for the profile charts
         var charts = [{
