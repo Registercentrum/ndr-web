@@ -80,6 +80,7 @@ angular.module("ndrApp")
 
         dataService.getPROMFormMeta()
           .then(function (response) {
+              console.log("test", response)
             $scope.PROMFormMeta = response.data;
           });
 

@@ -1,12 +1,12 @@
 ﻿<div class="Panel">
   <div class="row Survey">
     <div class="row">
-      <h2 class="col-md-12 Page-title mt0">Diabetsenkäten</h2>
+      <h2 class="col-md-12 Page-title mt0">Diabetesenkäten</h2>
     </div>
 
     <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
       <tab heading="Administrera enkäter">
-        <p class="pv5-ns pv4">Det finns {{ model.invites.new.length }} besvarade enkäter att signera</p>
+        <p class="pv5-ns pv4">Det finns {{ model.invites.new.length }} besvarade enkäter att signera.</p>
 
         <h5 class="bb b--light-gray pv1 mb4 gray">Filtering</h5>
         <div class="row pb4">
@@ -39,7 +39,7 @@
               ng-click="setDisplayed('declined')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType === 'declined'}">
-              Avbört enkät ({{ model.invites.isDeclined.length }})
+              Avböjt enkät ({{ model.invites.isDeclined.length }})
             </button>
           </div>
         </div>
@@ -63,7 +63,7 @@
               <td>{{ invite.openUntil | date:'yyyy-MM-dd' }}</td>
               <td class="ttu">
                 <span ng-if="!invite.submittedAt && !invite.isDeclined">ej besvarad</span>
-                <span ng-if="invite.isDeclined" class="red">avböja</span>
+                <span ng-if="invite.isDeclined" class="red">avböjt</span>
                 <span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>
               </td>
               <td class="ttu">
@@ -75,7 +75,7 @@
                   ng-click="showInviteModal(invite)"
                   ng-disabled="invite.submittedAt || invite.isDeclined"
                   class="Button Button--info Button--mini">
-                  Ibjudan
+                  Inbjudan
                 </button>
                 <button
                   ng-click="showAnswersModal(invite)"
@@ -118,7 +118,7 @@
             />
           </div>
           <div class="col-md-3">
-            <label class="normal f4">Enäten är öppen till</label>
+            <label class="normal f4">Enkäten är öppen till</label>
             <div class="FilterDatePopup">
               <div class="input-group FilterDatePopup-group">
                 <span class="input-group-addon">
@@ -169,7 +169,7 @@
               ng-click="createInvite()"
               ng-disabled="!model.newInvite.subjectID || !model.newInvite.openUntil"
               class="Button Button--info w-100">
-              Skappa
+              Skapa
             </button>
           </div>
           <div class="col-md-9 pt3">
@@ -187,7 +187,7 @@
         <div class="row" ng-if="model.createdInvite">
           <div class="col-md-12 f2 green pt4">
             Du har skapat ny enkät för:
-            <b>{{ model.createdInvite.subject.socialNumber }}</b>
+            <b>{{ model.createdInvite.subject.socialNumber }}</b> <br />
             <a
               href
               ng-click="showInviteModal(model.createdInvite)">
@@ -236,7 +236,7 @@
     </p>
 
     <h3 class="mb5 gray">Den här patienten har en enkät som inte är överförd till NDR</h3>
-    <h4 class="mb5 f-subheadline b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
+    <h4 class="mb5 f2 b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
 
     <div class="cf b pb2 tl tc-ns bb b--gray">
       <div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>
