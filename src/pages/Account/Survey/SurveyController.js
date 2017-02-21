@@ -37,22 +37,63 @@ angular.module('ndrApp')
           selectedInvite: null
         };
 
+        var modalInstance = null;
+
         // *********************************************************************
         // List Tab
         // *********************************************************************
 
         getInvites();
 
+        function getPrevOutcomes(invite) {
+          if (invite.prevOutcomes) return invite.prevOutcomes;
+
+          var prevOutcomes = _.filter($scope.model.invites.all, function (i) {
+            return i.subject.subjectID === invite.subject.subjectID &&
+                   i.inviteID !== invite.inviteID &&
+                   i.submittedAt &&
+                   new Date(i.submittedAt) <= new Date(invite.submittedAt);
+          })
+
+          if (prevOutcomes.length) {
+            prevOutcomes = _.sortBy(prevOutcomes, function (i) {
+              return new Date(i.submittedAt);
+            });
+
+            return {
+              submittedAt: prevOutcomes[0].submittedAt,
+              outcomes: _.map(prevOutcomes[0].outcomes, function (o, i) {
+                if (_.isNumber(o.outcome) && _.isNumber(invite.outcomes[i].outcome))
+                  o.difference = invite.outcomes[i].outcome - o.outcome;
+                return o;
+              })
+            };
+          }
+
+          return null;
+        }
+
+        function parseInvites(invites) {
+          return _.map(invites, function (invite) {
+            invite.datePicker = {
+              minDate: new Date(invite.createdAt),
+              opened: false
+            };
+            return invite;
+          });
+        }
+
         function getInvites () {
           dataService.getInvites()
             .then(function (response) {
-              $scope.model.invites.all = response.data.slice();
-              $scope.model.invites.displayed = response.data.slice();
-              $scope.model.invites.new = _.filter(response.data, function (invite) {
+              var invites = parseInvites(response.data)
+              $scope.model.invites.all = invites.slice();
+              $scope.model.invites.displayed = invites.slice();
+              $scope.model.invites.new = _.filter(invites, function (invite) {
                 return invite.submittedAt && !invite.approvedNDR;
               });
-              $scope.model.invites.declined = _.filter(response.data, function (invite) {
-                return invite.declined;
+              $scope.model.invites.declined = _.filter(invites, function (invite) {
+                return invite.isDeclined;
               });
             });
         }
@@ -71,28 +112,30 @@ angular.module('ndrApp')
         }
 
         $scope.showAnswersModal = function (invite) {
+          invite.prevOutcomes = getPrevOutcomes(invite);
           invite.copyText = _.reduce(invite.outcomes, function (p, n) {
-            return p + n.dimension.desc + ',' + n.outcome + ',' + (n.changeSinceLast || 'n/a') + '\n';
+            var prevOutcome = _.find(invite.prevOutcomes.outcomes, function (i) { return i.dimension.id === n.dimension.id });
+            var changeSinceLast = prevOutcome && prevOutcome.difference ? prevOutcome.difference : "saknas"
+            return p + n.dimension.desc + ',' + n.outcome + ',' + changeSinceLast + '\n';
           }, "");
-
-          $scope.model.selectedInvite = invite;
 
           dataService.getPROMFormMeta()
             .then(function (response) {
               $scope.model.formMeta = response.data;
-              $modal.open({
+              $scope.model.selectedInvite = invite;
+              modalInstance = $modal.open({
                 templateUrl: "answersModalTmpl",
                 backdrop   : true,
                 scope      : $scope,
                 size       : "lg"
               });
-            })
+            });
         }
 
         $scope.showInviteModal = function (invite) {
           $scope.model.selectedInvite = invite;
 
-          $modal.open({
+          modalInstance = $modal.open({
             templateUrl: "inviteModalTmpl",
             backdrop   : true,
             scope      : $scope,
@@ -100,20 +143,40 @@ angular.module('ndrApp')
           });
         }
 
+        $scope.selectCopyView = function () {
+          setTimeout(function() {
+            document.getElementById("copy-view").select();
+          }, 10);
+        }
+
         $scope.signInvite = function (invite) {
           invite.approvedNDR = invite.approvedNDR ? 0 : 1;
 
           dataService.updateInvite(invite.inviteID, invite)
             .then(function (response) {
-              console.log(response);
+              invite.signed = true;
             })
             ["catch"](function (error) {
-              console.log(error)
-              $modal.open({
+              modalInstance = $modal.open({
                 template   : "<p>Något gick fel, vänligen försök igen.</p>",
                 backdrop   : true,
               });
             });
+        }
+
+        $scope.goToSubjectProfile = function(subject) {
+          if (modalInstance) modalInstance.dismiss("cancel");
+          $state.go("main.account.patient", { patientID: subject.subjectID})
+        }
+
+        $scope.showDeleteModal = function (invite) {
+          $scope.model.selectedInvite = invite;
+
+          modalInstance = $modal.open({
+            templateUrl: "deleteModalTmpl",
+            backdrop   : true,
+            scope      : $scope,
+          });
         }
 
         $scope.deleteInvite = function (inviteID) {
@@ -123,13 +186,37 @@ angular.module('ndrApp')
             })
             ["catch"](function (error) {
               console.log(error)
-              $modal.open({
+              modalInstance = $modal.open({
                 template   : "<p>Något gick fel, vänligen försök igen.</p>",
                 backdrop   : true,
               });
             })
         }
 
+        $scope.openDatePickerEdit = function ($event, invite) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            invite.datePicker.opened = true;
+        };
+
+        $scope.openUntilEdited = function (invite) {
+          // make o copy, without the datepicker settings
+          invite = angular.copy(invite)
+          delete invite.datePicker;
+          invite.openUntil = moment(invite.openUntil).format("YYYY-MM-DD")
+
+          dataService.updateInvite(invite.inviteID, invite)
+            .then(function (response) {
+              console.log(response);
+            })
+            ["catch"](function (error) {
+              console.log(error)
+              modalInstance = $modal.open({
+                template   : "<p>Något gick fel, vänligen försök igen.</p>",
+                backdrop   : true,
+              });
+            });
+        }
 
         // *********************************************************************
         // New Invite Tab
@@ -163,7 +250,7 @@ angular.module('ndrApp')
         }
 
 
-        $scope.fetchSubject = function (index) {
+        $scope.fetchSubject = function () {
           var sn = $scope.model.newInvite.socialnumber
 
           if (!sn || !sn.match(accountService.helpers.pnrRegex)) return false;
@@ -198,5 +285,4 @@ angular.module('ndrApp')
             $event.stopPropagation();
             $scope.model.datePicker.opened = true;
         };
-
   }]);

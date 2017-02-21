@@ -9,7 +9,8 @@ angular.module("ndrApp")
       survey: $scope.accountModel.PROMSubject ||
               _.find(
                 $scope.accountModel.subject.invites,
-                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
+                function (invite) { return !invite.submittedAt; }),
+                // function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
       statusBarFixed: true,
       questionsCount: 0,
       activeQuestion: null,
@@ -132,7 +133,8 @@ angular.module("ndrApp")
       $scope.model.PROMFormMeta.forEach(function (mainGroup) {
         mainGroup.questiongroups.forEach(function (group) {
           group.questions.forEach(function (q) {
-            if ($scope.model.answers[q.columnName] === null)
+            if (_.isEmpty($scope.model.answers) ||
+                $scope.model.answers[q.columnName] === null)
               questions.push(q.questionID);
           });
         });

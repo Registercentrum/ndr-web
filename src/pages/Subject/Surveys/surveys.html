@@ -56,8 +56,11 @@
             class="question-holder pb4 mb4 pl4"
             ng-class="{'o-20': model.activeQuestion !== question.questionID}"
           >
-            <h4 class="b gray">{{ $index + 1}}. {{ question.question }}</h4>
-            <div class="pl4">
+            <h4 class="b gray cf">
+              <small class="fl w3 pt1 blue">{{ question.questionID }})</small>
+              <span class="fl mw7"> {{ question.question }}</span>
+            </h4>
+            <div class="pl5">
               <div ng-repeat="answer in question.domain.domainValues">
                 <label class="pv2 normal silver">
                   <input

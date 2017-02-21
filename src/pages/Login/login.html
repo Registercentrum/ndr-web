@@ -2,9 +2,6 @@
   <div class="Panel" style="text-align: center;">
     <h1 class="Page-heading mt0" style="position: relative;">
       Logga in
-      <small style="position: absolute; right: 0;">
-        <a ui-sref="main.currentUser">Skaffa konto</a>
-      </small>
     </h1>
     <tabset justified>
       <tab heading="För dig med diabetes">
@@ -56,42 +53,36 @@
         </div>
       </tab>
       <tab heading="Vårdpersonal">
-        <div class="row">
-            <div ng-if="!model.loginStarted">
-              <h4 class="col-md-8 col-md-offset-2 pv5-ns f2 lh-copy">
-                Logga in med Mobilt BankID. (Har du SITHS-kort blir du automatiskt inloggad.)
-                Som inloggad användare kan du använda e-tjänsterna: 'Registrera', 'Söklistan', 'Diabetesprofilen' m.fl.
-              </h4>
-              <div class="col-md-6 col-md-offset-3">
-                <img src="images/bankid_small.png" class="" style="" alt=""/>
-                <h5 class="f2 fw2">Mobilt Bank-ID </h5>
-                <form ng-submit="startLogin('user')">
-                  <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
-                  <div class="red mb4" ng-if="model.loginFailed">
-                    Något gick fel, vänligen försök igen.
-                  </div>
-                  <div class="red mb4" ng-if="model.message">
-                    {{model.message}}
-                  </div>
-                  <button type="submit" class="Button Button--info">
-                    Förtsätt
-                  </button>
-                </form>
-              </div>
-            </div>
-            <div ng-if="model.loginStarted" class="pt4-ns pb6-ns">
-              <div class="loader">Loading...</div>
-              <img src="images/bankid_info.png" class="db center mw7 mt2" alt="Öppna din Bank-ID-applikation för att legitimera dig." />
+        <div class="row relative">
+          <a style="position: absolute; right: 0; top: -100px;" ui-sref="main.currentUser">Skaffa konto</a>
+          <div ng-if="!model.loginStarted">
+            <h4 class="col-md-8 col-md-offset-2 pv5-ns f2 lh-copy">
+              Logga in med Mobilt BankID. (Har du SITHS-kort blir du automatiskt inloggad.)
+              Som inloggad användare kan du använda e-tjänsterna: 'Registrera', 'Söklistan', 'Diabetesprofilen' m.fl.
+            </h4>
+            <div class="col-md-6 col-md-offset-3">
+              <img src="images/bankid_small.png" class="" style="" alt=""/>
+              <h5 class="f2 fw2">Mobilt Bank-ID </h5>
+              <form ng-submit="startLogin('user')">
+                <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
+                <div class="red mb4" ng-if="model.loginFailed">
+                  Något gick fel, vänligen försök igen.
+                </div>
+                <div class="red mb4" ng-if="model.message">
+                  {{model.message}}
+                </div>
+                <button type="submit" class="Button Button--info">
+                  Förtsätt
+                </button>
+              </form>
             </div>
           </div>
-        </tab>
-      </tabset>
-    </div>
+          <div ng-if="model.loginStarted" class="pt4-ns pb6-ns">
+            <div class="loader">Loading...</div>
+            <img src="images/bankid_info.png" class="db center mw7 mt2" alt="Öppna din Bank-ID-applikation för att legitimera dig." />
+          </div>
+        </div>
+      </tab>
+    </tabset>
   </div>
-
-
-
-
-
-
-
+</div>

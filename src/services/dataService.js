@@ -201,6 +201,18 @@ angular.module('ndrApp')
 
         };
 
+        this.getInvite = function (inviteID) {
+            var query = {
+                url: APIconfigService.baseURL + 'prominvite/' + inviteID +
+                    '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&SESSIONID=999b',
+                method: 'GET'
+            }
+
+            return $http(query);
+        };
+
         this.createInvite = function (data) {
             data.unitID = accountService.accountModel.activeAccount.unit.unitID;
 
