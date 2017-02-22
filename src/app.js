@@ -31,7 +31,6 @@ angular.module('ndrApp', [
         });
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
-            console.log(accountService.accountModel)
             // prevent access to subject views if not logged in as a subject
             if (toState.name.indexOf('main.subject') === 0) {
                 // further check for access to the survey from view
@@ -320,6 +319,17 @@ angular.module('ndrApp', [
                     url: '/enkater',
                     templateUrl: 'src/pages/Subject/Surveys/surveys.html',
                     controller : 'SubjectSurveysController'
+                })
+
+                .state('main.subject.surveys.info', {
+                    url: '/info',
+                    templateUrl: 'src/pages/Subject/Surveys/info.html'
+                })
+
+                .state('main.subject.surveys.survey', {
+                    url: '/besvara',
+                    templateUrl: 'src/pages/Subject/Surveys/survey.html',
+                    controller : 'SubjectSurveyController'
                 })
 
                 .state('main.subject.profile', {

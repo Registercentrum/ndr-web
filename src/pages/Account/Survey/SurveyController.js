@@ -9,7 +9,7 @@ angular.module('ndrApp')
         console.log('SurveyController: Init');
 
         $scope.model = {
-          createdInvite: null,
+          createdInvites: [],
           newInvite: {
             socialnumber: null,
             subjectID: null,
@@ -234,8 +234,8 @@ angular.module('ndrApp')
             openUntil: moment(invite.openUntil).format("YYYY-MM-DD")
           })
             .then(function (response) {
-              $scope.model.createdInvite = response.data;
-              $scope.model.newInvite ={
+              $scope.model.createdInvites.push(response.data);
+              $scope.model.newInvite = {
                 socialnumber: null,
                 subjectID: null,
                 openUntil: null,
@@ -244,8 +244,12 @@ angular.module('ndrApp')
               };
               getInvites();
             })
-            ["catch"](function (error) {
-              $scope.model.newInviteError = "Något gick fel, vänligen försök igen.";
+            ["catch"](function (err) {
+              if (err && err.data && err.data.code === 2) {
+                $scope.model.newInviteError = "Personen har redan en öppen inbjudan.";
+              } else {
+                $scope.model.newInviteError = "Något gick fel, vänligen försök igen.";
+              }
             });
         }
 

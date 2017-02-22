@@ -1,7 +1,38 @@
 <div class="row">
   <div class="col-md-12">
     <div class="Panel">
-      <h1>Översikt: Mina tjänster</h1>
+      <h1 class="pb4 mb4 bb b--gray">Översikt: Mina tjänster</h1>
+
+      <div class="bb pa4 mv4 b--gray" ng-show="model.survey">
+        <div class="cf pb2">
+          <p class="gray">Meddelanden</p>
+          <div class="fl f1 blue mr2"><i class="fa fa-exclamation-circle"></i></div>
+          <p class="fl">
+            Kvarnbynsvårdcentral vill att du fyller i en enkät inför ditt besök.<br />
+            Eknäten är öppen att besvara fram till {{ model.survey.openUntil | date:'yyyy-MM-dd' }}.
+          </p>
+        </div>
+        <a
+          ui-sref="main.subject.surveys.survey"
+          class="cb Button Button--info">
+          Besvara enkäten
+        </a>
+      </div>
+
+      <div class="cf tc">
+        <div class="fl w-50 br b--light-silver">
+          <a class="no-underline" ui-sref="main.subject.surveys" style="text-decoration: none;">
+            <i style="font-size: 100px" class="fa fa-list-alt"></i><br />
+            Mina enkäter
+          </a>
+        </div>
+        <div class="fl w-50">
+          <a class="no-underline" ui-sref="main.subject.profile" style="text-decoration: none;">
+            <i style="font-size: 100px" class="fa fa-icon_user"></i><br />
+            Min diabetesprofil
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -18,7 +18,7 @@
     "angular-loading-bar": "*",
     "angular-ui-router": "*",
     "angular-sanitize": "1.2.*",
-    "highcharts": "*",
+    "highcharts": "^5.0.7",
     "d3": "*",
     "angular-selectize2": "*",
     "jquery": "~1.x",

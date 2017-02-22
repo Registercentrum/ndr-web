@@ -1,180 +1,38 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="Panel" ng-show="!model.survey">
-      <h1 class="pb4 mb4 bb b--gray">Mina enkäter</h1>
-      <div class="row">
-        <div class="col-md-12 f2">
-          <p class="pb4 b">Du har inga öppna enkäter.</p>
-        </div>
-      </div>
-    </div>
-    <div class="Panel relative" id="SurveyForm" ng-show="model.survey">
-      <h1 class="pb4 mb4 bb b--gray">Mina enkäter</h1>
-      <div class="row">
-        <div class="col-md-offset-2 col-md-8 f2">
-          <p class="pb4 b">
-            #{{ accountModel.subject.invites[0].unitID }} vill att
-            du fyller i den här enkäten inför ditt nästa besök.
-          </p>
-          <p class="pb4 blue">
-            Information om hur dina enkätsvar används <i class="fa fa-info-circle"></i>
-          </p>
-          <p class="pb4 gray">
-            Enkäten har två delar. Den första delen handlar om hur du mår och hur
-            du har det med din diabetes. Den andra delen handlar om hur diabetesvården
-            stödjer dig i att ta hand om din diabetes.
-          </p>
-          <p class="pb4 gray b">Gör så här</p>
-          <p class="pb4 gray">
-            Klicka i det svarsalternativ som stämmer bäst överens med din uppfattning.
-          </p>
-          <p class="pb4 gray">
-            De första fem frågorna handlar om hur du har haft det de senaste fyra veckorna.
-            Alla andra frågor gäller hur du har det just nu.
-          </p>
-          <p class="pb6">
-            <button
-              ng-click="setActiveQuestion(1)"
-              class="Button Button--info">
-              OK, till första frågan
-            </button>
-            <button
-              ng-click="showDeclineModal()"
-              class="Button Button--danger">
-              Nej tack, jag avböjer
-            </button>
-          </p>
-        </div>
-      </div>
-      <div ng-repeat="mainGroup in model.PROMFormMeta">
-        <div class="pv4 mv5 f2 b bb bt b--light-gray gray tc">{{ mainGroup.description }}</div>
-        <div ng-repeat="group in mainGroup.questiongroups | orderBy: 'sortorder'" class="mb5">
-          <div class="f2 light-blue">{{ group.description}}</div>
-          <div
-            id="question-{{question.questionID}}"
-            ng-repeat="question in group.questions"
-            class="question-holder pb4 mb4 pl4"
-            ng-class="{'o-20': model.activeQuestion !== question.questionID}"
-          >
-            <h4 class="b gray cf">
-              <small class="fl w3 pt1 blue">{{ question.questionID }})</small>
-              <span class="fl mw7"> {{ question.question }}</span>
-            </h4>
-            <div class="pl5">
-              <div ng-repeat="answer in question.domain.domainValues">
-                <label class="pv2 normal silver">
-                  <input
-                    type="radio"
-                    ng-model="model.answers[question.columnName]"
-                    name="{{ question.columnName }}"
-                    value="{{ answer.code }}"
-                    ng-click="handleAnswerChange($event)"
-                  />
-                  <span class="ml4">{{ answer.text }}</span>
-                </label>
-              </div>
-            </div>
+    <div class="Panel">
+      <div ui-view>
+        <h1 class="pb4 mb4 bb b--gray">Mina enkäter</h1>
+        <div class="bb pa4 mv4 b--gray" ng-show="model.survey">
+          <div class="cf pb2">
+            <p class="gray">Meddelanden</p>
+            <div class="fl f1 blue mr2"><i class="fa fa-exclamation-circle"></i></div>
+            <p class="fl">
+              Kvarnbynsvårdcentral vill att du fyller i en enkät inför ditt besök.<br />
+              Eknäten är öppen att besvara fram till {{ model.survey.openUntil | date:'yyyy-MM-dd' }}.
+            </p>
           </div>
+          <a
+            ui-sref="main.subject.surveys.survey"
+            class="cb Button Button--info">
+            Besvara enkäten
+          </a>
         </div>
-      </div>
-
-      <div class="pb6 f2 gray tc">
-        Är du klar?<br/>
-        <div ng-show="model.unansweredQuestions.length">
-          Du har inte svarat på
-          <span
-            ng-repeat="id in model.unansweredQuestions"
-            ng-click="setActiveQuestion(id)"
-            class="blue pointer"
-          ><span class="underline">fråga {{ id }}</span><span ng-show="!$last">, </span></span>.
-        </div>
-        <div class="pt4">
-          <button
-            ng-click="submitForm()"
-            class="Button Button--info ttu">
-            Skicka
-          </button>
-        </div>
-      </div>
-
-      <div
-        id="SurveyFormStatusBar"
-        class="cf bottom-0 left-0 right-0"
-        ng-class="{fixed: model.statusBarFixed, absolute: !model.statusBarFixed}"
-      >
-        <div ng-class="{container: model.statusBarFixed}">
-          <div class="row">
-            <div
-              ng-class="{
-                'col-md-offset-2': model.statusBarFixed && !accountModel.PROMSubject,
-                'col-md-10': model.statusBarFixed && !accountModel.PROMSubject,
-                'col-md-12': !model.statusBarFixed || accountModel.PROMSubject
-              }"
-            >
-              <div class="cf pa4 bg-near-white blue ba b--light-gray">
-                <div class="fl">
-                  {{ model.answersCount }} av {{ model.questionsCount }} frågor besvarade
-                </div>
-                <div class="fr">
-                  <button
-                    ng-click="setActiveQuestion(model.activeQuestion - 1)"
-                    ng-disabled="model.activeQuestion === 1"
-                    class="Button Button--info Button--mini">
-                    <i class="fa fa-arrow-up"></i>
-                  </button>
-                  <button
-                    ng-click="setActiveQuestion(model.activeQuestion + 1)"
-                    ng-disabled="model.activeQuestion === model.questionsCount"
-                    class="Button Button--info Button--mini">
-                    <i class="fa fa-arrow-down"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+        <div class="cf tc">
+          <div class="fl w-33">
+            <a class="no-underline" ui-sref="main.subject.profile" style="text-decoration: none;">
+              <i style="font-size: 100px" class="fa fa-list-alt"></i><br />
+              Besvarade enkäter
+            </a>
+          </div>
+          <div class="fl w-33">
+            <a class="no-underline" ui-sref="main.subject.surveys.info" style="text-decoration: none;">
+              <i style="font-size: 100px" class="fa fa-info"></i><br />
+              Information om<br />diabetesenkäten
+            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<script type="text/ng-template" id="confirmModalTmpl">
-  <div class="modal-body text-center pa6">
-    <h3 class="mb5 f1">Klart!</h3>
-    <div class="tc mw8 center">
-      <p class="f2 mb5" ng-if="!accountModel.PROMSubject">
-        Se besvarade enkäter under <a ng-click="closeAndLogout('main.subject.profile')">Min Diabetesprofil</a>.
-      </p>
-      <p>
-        <button
-          ng-click="closeAndLogout()"
-          class="Button Button--info">
-          Logga ut
-        </button>
-      </p>
-    </div>
-  </div>
-</script>
-
-<script type="text/ng-template" id="declineModalTmpl">
-  <div class="modal-body text-center pa6">
-    <h3 class="mb5">Du har avböjt att besvara enkäten.</h3>
-    <div class="tc mw8 center">
-      <p class="f2 mb5">
-        Vill du besvara enkäten vid ett senare tillfälle eller inte alls?
-      </p>
-      <p>
-        <button
-          ng-click="closeAndLogout()"
-          class="Button Button--info">
-          Ja, tack. Vid ett senare tillfälle
-        </button>
-        <button
-          ng-click="declineForm()"
-          class="Button Button--danger">
-          Nej. tack. Inte alls.
-        </button>
-      </p>
-    </div>
-  </div>
-</script>

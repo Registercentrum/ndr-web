@@ -1,11 +1,10 @@
 angular.module("ndrApp")
-    .controller('SubjectHomeController',
-        ['$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout', '$http', 'APIconfigService',
-        function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout, $http, APIconfigService) {
-
-        var Account = $scope.accountModel;
-
-        console.log(Account);
-
+    .controller('SubjectHomeController', ['$scope', function ($scope) {
+      $scope.model = {
+        survey: $scope.accountModel.PROMSubject ||
+                _.find(
+                  $scope.accountModel.subject.invites,
+                  function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
+      };
 }])
 

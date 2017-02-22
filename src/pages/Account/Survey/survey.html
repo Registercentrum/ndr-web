@@ -209,15 +209,17 @@
             </p>
           </div>
         </div>
-        <div class="row" ng-if="model.createdInvite">
-          <div class="col-md-12 f2 green pt4">
+        <div class="row" ng-if="model.createdInvites.length">
+          <div class="col-md-12 f2 pt4">
             Du har skapat ny enkät för:
-            <b>{{ model.createdInvite.subject.socialNumber }}</b> <br />
-            <a
-              href
-              ng-click="showInviteModal(model.createdInvite)">
-              Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
-            </button>
+            <p class="green" ng-repeat="invite in model.createdInvites">
+              <b>{{ invite.subject.socialNumber }}</b>
+              <a
+                href
+                ng-click="showInviteModal(invite)">
+                Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
+              </a>
+            </p>
           </div>
         </div>
       </tab>
