@@ -1,10 +1,8 @@
 ﻿<div class="Panel">
-  <div class="row Survey">
-    <div class="row">
-      <h2 class="col-md-12 Page-title mt0">Diabetesenkäten</h2>
-    </div>
+  <div class="Survey">
+    <h2 class="mt0">Diabetesenkäten</h2>
 
-    <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
+    <tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
       <tab heading="Administrera enkäter">
         <p class="pv5-ns pv4">Det finns {{ model.invites.new.length }} besvarade enkäter att signera.</p>
 
@@ -48,21 +46,46 @@
         <table class="Table borderless" style="">
           <thead>
             <tr>
-              <th class="tc">Personnummer</th>
-              <th class="tc">Skickad</th>
-              <th class="tc">Öppen till</th>
-              <th class="tc">Besvarad</th>
-              <th class="tc">Signerad</th>
-              <th class="tc">&nbsp;</th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'subject.socialNumber'; model.sortReverse = !model.sortReverse">
+                Personnummer
+                <i ng-show="model.sortType == 'subject.socialNumber' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'subject.socialNumber' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'createdAt'; model.sortReverse = !model.sortReverse">
+                Skickad
+                <i ng-show="model.sortType == 'createdAt' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'openUntil'; model.sortReverse = !model.sortReverse">
+                Öppen till
+                <i ng-show="model.sortType == 'openUntil' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'openUntil' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">
+                Besvarad
+                <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'approvedNDR'; model.sortReverse = !model.sortReverse">
+                Signerad
+                <i ng-show="model.sortType == 'approvedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'approvedNDR' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'tag'; model.sortReverse = !model.sortReverse">
+                Etikett
+                <i ng-show="model.sortType == 'tag' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'tag' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pb3">&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="invite in model.invites.displayed" class="tc">
+            <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc">
               <td>{{ invite.subject.socialNumber }}</td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td>
                 <div class="FilterDatePopup">
-                  <div class="input-group FilterDatePopup-group">
+                  <div class="input-group FilterDatePopup-group FilterDatePopup-group--mini">
                     <span class="input-group-addon">
                       <button
                         type="button"
@@ -96,6 +119,7 @@
                 <span class="red" ng-if="!invite.approvedNDR">nej</span>
                 <span ng-if="invite.approvedNDR">ja</span>
               </td>
+              <td>{{ invite.tag }}</td>
               <td class="tl">
                 <button
                   ng-click="showInviteModal(invite)"

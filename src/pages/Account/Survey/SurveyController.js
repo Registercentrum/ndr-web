@@ -9,6 +9,8 @@ angular.module('ndrApp')
         console.log('SurveyController: Init');
 
         $scope.model = {
+          sortType: "createdAt",
+          sortReverse: true,
           createdInvites: [],
           newInvite: {
             socialnumber: null,
@@ -114,8 +116,13 @@ angular.module('ndrApp')
         $scope.showAnswersModal = function (invite) {
           invite.prevOutcomes = getPrevOutcomes(invite);
           invite.copyText = _.reduce(invite.outcomes, function (p, n) {
-            var prevOutcome = _.find(invite.prevOutcomes.outcomes, function (i) { return i.dimension.id === n.dimension.id });
-            var changeSinceLast = prevOutcome && prevOutcome.difference ? prevOutcome.difference : "saknas"
+            var prevOutcome = invite.prevOutcomes &&
+                              _.find(invite.prevOutcomes.outcomes, function (i) {
+                                return i.dimension.id === n.dimension.id
+                              });
+            var changeSinceLast = prevOutcome && prevOutcome.difference ?
+                                  prevOutcome.difference :
+                                  "saknas"
             return p + n.dimension.desc + ',' + n.outcome + ',' + changeSinceLast + '\n';
           }, "");
 
