@@ -142,7 +142,7 @@
                 </button>
                 <button
                   ng-click="showDeleteModal(invite)"
-                  ng-disabled="invite.submittedAt"
+                  ng-disabled="invite.submittedAt || invite.isDeclined"
                   class="Button Button--info Button--mini">
                   Ta bort
                 </button>

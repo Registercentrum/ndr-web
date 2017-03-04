@@ -190,6 +190,7 @@ angular.module('ndrApp')
           dataService.deleteInvite(inviteID)
             .then(function (response) {
               getInvites()
+              modalInstance.dismiss("cancel");
             })
             ["catch"](function (error) {
               console.log(error)
@@ -238,7 +239,8 @@ angular.module('ndrApp')
 
           dataService.createInvite({
             subjectID: invite.subjectID,
-            openUntil: moment(invite.openUntil).format("YYYY-MM-DD")
+            openUntil: moment(invite.openUntil).format("YYYY-MM-DD"),
+            tag: invite.tag
           })
             .then(function (response) {
               $scope.model.createdInvites.push(response.data);
