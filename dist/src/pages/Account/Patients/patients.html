@@ -115,7 +115,7 @@
                         {{ filter.question }}
                     </div>
                     <div class="MultiFilter-row-filterKnobs col-sm-7">
-						
+
 						<!-- Quickfix exclude debut -->
 						<div ng-if="filter.minValue === 1920">
 							<div class="MultiFilter-row-filterKnobs--inputs">
@@ -123,7 +123,7 @@
 								<input type="number" decimals="0" min="{{ filter.minValue || 0 }}" max="{{ filter.maxValue }}" class="form-control" ng-model="selectedFilters[filter.columnName].max" ng-model-options="{debounce: 850}">
 							</div>
 						</div>
-						
+
                         <!-- If there is max value, display as range slider, debut excluded-->
                         <div ng-if="filter.maxValue !== null && filter.minValue !== 1920">
                             <div
@@ -270,16 +270,16 @@
                 <tbody>
                     <tr ng-repeat="subject in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
                         <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
-                        <td once-text="subject.snr"></td>
-                        <td once-text="subject.contactDate | date:'yyyy-MM-dd'"></td>
-                        <td ng-repeat="f in filters | filter:{isChosen:true}" once-text='lookupName(f, subject[f.columnName])'></td>
-						<td once-text="subject.isDead ? 'X' : ''" style="text-align:center;"></td>
+                        <td>{{ ::subject.snr }}</td>
+                        <td>{{ ::subject.contactDate | date:'yyyy-MM-dd' }}</td>
+                        <td ng-repeat="f in ::filters | filter:{isChosen:true}">{{ ::lookupName(f, subject[f.columnName]) }}</td>
+						<td style="text-align:center;">{{ ::subject.isDead ? 'X' : '' }}</td>
                         <td><a ui-sref="main.account.patient({patientID: subject.subjectID, backToSearchVisible: 'yes'})" class="Button Button--info Button--small">Visa profil</a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-		
+
         <ul class="pagination pagination-sm" ng-show="ItemsByPage.length > 1" style="cursor: pointer">
             <li ng-class="{active:0}"><a ng-click="firstPage()">Sida 1</a>
 

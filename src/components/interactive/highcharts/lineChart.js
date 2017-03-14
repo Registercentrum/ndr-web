@@ -5,7 +5,7 @@ angular.module('ndrApp')
     template : "<div style='position: relative'>" +
                   "<div class='chart-container'></div>" +
                   "<div class='chart-empty-label' style='position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)'>" +
-                    "Det finns ingen historisk" +
+                    "Det finns ingen historik" +
                   "</div>" +
                 "</div>",
     scope: {

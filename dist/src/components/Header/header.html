@@ -20,8 +20,27 @@
                         <li role="presentation">
                             <a ui-sref="main.account.report" title="">Rapportera</a>
                         </li>
+                        <li ng-show="accountModel.activeAccount.unit.isUsingPROM" role="presentation">
+                            <a ui-sref="main.account.survey" title="">Diabetesenkäten</a>
+                        </li>
                         <li role="presentation">
                             <a ui-sref="main.currentUser" title="">Mitt användarkonto</a>
+                        </li>
+
+                        <li ng-show="accountModel.subject" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                            Subjekt
+                        </li>
+
+                        <li ng-show="accountModel.subject" role="presentation">
+                            <a ui-sref="main.subject.home" title="">Översikt</a>
+                        </li>
+
+                        <li ng-show="accountModel.subject" role="presentation">
+                            <a ui-sref="main.subject.surveys" title="">Enkäter</a>
+                        </li>
+
+                        <li ng-show="accountModel.subject" role="presentation">
+                            <a ui-sref="main.subject.profile" title="">Profil</a>
                         </li>
 
                         <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
@@ -35,35 +54,26 @@
                     </ul>
                 </div>
 
-                <div ng-show="!accountModel.activeAccount" class="dropdown">
-                    <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                <div ng-show="!accountModel.activeAccount && accountModel.user.activeAccounts" class="dropdown">
+                    <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" >
                         Logga in
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
-						<li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
+                        <li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
                             <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
-                        </li>
-                        <li role="presentation" ng-if="accountModel.visitor.principal.method != 'SITHS'">
-                            <a ui-sref="main.bankid" title="">
-                                Logga in med Mobilt Bank-ID
-                                <img src="images/bankid_small.png" class="" style="margin-left:10px;width:20px;" alt=""/>
-
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" ui-sref="main.currentUser">
-                            Skaffa konto
-                            </a>
                         </li>
                     </ul>
                 </div>
 
+                <a hre ng-if="!accountModel.activeAccount && !accountModel.user.activeAccounts" ui-sref="main.login">
+                    Logga in
+                </a>
 
             </div>
 
             <!--<a ui-sref="main.accountAbout" ng-show="!accountModel.activeAccount" title="">Konto / Inloggning</a>-->
-            <!--<a ui-sref="main.bankid" ng-show="!accountModel.activeAccount" title="">Logga in med Bank-ID</a>-->
+            <!--<a ui-sref="main.login" ng-show="!accountModel.activeAccount" title="">Logga in med Bank-ID</a>-->
             <!--<a ui-sref="main.currentUser" ng-show="accountService.accountModel.user" title="">Mitt tjänstekort</a>-->
 
 

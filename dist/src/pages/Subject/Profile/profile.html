@@ -1,0 +1,71 @@
+<div class="Panel">
+  <div class="row Survey">
+    <div class="row">
+      <h2 class="col-md-12 Page-title mt0">Min Diabetesprofil</h2>
+    </div>
+
+    <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
+      <tab heading="Översikt">
+        <div class="col-md-12">
+          <p class="pt5 pb3 f2 b">{{ subject.sexText }}, {{ subject.age }} år gammal</p>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <p class="ttu mb0 f4">Typ</p>
+            <p class="mb0">{{ subject.diabetesTypeText }}</p>
+          </div>
+          <div class="col-md-3">
+            <p class="ttu mb0 f4">Debut</p>
+            <p class="mb0">{{ subject.debut }} år sedan</p>
+          </div>
+        </div>
+
+        <div class="row pv4" ng-repeat="chart in subject.charts">
+          <h4 class="col-md-12">{{ chart.title }}</h4>
+          <div class="col-md-9">
+            <div
+              line-chart
+              model="chart.series"
+              y-max="{{ chart.yMax }}"
+              y-min="0"
+              date-format="%Y-%m-%d"
+              height="200"
+              color="#4A99C5"
+            ></div>
+          </div>
+          <div class="col-md-3">
+            Senaste {{ chart.title }}<br />
+            <span class="f1 b">{{ chart.latest }}</span>
+          </div>
+        </div>
+      </tab>
+
+      <tab heading="Besvarade enkäter">
+        <div ng-repeat="group in PROMFormMeta" class="row">
+          <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
+          <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4">
+            <h4 class="col-md-12">{{ survey.dimension.desc }}</h4>
+            <div class="col-md-9">
+              <div
+                line-chart
+                model="survey.series"
+                y-min="0"
+                y-max="100"
+                height="200"
+                color="#4A99C5"
+              ></div>
+            </div>
+            <div class="col-md-3">
+              Senaste värdet<br />
+              <span class="f1 b">{{ survey.latestOutcome }}</span>
+              <sup
+                ng-show="survey.diffFromPrevious !== null"
+                ng-class="{red: survey.diffFromPrevious < 0}"
+              >{{ survey.diffFromPrevious }}</sup>
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
