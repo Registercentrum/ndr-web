@@ -1,0 +1,380 @@
+﻿<div class="Panel">
+  <div class="Survey">
+    <h2 class="mt0">Diabetesenkäten</h2>
+
+    <tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
+      <tab heading="Administrera enkäter">
+        <p class="pv5-ns pv4">Det finns {{ model.invites.new.length }} besvarade enkäter att signera.</p>
+
+        <h5 class="bb b--light-gray pv1 mb4 gray">Filtering</h5>
+        <div class="row pb4">
+          <div class="col-sm-2">Personnummer</div>
+          <div class="col-sm-10">
+            <input
+              placeholder="19ÅÅMMDDXXXX"
+              type="text"
+              ng-model="model.socialNumberFilter"
+              ng-change="setDisplayed('socialnumber')"
+            />
+          </div>
+        </div>
+        <div class="row pb4">
+          <div class="col-sm-2">Visa</div>
+          <div class="col-sm-10">
+            <button
+              ng-click="setDisplayed('all')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType !== 'new' && model.filterType !== 'declined'}">
+              Alla ({{ model.invites.all.length }})
+            </button>
+            <button
+              ng-click="setDisplayed('new')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'new'}">
+              Nya ({{ model.invites.new.length }})
+            </button>
+            <button
+              ng-click="setDisplayed('declined')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'declined'}">
+              Avböjt enkät ({{ model.invites.declined.length }})
+            </button>
+          </div>
+        </div>
+
+        <h5 class="bb b--light-gray pv1 mv4 gray">Resultat</h5>
+        <table class="Table borderless" style="">
+          <thead>
+            <tr>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'subject.socialNumber'; model.sortReverse = !model.sortReverse">
+                Personnummer
+                <i ng-show="model.sortType == 'subject.socialNumber' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'subject.socialNumber' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'createdAt'; model.sortReverse = !model.sortReverse">
+                Skickad
+                <i ng-show="model.sortType == 'createdAt' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'openUntil'; model.sortReverse = !model.sortReverse">
+                Öppen till
+                <i ng-show="model.sortType == 'openUntil' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'openUntil' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">
+                Besvarad
+                <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'approvedNDR'; model.sortReverse = !model.sortReverse">
+                Signerad
+                <i ng-show="model.sortType == 'approvedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'approvedNDR' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'tag'; model.sortReverse = !model.sortReverse">
+                Etikett
+                <i ng-show="model.sortType == 'tag' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'tag' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pb3">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc">
+              <td>{{ invite.subject.socialNumber }}</td>
+              <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
+              <td>
+                <div class="FilterDatePopup">
+                  <div class="input-group FilterDatePopup-group FilterDatePopup-group--mini">
+                    <span class="input-group-addon">
+                      <button
+                        type="button"
+                        class="FilterDatePopup-button"
+                        ng-click="openDatePickerEdit($event, invite)"
+                      >
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      datepicker-popup="{{ model.datePicker.format }}"
+                      ng-change="openUntilEdited(invite)"
+                      ng-model="invite.openUntil"
+                      is-open="invite.datePicker.opened"
+                      min-date="invite.datePicker.minDate"
+                      datepicker-options="model.datePicker.dateOptions"
+                      ng-required="true"
+                      close-text="Close"
+                    />
+                  </div>
+                </div>
+              </td>
+              <td class="ttu">
+                <span ng-if="!invite.submittedAt && !invite.isDeclined">ej besvarad</span>
+                <span ng-if="invite.isDeclined" class="red">avböjt</span>
+                <span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>
+              </td>
+              <td class="ttu">
+                <span class="red" ng-if="!invite.approvedNDR">nej</span>
+                <span ng-if="invite.approvedNDR">ja</span>
+              </td>
+              <td>{{ invite.tag }}</td>
+              <td class="tl">
+                <button
+                  ng-click="showInviteModal(invite)"
+                  ng-disabled="invite.submittedAt || invite.isDeclined"
+                  class="Button Button--info Button--mini">
+                  Inbjudan
+                </button>
+                <button
+                  ng-click="showAnswersModal(invite)"
+                  ng-if="invite.submittedAt && invite.approvedNDR"
+                  class="Button Button--info Button--mini">
+                  Enkätsvar
+                </button>
+                <button
+                  ng-click="showAnswersModal(invite)"
+                  ng-if="!invite.approvedNDR"
+                  ng-disabled="!invite.submittedAt"
+                  class="Button Button--warning Button--mini">
+                  Signera
+                </button>
+                <button
+                  ng-click="showDeleteModal(invite)"
+                  ng-disabled="invite.submittedAt"
+                  class="Button Button--info Button--mini">
+                  Ta bort
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </tab>
+
+      <tab heading="Ny enkät">
+        <div class="row">
+          <h4 class="col-md-12 b mt4-ns">Ny enkätinbjudan</h4>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <label class="normal f4">Personnummer</label>
+            <input
+              placeholder="19ÅÅMMDDXXXX"
+              type="text"
+              class="db w-100 pa2"
+              ng-model="model.newInvite.socialnumber"
+              ng-change="fetchSubject()"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="normal f4">Enkäten är öppen till</label>
+            <div class="FilterDatePopup">
+              <div class="input-group FilterDatePopup-group">
+                <span class="input-group-addon">
+                  <button
+                    type="button"
+                    class="FilterDatePopup-button"
+                    ng-click="openDatePicker($event, 'from')"
+                  >
+                    <i class="fa fa-calendar"></i>
+                  </button>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  datepicker-popup="{{ model.datePicker.format}}"
+                  ng-model="model.newInvite.openUntil"
+                  is-open="model.datePicker.opened"
+                  min-date="model.datePicker.minDate"
+                  datepicker-options="model.datePicker.dateOptions"
+                  ng-required="true"
+                  close-text="Close"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="normal f4">Etikett (valfri)</label>
+            <input
+              placeholder="Pär"
+              type="text"
+              class="db w-100 pa2"
+              ng-model="model.newInvite.tag"
+            />
+          </div>
+          <div class="col-md-3">
+            <label class="normal f4">Diabetystyp (hämtas automatiskt)</label>
+            <input
+              type="text"
+              class="db w-100 pa2"
+              ng-model="model.newInvite.diabetesType"
+            />
+          </div>
+        </div>
+        <div class="row pt2 pt4-ns">
+          <div class="col-md-3">
+            <button
+              ng-click="createInvite()"
+              ng-disabled="!model.newInvite.subjectID || !model.newInvite.openUntil"
+              class="Button Button--info w-100">
+              Skapa
+            </button>
+          </div>
+          <div class="col-md-9 pt3">
+            <p ng-if="model.newInviteError" class="red">
+              {{ model.newInviteError }}
+            </p>
+            <p ng-if="model.newInviteDiabetesMissing">
+              <span class="red">Diabetes saknas.</span> Do behöver till Diabetestyp i
+              <a ui-sref="main.account.patient({patientID: model.newInvite.subjectID})">
+                patientens profil
+              </a> innan du kan fortsätta.
+            </p>
+          </div>
+        </div>
+        <div class="row" ng-if="model.createdInvites.length">
+          <div class="col-md-12 f2 pt4">
+            Du har skapat ny enkät för:
+            <p class="green" ng-repeat="invite in model.createdInvites">
+              <b>{{ invite.subject.socialNumber }}</b>
+              <a
+                href
+                ng-click="showInviteModal(invite)">
+                Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
+
+<script type="text/ng-template" id="inviteModalTmpl">
+  <div class="modal-body text-center">
+    <div class="cf bb bw5 pb2 mb5">
+      <p class="fl f2 b">{{ model.selectedInvite.unit.name }}</p>
+      <p class="fr b">{{ model.selectedInvite.subject.socialNumber }}</p>
+    </div>
+
+
+    <h3 class="mb5">Inbjudan att besvara Diabetesenkäten</h3>
+    <div class="tc mw8 center">
+      <p class="f2 mb5">
+        Din diabetesmottagning önskar att du besvarar diabetesenkäten
+        inför ditt nästa besök.
+      </p>
+      <p class="f2 mb5">
+        Du hittar enkäten på www.ndr.nu och du kan logga in med Mobilt BankID
+        eller med detta engångslösenord:
+      </p>
+      <p class="dib f2 pa4 mb5 ba">{{ model.selectedInvite.key }}</p>
+      <p>
+        Engångslösenordet gäller i 24 timmar från det att du loggar in.
+        OBS! Engångslösenordet ger dig möjlighet att besvara enkäten men
+        av säkerhetsskäl kan du inte se din diabetesprofil. För att få tillgång
+        till den behöver du logga in med Mobilt BankID.
+      </p>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="answersModalTmpl">
+  <div ng-show="model.selectedInvite.signed" class="modal-body text-center">
+    <p class="cf f2 tl bb bw1 pb2 mb5">
+      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+    </p>
+
+    <h3 class="mb5 gray">
+      <i class="fa fa-check blue"></i>
+      Du har signerat enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}<br />
+      för {{ model.selectedInvite.subject.socialNumber }}
+    </h3>
+
+    <button
+      ng-click="model.selectedInvite.signed = false"
+      class="Button Button--info mt2 mt4-ns">
+      Tillbaka
+    </button>
+
+    <button
+      ng-click="goToSubjectProfile(model.selectedInvite.subject)"
+      class="Button Button--info mt2 mt4-ns">
+      Se diabetesprofil
+    </button>
+  </div>
+
+  <div ng-show="!model.selectedInvite.signed" class="modal-body text-center">
+    <p class="cf f2 tl bb bw1 pb2 mb5">
+      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+    </p>
+
+    <h3 class="mb5 gray">Den här patienten har en enkät som inte är överförd till NDR</h3>
+    <h4 class="mb5 f2 b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
+
+    <tabset>
+      <tab heading="Diagram">
+        <div class="cf b mt4 pb2 tl tc-ns bb b--gray">
+          <div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>
+          <div class="fl-ns pa2 w-40-ns">Värde</div>
+          <div class="fl-ns pa2 w-20-ns">
+            Förändring
+            <span ng-show="model.selectedInvite.prevOutcomes">
+              (sedan {{ model.selectedInvite.prevOutcomes.submittedAt  | date:'yyyy-MM-dd' }})
+            </span>
+          </div>
+        </div>
+        <div ng-repeat="outcome in model.selectedInvite.outcomes" class="cf">
+          <div class="fl-ns pa2 w-40-ns tl tr-ns">{{ outcome.dimension.desc }}</div>
+          <div class="fl-ns pv2 w-40-ns tl relative br bl b--light-gray" style="padding-left: 1px; padding-right: 1px;">
+            <span class="dib bg-blue" style="height: 20px; width: {{ outcome.outcome }}%"></span>
+            <span class="absolute ml1" style="top: 2px; left: {{ outcome.outcome }}%">
+              {{ outcome.outcome | number: 0 }}
+            </span>
+          </div>
+          <div
+            class="fl-ns pa2 w-20-ns tl tc-ns"
+            ng-class="{red: model.selectedInvite.prevOutcomes.outcomes[$index].difference < 0}"
+          >
+            {{ model.selectedInvite.prevOutcomes.outcomes[$index].difference || "saknas" }}
+          </div>
+        </div>
+      </tab>
+      <tab heading="Kopiering" select="selectCopyView()">
+        <p class="mt4">Tryck Cmd / Ctrl + C eller högerklicka på texten och välj "Kopiera"</p>
+        <textarea
+          class="db w-100 pa2 h5"
+          style="height: 250px;"
+          id="copy-view"
+        >{{ model.selectedInvite.copyText }}</textarea>
+      </tab>
+    </tabset>
+
+    <button
+      ng-click="signInvite(model.selectedInvite)"
+      class="Button Button--info mt2 mt4-ns">
+      Signera (förs över till NDR)
+    </button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="deleteModalTmpl">
+  <div class="modal-body text-center">
+    <h3 class="mb5">
+      Bekräfta att du vill ta bort posten för {{ model.selectedInvite.subject.socialNumber }}
+    </h3>
+    <div class="tc mw8 center">
+    <button
+      ng-click="deleteInvite(model.selectedInvite.inviteID)"
+      class="Button Button--danger mt2 mt4-ns mr4-ns">
+      Ja, ta bort posten
+    </button>
+    <button
+      ng-click="$close()"
+      class="Button Button--info mt2 mt4-ns">
+      Nej, avbryt
+    </button>
+    </div>
+  </div>
+</script>
