@@ -10,7 +10,6 @@ angular.module("ndrApp")
       survey: $scope.accountModel.PROMSubject ||
               _.find(
                 $scope.accountModel.subject.invites,
-                // function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
-                function (invite) { return !invite.submittedAt; }),
+                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
     };
   }]);

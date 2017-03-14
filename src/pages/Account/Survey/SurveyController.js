@@ -15,7 +15,7 @@ angular.module('ndrApp')
           newInvite: {
             socialnumber: null,
             subjectID: null,
-            openUntil: null,
+            openUntil: moment().add(3, "months").format("YYYY-MM-DD"),
             tag: null,
             diabetesType: null,
           },
@@ -92,7 +92,7 @@ angular.module('ndrApp')
               $scope.model.invites.all = invites.slice();
               $scope.model.invites.displayed = invites.slice();
               $scope.model.invites.new = _.filter(invites, function (invite) {
-                return invite.submittedAt && !invite.approvedNDR;
+                return invite.submittedAt && !invite.isApprovedNDR;
               });
               $scope.model.invites.declined = _.filter(invites, function (invite) {
                 return invite.isDeclined;
@@ -157,9 +157,14 @@ angular.module('ndrApp')
         }
 
         $scope.signInvite = function (invite) {
-          invite.approvedNDR = invite.approvedNDR ? 0 : 1;
+          invite.isApprovedNDR = true;
 
-          dataService.updateInvite(invite.inviteID, invite)
+          var signedInvite = angular.copy(invite)
+          delete signedInvite.datePicker;
+          delete signedInvite.copyText;
+          delete signedInvite.prevOutcomes;
+
+          dataService.updateInvite(invite.inviteID, signedInvite)
             .then(function (response) {
               invite.signed = true;
             })
