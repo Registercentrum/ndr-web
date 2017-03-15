@@ -5,7 +5,7 @@ angular.module("ndrApp")
 
     $scope.accountService = accountService;
 
-    console.log($state)
+    console.log($scope)
 
     $scope.model = {
       survey: $scope.accountModel.PROMSubject ||
@@ -134,8 +134,8 @@ angular.module("ndrApp")
       $scope.model.PROMFormMeta.forEach(function (mainGroup) {
         mainGroup.questiongroups.forEach(function (group) {
           group.questions.forEach(function (q) {
-            if (_.isEmpty($scope.model.answers) ||
-                $scope.model.answers[q.columnName] === null)
+            if ($scope.model.answers[q.columnName] === null ||
+                $scope.model.answers[q.columnName] === undefined)
               questions.push(q.questionID);
           });
         });
