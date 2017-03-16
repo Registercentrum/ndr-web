@@ -119,7 +119,7 @@
                 <span class="red" ng-if="!invite.isApprovedNDR">nej</span>
                 <span ng-if="invite.isApprovedNDR">ja</span>
               </td>
-              <td>{{ invite.tag }}</td>
+              <td><span class="underline cursor" title="{{ invite.tag }}">{{ invite.tag | limitTo:5 }}</span></td>
               <td class="tl">
                 <button
                   ng-click="showInviteModal(invite)"
