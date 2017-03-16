@@ -66,10 +66,10 @@
                 <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>
                 <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'approvedNDR'; model.sortReverse = !model.sortReverse">
+              <th class="tc pointer pb3" ng-click="model.sortType = 'isApprovedNDR'; model.sortReverse = !model.sortReverse">
                 Signerad
-                <i ng-show="model.sortType == 'approvedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'approvedNDR' && model.sortReverse" class="fa fa-caret-up"></i>
+                <i ng-show="model.sortType == 'isApprovedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'isApprovedNDR' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <th class="tc pointer pb3" ng-click="model.sortType = 'tag'; model.sortReverse = !model.sortReverse">
                 Etikett
@@ -116,10 +116,10 @@
                 <span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>
               </td>
               <td class="ttu">
-                <span class="red" ng-if="!invite.approvedNDR">nej</span>
-                <span ng-if="invite.approvedNDR">ja</span>
+                <span class="red" ng-if="!invite.isApprovedNDR">nej</span>
+                <span ng-if="invite.isApprovedNDR">ja</span>
               </td>
-              <td>{{ invite.tag }}</td>
+              <td><span class="underline cursor" title="{{ invite.tag }}">{{ invite.tag | limitTo:5 }}</span></td>
               <td class="tl">
                 <button
                   ng-click="showInviteModal(invite)"
@@ -129,20 +129,20 @@
                 </button>
                 <button
                   ng-click="showAnswersModal(invite)"
-                  ng-if="invite.submittedAt && invite.approvedNDR"
+                  ng-if="invite.submittedAt && invite.isApprovedNDR"
                   class="Button Button--info Button--mini">
                   Enkätsvar
                 </button>
                 <button
                   ng-click="showAnswersModal(invite)"
-                  ng-if="!invite.approvedNDR"
+                  ng-if="!invite.isApprovedNDR"
                   ng-disabled="!invite.submittedAt"
                   class="Button Button--warning Button--mini">
                   Signera
                 </button>
                 <button
                   ng-click="showDeleteModal(invite)"
-                  ng-disabled="invite.submittedAt"
+                  ng-disabled="invite.submittedAt || invite.isDeclined"
                   class="Button Button--info Button--mini">
                   Ta bort
                 </button>
@@ -352,6 +352,7 @@
     </tabset>
 
     <button
+      ng-show="!model.selectedInvite.isApprovedNDR"
       ng-click="signInvite(model.selectedInvite)"
       class="Button Button--info mt2 mt4-ns">
       Signera (förs över till NDR)

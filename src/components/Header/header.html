@@ -14,6 +14,10 @@
 
                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu2">
 
+                        <li ng-show="accountModel.user" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                            E-tjänster för vårdpersonal
+                        </li>
+
                         <li role="presentation">
                             <a ui-sref="main.account.home" title="">Översikt</a>
                         </li>
@@ -28,7 +32,7 @@
                         </li>
 
                         <li ng-show="accountModel.subject" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
-                            Subjekt
+                            E-tjänster för dig med diabetes
                         </li>
 
                         <li ng-show="accountModel.subject" role="presentation">
@@ -36,11 +40,11 @@
                         </li>
 
                         <li ng-show="accountModel.subject" role="presentation">
-                            <a ui-sref="main.subject.surveys" title="">Enkäter</a>
+                            <a ui-sref="main.subject.surveys" title="">Mina enkäter</a>
                         </li>
 
                         <li ng-show="accountModel.subject" role="presentation">
-                            <a ui-sref="main.subject.profile" title="">Profil</a>
+                            <a ui-sref="main.subject.profile" title="">Min diabetesprofil</a>
                         </li>
 
                         <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
