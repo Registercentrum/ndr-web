@@ -35,8 +35,7 @@ angular.module('ndrApp')
         };
 
         this.login = function (accountID) {
-            var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey +
-                      '&SESSIONID=999b';
+            var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey;
 
             console.log('LOGGING IN');
 

@@ -24,8 +24,7 @@ angular.module('ndrApp').controller('LoginController',
 
       var query = {
         url: APIconfigService.baseURL + 'bid/ndr/order' +
-            '?socialnumber=' + $scope.model.socialnumber +
-            '&SESSIONID=999b',
+            '?socialnumber=' + $scope.model.socialnumber,
         method: 'GET'
       };
 
@@ -49,8 +48,7 @@ angular.module('ndrApp').controller('LoginController',
       var query = {
         url: APIconfigService.baseURL + 'prom' +
             '?PROMKey=' + $scope.model.PROMKey +
-            '&APIKey=' + APIconfigService.APIKey +
-            '&SESSIONID=999b',
+            '&APIKey=' + APIconfigService.APIKey,
         method: 'GET',
       };
 
@@ -102,8 +100,7 @@ angular.module('ndrApp').controller('LoginController',
     function login (type) {
 
       var query = {
-        url: APIconfigService.baseURL + 'CurrentVisitor' +
-            '?SESSIONID=999b',
+        url: APIconfigService.baseURL + 'CurrentVisitor',
         method: 'GET'
       };
 
