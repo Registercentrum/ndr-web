@@ -120,6 +120,7 @@ module.exports = function(grunt) {
         },
 
         watch: {
+
             svgmin: {
                 files: ['images/svg/*.svg'],
                 tasks: ['svgmin'],
