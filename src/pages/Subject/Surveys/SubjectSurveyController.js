@@ -123,7 +123,10 @@ angular.module("ndrApp")
 
     function getAnswersCount () {
       var count = 0;
-      for (q in $scope.model.answers) {
+
+      console.log("answers", $scope.model.answers)
+
+      for (var q in $scope.model.answers) {
         if ($scope.model.answers[q] !== null) count += 1;
       }
       return count;

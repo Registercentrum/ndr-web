@@ -204,7 +204,7 @@
             />
           </div>
           <div class="col-md-3">
-            <label class="normal f4">Diabetystyp (hämtas automatiskt)</label>
+            <label class="normal f4">Diabetestyp (hämtas automatiskt)</label>
             <input
               type="text"
               class="db w-100 pa2"
@@ -226,7 +226,7 @@
               {{ model.newInviteError }}
             </p>
             <p ng-if="model.newInviteDiabetesMissing">
-              <span class="red">Diabetes saknas.</span> Do behöver till Diabetestyp i
+              <span class="red">Diabetestyp saknas.</span> Du behöver lägga till Diabetestyp i
               <a ui-sref="main.account.patient({patientID: model.newInvite.subjectID})">
                 patientens profil
               </a> innan du kan fortsätta.
@@ -341,9 +341,9 @@
           </div>
         </div>
       </tab>
-      <tab heading="Kopiering" select="selectCopyView()">
+      <tab heading="Journalvänlig text" select="selectCopyView()">
         <p class="mt4">Tryck Cmd / Ctrl + C eller högerklicka på texten och välj "Kopiera"</p>
-        <textarea
+        <textarea onclick="this.focus();this.select()" readonly="readonly"
           class="db w-100 pa2 h5"
           style="height: 250px;"
           id="copy-view"
@@ -363,13 +363,13 @@
 <script type="text/ng-template" id="deleteModalTmpl">
   <div class="modal-body text-center">
     <h3 class="mb5">
-      Bekräfta att du vill ta bort posten för {{ model.selectedInvite.subject.socialNumber }}
+      Bekräfta att du vill ta bort inbjudan för {{ model.selectedInvite.subject.socialNumber }}
     </h3>
     <div class="tc mw8 center">
     <button
       ng-click="deleteInvite(model.selectedInvite.inviteID)"
       class="Button Button--danger mt2 mt4-ns mr4-ns">
-      Ja, ta bort posten
+      Ja, ta bort inbjudan
     </button>
     <button
       ng-click="$close()"
