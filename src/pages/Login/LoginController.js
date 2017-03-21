@@ -110,7 +110,10 @@ angular.module('ndrApp').controller('LoginController',
           if (type === "user") {
             if (response.data.isUser) {
               $scope.model.message = null;
+              console.log("check for logged");
               checkForLoggedIn();
+              console.log("reloading");
+
               $state.go('main.account.home', {}, {reload: true});
             } else {
               $scope.model.loginStarted = false;
