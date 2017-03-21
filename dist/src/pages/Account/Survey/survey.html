@@ -240,7 +240,13 @@
               <b>{{ invite.subject.socialNumber }}</b>
               <a
                 href
-                ng-click="showInviteModal(invite)">
+                ng-click="showInviteModal(invite)"
+                class="w4 mr2">
+                Se inbjudan
+              </a>
+              <a
+                href
+                ng-click="goToPrintView(invite)">
                 Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
               </a>
             </p>
@@ -254,6 +260,9 @@
 <script type="text/ng-template" id="inviteModalTmpl">
   <div class="modal-body text-center">
     <div class="cf bb bw5 pb2 mb5">
+      <p class="f2 b tc">
+        <a ng-click="goToPrintView()" class="pointer">Skriv ut inbjudan</a>
+      </p>
       <p class="fl f2 b">{{ model.selectedInvite.unit.name }}</p>
       <p class="fr b">{{ model.selectedInvite.subject.socialNumber }}</p>
     </div>

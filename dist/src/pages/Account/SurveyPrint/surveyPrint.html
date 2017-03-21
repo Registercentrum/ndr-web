@@ -1,0 +1,29 @@
+<div class="modal-body text-center">
+  <style>
+    .Header, .page-footer { display: none ; }
+  </style>
+  <div class="cf bb bw5 pb2 mb5">
+    <p class="fl f2 b">{{ model.unitName }}</p>
+    <p class="fr b">{{ model.socialNumber }}</p>
+  </div>
+
+
+  <h3 class="mb5">Inbjudan att besvara Diabetesenkäten</h3>
+  <div class="tc mw8 center">
+    <p class="f2 mb5">
+      Din diabetesmottagning önskar att du besvarar diabetesenkäten
+      inför ditt nästa besök.
+    </p>
+    <p class="f2 mb5">
+      Du hittar enkäten på www.ndr.nu och du kan logga in med Mobilt BankID
+      eller med detta engångslösenord:
+    </p>
+    <p class="dib f2 pa4 mb5 ba">{{ model.key }}</p>
+    <p>
+      Engångslösenordet gäller i 24 timmar från det att du loggar in.
+      OBS! Engångslösenordet ger dig möjlighet att besvara enkäten men
+      av säkerhetsskäl kan du inte se din diabetesprofil. För att få tillgång
+      till den behöver du logga in med Mobilt BankID.
+    </p>
+  </div>
+</div>
