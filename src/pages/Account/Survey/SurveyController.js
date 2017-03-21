@@ -150,6 +150,20 @@ angular.module('ndrApp')
           });
         }
 
+        $scope.goToPrintView = function (invite) {
+          if (invite) $scope.model.selectedInvite = invite
+
+          if (!$scope.model.selectedInvite) return false;
+          if (modalInstance) modalInstance.dismiss("cancel");
+
+          $state.go("surveyPrint", {
+            unitName: $scope.model.selectedInvite.unit.name,
+            socialNumber: $scope.model.selectedInvite.subject.socialNumber,
+            key: $scope.model.selectedInvite.key
+          })
+        }
+
+
         $scope.selectCopyView = function () {
           setTimeout(function() {
             document.getElementById("copy-view").select();

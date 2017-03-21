@@ -363,6 +363,12 @@ angular.module('ndrApp', [
                     controller : 'SurveyController'
                 })
 
+                .state('surveyPrint', {
+                    url: '/skriv-inbjudan?unitName?socialNumber?key',
+                    templateUrl: 'src/pages/Account/SurveyPrint/surveyPrint.html',
+                    controller : 'SurveyPrintController'
+                })
+
                 .state('main.account.report', {
                     url: '/rapportera/:patientID',
                     templateUrl: 'src/pages/Account/Report/report.html',
