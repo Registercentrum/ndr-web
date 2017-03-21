@@ -30,7 +30,7 @@ angular.module('ndrApp', [
             $rootScope.$state = toState.name;
         });
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+        /*$rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             // prevent access to subject views if not logged in as a subject
             if (toState.name.indexOf('main.subject') === 0) {
                 // further check for access to the survey from view
@@ -68,7 +68,7 @@ angular.module('ndrApp', [
                     $state.go('main.home', {}, {reload: true});
                 }
             }
-        });
+        });*/
 
         $rootScope.is = function(name){
             return $state.is(name);
