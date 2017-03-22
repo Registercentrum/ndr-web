@@ -46,8 +46,8 @@ angular.module('ndrApp')
 
                     self.accountModel.visitor = response.data;
 
-                    if (response.data.user && response.data.user.userID === 5715)
-                        response.data.user.accounts.pop()
+                    // if (response.data.user && response.data.user.userID === 22)
+                    //     response.data.user.accounts.pop()
 
                     if(response.data.isUser == false) return false;
 
@@ -69,11 +69,10 @@ angular.module('ndrApp')
                         return account.status.id === 1;
                     });
 
-                    //if many units redirect to home page to choose unit
-                    if (self.accountModel.activeAccount == null && user.activeAccounts.length > 1)
-                        $state.go('main.home');
-                    else
+                    // if there is only one unit set it as activeAccount
+                    if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
                         self.accountModel.activeAccount = user.activeAccounts[0];
+                    }
 
                     if (self.accountModel.tempAccount) {
                         self.accountModel.activeAccount = self.accountModel.tempAccount;
