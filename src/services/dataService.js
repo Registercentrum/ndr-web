@@ -144,10 +144,11 @@ angular.module('ndrApp')
 
 
         this.getSubjectBySocialNumber = function (socialNumber) {
-            var query = {
-                url: APIconfigService.baseURL + 'Subject' +
+            var url = APIconfigService.baseURL + 'Subject' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
-                    '&APIKey=' + APIconfigService.APIKey,
+                    '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+                url: APIconfigService.constructUrl(url),
                 method: 'POST',
                 data: {socialNumber: socialNumber}
             };
@@ -162,8 +163,11 @@ angular.module('ndrApp')
 
 
         this.deleteContact = function (id) {
+            var url = APIconfigService.baseURL + 'Contact/' + id +
+                      '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                      '&APIKey=' + APIconfigService.APIKey;
             var query = {
-                url: APIconfigService.baseURL + 'Contact/' + id + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+                url: APIconfigService.constructUrl(url),
                 method: 'DELETE'
             };
 
@@ -174,8 +178,11 @@ angular.module('ndrApp')
 
 
         this.saveContact = function (data) {
+            var url = APIconfigService.baseURL + 'Contact/' + (data.contactID || '') +
+                      '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                      '&APIKey=' + APIconfigService.APIKey;
             var query = {
-              url: APIconfigService.baseURL + 'Contact/' + (data.contactID || '') + '?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+              url: APIconfigService.constructUrl(url),
               method: data.contactID ? 'PUT' : 'POST',
               data: data
             };
@@ -188,10 +195,11 @@ angular.module('ndrApp')
 
 
         this.getInvites = function () {
-            var query = {
-                url: APIconfigService.baseURL + 'prominvite' +
+            var url = APIconfigService.baseURL + 'prominvite' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
-                    '&APIKey=' + APIconfigService.APIKey,
+                    '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+                url: APIconfigService.constructUrl(url),
                 method: 'GET'
             }
 
@@ -200,10 +208,11 @@ angular.module('ndrApp')
         };
 
         this.getInvite = function (inviteID) {
-            var query = {
-                url: APIconfigService.baseURL + 'prominvite/' + inviteID +
+            var url = APIconfigService.baseURL + 'prominvite/' + inviteID +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
-                    '&APIKey=' + APIconfigService.APIKey,
+                    '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+                url: APIconfigService.constructUrl(url),
                 method: 'GET'
             }
 
@@ -212,11 +221,11 @@ angular.module('ndrApp')
 
         this.createInvite = function (data) {
             data.unitID = accountService.accountModel.activeAccount.unit.unitID;
-
-            var query = {
-                url: APIconfigService.baseURL + 'prominvite/' +
+            var url = APIconfigService.baseURL + 'prominvite/' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
-                    '&APIKey=' + APIconfigService.APIKey,
+                    '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+                url: APIconfigService.constructUrl(url),
                 method: 'POST',
                 data: data
             }
@@ -225,10 +234,11 @@ angular.module('ndrApp')
         };
 
         this.updateInvite = function (inviteId, updatedInvite) {
-            var query = {
-                url: APIconfigService.baseURL + 'prominvite/' + inviteId +
+            var url = APIconfigService.baseURL + 'prominvite/' + inviteId +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
-                    '&APIKey=' + APIconfigService.APIKey,
+                    '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+                url: APIconfigService.constructUrl(url),
                 method: 'PUT',
                 data: updatedInvite
             }
@@ -237,10 +247,11 @@ angular.module('ndrApp')
         };
 
         this.deleteInvite = function (inviteId) {
-            var query = {
-                url: APIconfigService.baseURL + 'prominvite/' + inviteId +
+            var url = APIconfigService.baseURL + 'prominvite/' + inviteId +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
-                    '&APIKey=' + APIconfigService.APIKey,
+                    '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+                url: APIconfigService.constructUrl(url),
                 method: 'DELETE'
             }
 
@@ -249,8 +260,11 @@ angular.module('ndrApp')
 
 
         this.savePROM = function (data) {
+            var url = APIconfigService.baseURL + 'PROM/' +
+                      '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                      '&APIKey=' + APIconfigService.APIKey;
             var query = {
-              url: APIconfigService.baseURL + 'PROM/?AccountID=' + accountService.accountModel.activeAccount.accountID + '&APIKey=' + APIconfigService.APIKey,
+              url: APIconfigService.constructUrl(url),
               method: 'POST',
               data: data
             };
@@ -296,9 +310,10 @@ angular.module('ndrApp')
         };
 
         this.getPROMFormMeta = function () {
+            var url = APIconfigService.baseURL + 'promform' +
+                    '?APIKey=' + APIconfigService.APIKey;
             var query = {
-                url: APIconfigService.baseURL + 'promform' +
-                    '?APIKey=' + APIconfigService.APIKey,
+                url: APIconfigService.constructUrl(url),
                 method: 'GET'
             }
 
@@ -318,7 +333,7 @@ angular.module('ndrApp')
             }
 
             var query = {
-                url: url,
+                url: APIconfigService.constructUrl(url),
                 method: 'POST',
                 data: data
             }
@@ -399,6 +414,7 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
+            query.SESSIONID = '999b';
 
             return $.ajax({
                 url: APIconfigService.baseURL + 'subject',

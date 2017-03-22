@@ -26,10 +26,11 @@ angular.module('ndrApp').controller('LoginController',
       $scope.model.loginStarted = true;
       $scope.model.loginFailed = false;
 
+      var url = APIconfigService.baseURL + 'bid/ndr/order' +
+            '?socialnumber=' + $scope.model.socialnumber
+
       var query = {
-        url: APIconfigService.baseURL + 'bid/ndr/order' +
-            '?socialnumber=' + $scope.model.socialnumber +
-            '&SESSIONID=999b',
+        url:  APIconfigService.constructUrl(url),
         method: 'GET'
       };
 
@@ -50,11 +51,12 @@ angular.module('ndrApp').controller('LoginController',
       $scope.model.loginFailed = false;
       $scope.model.loginPROMKeyFailedMessage = "";
 
-      var query = {
-        url: APIconfigService.baseURL + 'prom' +
+      var url = APIconfigService.baseURL + 'prom' +
             '?PROMKey=' + $scope.model.PROMKey +
-            '&APIKey=' + APIconfigService.APIKey +
-            '&SESSIONID=999b',
+            '&APIKey=' + APIconfigService.APIKey;
+
+      var query = {
+        url: APIconfigService.constructUrl(url),
         method: 'GET',
       };
 
@@ -98,9 +100,10 @@ angular.module('ndrApp').controller('LoginController',
 
     function waitForLogin (type) {
       var waitFor = setInterval(function () {
+        var url = APIconfigService.baseURL + 'bid/ndr/collect' +
+              '?orderRef=' + $scope.model.orderRef;
         var query = {
-          url: APIconfigService.baseURL + 'bid/ndr/collect' +
-              '?orderRef=' + $scope.model.orderRef,
+          url: APIconfigService.constructUrl(url),
           method: 'GET',
         };
 
@@ -123,10 +126,9 @@ angular.module('ndrApp').controller('LoginController',
     }
 
     function login (type) {
-
+      var url = APIconfigService.baseURL + 'CurrentVisitor';
       var query = {
-        url: APIconfigService.baseURL + 'CurrentVisitor' +
-            '?SESSIONID=999b',
+        url: APIconfigService.constructUrl(url),
         method: 'GET'
       };
 
@@ -188,8 +190,9 @@ angular.module('ndrApp').controller('LoginController',
 
     function checkForLoggedIn () {
       var waitFor = setInterval(function () {
+        var url = APIconfigService.baseURL + 'CurrentVisitor';
         var query = {
-          url: APIconfigService.baseURL + 'CurrentVisitor',
+          url: APIconfigService.constructUrl(url),
           method: 'GET'
         };
 

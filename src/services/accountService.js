@@ -41,7 +41,7 @@ angular.module('ndrApp')
 
             isLoggingIn = true;
 
-            return $http.get(url)
+            return $http.get(APIconfigService.constructUrl(url))
                 .then(function (response) {
 
                     self.accountModel.visitor = response.data;
