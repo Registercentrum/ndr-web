@@ -350,7 +350,7 @@ angular.module('ndrApp')
                 callback(this.data.koo);
             else {
                 $.ajax({
-                    url     : APIconfigService.baseURL + 'KOO',
+                    url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'KOO'),
                     data    : query,
                     type    : 'GET',
                     dataType: 'json',
@@ -371,7 +371,7 @@ angular.module('ndrApp')
                 callback(this.data.kas);
             else {
                 $.ajax({
-                    url     : APIconfigService.baseURL + 'KAS',
+                    url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'KAS'),
                     data    : query,
                     type    : 'GET',
                     dataType: 'json',
@@ -388,7 +388,7 @@ angular.module('ndrApp')
             query.APIKey = APIconfigService.APIKey;
 
             $.ajax({
-                url     : APIconfigService.baseURL + 'Unit',
+                url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'Unit'),
                 data    : query,
                 type    : 'GET',
                 dataType: 'json',
@@ -402,7 +402,7 @@ angular.module('ndrApp')
             query.AccountID = accountID;
 
             $.ajax({
-                url     : APIconfigService.baseURL + 'ContactOptionalMeta',
+                url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'ContactOptionalMeta'),
                 data    : query,
                 type    : 'GET',
                 dataType: 'json',
@@ -414,10 +414,9 @@ angular.module('ndrApp')
             query = query || {};
             query.AccountID = accountService.accountModel.activeAccount.accountID;
             query.APIKey = APIconfigService.APIKey;
-            query.SESSIONID = '999b';
 
             return $.ajax({
-                url: APIconfigService.baseURL + 'subject',
+                url: APIconfigService.constructUrl(APIconfigService.baseURL + 'subject'),
                 data: query,
                 type: 'GET',
                 dataType: 'json'
