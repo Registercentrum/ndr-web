@@ -319,7 +319,7 @@
       Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
     </p>
 
-    <h3 class="mb5 gray">Den här patienten har en enkät som inte är överförd till NDR</h3>
+    <h3 class="mb5 gray" ng-show="!model.selectedInvite.isApprovedNDR">Den här patienten har en enkät som inte är överförd till NDR</h3>
     <h4 class="mb5 f2 b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
 
     <tabset>
