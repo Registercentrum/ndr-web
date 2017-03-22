@@ -70,6 +70,14 @@ angular.module('ndrApp', [
             }
         });*/
 
+        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+            //if there is no activeAccount set, redirect to home page to choose unit
+            if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
+                event.preventDefault();
+                $state.go('main.home', {}, {reload: true});
+            }
+        });
+
         $rootScope.is = function(name){
             return $state.is(name);
         };

@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
   .controller('SurveyController', [
-                 '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService', 'accountService',
-        function ($scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService,   accountService) {
+                 '$window', '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService', 'accountService',
+        function ($window,   $scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService,   accountService) {
 
         var account = $scope.accountModel;
         console.log('SurveyController: Init');
@@ -156,11 +156,13 @@ angular.module('ndrApp')
           if (!$scope.model.selectedInvite) return false;
           if (modalInstance) modalInstance.dismiss("cancel");
 
-          $state.go("surveyPrint", {
+          var url = $state.href("surveyPrint", {
             unitName: $scope.model.selectedInvite.unit.name,
             socialNumber: $scope.model.selectedInvite.subject.socialNumber,
             key: $scope.model.selectedInvite.key
           })
+
+          $window.open(url, "_blank");
         }
 
 
