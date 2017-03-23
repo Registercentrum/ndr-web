@@ -57,6 +57,7 @@ angular.module("ndrApp")
     $scope.submitForm = function () {
       var answers = $scope.model.answers;
       answers.isSubmitted = true;
+
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           confirmModalInstance = $modal.open({
@@ -67,6 +68,12 @@ angular.module("ndrApp")
           });
           // clean the model from PROMSubject
           delete accountService.accountModel.PROMSubject
+          // update subject model so there's no lingering messages about
+          // survey to answer
+          var submittedInvite = accountService.accountModel.subject.invites.find(function (i) {
+            return $scope.model.survey.inviteID === i.inviteID;
+          });
+          if (submittedInvite) submittedInvite.submittedAt = moment().format("YYYY-MM-DD");
         });
     };
 
@@ -92,12 +99,20 @@ angular.module("ndrApp")
     $scope.declineForm = function () {
       var answers = $scope.model.answers;
       answers.isDeclined = true;
+
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           accountService.logOut();
           // clean the model from PROMSubject
-          delete accountService.accountModel.PROMSubject
-          $state.go("main.home", {}, {reload: true});
+          delete accountService.accountModel.PROMSubject;
+          // update subject model so there's no lingering messages about
+          // survey to answer
+          var declinedInvite = accountService.accountModel.subject.invites.find(function (i) {
+            return $scope.model.survey.inviteID === i.inviteID;
+          });
+          if (declinedInvite) declinedInvite.isDeclined = true;
+
+          $state.go("main.subject.home", {}, {reload: true});
           declineModalInstance.dismiss("cancel");
         });
     };
