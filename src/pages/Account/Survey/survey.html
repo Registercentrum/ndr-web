@@ -259,6 +259,11 @@
 
 <script type="text/ng-template" id="inviteModalTmpl">
   <div class="modal-body text-center">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <div class="cf bb bw5 pb2 mb5">
       <p class="f2 b tc">
         <a ng-click="goToPrintView()" class="pointer">Skriv ut inbjudan</a>
@@ -291,6 +296,11 @@
 
 <script type="text/ng-template" id="answersModalTmpl">
   <div ng-show="model.selectedInvite.signed" class="modal-body text-center">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <p class="cf f2 tl bb bw1 pb2 mb5">
       Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
     </p>
@@ -371,6 +381,11 @@
 
 <script type="text/ng-template" id="deleteModalTmpl">
   <div class="modal-body text-center">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <h3 class="mb5">
       Bekräfta att du vill ta bort inbjudan för {{ model.selectedInvite.subject.socialNumber }}
     </h3>

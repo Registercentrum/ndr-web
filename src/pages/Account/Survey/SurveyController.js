@@ -106,7 +106,8 @@ angular.module('ndrApp')
           if (type === "socialnumber") {
             $scope.model.invites.displayed =
               _.filter($scope.model.invites.all, function (invite) {
-                return invite.subject.socialNumber.indexOf($scope.model.socialNumberFilter) !== -1
+                return invite.subject.socialNumber.replace("-", "")
+                      .indexOf($scope.model.socialNumberFilter.replace("-", "")) !== -1
               });
           } else {
             $scope.model.invites.displayed = $scope.model.invites[type];
@@ -268,7 +269,7 @@ angular.module('ndrApp')
               $scope.model.newInvite = {
                 socialnumber: null,
                 subjectID: null,
-                openUntil: null,
+                openUntil: moment().add(3, "months").format("YYYY-MM-DD"),
                 tag: null,
                 diabetesType: null
               };

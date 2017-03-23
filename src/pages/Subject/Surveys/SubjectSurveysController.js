@@ -1,15 +1,14 @@
 angular.module("ndrApp")
   .controller('SubjectSurveysController',
-            ['$scope', '$state', '$timeout', '$modal', 'accountService', 'dataService',
-    function ($scope,   $state,   $timeout,   $modal,   accountService,   dataService) {
+            ['$scope', 'dataService',
+    function ($scope,   dataService) {
 
-    $scope.accountService = accountService;
-
-
-    $scope.model = {
-      survey: $scope.accountModel.PROMSubject ||
-              _.find(
-                $scope.accountModel.subject.invites,
-                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
-    };
+    $scope.model = { survey: null };
+    // make sure invites aren't stale on the model
+    dataService.getInvites()
+      .then(function (response) {
+        $scope.model.survey = $scope.accountModel.PROMSubject ||
+                              _.find(response.data, function (i) {
+                                return !i.submittedAt && !i.isDeclined; })
+      });
   }]);

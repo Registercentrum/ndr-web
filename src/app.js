@@ -342,6 +342,7 @@ angular.module('ndrApp', [
 
                 .state('main.subject.profile', {
                     url: '/profil',
+                    params: { tab: null },
                     templateUrl: 'src/pages/Subject/Profile/profile.html',
                     controller : 'SubjectProfileController'
                 })

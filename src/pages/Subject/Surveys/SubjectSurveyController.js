@@ -65,7 +65,9 @@ angular.module("ndrApp")
             scope      : $scope,
             size       : "lg"
           });
-        })
+          // clean the model from PROMSubject
+          delete accountService.accountModel.PROMSubject
+        });
     };
 
     $scope.showDeclineModal = function () {
@@ -93,6 +95,8 @@ angular.module("ndrApp")
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           accountService.logOut();
+          // clean the model from PROMSubject
+          delete accountService.accountModel.PROMSubject
           $state.go("main.home", {}, {reload: true});
           declineModalInstance.dismiss("cancel");
         });

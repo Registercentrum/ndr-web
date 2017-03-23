@@ -60,20 +60,21 @@ angular.module('ndrApp')
             $scope.getDiabetesType = function (id) {
                 if(!$scope.contactAttributes) return false;
                 var attribute = _.find($scope.contactAttributes, {columnName: 'diabetesType'});
-                return _.find(attribute.domain.domainValues, {code: id}).text;
+                var domainValue = _.find(attribute.domain.domainValues, {code: id});
+                return domainValue ? domainValue.text : "";
             };
 
             $scope.getSubject = function () {
                 if (!$scope.socialnumber) return;
 
                 dataService.getSubjectBySocialNumber($scope.socialnumber)
-                    .then(function (data) { 
-						
+                    .then(function (data) {
+
 						if (data)
 							if (data.contacts) {
 								if (data.contacts.length>0) {
 									$scope.hasError = false;
-									getPatient(data.subjectID); 
+									getPatient(data.subjectID);
 									return;
 								} else {
 									$scope.hasError = true;
@@ -89,7 +90,7 @@ angular.module('ndrApp')
 
 
             $scope.$watchCollection('subject', function () {
-                
+
 				populateSeriesData();
 				setTablePaging();
                 populateTableData();
@@ -98,17 +99,17 @@ angular.module('ndrApp')
                     jQuery(window).resize();
                 }, 500);
             });
-			
+
 			$scope.tableForward = function() {
 				$scope.tableIndex--;
 				populateTableData();
 			};
-			
+
 			$scope.tableBack = function() {
 				$scope.tableIndex++;
 				populateTableData();
 			};
-			
+
 			function setTablePaging() {
 				if ($scope.subject !== undefined){
 					$scope.tableCount = Math.ceil($scope.subject.contacts.length/5);
@@ -123,16 +124,16 @@ angular.module('ndrApp')
                 var table = [],
                     exluded = ['unit', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
                     contacts, keys;
-				
+
 				if ($scope.unitTypeID == 1) //Remove pumpinfo for "primärdsvårdsenheter"
 					exluded = exluded.concat(['pumpIndication','pumpOngoing','pumpOngoingSerial','pumpProblemKeto','pumpProblemHypo','pumpProblemSkininfection','pumpProblemSkinreaction','pumpProblemPumperror','pumpNew','pumpNewSerial','pumpClosureReason']);
-				
+
                 if (!$scope.subject) return false;
-				
+
 				var startIndex = 0+(5*($scope.tableIndex-1));
-				
+
                 contacts = angular.copy($scope.subject.contacts).splice(startIndex, 5);
-				
+
                 // Get tha keys for the table
                 keys = _.keys(contacts[0]);
 
@@ -316,32 +317,32 @@ angular.module('ndrApp')
                 _.each($scope.contactAttributes, function (obj) {
                     $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
                 });
-				
+
 				console.log($scope.model.latest['pumpNew']);
 				console.log($scope.model.latest['pumpOngoing']);
-				
+
 				//pumpOngoing should be pumpNew if reported later
 				if ($scope.model.latest['pumpNew']) {
 					if ($scope.model.latest['pumpNew'].date >= $scope.model.latest['pumpOngoing'].date) {
 						$scope.model.latest['pumpOngoing'] = $scope.model.latest['pumpNew'];
 					}
 				}
-				
+
 				console.log($scope.model.latest['pumpNew']);
 				console.log($scope.model.latest['pumpOngoing']);
 				console.log($scope.model.latest['pumpClosureReason']);
-				
+
 				//pumpOngoing should be reset if closure reported later
 				if ($scope.model.latest['pumpClosureReason']) {
 					if ($scope.model.latest['pumpClosureReason'].date >= $scope.model.latest['pumpOngoing'].date) {
 						$scope.model.latest['pumpOngoing'] = { value: null, date: null, label : 'saknas' };
 					}
 				}
-				
+
 				console.log($scope.model.latest['pumpNew']);
 				console.log($scope.model.latest['pumpOngoing']);
 				console.log($scope.model.latest['pumpClosureReason']);
-				
+
 				console.log($scope.model.latest);
             }
 
@@ -353,7 +354,7 @@ angular.module('ndrApp')
              * @return {Array} Array of key:value objects
              */
 
-			 
+
             function getSeries (key) {
                 var series = [],
                     now = moment();
@@ -380,14 +381,14 @@ angular.module('ndrApp')
              * @return {Object} A pair of value and the data
              */
             function getLatestValue (key) {
-			
+
                 var visit     = _.find($scope.subject.contacts, function (v) { return !_.isNull(v[key]); }),
                     attribute = _.find($scope.contactAttributes, {columnName: key}),
                     value;
 
                 if(key === 'diabetesType') return { value: null, date: null, label : 'saknas' };
                 if(typeof visit === 'undefined') return { value: null, date: null, label : 'saknas' };
-				
+
                 if (_.isNull(visit[key]) ||  _.isUndefined(visit[key])   ) {
                     value = 'saknas';
 
@@ -405,11 +406,11 @@ angular.module('ndrApp')
                 } else {
 					value = $filter('number')(visit[key]) + (attribute.measureUnit != null ? ' ' + attribute.measureUnit : '');
 				}
-				
+
 				var ret = visit ?
                     { value: visit[key], date: visit.contactDate, label : value } : //$filter('number')(value)
                     { value: null, date: null, label : value };
-								
+
                 return ret;
             }
 
