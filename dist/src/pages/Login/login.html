@@ -86,3 +86,29 @@
     </tabset>
   </div>
 </div>
+
+<script type="text/ng-template" id="unitModalTmpl">
+  <div class="modal-body text-center">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
+    <h3 class="mb5">Du har användarkonton på flera enheter.</h3>
+    <div class="tc mw8 center">
+      <p class="f2 mb5">
+        Vilken enhet arbetar du på idag?
+      </p>
+      <p class="f2 mb5">
+        <select
+          id="unitSelect"
+          ng-model="model.selectedAccountID"
+          ng-change="selectAccount()"
+          ng-options="account.accountID as account.unit.name for account in model.accountModel.user.activeAccounts"
+        >
+          <option value="">Välj enhet</option>
+        </select>
+      </p>
+    </div>
+  </div>
+</script>

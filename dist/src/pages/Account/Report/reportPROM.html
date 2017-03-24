@@ -3,7 +3,7 @@
         <div class="col-md-12" id="PROMFormPanel">
 			<h1 class="Page-title">Enkät till dig som har diabetes</h1>
 			<p class="intro">
-				Den här enkäten har två delar. Den första delen handlar om hur du mår och hur du har det med din diabetes. Den andra delen handlar om hur diabetesvården stödjer dig i att ta hand om din diabetes. 
+				Den här enkäten har två delar. Den första delen handlar om hur du mår och hur du har det med din diabetes. Den andra delen handlar om hur diabetesvården stödjer dig i att ta hand om din diabetes.
 			</p>
 			<p>
 				<h5><b>Gör så här:</b></h5>
@@ -13,7 +13,7 @@
 				</ul>
 			</p>
 			<form name="PROMForm" role="form" id="PROMForm" novalidate>
-				
+
 				<div ng-repeat="a in model.form">
 					<h3>DEL {{$index+1}}: {{ a.description }}</h3>
 					<div ng-repeat="g in a.questiongroups">
@@ -46,7 +46,11 @@
 </div>
 <script type="text/ng-template" id="myModalContent.html">
   <div class="modal-body text-center">
-    <a ui-sref="main.home" class="pull-right" ng-click="close()"><i style="color:#333" class="fa fa-close"></i></a>
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
 
     <h3>Inskickad</h3>
     <p>Din enkät är nu inskickad!</p>
