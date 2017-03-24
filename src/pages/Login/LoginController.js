@@ -1,6 +1,6 @@
 angular.module('ndrApp').controller('LoginController',
-          ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService', '$modal',
-  function ($scope,   $http,   $stateParams,   $state,   accountService,   APIconfigService,   $modal) {
+          ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService', '$modal', 'cookieFactory',
+  function ($scope,   $http,   $stateParams,   $state,   accountService,   APIconfigService,   $modal,   cookieFactory) {
 
     console.log('LoginController: Init', accountService.accountModel.user);
 
@@ -92,6 +92,7 @@ angular.module('ndrApp').controller('LoginController',
         );
         accountService.accountModel.activeAccount = activeAccount;
         accountService.accountModel.tempAccount   = activeAccount;
+        cookieFactory.create("ACCOUNTID", accountID, 7);
         if (modalInstance) modalInstance.dismiss("cancel");
         $state.go("main.account.home");
       }
@@ -153,8 +154,13 @@ angular.module('ndrApp').controller('LoginController',
               });
 
               if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
-                  accountService.accountModel.activeAccount = user.activeAccounts[0];
-                  $state.go('main.account.home');
+                accountService.accountModel.activeAccount = user.activeAccounts[0];
+                $state.go('main.account.home');
+              } else if (cookieFactory.read("ACCOUNTID")) {
+                accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                  return a.accountID === +cookieFactory.read("ACCOUNTID");
+                });
+                $state.go('main.account.home');
               } else {
                 modalInstance = $modal.open({
                   templateUrl: "unitModalTmpl",

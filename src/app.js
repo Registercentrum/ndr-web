@@ -23,7 +23,7 @@ angular.module('ndrApp', [
         datepickerPopupConfig.toggleWeeksText = 'Veckoformat';
     }])
 
-    .run(function ($state, $rootScope, accountService) {
+    .run(function ($state, $rootScope, accountService, cookieFactory) {
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             console.log('toState', toState);
@@ -71,10 +71,20 @@ angular.module('ndrApp', [
         });*/
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+            var user = accountService.accountModel.user
+
             //if there is no activeAccount set, redirect to home page to choose unit
             if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
-                event.preventDefault();
-                $state.go('main.home', {}, {reload: true});
+                if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
+                  accountService.accountModel.activeAccount = user.activeAccounts[0];
+                } else if (cookieFactory.read("ACCOUNTID")) {
+                  accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                    return a.accountID === +cookieFactory.read("ACCOUNTID");
+                  });
+                } else {
+                    event.preventDefault();
+                    $state.go('main.home', {}, {reload: true});
+                }
             }
         });
 

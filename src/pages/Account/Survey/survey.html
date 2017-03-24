@@ -81,7 +81,14 @@
           </thead>
           <tbody>
             <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc">
-              <td>{{ invite.subject.socialNumber }}</td>
+              <td>
+                <a
+                  ui-sref="main.account.patient({patientID: invite.subject.subjectID})"
+                  target="_blank"
+                >
+                  {{ invite.subject.socialNumber }}
+                </a>
+              </td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td>
                 <div class="FilterDatePopup">

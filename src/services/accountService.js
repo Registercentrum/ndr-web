@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
     .service('accountService',
-                ['$http', '$state', '$rootScope', 'APIconfigService',
-        function ($http,   $state,   $rootScope,   APIconfigService) {
+                ['$http', '$state', '$rootScope', 'APIconfigService', 'cookieFactory',
+        function ($http,   $state,   $rootScope,   APIconfigService,   cookieFactory) {
 
         var self = this,
             isLoggingIn = false;
@@ -26,6 +26,8 @@ angular.module('ndrApp')
             var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID : accountID});
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount   = activeAccount;
+            cookieFactory.create("ACCOUNTID", accountID, 7);
+            console.log("cccccccc", accountID)
 
             $state.go($state.current, {}, { reload: true });
             //$state.go($state.current, {}, {reload: true}); //BUG 2015-10-14, page can´t reload since then active account then is reset
@@ -72,6 +74,10 @@ angular.module('ndrApp')
                     // if there is only one unit set it as activeAccount
                     if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
                         self.accountModel.activeAccount = user.activeAccounts[0];
+                    } else if (cookieFactory.read("ACCOUNTID")) {
+                      self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                        return a.accountID === +cookieFactory.read("ACCOUNTID");
+                      });
                     }
 
                     if (self.accountModel.tempAccount) {
@@ -92,7 +98,8 @@ angular.module('ndrApp')
         this.logOut = function () {
             this.accountModel.user = null;
             this.accountModel.activeAccount = null;
-            document.cookie = "SESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            cookieFactory.erase("SESSIONID");
+            cookieFactory.erase("ACCOUNTID");
             $state.go('main.home', {}, {reload: true});
         };
 
