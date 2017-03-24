@@ -2,10 +2,11 @@
   "name": "NDR_APP",
   "version": "0.1.0",
   "scripts": {
-    "dev": "./node_modules/.bin/concurrently 'grunt observe' './node_modules/.bin/live-server --watch=src/**/*'"
+    "watch": "grunt observe",
+    "server": "./node_modules/.bin/live-server --watch=src/**/*",
+    "dev": "npm-run-all --parallel watch server"
   },
   "devDependencies": {
-    "concurrently": "^3.1.0",
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-clean": "^1.0.0",
@@ -20,6 +21,7 @@
     "grunt-svgmin": "^4.0.0",
     "grunt-usemin": "^3.0.0",
     "live-server": "^1.1.0",
-    "load-grunt-tasks": "^3.1.0"
+    "load-grunt-tasks": "^3.1.0",
+    "npm-run-all": "^4.0.2"
   }
 }
