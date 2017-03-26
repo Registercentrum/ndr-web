@@ -79,6 +79,11 @@
               <th class="tc pb3">&nbsp;</th>
             </tr>
           </thead>
+
+          <div ng-show="model.invites.displayed.length == 0">
+            <p class="tc pv5 f1 red">Inga matchande patienter hittades</p>
+          </div>
+
           <tbody>
             <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc">
               <td>
@@ -311,7 +316,7 @@
       style="text-decoration: none;"
     ></a>
     <p class="cf f2 tl bb bw1 pb2 mb5">
-      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+       <b>{{ model.selectedInvite.subject.socialNumber }}</b> &gt; Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}
     </p>
 
     <h3 class="mb5 gray">
@@ -334,15 +339,20 @@
   </div>
 
   <div ng-show="!model.selectedInvite.signed" class="modal-body text-center">
+    <a
+            ng-click="$dismiss('cancel')"
+            class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+            style="text-decoration: none;"
+    ></a>
+
     <p class="cf f2 tl bb bw1 pb2 mb5">
-      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+      <b>{{ model.selectedInvite.subject.socialNumber }}</b> &gt; Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}
     </p>
 
-    <h3 class="mb5 gray" ng-show="!model.selectedInvite.isApprovedNDR">Den här patienten har en enkät som inte är överförd till NDR</h3>
-    <h4 class="mb5 f2 b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
+    <h4 class="mb1 orange" ng-show="!model.selectedInvite.isApprovedNDR">Den här patienten har en enkät som inte är överförd till NDR</h4>
 
-    <tabset>
-      <tab heading="Diagram">
+    <!--<tabset>-->
+      <!--<tab heading="Diagram" style="font-size:12px">-->
         <div class="cf b mt4 pb2 tl tc-ns bb b--gray">
           <div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>
           <div class="fl-ns pa2 w-40-ns">Värde</div>
@@ -368,16 +378,11 @@
             {{ model.selectedInvite.prevOutcomes.outcomes[$index].difference || "saknas" }}
           </div>
         </div>
-      </tab>
-      <tab heading="Journalvänlig text" select="selectCopyView()">
-        <p class="mt4">Tryck Cmd / Ctrl + C eller högerklicka på texten och välj "Kopiera"</p>
-        <textarea onclick="this.focus();this.select()" readonly="readonly"
-          class="db w-100 pa2 h5"
-          style="height: 250px;"
-          id="copy-view"
-        >{{ model.selectedInvite.copyText }}</textarea>
-      </tab>
-    </tabset>
+      <!--</tab>-->
+      <!--<tab heading="Journalvänlig text" select="selectCopyView()">-->
+
+      <!--</tab>-->
+    <!--</tabset>-->
 
     <button
       ng-show="!model.selectedInvite.isApprovedNDR"
@@ -385,6 +390,20 @@
       class="Button Button--info mt2 mt4-ns">
       Signera (förs över till NDR)
     </button>
+
+
+    <button ng-click="showCopyFriendly = !showCopyFriendly" class="Button Button--info mt2 mt4-ns">Visa som journalvänlig text</button>
+    <div ng-show="showCopyFriendly">
+
+      <p class="mt4">Tryck Ctrl + C eller högerklicka på texten och välj "Kopiera"</p>
+      <textarea onclick="this.focus();this.select()" readonly="readonly"
+                class="db w-100 pa2 h5"
+                style="height: 250px;"
+                id="copy-view"
+      >{{ model.selectedInvite.copyText }}</textarea>
+
+    </div>
+
   </div>
 </script>
 

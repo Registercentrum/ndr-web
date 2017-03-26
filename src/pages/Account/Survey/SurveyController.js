@@ -124,8 +124,13 @@ angular.module('ndrApp')
             var changeSinceLast = prevOutcome && prevOutcome.difference ?
                                   prevOutcome.difference :
                                   "saknas"
-            return p + n.dimension.desc + ',' + n.outcome + ',' + changeSinceLast + '\n';
+
+            var outcome = n.outcome || "saknas"
+
+            return p + n.dimension.desc + ' | ' + outcome  + ' | ' + changeSinceLast + '\n';
           }, "");
+
+          invite.copyText = "Dimension | Värde | Förändring\n" + invite.copyText;
 
           dataService.getPROMFormMeta()
             .then(function (response) {

@@ -7,16 +7,20 @@
             <div class="AccountMenu">
 
                 <div ng-show="accountModel.activeAccount" class="dropdown">
-                    <a class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
+                    <button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
                         <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ': ' }} <span style="font-size: 12px">{{ accountModel.activeAccount.unit.name | characters:26 }}</span>
                         <span class="caret"></span>
-                    </a>
+                    </button>
+
+
 
                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu2">
 
                         <li ng-show="accountModel.user" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
                             E-tjänster för vårdpersonal
                         </li>
+
+                        <li role="separator" class="divider"></li>
 
                         <li role="presentation">
                             <a ui-sref="main.account.home" title="">Översikt</a>
@@ -35,6 +39,9 @@
                             E-tjänster för dig med diabetes
                         </li>
 
+                        <li role="separator" class="divider"></li>
+
+
                         <li ng-show="accountModel.subject" role="presentation">
                             <a ui-sref="main.subject.home" title="">Översikt</a>
                         </li>
@@ -50,6 +57,9 @@
                         <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
                             Mina enheter
                         </li>
+
+                        <li role="separator" class="divider"></li>
+
 
                         <li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
                             <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
