@@ -204,7 +204,7 @@
           <div class="col-md-3">
             <label class="normal f4">Etikett (valfri)</label>
             <input
-              placeholder="Pär"
+              placeholder=""
               type="text"
               class="db w-100 pa2"
               ng-model="model.newInvite.tag"
@@ -233,6 +233,8 @@
               {{ model.newInviteError }}
             </p>
             <p ng-if="model.newInviteDiabetesMissing">
+
+
               <span class="red">Diabetestyp saknas.</span> Du behöver lägga till Diabetestyp i
               <a ui-sref="main.account.patient({patientID: model.newInvite.subjectID})">
                 patientens profil

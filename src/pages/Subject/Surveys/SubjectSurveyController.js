@@ -1,22 +1,29 @@
 angular.module("ndrApp")
   .controller('SubjectSurveyController',
-            ['$scope', '$state', '$timeout', '$modal', 'accountService', 'dataService',
-    function ($scope,   $state,   $timeout,   $modal,   accountService,   dataService) {
+            ['$scope', '$state', '$stateParams', '$timeout', '$modal', 'accountService', 'dataService',
+    function ($scope,   $state, $stateParams,   $timeout,   $modal,   accountService,   dataService) {
 
     $scope.accountService = accountService;
 
-    console.log($scope)
+    var survey = $scope.accountModel.PROMSubject ||
+        _.find(
+          $scope.accountModel.subject.invites,
+          function (invite) { return !invite.submittedAt && !invite.isDeclined; });
+
+    if($stateParams.inviteID){
+      survey = _.find(
+        $scope.accountModel.subject.invites,
+        function (invite) { return invite.inviteID == $stateParams.inviteID; });
+    }
 
     $scope.model = {
-      survey: $scope.accountModel.PROMSubject ||
-              _.find(
-                $scope.accountModel.subject.invites,
-                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
+      survey: survey,
       statusBarFixed: true,
       questionsCount: 0,
       activeQuestion: null,
       unansweredQuestions: []
     };
+
     $scope.model.answers = $scope.model.survey && $scope.model.survey.prom ?
                            $scope.model.survey.prom :
                            {};

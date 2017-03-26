@@ -345,7 +345,7 @@ angular.module('ndrApp', [
                 })
 
                 .state('main.subject.surveys.survey', {
-                    url: '/besvara',
+                    url: '/besvara/:inviteID',
                     templateUrl: 'src/pages/Subject/Surveys/survey.html',
                     controller : 'SubjectSurveyController'
                 })

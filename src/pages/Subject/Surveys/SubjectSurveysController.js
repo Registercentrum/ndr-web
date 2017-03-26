@@ -2,7 +2,7 @@ angular.module("ndrApp")
   .controller('SubjectSurveysController', [ '$scope', function ($scope) {
     $scope.model = {
       survey: $scope.accountModel.PROMSubject ||
-              _.find(
+              _.filter(
                 $scope.accountModel.subject.invites,
                 function (i) { return !i.submittedAt && !i.isDeclined; }),
     };

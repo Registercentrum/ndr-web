@@ -262,7 +262,8 @@ angular.module('ndrApp')
           dataService.createInvite({
             subjectID: invite.subjectID,
             openUntil: moment(invite.openUntil).format("YYYY-MM-DD"),
-            tag: invite.tag
+            tag: invite.tag,
+            diabetesTypeAs : 1,
           })
             .then(function (response) {
               $scope.model.createdInvites.push(response.data);
@@ -305,6 +306,7 @@ angular.module('ndrApp')
               if (subject.diabetesType === null) {
                 $scope.model.newInviteDiabetesMissing = true;
               } else {
+                $scope.model.newInvite.diabetesTypeCode = subject.diabetesType;
                 $scope.model.newInvite.diabetesType = subject.diabetesTypeText;
               }
 

@@ -182,7 +182,7 @@ angular.module('ndrApp').controller('LoginController',
               $state.go('main.subject.home');
             } else {
               $scope.model.loginStarted = false;
-              $scope.model.message = 'Du är inte en användare i NDR.';
+              $scope.model.message = 'Det finns ingen information om dig i Nationella Diabetesregistret. Vänligen kontakta din vårdcentral för mer information.';
             }
 
           }
