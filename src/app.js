@@ -77,9 +77,9 @@ angular.module('ndrApp', [
             if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
                 if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
                   accountService.accountModel.activeAccount = user.activeAccounts[0];
-                } else if (cookieFactory.read("ACCOUNTID")) {
+                } else if (cookieFactory.read("ACTIVEACCOUNT")) {
                   accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
-                    return a.accountID === +cookieFactory.read("ACCOUNTID");
+                    return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
                   });
                 } else {
                     event.preventDefault();

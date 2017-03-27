@@ -133,13 +133,22 @@ angular.module('ndrApp')
 
 
         this.getSubjectById = function (id) {
-            return Restangular.one('Subject', id).get({'AccountID': accountService.accountModel.activeAccount.accountID})
-                .then(function(subject) {
-                    return subject.plain();
-                })
-                ['catch'](function(error) {
-                    return error;
-                });
+          var url = APIconfigService.baseURL + 'Subject/' + id +
+            '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+            '&APIKey=' + APIconfigService.APIKey;
+
+
+          var query = {
+            url: APIconfigService.constructUrl(url),
+            method: 'GET'
+          };
+
+          return $http(query)
+            .then(function (response) {
+              return response.data; })
+            ['catch'](function(error) {
+            return error;
+          });
         };
 
 
@@ -147,6 +156,8 @@ angular.module('ndrApp')
             var url = APIconfigService.baseURL + 'Subject' +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
                     '&APIKey=' + APIconfigService.APIKey;
+
+
             var query = {
                 url: APIconfigService.constructUrl(url),
                 method: 'POST',

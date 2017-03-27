@@ -26,7 +26,7 @@ angular.module('ndrApp')
             var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID : accountID});
             this.accountModel.activeAccount = activeAccount;
             this.accountModel.tempAccount   = activeAccount;
-            cookieFactory.create("ACCOUNTID", accountID, 7);
+            cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
 
             $state.go($state.current, {}, { reload: true });
             //$state.go($state.current, {}, {reload: true}); //BUG 2015-10-14, page can´t reload since then active account then is reset
@@ -73,9 +73,9 @@ angular.module('ndrApp')
                     // if there is only one unit set it as activeAccount
                     if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
                         self.accountModel.activeAccount = user.activeAccounts[0];
-                    } else if (cookieFactory.read("ACCOUNTID")) {
+                    } else if (cookieFactory.read("ACTIVEACCOUNT")) {
                       self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
-                        return a.accountID === +cookieFactory.read("ACCOUNTID");
+                        return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
                       });
                     }
 
@@ -98,7 +98,7 @@ angular.module('ndrApp')
             this.accountModel.user = null;
             this.accountModel.activeAccount = null;
             cookieFactory.erase("SESSIONID");
-            cookieFactory.erase("ACCOUNTID");
+            cookieFactory.erase("ACTIVEACCOUNT");
             $state.go('main.home', {}, {reload: true});
         };
 

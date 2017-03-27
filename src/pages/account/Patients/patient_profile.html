@@ -25,6 +25,37 @@
         </form>
     </div>
 </div>
+
+
+
+<!-- PROM -->
+
+<div ng-repeat="group in PROMFormMeta" class="row">
+    <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
+    <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4">
+        <h4 class="col-md-12">{{ survey.dimension.desc }}</h4>
+        <div class="col-md-9">
+            <div
+                    line-chart
+                    model="survey.series"
+                    y-min="0"
+                    y-max="100"
+                    height="200"
+                    color="#4A99C5"
+            ></div>
+        </div>
+        <div class="col-md-3">
+            Senaste värdet<br />
+            <span class="f1 b">{{ survey.latestOutcome }}</span>
+            <sup
+                    ng-show="survey.diffFromPrevious !== null"
+                    ng-class="{red: survey.diffFromPrevious < 0}"
+            >{{ survey.diffFromPrevious }}</sup>
+        </div>
+    </div>
+</div>
+
+
 <div id="patient" ng-show="hasError">
 	<span>{{ errorMessage }}</span>
 </div>
@@ -238,6 +269,8 @@
             </div>
         </div>
     </div>
+
+
 
 
     <div ng-show="model.mode == 'table'" class="Panel">
