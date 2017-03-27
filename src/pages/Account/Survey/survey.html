@@ -216,12 +216,29 @@
             />
           </div>
           <div class="col-md-3">
+
             <label class="normal f4">Diabetestyp (hämtas automatiskt)</label>
+
             <input
+              disabled="disabled"
               type="text"
-              class="db w-100 pa2"
-              ng-model="model.newInvite.diabetesType"
+              class="form-control db w-100 pa2 disabled"
+              value="model.newInvite.currentDiabetesType"
+              ng-model="model.newInvite.currentDiabetesType"
             />
+
+            <div ng-show="model.newInviteDiabetesMissing">
+              <span class="red small">För att skapa en enkät behöver patientens Diabetestyp anges som Typ 1 eller Typ 2.</span>
+              <select
+                      class="form-control db w-100 pa2 mt2"
+                      ng-model="model.newInvite.selectedDiabetesTypeCode"
+              >
+                <option value="">Välj diabetestyp</option>
+                <option value="1">Typ 1 diabetes</option>
+                <option value="2">Typ 2 diabetes</option>
+              </select>
+            </div>
+
           </div>
         </div>
         <div class="row pt2 pt4-ns">
@@ -237,33 +254,51 @@
             <p ng-if="model.newInviteError" class="red">
               {{ model.newInviteError }}
             </p>
-            <p ng-if="model.newInviteDiabetesMissing">
-
+            <!--<p ng-if="model.newInviteDiabetesMissing">
 
               <span class="red">Diabetestyp saknas.</span> Du behöver lägga till Diabetestyp i
               <a ui-sref="main.account.patient({patientID: model.newInvite.subjectID})">
                 patientens profil
               </a> innan du kan fortsätta.
-            </p>
+            </p>-->
           </div>
         </div>
         <div class="row" ng-if="model.createdInvites.length">
           <div class="col-md-12 f2 pt4">
-            Du har skapat ny enkät för:
-            <p class="green" ng-repeat="invite in model.createdInvites">
-              <b>{{ invite.subject.socialNumber }}</b>
-              <a
-                href
-                ng-click="showInviteModal(invite)"
-                class="w4 mr2">
-                Se inbjudan
-              </a>
-              <a
-                href
-                ng-click="goToPrintView(invite)">
-                Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
-              </a>
-            </p>
+
+            <h4>Du har skapat nya enkäter för:</h4>
+            <hr />
+
+            <table class="table table-striped">
+
+              <thead>
+              <tr><td>Personnummer</td><td></td><td></td></tr>
+              </thead>
+
+              <tbody>
+              <tr class="" ng-repeat="invite in model.createdInvites">
+              <td><b>{{ invite.subject.socialNumber }}</b></td>
+                <td>  <a
+                        href
+                        ng-click="showInviteModal(invite)"
+                        class="w4 mr2">
+                  Visa inbjudan
+                </a></td>
+                <td>
+                  <a
+                          href
+                          ng-click="goToPrintView(invite)">
+                    Skriv ut inbjudan
+                  </a>
+                </td>
+
+
+              </tr>
+              </tbody>
+
+            </table>
+
+
           </div>
         </div>
       </tab>

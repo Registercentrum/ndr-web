@@ -268,7 +268,7 @@ angular.module('ndrApp')
             subjectID: invite.subjectID,
             openUntil: moment(invite.openUntil).format("YYYY-MM-DD"),
             tag: invite.tag,
-            diabetesTypeAs : 1,
+            diabetesTypeAs : invite.selectedDiabetesTypeCode,
           })
             .then(function (response) {
               $scope.model.createdInvites.push(response.data);
@@ -277,7 +277,7 @@ angular.module('ndrApp')
                 subjectID: null,
                 openUntil: moment().add(3, "months").format("YYYY-MM-DD"),
                 tag: null,
-                diabetesType: null
+                currentDiabetesType: null
               };
               getInvites();
             })
@@ -299,7 +299,8 @@ angular.module('ndrApp')
           $scope.model.newInviteError = null;
           $scope.model.newInviteDiabetesMissing = false;
           $scope.model.newInvite.subjectID = null;
-          $scope.model.newInvite.diabetesType = null;
+          $scope.model.newInvite.currentDiabetesType = null;
+          $scope.model.newInvite.selectedDiabetesType = null;
 
           dataService.getSubjectBySocialNumber(sn)
             .then(function (subject) {
@@ -308,11 +309,17 @@ angular.module('ndrApp')
                 return false;
               }
 
-              if (subject.diabetesType === null) {
+              if (subject.diabetesType != 1 && subject.diabetesType != 2) {
                 $scope.model.newInviteDiabetesMissing = true;
+
+                $scope.model.newInvite.currentDiabetesTypeCode = subject.diabetesType;
+                $scope.model.newInvite.currentDiabetesType = subject.diabetesTypeText;
+                $scope.model.newInvite.selectedDiabetesTypeCode = undefined;
+
               } else {
-                $scope.model.newInvite.diabetesTypeCode = subject.diabetesType;
-                $scope.model.newInvite.diabetesType = subject.diabetesTypeText;
+                $scope.model.newInvite.currentDiabetesTypeCode = subject.diabetesType;
+                $scope.model.newInvite.currentDiabetesType = subject.diabetesTypeText;
+                $scope.model.newInvite.selectedDiabetesTypeCode = subject.diabetesType;
               }
 
               $scope.model.newInvite.subjectID = subject.subjectID;
