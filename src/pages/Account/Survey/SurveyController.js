@@ -41,6 +41,21 @@ angular.module('ndrApp')
 
         var modalInstance = null;
 
+        $scope.printThis = function(){
+          $(".modal-body").printThis({
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            printContainer: true,
+            // loadCSS: "../css/style.css",
+            pageTitle: "NDR",
+            removeInline: false,
+            printDelay: 100,
+            header: null,
+            formValues: true
+          });
+        }
+
         // *********************************************************************
         // List Tab
         // *********************************************************************

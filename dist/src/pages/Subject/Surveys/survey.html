@@ -43,6 +43,7 @@
   <div ng-repeat="group in mainGroup.questiongroups | orderBy: 'sortorder'" class="mb5">
     <div class="f2 light-blue">{{ group.description}}</div>
     <div
+      ng-click="model.activeQuestion !== question.questionID ? setActiveQuestion(question.questionID) : ''"
       id="question-{{question.questionID}}"
       ng-repeat="question in group.questions"
       class="question-holder pb4 mb4 pl4"
@@ -52,7 +53,7 @@
         <small class="fl w3 pt1 blue">{{ question.questionID }})</small>
         <span class="fl mw7"> {{ question.question }}</span>
       </h4>
-      <div class="pl5">
+      <div class="pl5" ng-class="{'events-none': model.activeQuestion !== question.questionID}">
         <div ng-repeat="answer in question.domain.domainValues">
           <label class="pv2 normal silver">
             <input

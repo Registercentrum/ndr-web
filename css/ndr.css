@@ -8748,6 +8748,15 @@ img {
 /*
   UTILITY CLASSES
 */
+.orange {
+  color: #f0ad4e;
+}
+label input {
+  cursor: pointer;
+}
+.events-none {
+  pointer-events: none;
+}
 .u_bold {
   font-weight: bold;
 }

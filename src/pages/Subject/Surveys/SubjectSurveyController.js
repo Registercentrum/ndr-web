@@ -3,6 +3,7 @@ angular.module("ndrApp")
             ['$scope', '$state', '$stateParams', '$timeout', '$modal', 'accountService', 'dataService',
     function ($scope,   $state, $stateParams,   $timeout,   $modal,   accountService,   dataService) {
 
+
     $scope.accountService = accountService;
 
     var survey = $scope.accountModel.PROMSubject ||
@@ -24,7 +25,27 @@ angular.module("ndrApp")
       unansweredQuestions: []
     };
 
-    $scope.model.answers = $scope.model.survey && $scope.model.survey.prom ?
+
+      $(".Panel").bind("keydown", function (e) {
+        if (e.keyCode == 38 || e.keyCode == 40) {
+          e.preventDefault();
+        }
+
+        if (e.keyCode == 38){
+          $timeout(function () {
+            $scope.setActiveQuestion($scope.model.activeQuestion - 1);
+          }, 250);
+        }
+
+        if (e.keyCode == 40){
+          $timeout(function () {
+            $scope.setActiveQuestion($scope.model.activeQuestion + 1);
+          }, 250);
+        }
+      })
+
+
+      $scope.model.answers = $scope.model.survey && $scope.model.survey.prom ?
                            $scope.model.survey.prom :
                            {};
     $scope.model.answersCount = getAnswersCount();
@@ -94,9 +115,11 @@ angular.module("ndrApp")
     }
 
     $scope.closeAndLogout = function (stateName) {
-      if (!stateName) stateName = "main.home";
+      if (!stateName) {
+        stateName = "main.home";
+        accountService.logOut();
+      }
 
-      accountService.logOut();
       $state.go(stateName, {}, {reload: true});
 
       if (confirmModalInstance) confirmModalInstance.dismiss("cancel");

@@ -8,7 +8,7 @@
 		</div>
 	</div>-->
 
-    <div ng-show="accountModel.subject" class="row">
+    <div ng-show="accountModel.chosenUserType=='subject'" class="row">
         <div class="hidden-xs hidden-sm hidden-md col-lg-12">
             <div class="Panel ServicesShortcuts">
                 <span style="margin-right: 10px">E-tjänster:</span>
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div ng-show="accountModel.activeAccount" class="row">
+    <div ng-show="accountModel.chosenUserType=='user'" class="row">
         <div class="hidden-xs hidden-sm hidden-md col-lg-12">
             <div class="Panel ServicesShortcuts">
                 <!--<div>Inloggad på {{accountModel.activeAccount.unit.name}}.</div>-->

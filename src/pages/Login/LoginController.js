@@ -100,6 +100,7 @@ angular.module('ndrApp').controller('LoginController',
 
 
     function waitForLogin (type) {
+
       var waitFor = setInterval(function () {
         var url = APIconfigService.baseURL + 'bid/ndr/collect' +
               '?orderRef=' + $scope.model.orderRef;
@@ -137,6 +138,7 @@ angular.module('ndrApp').controller('LoginController',
         .then(function (response) {
           console.log("response login", response);
           var user = response.data.user;
+          accountService.accountModel.chosenUserType = type;
 
           // user login
           if (type === "user") {
