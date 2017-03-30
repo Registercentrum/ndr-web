@@ -57,20 +57,20 @@
                 <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <th class="tc pointer pb3" ng-click="model.sortType = 'openUntil'; model.sortReverse = !model.sortReverse">
-                Öppen till
+                Enkätstatus / Öppen till
                 <i ng-show="model.sortType == 'openUntil' && !model.sortReverse" class="fa fa-caret-down"></i>
                 <i ng-show="model.sortType == 'openUntil' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">
-                Besvarad
-                <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>
-              </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'isApprovedNDR'; model.sortReverse = !model.sortReverse">
-                Signerad
-                <i ng-show="model.sortType == 'isApprovedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'isApprovedNDR' && model.sortReverse" class="fa fa-caret-up"></i>
-              </th>
+              <!--<th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">-->
+                <!--Besvarad-->
+                <!--<i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>-->
+                <!--<i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>-->
+              <!--</th>-->
+              <!--<th class="tc pointer pb3" ng-click="model.sortType = 'isApprovedNDR'; model.sortReverse = !model.sortReverse">-->
+                <!--Signerad-->
+                <!--<i ng-show="model.sortType == 'isApprovedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>-->
+                <!--<i ng-show="model.sortType == 'isApprovedNDR' && model.sortReverse" class="fa fa-caret-up"></i>-->
+              <!--</th>-->
               <th class="tc pointer pb3" ng-click="model.sortType = 'tag'; model.sortReverse = !model.sortReverse">
                 Etikett
                 <i ng-show="model.sortType == 'tag' && !model.sortReverse" class="fa fa-caret-down"></i>
@@ -79,22 +79,27 @@
               <th class="tc pb3">&nbsp;</th>
             </tr>
           </thead>
+
+          <div ng-show="model.invites.displayed.length == 0">
+            <p class="tc pv5 f1 red">Inga matchande patienter hittades</p>
+          </div>
+
           <tbody>
             <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc">
-              <td>{{ invite.subject.socialNumber }}</td>
+              <td>
+                <a
+                  ui-sref="main.account.patient({patientID: invite.subject.subjectID})"
+                  target="_blank"
+                >
+                  {{ invite.subject.socialNumber }}
+                </a>
+              </td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td>
-                <div class="FilterDatePopup">
+                <div class="FilterDatePopup" ng-show="!invite.submittedAt && !invite.isDeclined">
+
                   <div class="input-group FilterDatePopup-group FilterDatePopup-group--mini">
-                    <span class="input-group-addon">
-                      <button
-                        type="button"
-                        class="FilterDatePopup-button"
-                        ng-click="openDatePickerEdit($event, invite)"
-                      >
-                        <i class="fa fa-calendar"></i>
-                      </button>
-                    </span>
+
                     <input
                       type="text"
                       class="form-control"
@@ -107,23 +112,39 @@
                       ng-required="true"
                       close-text="Close"
                     />
+
+                    <span class="input-group-addon">
+                      <button
+                              type="button"
+                              class="FilterDatePopup-button"
+                              ng-click="openDatePickerEdit($event, invite)"
+                      >
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+
                   </div>
                 </div>
+
+                <div ng-if="invite.isDeclined" class="red">Avböjd</div>
+                <div class="orange" ng-if="invite.submittedAt && !invite.isApprovedNDR">Besvarad, ej signerad</div>
+                <div class="green" ng-if="invite.submittedAt && invite.isApprovedNDR">Signerad</div>
+
               </td>
-              <td class="ttu">
-                <span ng-if="!invite.submittedAt && !invite.isDeclined">ej besvarad</span>
-                <span ng-if="invite.isDeclined" class="red">avböjt</span>
-                <span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>
-              </td>
-              <td class="ttu">
-                <span class="red" ng-if="!invite.isApprovedNDR">nej</span>
-                <span ng-if="invite.isApprovedNDR">ja</span>
-              </td>
+              <!--<td class="ttu">-->
+                <!--<span ng-if="!invite.submittedAt && !invite.isDeclined">ej besvarad</span>-->
+                <!--<span ng-if="invite.isDeclined" class="red">avböjt</span>-->
+                <!--<span ng-if="invite.submittedAt">{{ invite.submittedAt | date:'yyyy-MM-dd' }}</span>-->
+              <!--</td>-->
+              <!--<td class="ttu">-->
+                <!--<span class="red" ng-if="!invite.isApprovedNDR">nej</span>-->
+                <!--<span ng-if="invite.isApprovedNDR">ja</span>-->
+              <!--</td>-->
               <td><span class="underline cursor" title="{{ invite.tag }}">{{ invite.tag | limitTo:5 }}</span></td>
               <td class="tl">
                 <button
                   ng-click="showInviteModal(invite)"
-                  ng-disabled="invite.submittedAt || invite.isDeclined"
+                  ng-hide="invite.submittedAt || invite.isDeclined"
                   class="Button Button--info Button--mini">
                   Inbjudan
                 </button>
@@ -136,13 +157,13 @@
                 <button
                   ng-click="showAnswersModal(invite)"
                   ng-if="!invite.isApprovedNDR"
-                  ng-disabled="!invite.submittedAt"
+                  ng-hide="!invite.submittedAt"
                   class="Button Button--warning Button--mini">
                   Signera
                 </button>
                 <button
                   ng-click="showDeleteModal(invite)"
-                  ng-disabled="invite.submittedAt || invite.isDeclined"
+                  ng-hide="invite.submittedAt || invite.isDeclined"
                   class="Button Button--info Button--mini">
                   Ta bort
                 </button>
@@ -197,19 +218,36 @@
           <div class="col-md-3">
             <label class="normal f4">Etikett (valfri)</label>
             <input
-              placeholder="Pär"
+              placeholder=""
               type="text"
               class="db w-100 pa2"
               ng-model="model.newInvite.tag"
             />
           </div>
           <div class="col-md-3">
+
             <label class="normal f4">Diabetestyp (hämtas automatiskt)</label>
+
             <input
+              disabled="disabled"
               type="text"
-              class="db w-100 pa2"
-              ng-model="model.newInvite.diabetesType"
+              class="form-control db w-100 pa2 disabled"
+              value="model.newInvite.currentDiabetesType"
+              ng-model="model.newInvite.currentDiabetesType"
             />
+
+            <div ng-show="model.newInviteDiabetesMissing">
+              <span class="red small">För att skapa en enkät behöver patientens Diabetestyp anges som Typ 1 eller Typ 2.</span>
+              <select
+                      class="form-control db w-100 pa2 mt2"
+                      ng-model="model.newInvite.selectedDiabetesTypeCode"
+              >
+                <option value="">Välj diabetestyp</option>
+                <option value="1">Typ 1 diabetes</option>
+                <option value="2">Typ 2 diabetes</option>
+              </select>
+            </div>
+
           </div>
         </div>
         <div class="row pt2 pt4-ns">
@@ -225,31 +263,51 @@
             <p ng-if="model.newInviteError" class="red">
               {{ model.newInviteError }}
             </p>
-            <p ng-if="model.newInviteDiabetesMissing">
+            <!--<p ng-if="model.newInviteDiabetesMissing">
+
               <span class="red">Diabetestyp saknas.</span> Du behöver lägga till Diabetestyp i
               <a ui-sref="main.account.patient({patientID: model.newInvite.subjectID})">
                 patientens profil
               </a> innan du kan fortsätta.
-            </p>
+            </p>-->
           </div>
         </div>
         <div class="row" ng-if="model.createdInvites.length">
           <div class="col-md-12 f2 pt4">
-            Du har skapat ny enkät för:
-            <p class="green" ng-repeat="invite in model.createdInvites">
-              <b>{{ invite.subject.socialNumber }}</b>
-              <a
-                href
-                ng-click="showInviteModal(invite)"
-                class="w4 mr2">
-                Se inbjudan
-              </a>
-              <a
-                href
-                ng-click="goToPrintView(invite)">
-                Skriv ut inbjudan <i class="fa fa-file-pdf-o"></i>
-              </a>
-            </p>
+
+            <h4>Du har skapat nya enkäter för:</h4>
+            <hr />
+
+            <table class="table table-striped">
+
+              <thead>
+              <tr><td>Personnummer</td><td></td><td></td></tr>
+              </thead>
+
+              <tbody>
+              <tr class="" ng-repeat="invite in model.createdInvites">
+              <td><b>{{ invite.subject.socialNumber }}</b></td>
+                <td>  <a
+                        href
+                        ng-click="showInviteModal(invite)"
+                        class="w4 mr2">
+                  Visa inbjudan
+                </a></td>
+                <td>
+                  <a
+                          href
+                          ng-click="goToPrintView(invite)">
+                    Skriv ut inbjudan
+                  </a>
+                </td>
+
+
+              </tr>
+              </tbody>
+
+            </table>
+
+
           </div>
         </div>
       </tab>
@@ -258,41 +316,57 @@
 </div>
 
 <script type="text/ng-template" id="inviteModalTmpl">
-  <div class="modal-body text-center">
-    <div class="cf bb bw5 pb2 mb5">
-      <p class="f2 b tc">
-        <a ng-click="goToPrintView()" class="pointer">Skriv ut inbjudan</a>
+  <div class="modal-body">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
+    <div class="">
+      <p class="f2 b">
+        <button ng-click="printThis()" class="pointer hidden-print">Skriv ut inbjudan</button>
       </p>
-      <p class="fl f2 b">{{ model.selectedInvite.unit.name }}</p>
-      <p class="fr b">{{ model.selectedInvite.subject.socialNumber }}</p>
+
     </div>
 
+    <h3 class="mb5">Inbjudan från {{ model.selectedInvite.unit.name }}</h3>
+    <hr class="bw4" ng-style="{ 'border-color' : '#74BAD8' }" />
+    <p class="b">{{ model.selectedInvite.subject.socialNumber }}</p>
 
-    <h3 class="mb5">Inbjudan att besvara Diabetesenkäten</h3>
-    <div class="tc mw8 center">
+
+    <div class="mw8">
       <p class="f2 mb5">
-        Din diabetesmottagning önskar att du besvarar diabetesenkäten
-        inför ditt nästa besök.
+        Din diabetesmottagning önskar att du besvarar diabetesenkäten inför ditt nästa besök.
+        <br />
+        Du hittar enkäten på www.ndr.nu och du kan logga in med Mobilt BankID eller med detta engångslösenord: <span class="dib f2 pa2 mb5 ba">{{ model.selectedInvite.key }}</span>
       </p>
-      <p class="f2 mb5">
-        Du hittar enkäten på www.ndr.nu och du kan logga in med Mobilt BankID
-        eller med detta engångslösenord:
-      </p>
-      <p class="dib f2 pa4 mb5 ba">{{ model.selectedInvite.key }}</p>
+
       <p>
-        Engångslösenordet gäller i 24 timmar från det att du loggar in.
-        OBS! Engångslösenordet ger dig möjlighet att besvara enkäten men
-        av säkerhetsskäl kan du inte se din diabetesprofil. För att få tillgång
-        till den behöver du logga in med Mobilt BankID.
+        Loggar du in med Mobilt BankId får du tillgång till din diabetesprofil som förutom enkätsvar också visar dina laboratorievärden och resultaten från olika undersökningar som du gjort.
+      </p>
+
+      <p>
+        Loggar du in med hjälp av engångslösenordet får du möjlighet att besvara enkäten men av säkerhetsskäl kan du inte se din diabetesprofil. Engångslösenordet gäller i 24 timmar från det att du loggar in.
+      </p>
+
+      <p>
+        Har du frågor om diabetesenkäten så finns information på www.ndr.nu men du kan också fråga din läkare eller diabetessjuksköterska.
       </p>
     </div>
+
+
   </div>
 </script>
 
 <script type="text/ng-template" id="answersModalTmpl">
   <div ng-show="model.selectedInvite.signed" class="modal-body text-center">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <p class="cf f2 tl bb bw1 pb2 mb5">
-      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+       <b>{{ model.selectedInvite.subject.socialNumber }}</b> &gt; Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}
     </p>
 
     <h3 class="mb5 gray">
@@ -315,15 +389,20 @@
   </div>
 
   <div ng-show="!model.selectedInvite.signed" class="modal-body text-center">
+    <a
+            ng-click="$dismiss('cancel')"
+            class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+            style="text-decoration: none;"
+    ></a>
+
     <p class="cf f2 tl bb bw1 pb2 mb5">
-      Diabetesnkäten &gt; <b>{{ model.selectedInvite.subject.socialNumber }}</b>
+      <b>{{ model.selectedInvite.subject.socialNumber }}</b> &gt; Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}
     </p>
 
-    <h3 class="mb5 gray">Den här patienten har en enkät som inte är överförd till NDR</h3>
-    <h4 class="mb5 f2 b gray">Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}</h4>
+    <h4 class="mb1 orange" ng-show="!model.selectedInvite.isApprovedNDR">Den här patienten har en enkät som inte är överförd till NDR</h4>
 
-    <tabset>
-      <tab heading="Diagram">
+    <!--<tabset>-->
+      <!--<tab heading="Diagram" style="font-size:12px">-->
         <div class="cf b mt4 pb2 tl tc-ns bb b--gray">
           <div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>
           <div class="fl-ns pa2 w-40-ns">Värde</div>
@@ -349,16 +428,11 @@
             {{ model.selectedInvite.prevOutcomes.outcomes[$index].difference || "saknas" }}
           </div>
         </div>
-      </tab>
-      <tab heading="Journalvänlig text" select="selectCopyView()">
-        <p class="mt4">Tryck Cmd / Ctrl + C eller högerklicka på texten och välj "Kopiera"</p>
-        <textarea onclick="this.focus();this.select()" readonly="readonly"
-          class="db w-100 pa2 h5"
-          style="height: 250px;"
-          id="copy-view"
-        >{{ model.selectedInvite.copyText }}</textarea>
-      </tab>
-    </tabset>
+      <!--</tab>-->
+      <!--<tab heading="Journalvänlig text" select="selectCopyView()">-->
+
+      <!--</tab>-->
+    <!--</tabset>-->
 
     <button
       ng-show="!model.selectedInvite.isApprovedNDR"
@@ -366,11 +440,30 @@
       class="Button Button--info mt2 mt4-ns">
       Signera (förs över till NDR)
     </button>
+
+
+    <button ng-click="showCopyFriendly = !showCopyFriendly" class="Button Button--info mt2 mt4-ns">Visa som journalvänlig text</button>
+    <div ng-show="showCopyFriendly">
+
+      <p class="mt4">Tryck Ctrl + C eller högerklicka på texten och välj "Kopiera"</p>
+      <textarea onclick="this.focus();this.select()" readonly="readonly"
+                class="db w-100 pa2 h5"
+                style="height: 250px;"
+                id="copy-view"
+      >{{ model.selectedInvite.copyText }}</textarea>
+
+    </div>
+
   </div>
 </script>
 
 <script type="text/ng-template" id="deleteModalTmpl">
   <div class="modal-body text-center">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <h3 class="mb5">
       Bekräfta att du vill ta bort inbjudan för {{ model.selectedInvite.subject.socialNumber }}
     </h3>

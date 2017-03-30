@@ -1,17 +1,21 @@
 angular.module('ndrApp').controller('LoginController',
-          ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService',
-  function ($scope,   $http,   $stateParams,   $state,   accountService,   APIconfigService) {
+          ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService', '$modal', 'cookieFactory',
+  function ($scope,   $http,   $stateParams,   $state,   accountService,   APIconfigService,   $modal,   cookieFactory) {
 
     console.log('LoginController: Init', accountService.accountModel.user);
 
+    var modalInstance = null;
+
     $scope.model = {
+      accountModel      : accountService.accountModel,
       orderRef          : undefined,
       socialnumber      : undefined,
       PROMKey           : undefined,
       loginStarted      : false,
       loginFailed       : false,
       loginPROMKeyFailed: false,
-      message           : null
+      message           : null,
+      selectedAccountID : null,
     };
 
     $scope.startLogin = function (type) {
@@ -22,9 +26,11 @@ angular.module('ndrApp').controller('LoginController',
       $scope.model.loginStarted = true;
       $scope.model.loginFailed = false;
 
+      var url = APIconfigService.baseURL + 'bid/ndr/order' +
+            '?socialnumber=' + $scope.model.socialnumber
+
       var query = {
-        url: APIconfigService.baseURL + 'bid/ndr/order' +
-            '?socialnumber=' + $scope.model.socialnumber,
+        url:  APIconfigService.constructUrl(url),
         method: 'GET'
       };
 
@@ -45,10 +51,12 @@ angular.module('ndrApp').controller('LoginController',
       $scope.model.loginFailed = false;
       $scope.model.loginPROMKeyFailedMessage = "";
 
-      var query = {
-        url: APIconfigService.baseURL + 'prom' +
+      var url = APIconfigService.baseURL + 'prom' +
             '?PROMKey=' + $scope.model.PROMKey +
-            '&APIKey=' + APIconfigService.APIKey,
+            '&APIKey=' + APIconfigService.APIKey;
+
+      var query = {
+        url: APIconfigService.constructUrl(url),
         method: 'GET',
       };
 
@@ -56,7 +64,7 @@ angular.module('ndrApp').controller('LoginController',
       .then(function (response) {
         accountService.accountModel.PROMSubject = response.data;
         accountService.accountModel.PROMSubject.key = $scope.model.PROMKey;
-        $state.go('main.subject.surveys');
+        $state.go('main.subject.surveys.survey');
       })
       ['catch'](function (response){
         var code = response.data ? response.data.code : null;
@@ -69,13 +77,35 @@ angular.module('ndrApp').controller('LoginController',
         }
         $scope.model.loginPROMKeyFailed = true;
       });
-    }
+    };
+
+    // for users with multiple accounts show a modal
+    // to choose one unit and redirect to "main.account.home"
+    $scope.selectAccount = function() {
+      var accountID = $scope.model.selectedAccountID;
+      var activeAccount;
+
+      if (accountID) {
+        activeAccount = _.find(
+          accountService.accountModel.user.activeAccounts,
+          { accountID : accountID }
+        );
+        accountService.accountModel.activeAccount = activeAccount;
+        accountService.accountModel.tempAccount   = activeAccount;
+        cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
+        if (modalInstance) modalInstance.dismiss("cancel");
+        $state.go("main.account.home");
+      }
+    };
+
 
     function waitForLogin (type) {
+
       var waitFor = setInterval(function () {
+        var url = APIconfigService.baseURL + 'bid/ndr/collect' +
+              '?orderRef=' + $scope.model.orderRef;
         var query = {
-          url: APIconfigService.baseURL + 'bid/ndr/collect' +
-              '?orderRef=' + $scope.model.orderRef,
+          url: APIconfigService.constructUrl(url),
           method: 'GET',
         };
 
@@ -98,36 +128,63 @@ angular.module('ndrApp').controller('LoginController',
     }
 
     function login (type) {
-
+      var url = APIconfigService.baseURL + 'CurrentVisitor';
       var query = {
-        url: APIconfigService.baseURL + 'CurrentVisitor',
+        url: APIconfigService.constructUrl(url),
         method: 'GET'
       };
 
       $http(query)
         .then(function (response) {
           console.log("response login", response);
+          var user = response.data.user;
+          accountService.accountModel.chosenUserType = type;
+
+          // user login
           if (type === "user") {
             if (response.data.isUser) {
               $scope.model.message = null;
-              console.log("check for logged");
               checkForLoggedIn();
-              console.log("reloading");
 
-              $state.go('main.account.home', {}, {reload: true});
+              accountService.accountModel.user = user
+
+              // check for active accounts, if there's only one set it as active
+              // and redirect to main.account.home, if there are more, show modal
+              // to choose one and then set it and redirect
+              user.activeAccounts = _.filter(user.accounts, function (account) {
+                  return account.status.id === 1;
+              });
+
+              if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
+                accountService.accountModel.activeAccount = user.activeAccounts[0];
+                $state.go('main.account.home');
+              } else if (cookieFactory.read("ACTIVEACCOUNT")) {
+                accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                  return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
+                });
+                $state.go('main.account.home');
+              } else {
+                modalInstance = $modal.open({
+                  templateUrl: "unitModalTmpl",
+                  backdrop   : true,
+                  scope      : $scope,
+                });
+              }
             } else {
               $scope.model.loginStarted = false;
               $scope.model.message = 'Du är inte en användare i NDR.';
             }
+
+          // subject login
           } else {
             if (response.data.isSubject) {
               $scope.model.message = null;
               accountService.accountModel.PROMSubject = null;
               checkForLoggedIn();
-              $state.go('main.subject.home', {}, {reload: true});
+              $state.go('main.subject.home');
             } else {
               $scope.model.loginStarted = false;
-              $scope.model.message = 'Du är inte en användare i NDR.';
+              $scope.model.message = 'Det finns ingen information om dig i Nationella Diabetesregistret. Vänligen kontakta din vårdcentral för mer information.';
             }
 
           }
@@ -141,8 +198,9 @@ angular.module('ndrApp').controller('LoginController',
 
     function checkForLoggedIn () {
       var waitFor = setInterval(function () {
+        var url = APIconfigService.baseURL + 'CurrentVisitor';
         var query = {
-          url: APIconfigService.baseURL + 'CurrentVisitor',
+          url: APIconfigService.constructUrl(url),
           method: 'GET'
         };
 

@@ -1,15 +1,9 @@
 angular.module("ndrApp")
-  .controller('SubjectSurveysController',
-            ['$scope', '$state', '$timeout', '$modal', 'accountService', 'dataService',
-    function ($scope,   $state,   $timeout,   $modal,   accountService,   dataService) {
-
-    $scope.accountService = accountService;
-
-
+  .controller('SubjectSurveysController', [ '$scope', function ($scope) {
     $scope.model = {
       survey: $scope.accountModel.PROMSubject ||
-              _.find(
+              _.filter(
                 $scope.accountModel.subject.invites,
-                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
+                function (i) { return !i.submittedAt && !i.isDeclined; }),
     };
   }]);

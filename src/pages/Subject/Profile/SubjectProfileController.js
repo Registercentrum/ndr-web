@@ -1,7 +1,16 @@
 angular.module("ndrApp")
     .controller('SubjectProfileController',
-                ['$scope', 'dataService',
-        function ($scope,   dataService) {
+                ['$scope', '$stateParams', 'dataService',
+        function ($scope,   $stateParams,   dataService) {
+
+        $scope.tabOversight = {
+          heading: "Översikt",
+          active: $stateParams.tab !== "besvarade-enkater"
+        };
+        $scope.tabAnsweredSourveys = {
+          heading: "Besvarade enkäter",
+          active: $stateParams.tab === "besvarade-enkater"
+        };
 
         $scope.subject = $scope.accountModel.subject;
 

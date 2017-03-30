@@ -23,7 +23,7 @@ angular.module('ndrApp', [
         datepickerPopupConfig.toggleWeeksText = 'Veckoformat';
     }])
 
-    .run(function ($state, $rootScope, accountService) {
+    .run(function ($state, $rootScope, accountService, cookieFactory) {
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             console.log('toState', toState);
@@ -69,6 +69,24 @@ angular.module('ndrApp', [
                 }
             }
         });*/
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+            var user = accountService.accountModel.user
+
+            //if there is no activeAccount set, redirect to home page to choose unit
+            if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
+                if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
+                  accountService.accountModel.activeAccount = user.activeAccounts[0];
+                } else if (cookieFactory.read("ACTIVEACCOUNT")) {
+                  accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                    return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
+                  });
+                } else {
+                    event.preventDefault();
+                    $state.go('main.home', {}, {reload: true});
+                }
+            }
+        });
 
         $rootScope.is = function(name){
             return $state.is(name);
@@ -327,13 +345,14 @@ angular.module('ndrApp', [
                 })
 
                 .state('main.subject.surveys.survey', {
-                    url: '/besvara',
+                    url: '/besvara/:inviteID',
                     templateUrl: 'src/pages/Subject/Surveys/survey.html',
                     controller : 'SubjectSurveyController'
                 })
 
                 .state('main.subject.profile', {
                     url: '/profil',
+                    params: { tab: null },
                     templateUrl: 'src/pages/Subject/Profile/profile.html',
                     controller : 'SubjectProfileController'
                 })

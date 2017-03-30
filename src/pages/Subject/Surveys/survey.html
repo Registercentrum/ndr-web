@@ -1,4 +1,4 @@
-<h1 class="pb4 mb4 bb b--gray">Mina enkäter > Enkät till dig som har diabetes</h1>
+<h1 class="pb4 mb4 bb b--gray">Enkät till dig som har diabetes</h1>
 <p class="pb4 b" ng-show="!model.survey">Du har inga öppna enkäter.</p>
 
 <div class="relative" id="SurveyForm" ng-show="model.survey">
@@ -43,6 +43,7 @@
   <div ng-repeat="group in mainGroup.questiongroups | orderBy: 'sortorder'" class="mb5">
     <div class="f2 light-blue">{{ group.description}}</div>
     <div
+      ng-click="model.activeQuestion !== question.questionID ? setActiveQuestion(question.questionID) : ''"
       id="question-{{question.questionID}}"
       ng-repeat="question in group.questions"
       class="question-holder pb4 mb4 pl4"
@@ -52,7 +53,7 @@
         <small class="fl w3 pt1 blue">{{ question.questionID }})</small>
         <span class="fl mw7"> {{ question.question }}</span>
       </h4>
-      <div class="pl5">
+      <div class="pl5" ng-class="{'events-none': model.activeQuestion !== question.questionID}">
         <div ng-repeat="answer in question.domain.domainValues">
           <label class="pv2 normal silver">
             <input
@@ -107,20 +108,20 @@
           <div class="fl">
             {{ model.answersCount }} av {{ model.questionsCount }} frågor besvarade
           </div>
-          <div class="fr">
-            <button
-              ng-click="setActiveQuestion(model.activeQuestion - 1)"
-              ng-disabled="model.activeQuestion === 1"
-              class="Button Button--info Button--mini">
-              <i class="fa fa-arrow-up"></i>
-            </button>
-            <button
-              ng-click="setActiveQuestion(model.activeQuestion + 1)"
-              ng-disabled="model.activeQuestion === model.questionsCount"
-              class="Button Button--info Button--mini">
-              <i class="fa fa-arrow-down"></i>
-            </button>
-          </div>
+          <!--<div class="fr">-->
+            <!--<button-->
+              <!--ng-click="setActiveQuestion(model.activeQuestion - 1)"-->
+              <!--ng-disabled="model.activeQuestion === 1"-->
+              <!--class="Button Button&#45;&#45;info Button&#45;&#45;mini">-->
+              <!--<i class="fa fa-arrow-up"></i>-->
+            <!--</button>-->
+            <!--<button-->
+              <!--ng-click="setActiveQuestion(model.activeQuestion + 1)"-->
+              <!--ng-disabled="model.activeQuestion === model.questionsCount"-->
+              <!--class="Button Button&#45;&#45;info Button&#45;&#45;mini">-->
+              <!--<i class="fa fa-arrow-down"></i>-->
+            <!--</button>-->
+          <!--</div>-->
         </div>
       </div>
     </div>
@@ -129,6 +130,11 @@
 
 <script type="text/ng-template" id="confirmModalTmpl">
   <div class="modal-body text-center pa6">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <h3 class="mb5 f1">Klart!</h3>
     <div class="tc mw8 center">
       <p class="f2 mb5" ng-if="!accountModel.PROMSubject">
@@ -147,6 +153,11 @@
 
 <script type="text/ng-template" id="declineModalTmpl">
   <div class="modal-body text-center pa6">
+    <a
+      ng-click="$dismiss('cancel')"
+      class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+      style="text-decoration: none;"
+    ></a>
     <h3 class="mb5">Du har avböjt att besvara enkäten.</h3>
     <div class="tc mw8 center">
       <p class="f2 mb5">

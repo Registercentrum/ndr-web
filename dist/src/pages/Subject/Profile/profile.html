@@ -5,7 +5,7 @@
     </div>
 
     <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
-      <tab heading="Översikt">
+      <tab heading="{{ tabOversight.heading }}" active="tabOversight.active">
         <div class="col-md-12">
           <p class="pt5 pb3 f2 b">{{ subject.sexText }}, {{ subject.age }} år gammal</p>
         </div>
@@ -40,7 +40,7 @@
         </div>
       </tab>
 
-      <tab heading="Besvarade enkäter">
+      <tab heading="{{ tabAnsweredSourveys.heading }}" active="tabAnsweredSourveys.active">
         <div ng-repeat="group in PROMFormMeta" class="row">
           <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
           <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4">

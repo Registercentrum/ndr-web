@@ -1,23 +1,51 @@
 angular.module("ndrApp")
   .controller('SubjectSurveyController',
-            ['$scope', '$state', '$timeout', '$modal', 'accountService', 'dataService',
-    function ($scope,   $state,   $timeout,   $modal,   accountService,   dataService) {
+            ['$scope', '$state', '$stateParams', '$timeout', '$modal', 'accountService', 'dataService',
+    function ($scope,   $state, $stateParams,   $timeout,   $modal,   accountService,   dataService) {
+
 
     $scope.accountService = accountService;
 
-    console.log($scope)
+    var survey = $scope.accountModel.PROMSubject ||
+        _.find(
+          $scope.accountModel.subject.invites,
+          function (invite) { return !invite.submittedAt && !invite.isDeclined; });
+
+    if($stateParams.inviteID){
+      survey = _.find(
+        $scope.accountModel.subject.invites,
+        function (invite) { return invite.inviteID == $stateParams.inviteID; });
+    }
 
     $scope.model = {
-      survey: $scope.accountModel.PROMSubject ||
-              _.find(
-                $scope.accountModel.subject.invites,
-                function (invite) { return !invite.submittedAt && !invite.isDeclined; }),
+      survey: survey,
       statusBarFixed: true,
       questionsCount: 0,
       activeQuestion: null,
       unansweredQuestions: []
     };
-    $scope.model.answers = $scope.model.survey && $scope.model.survey.prom ?
+
+
+      $(".Panel").bind("keydown", function (e) {
+        if (e.keyCode == 38 || e.keyCode == 40) {
+          e.preventDefault();
+        }
+
+        if (e.keyCode == 38){
+          $timeout(function () {
+            $scope.setActiveQuestion($scope.model.activeQuestion - 1);
+          }, 250);
+        }
+
+        if (e.keyCode == 40){
+          $timeout(function () {
+            $scope.setActiveQuestion($scope.model.activeQuestion + 1);
+          }, 250);
+        }
+      })
+
+
+      $scope.model.answers = $scope.model.survey && $scope.model.survey.prom ?
                            $scope.model.survey.prom :
                            {};
     $scope.model.answersCount = getAnswersCount();
@@ -57,6 +85,7 @@ angular.module("ndrApp")
     $scope.submitForm = function () {
       var answers = $scope.model.answers;
       answers.isSubmitted = true;
+
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           confirmModalInstance = $modal.open({
@@ -65,7 +94,15 @@ angular.module("ndrApp")
             scope      : $scope,
             size       : "lg"
           });
-        })
+          // clean the model from PROMSubject
+          delete accountService.accountModel.PROMSubject
+          // update subject model so there's no lingering messages about
+          // survey to answer
+          var submittedInvite = accountService.accountModel.subject.invites.find(function (i) {
+            return $scope.model.survey.inviteID === i.inviteID;
+          });
+          if (submittedInvite) submittedInvite.submittedAt = moment().format("YYYY-MM-DD");
+        });
     };
 
     $scope.showDeclineModal = function () {
@@ -78,9 +115,11 @@ angular.module("ndrApp")
     }
 
     $scope.closeAndLogout = function (stateName) {
-      if (!stateName) stateName = "main.home";
+      if (!stateName) {
+        stateName = "main.home";
+        accountService.logOut();
+      }
 
-      accountService.logOut();
       $state.go(stateName, {}, {reload: true});
 
       if (confirmModalInstance) confirmModalInstance.dismiss("cancel");
@@ -90,10 +129,20 @@ angular.module("ndrApp")
     $scope.declineForm = function () {
       var answers = $scope.model.answers;
       answers.isDeclined = true;
+
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           accountService.logOut();
-          $state.go("main.home", {}, {reload: true});
+          // clean the model from PROMSubject
+          delete accountService.accountModel.PROMSubject;
+          // update subject model so there's no lingering messages about
+          // survey to answer
+          var declinedInvite = accountService.accountModel.subject.invites.find(function (i) {
+            return $scope.model.survey.inviteID === i.inviteID;
+          });
+          if (declinedInvite) declinedInvite.isDeclined = true;
+
+          $state.go("main.subject.home", {}, {reload: true});
           declineModalInstance.dismiss("cancel");
         });
     };

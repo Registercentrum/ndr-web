@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
   .controller('SurveyController', [
-                 '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService', 'accountService',
-        function ($scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService,   accountService) {
+                 '$window', '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService', 'accountService',
+        function ($window,   $scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService,   accountService) {
 
         var account = $scope.accountModel;
         console.log('SurveyController: Init');
@@ -40,6 +40,21 @@ angular.module('ndrApp')
         };
 
         var modalInstance = null;
+
+        $scope.printThis = function(){
+          $(".modal-body").printThis({
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            printContainer: true,
+            // loadCSS: "../css/style.css",
+            pageTitle: "NDR",
+            removeInline: false,
+            printDelay: 100,
+            header: null,
+            formValues: true
+          });
+        }
 
         // *********************************************************************
         // List Tab
@@ -106,7 +121,8 @@ angular.module('ndrApp')
           if (type === "socialnumber") {
             $scope.model.invites.displayed =
               _.filter($scope.model.invites.all, function (invite) {
-                return invite.subject.socialNumber.indexOf($scope.model.socialNumberFilter) !== -1
+                return invite.subject.socialNumber.replace("-", "")
+                      .indexOf($scope.model.socialNumberFilter.replace("-", "")) !== -1
               });
           } else {
             $scope.model.invites.displayed = $scope.model.invites[type];
@@ -123,8 +139,13 @@ angular.module('ndrApp')
             var changeSinceLast = prevOutcome && prevOutcome.difference ?
                                   prevOutcome.difference :
                                   "saknas"
-            return p + n.dimension.desc + ',' + n.outcome + ',' + changeSinceLast + '\n';
+
+            var outcome = n.outcome || "saknas"
+
+            return p + n.dimension.desc + ' | ' + outcome  + ' | ' + changeSinceLast + '\n';
           }, "");
+
+          invite.copyText = "Dimension | Värde | Förändring\n" + invite.copyText;
 
           dataService.getPROMFormMeta()
             .then(function (response) {
@@ -156,11 +177,13 @@ angular.module('ndrApp')
           if (!$scope.model.selectedInvite) return false;
           if (modalInstance) modalInstance.dismiss("cancel");
 
-          $state.go("surveyPrint", {
+          var url = $state.href("surveyPrint", {
             unitName: $scope.model.selectedInvite.unit.name,
             socialNumber: $scope.model.selectedInvite.subject.socialNumber,
             key: $scope.model.selectedInvite.key
           })
+
+          $window.open(url, "_blank");
         }
 
 
@@ -259,16 +282,17 @@ angular.module('ndrApp')
           dataService.createInvite({
             subjectID: invite.subjectID,
             openUntil: moment(invite.openUntil).format("YYYY-MM-DD"),
-            tag: invite.tag
+            tag: invite.tag,
+            diabetesTypeAs : invite.selectedDiabetesTypeCode,
           })
             .then(function (response) {
               $scope.model.createdInvites.push(response.data);
               $scope.model.newInvite = {
                 socialnumber: null,
                 subjectID: null,
-                openUntil: null,
+                openUntil: moment().add(3, "months").format("YYYY-MM-DD"),
                 tag: null,
-                diabetesType: null
+                currentDiabetesType: null
               };
               getInvites();
             })
@@ -290,7 +314,8 @@ angular.module('ndrApp')
           $scope.model.newInviteError = null;
           $scope.model.newInviteDiabetesMissing = false;
           $scope.model.newInvite.subjectID = null;
-          $scope.model.newInvite.diabetesType = null;
+          $scope.model.newInvite.currentDiabetesType = null;
+          $scope.model.newInvite.selectedDiabetesType = null;
 
           dataService.getSubjectBySocialNumber(sn)
             .then(function (subject) {
@@ -299,10 +324,17 @@ angular.module('ndrApp')
                 return false;
               }
 
-              if (subject.diabetesType === null) {
+              if (subject.diabetesType != 1 && subject.diabetesType != 2) {
                 $scope.model.newInviteDiabetesMissing = true;
+
+                $scope.model.newInvite.currentDiabetesTypeCode = subject.diabetesType;
+                $scope.model.newInvite.currentDiabetesType = subject.diabetesTypeText;
+                $scope.model.newInvite.selectedDiabetesTypeCode = undefined;
+
               } else {
-                $scope.model.newInvite.diabetesType = subject.diabetesTypeText;
+                $scope.model.newInvite.currentDiabetesTypeCode = subject.diabetesType;
+                $scope.model.newInvite.currentDiabetesType = subject.diabetesTypeText;
+                $scope.model.newInvite.selectedDiabetesTypeCode = subject.diabetesType;
               }
 
               $scope.model.newInvite.subjectID = subject.subjectID;
