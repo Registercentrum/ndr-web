@@ -4,6 +4,8 @@ angular.module('ndrApp').controller('LoginController',
 
     console.log('LoginController: Init', accountService.accountModel.user);
 
+    console.log("test", $stateParams)
+    
     var modalInstance = null;
 
     $scope.model = {
@@ -216,4 +218,12 @@ angular.module('ndrApp').controller('LoginController',
           ['catch'](console.error.bind(console));
       }, 200000);
     }
+
+    if($stateParams.direct){
+      console.log("LOGGING", $stateParams)
+      login("user");
+    }
+
+
+
   }]);

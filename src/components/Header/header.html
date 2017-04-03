@@ -6,7 +6,7 @@
 
             <div class="AccountMenu">
 
-                <div class="SecondaryMenu">
+                <div class="SecondaryMenu" style="padding: 30px 0px;">
                     <a ui-sref="main.english" title="">In English</a>
                     <a ui-sref="main.compare" title="">Knappen</a>
                     <a ui-sref="main.risk" title="">Riskmotor</a>
@@ -79,21 +79,18 @@
                     </ul>
                 </div>
 
-                <div style="margin: 30px 0px; display: inline-block" ng-show="!accountModel.activeAccount && accountModel.user.activeAccounts" class="dropdown">
-                    <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" >
+                <div style="margin: 30px 0px; display: inline-block" ng-show="!accountModel.activeAccount && !accountModel.user.activeAccounts" class="dropdown">
+                    <a href ng-if="!accountModel.activeAccount && !accountModel.user.activeAccounts" ui-sref="main.login">
                         Logga in
-                        <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
-                        <li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
-                            <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
-                        </li>
-                    </ul>
+                    <!--<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">-->
+                        <!--<li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">-->
+                            <!--<a href="" role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
                 </div>
 
-                <a href ng-if="!accountModel.activeAccount && !accountModel.user.activeAccounts" ui-sref="main.login">
-                    Logga in
-                </a>
+
 
             </div>
 

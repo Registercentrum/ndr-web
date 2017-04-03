@@ -3,7 +3,7 @@
 angular.module('ndrApp')
     .service('accountService',
                 ['$http', '$state', '$rootScope', 'APIconfigService', 'cookieFactory',
-        function ($http,   $state,   $rootScope,   APIconfigService,   cookieFactory) {
+        function ($http,   $state,   $rootScope, APIconfigService,   cookieFactory) {
 
         var self = this,
             isLoggingIn = false;
@@ -52,36 +52,40 @@ angular.module('ndrApp')
 
                     if(response.data.isUser == false) return false;
 
-                    var user = response.data.user,
-                        subject = response.data.subject,
-                        loginId;
+                    $state.go('main.login', {direct: true}, {reload: true});
 
-                    console.log('LOGIN SUCCESS');
-                    console.log("USER: ",user);
+                    // LoginController.login("user");
 
-                    self.accountModel.user = user;
-                    self.accountModel.subject = subject;
-
-                    $rootScope.$broadcast('newUser');
-
-                    loginId = accountID || user.defaultAccountID;
-
-                    user.activeAccounts = _.filter(user.accounts, function (account) {
-                        return account.status.id === 1;
-                    });
-
-                    // if there is only one unit set it as activeAccount
-                    if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
-                        self.accountModel.activeAccount = user.activeAccounts[0];
-                    } else if (cookieFactory.read("ACTIVEACCOUNT")) {
-                      self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
-                        return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
-                      });
-                    }
-
-                    if (self.accountModel.tempAccount) {
-                        self.accountModel.activeAccount = self.accountModel.tempAccount;
-                    }
+                    // var user = response.data.user,
+                    //     subject = response.data.subject,
+                    //     loginId;
+                    //
+                    // console.log('LOGIN SUCCESS');
+                    // console.log("USER: ",user);
+                    //
+                    // self.accountModel.user = user;
+                    // self.accountModel.subject = subject;
+                    //
+                    // $rootScope.$broadcast('newUser');
+                    //
+                    // loginId = accountID || user.defaultAccountID;
+                    //
+                    // user.activeAccounts = _.filter(user.accounts, function (account) {
+                    //     return account.status.id === 1;
+                    // });
+                    //
+                    // // if there is only one unit set it as activeAccount
+                    // if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
+                    //     self.accountModel.activeAccount = user.activeAccounts[0];
+                    // } else if (cookieFactory.read("ACTIVEACCOUNT")) {
+                    //   self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                    //     return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
+                    //   });
+                    // }
+                    //
+                    // if (self.accountModel.tempAccount) {
+                    //     self.accountModel.activeAccount = self.accountModel.tempAccount;
+                    // }
 
                     isLoggingIn = false;
                 })
@@ -104,7 +108,10 @@ angular.module('ndrApp')
 
 
         this.bootstrap = function () {
+
+          if(!this.accountModel.user){
             console.log('AccountService: Bootstrap');
             return self.login();
+          }
         };
     }]);

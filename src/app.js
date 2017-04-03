@@ -174,7 +174,7 @@ angular.module('ndrApp', [
                 })
 
                 .state('main.login', {
-                    url: '/login',
+                    url: '/login:direct',
                     controller : 'LoginController',
                     templateUrl: 'src/pages/Login/login.html',
                     resolve: {

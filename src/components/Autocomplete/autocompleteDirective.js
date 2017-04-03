@@ -3,8 +3,6 @@ angular.module('ndrApp')
             return {
                 controller: function ($scope, $element) {
 
-                    console.log("pp", $scope.model.options);
-
                     //var opts = _.where($scope.model.options, {type : 'county'})
 
                     $scope.config = {
