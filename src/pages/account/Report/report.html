@@ -44,6 +44,9 @@
 					</div>
 					<div class="Report-formGroup">
 						<div class="row">
+							<div ng-show="isAdmin && contactModel.contactID">
+								<button ng-click="deleteContact(contactModel.contactID)" id="bnDeleteContact" type="submit" class="Button btn-danger pull-right">Ta bort</button>
+							</div>
 							<div class="col-md-5">
 								<label class="" for="contactDate">Besöksdatum</label><i class="fa fa-question-circle helpNote" ng-show="lists['contactDate'].helpNote != null" tooltip="{{lists['contactDate'].helpNote}}"></i>
 								<div class="Report-formGroup-form">
@@ -592,15 +595,11 @@
 <!-- end Panel -->
 <script type="text/ng-template" id="myModalContent.html">
 	<div class="modal-body text-center">
-		<a
-		  ng-click="$dismiss('cancel')"
-		  class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
-		  style="text-decoration: none;"
-		></a>
-
+	  <a class="pull-right" ng-click="cancel()"><i style="color:#333" class="fa fa-close"></i></a>
+	
 	  <h3>Sparat</h3>
 	  <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
-
+	
 	  <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="close()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
 	  <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="clear()">Rapportera för en annan patient</a>
 	  <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="close()">Avsluta rapportering</a>
