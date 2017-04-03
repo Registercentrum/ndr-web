@@ -23,7 +23,7 @@
 </div>
 
 
-<div class="row">
+<!--<div class="row">
 
     <div class="col-md-12">
 
@@ -48,8 +48,39 @@
             </ul>
         </div>
     </div>
+</div>-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="Panel">
+            <h1 class="Panel-title">Rapporteringsgrad</h1>
+			<p>NDR blir inte bättre än det som rapporteras in. Därför är det viktigt att ni kontrollerar att era uppgifter överförs till NDR 
+				som förväntat. Tabellen nedan visar hur stor andel av era patienter som har en rapporterad uppgift 
+				på respektive variabel de senaste 365 dagarna. Tabellen uppdateras varje natt.
+				</p>
+			<div class="col-md-6 pull-right descLabels">
+				<span class="valueIndicator worst">0-69%</span><span class="valueIndicator bad">70-79%</span><span class="valueIndicator ok">80-89%</span><span class="valueIndicator good">90-100%</span>
+			</div>
+			<table class="tableReporting table table-responsive">
+			<thead>
+			  <tr>
+				<th class="colHeader rowLabel" ng-click="handleSortClick(0)">Variabel <span ng-show="model.reportSort.level == 0 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 0 && !model.reportSort.desc">&#9660;</span></th>
+				<th class="colHeader" ng-click="handleSortClick(3)">Vår enhet <span ng-show="model.reportSort.level == 3 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 3 && !model.reportSort.desc">&#9660;</span></th>
+				<th class="colHeader" ng-click="handleSortClick(2)">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 2 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 2 && !model.reportSort.desc">&#9660;</span></th>
+				<th class="colHeader" ng-click="handleSortClick(1)">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 1 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 1 && !model.reportSort.desc">&#9660;</span></th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr class="variable" ng-repeat="f in model.reportList">
+				<td class="rowHeader" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}"><span style="">{{f.question}}</span></td>
+				<td class="value myUnit"><span class="valueIndicator" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}">{{f.unitShare.value}}%</span></td>
+				<td class="value myCounty"><span class="valueIndicator" ng-class="{'good':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}">{{f.countyShare.value}}%</span></td>
+				<td class="value"><span class="valueIndicator" ng-class="{'good':(f.sweShare.group === 4), 'ok':(f.sweShare.group === 3), 'bad':(f.sweShare.group === 2), 'worst':(f.sweShare.group === 1)}">{{f.sweShare.value}}%</span></td>
+			  </tr>
+			</tbody>
+			</table>
+        </div>
+    </div>
 </div>
-
 
 <div class="row">
     <div class="col-md-12">

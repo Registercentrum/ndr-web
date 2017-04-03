@@ -1,10 +1,6 @@
 angular.module('ndrApp').controller('LoginController',
           ['$scope', '$http', '$stateParams', '$state', 'accountService', 'APIconfigService', '$modal', 'cookieFactory',
   function ($scope,   $http,   $stateParams,   $state,   accountService,   APIconfigService,   $modal,   cookieFactory) {
-
-    console.log('LoginController: Init', accountService.accountModel.user);
-
-    console.log("test", $stateParams)
     
     var modalInstance = null;
 
@@ -21,7 +17,6 @@ angular.module('ndrApp').controller('LoginController',
     };
 
     $scope.startLogin = function (type) {
-      console.log("start login");
 
       if (!$scope.model.socialnumber) return;
 
@@ -183,6 +178,7 @@ angular.module('ndrApp').controller('LoginController',
               $scope.model.message = null;
               accountService.accountModel.PROMSubject = null;
               checkForLoggedIn();
+              console.log("GOING TO SUBJECT HOME")
               $state.go('main.subject.home');
             } else {
               $scope.model.loginStarted = false;
@@ -220,7 +216,6 @@ angular.module('ndrApp').controller('LoginController',
     }
 
     if($stateParams.direct){
-      console.log("LOGGING", $stateParams)
       login("user");
     }
 

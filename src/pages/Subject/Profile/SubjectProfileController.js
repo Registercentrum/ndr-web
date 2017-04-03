@@ -33,7 +33,7 @@ angular.module("ndrApp")
                 x: +(new Date(s.submittedAt)),
                 y: _.find(s.outcomes, function (o) {
                   return o.dimension.id === outcome.dimension.id;
-                }).outcome
+                }).outcome || null
               };
             });
             datum.latestOutcome = _.last(datum.series).y

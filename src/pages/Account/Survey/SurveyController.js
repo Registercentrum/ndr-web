@@ -8,7 +8,9 @@ angular.module('ndrApp')
         var account = $scope.accountModel;
         console.log('SurveyController: Init');
 
+
         $scope.model = {
+          loading : true,
           sortType: "createdAt",
           sortReverse: true,
           createdInvites: [],
@@ -106,6 +108,9 @@ angular.module('ndrApp')
         function getInvites () {
           dataService.getInvites()
             .then(function (response) {
+
+              $scope.model.loading = false;
+
               var invites = parseInvites(response.data)
 
               invites.map(function (invite) {
@@ -151,6 +156,7 @@ angular.module('ndrApp')
 
         $scope.showAnswersModal = function (invite) {
           invite.prevOutcomes = getPrevOutcomes(invite);
+
           invite.copyText = _.reduce(invite.outcomes, function (p, n) {
             var prevOutcome = invite.prevOutcomes &&
                               _.find(invite.prevOutcomes.outcomes, function (i) {
@@ -165,12 +171,33 @@ angular.module('ndrApp')
             return p + n.dimension.desc + ' | ' + outcome  + ' | ' + changeSinceLast + '\n';
           }, "");
 
+
           invite.copyText = "Dimension | Värde | Förändring\n" + invite.copyText;
 
           dataService.getPROMFormMeta()
             .then(function (response) {
               $scope.model.formMeta = response.data;
               $scope.model.selectedInvite = invite;
+
+
+              // var o = {
+              //   name : obj.unit.name,
+              //   color : obj.unit.levelID != id ? "#D4D4D4" : "#FFCC01",
+              //   y : obj.stat.r,
+              //   cRep : obj.stat.cRep,
+              // }
+
+
+              var series = invite.outcomes.map(function (outcome, index) {
+                return {name : outcome.dimension.desc, y : outcome.outcome, prevOutcome : invite.prevOutcomes.outcomes[index] }
+              })
+
+
+              // prevOutcomes.outcomes[$index].difference < 0
+
+              $scope.model.selectedInviteData = series;
+
+
               modalInstance = $modal.open({
                 templateUrl: "answersModalTmpl",
                 backdrop   : true,
@@ -181,7 +208,6 @@ angular.module('ndrApp')
         }
 
         $scope.showInviteModal = function (invite) {
-          $scope.model.selectedInvite = invite;
 
           modalInstance = $modal.open({
             templateUrl: "inviteModalTmpl",

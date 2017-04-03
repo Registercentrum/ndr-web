@@ -80,7 +80,7 @@
             </tr>
           </thead>
 
-          <div ng-show="model.invites.displayed.length == 0">
+          <div ng-show="model.loading == false && model.invites.displayed.length == 0">
             <p class="tc pv5 f1 red">Inga matchande patienter hittades</p>
           </div>
 
@@ -172,7 +172,7 @@
                 <!--<span class="red" ng-if="!invite.isApprovedNDR">nej</span>-->
                 <!--<span ng-if="invite.isApprovedNDR">ja</span>-->
               <!--</td>-->
-              <td><span class="underline cursor" title="{{ invite.tag }}">{{ invite.tag | limitTo:5 }}</span></td>
+              <td><span class="underline cursor" title="{{ invite.tag }}">{{ invite.tag | limitTo:15 }}</span></td>
               <td class="tl">
                 <button
                   ng-click="showInviteModal(invite)"
@@ -356,7 +356,7 @@
     ></a>
     <div class="">
       <p class="f2 b">
-        <button ng-click="printThis()" class="pointer hidden-print">Skriv ut inbjudan</button>
+        <button ng-click="printThis()" class="Button  pointer hidden-print">Skriv ut inbjudan</button>
       </p>
 
     </div>
@@ -422,44 +422,49 @@
 
   <div ng-show="!model.selectedInvite.signed" class="modal-body text-center">
     <a
-            ng-click="$dismiss('cancel')"
-            class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
-            style="text-decoration: none;"
+          ng-click="$dismiss('cancel')"
+          class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
+          style="text-decoration: none;"
     ></a>
 
     <p class="cf f2 tl bb bw1 pb2 mb5">
       <b>{{ model.selectedInvite.subject.socialNumber }}</b> &gt; Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}
+      <button ng-click="printThis()" class="Button Button--grey Button--mini hidden-print"><i class="fa fa-print"></i></button>
     </p>
 
     <h4 class="mb1 orange" ng-show="!model.selectedInvite.isApprovedNDR">Den här patienten har en enkät som inte är överförd till NDR</h4>
 
     <!--<tabset>-->
       <!--<tab heading="Diagram" style="font-size:12px">-->
-        <div class="cf b mt4 pb2 tl tc-ns bb b--gray">
-          <div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>
-          <div class="fl-ns pa2 w-40-ns">Värde</div>
-          <div class="fl-ns pa2 w-20-ns">
-            Förändring
-            <span ng-show="model.selectedInvite.prevOutcomes">
-              (sedan {{ model.selectedInvite.prevOutcomes.submittedAt  | date:'yyyy-MM-dd' }})
-            </span>
-          </div>
-        </div>
-        <div ng-repeat="outcome in model.selectedInvite.outcomes" class="cf">
-          <div class="fl-ns pa2 w-40-ns tl tr-ns">{{ outcome.dimension.desc }}</div>
-          <div class="fl-ns pv2 w-40-ns tl relative br bl b--light-gray" style="padding-left: 1px; padding-right: 1px;">
-            <span class="dib bg-blue" style="height: 20px; width: {{ outcome.outcome }}%"></span>
-            <span class="absolute ml1" style="top: 2px; left: {{ outcome.outcome }}%">
-              {{ outcome.outcome | number: 0 }}
-            </span>
-          </div>
-          <div
-            class="fl-ns pa2 w-20-ns tl tc-ns"
-            ng-class="{red: model.selectedInvite.prevOutcomes.outcomes[$index].difference < 0}"
-          >
-            {{ model.selectedInvite.prevOutcomes.outcomes[$index].difference || "saknas" }}
-          </div>
-        </div>
+
+
+      <div style="margin-top: 5px" bar-chart model="model.selectedInviteData"></div>
+
+        <!--<div class="cf b mt4 pb2 tl tc-ns bb b&#45;&#45;gray">-->
+          <!--<div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>-->
+          <!--<div class="fl-ns pa2 w-40-ns">Värde</div>-->
+          <!--<div class="fl-ns pa2 w-20-ns">-->
+            <!--Förändring-->
+            <!--<span ng-show="model.selectedInvite.prevOutcomes">-->
+              <!--(sedan {{ model.selectedInvite.prevOutcomes.submittedAt  | date:'yyyy-MM-dd' }})-->
+            <!--</span>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div ng-repeat="outcome in model.selectedInvite.outcomes" class="cf">-->
+          <!--<div class="fl-ns pa2 w-40-ns tl tr-ns">{{ outcome.dimension.desc }}</div>-->
+          <!--<div class="fl-ns pv2 w-40-ns tl relative br bl b&#45;&#45;light-gray" style="padding-left: 1px; padding-right: 1px;">-->
+            <!--<span class="dib bg-blue" style="height: 20px; width: {{ outcome.outcome }}%"></span>-->
+            <!--<span class="absolute ml1" style="top: 2px; left: {{ outcome.outcome }}%">-->
+              <!--{{ outcome.outcome | number: 0 }}-->
+            <!--</span>-->
+          <!--</div>-->
+          <!--<div-->
+            <!--class="fl-ns pa2 w-20-ns tl tc-ns"-->
+            <!--ng-class="{red: model.selectedInvite.prevOutcomes.outcomes[$index].difference < 0}"-->
+          <!--&gt;-->
+            <!--{{ model.selectedInvite.prevOutcomes.outcomes[$index].difference || "saknas" }}-->
+          <!--</div>-->
+        <!--</div>-->
       <!--</tab>-->
       <!--<tab heading="Journalvänlig text" select="selectCopyView()">-->
 

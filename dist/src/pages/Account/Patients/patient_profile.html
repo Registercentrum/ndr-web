@@ -208,10 +208,10 @@
                                     <td width="80">Diabetesretinopati</td>
                                     <td width="20" style="width:50%">{{ model.latest.diabeticRetinopathy.label }}</td>
                                 </tr>
-                                <tr>
-                                    <td width="80">Diagnos på sämsta ögat</td>
-                                    <td width="20">{{ model.latest.diagnosisWorseSeeingEye.label  }}</td>
-                                </tr>
+								<tr>
+									<td width="80">Diagnos på sämsta ögat</td>
+									<td width="20">{{ model.latest.diabeticRetinopathy.value != 0 ? model.latest.diagnosisWorseSeeingEye.label : null  }}</td>
+								</tr>
                                 <tr>
                                     <td width="80">Laserbehandlad</td>
                                     <td width="20">{{ model.latest.laserTreatment.label}}</td>
@@ -288,7 +288,8 @@
 
         <div ng-repeat="group in PROMFormMeta" class="row">
             <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
-            <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4">
+            <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4 Panel">
+
                 <h4 class="col-md-12">{{ survey.dimension.desc }}</h4>
                 <div class="col-md-9">
                     <div
@@ -308,6 +309,11 @@
                             ng-class="{red: survey.diffFromPrevious < 0}"
                     >{{ survey.diffFromPrevious }}</sup>
                 </div>
+
+
+                <div class="clearfix"></div>
+
+
             </div>
         </div>
 

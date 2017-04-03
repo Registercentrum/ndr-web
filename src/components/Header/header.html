@@ -13,10 +13,10 @@
                     <a ui-sref="main.forms" title="">Dokument</a>
                 </div>
 
-                <div ng-show="accountModel.activeAccount" class="dropdown LoginButton">
+                <div ng-show="accountModel.activeAccount || accountModel.subject" class="dropdown LoginButton">
 
                     <button type="button" class="Button dropdown-toggle Button--grey" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
-                        {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ': ' }} <span style="font-size: 12px">{{ accountModel.activeAccount.unit.name | characters:26 }}</span>
+                        {{ accountModel.user.firstName + ' ' + accountModel.user.lastName }} <span ng-show="accountModel.activeAccount" style="font-size: 12px">{{ ': ' + accountModel.activeAccount.unit.name | characters:26 }}</span>
                         <span class="caret"></span>
                     </button>
 

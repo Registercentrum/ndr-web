@@ -73,12 +73,13 @@ angular.module('ndrApp', [
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             var user = accountService.accountModel.user
 
+          
+            if(!user) return false;
+          
             //if there is no activeAccount set, redirect to home page to choose unit
             if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
-                if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
-                  accountService.accountModel.activeAccount = user.activeAccounts[0];
-                } else if (cookieFactory.read("ACTIVEACCOUNT")) {
-                  accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                if (cookieFactory.read("ACTIVEACCOUNT")) {
+                  accountService.accountModel.activeAccount = user.accounts.find(function (a) {
                     return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
                   });
                 } else {
@@ -322,7 +323,7 @@ angular.module('ndrApp', [
                     controller : 'SubjectController',
                     resolve: {
                         config: function (accountService) {
-                             return accountService.bootstrap();
+                             return accountService.bootstrap('subject');
                         }
                     }
                 })

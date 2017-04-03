@@ -5,10 +5,6 @@ angular.module('ndrApp')
 
         function link (scope) {
 
-            //if (!scope.id) return;
-
-            console.log("load", scope.model.id);
-            
             var id = scope.model.id;
 
             scope.model.selectedKeyIndicator = 201;
@@ -65,7 +61,7 @@ angular.module('ndrApp')
                     queryGeo;
 
                 if (scope.model.geoType === 'unit') {
-                    console.log('UNIT', scope.model);
+
                     queryGeo = dataService.queryFactory({
                         unitID      : scope.model.id,
                         level       : 2,

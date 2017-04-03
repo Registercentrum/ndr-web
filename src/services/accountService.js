@@ -38,7 +38,7 @@ angular.module('ndrApp')
         this.login = function (accountID) {
             var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey;
 
-            console.log('LOGGING IN');
+            console.log('ACCOUNT BOOTSTRAP: LOGGING IN');
 
             isLoggingIn = true;
 
@@ -50,42 +50,58 @@ angular.module('ndrApp')
                     // if (response.data.user && response.data.user.userID === 22)
                     //     response.data.user.accounts.pop()
 
-                    if(response.data.isUser == false) return false;
+                  if(response.data.isUser == false) {
+                    console.log("IS NOT USER")
+                    return false;
+                  }
 
-                    $state.go('main.login', {direct: true}, {reload: true});
+                  // if(self.accountModel.user){
+                  //   console.log("IS ALREADY LOGGED")
+                  //   return false;
+                  // }
+                  //
 
-                    // LoginController.login("user");
+                    // console.log("GOING TO LOGIN PAGE", $state)
+                    // $state.go('main.login', {direct: true}, {reload: true});
 
-                    // var user = response.data.user,
-                    //     subject = response.data.subject,
-                    //     loginId;
-                    //
-                    // console.log('LOGIN SUCCESS');
-                    // console.log("USER: ",user);
-                    //
-                    // self.accountModel.user = user;
-                    // self.accountModel.subject = subject;
-                    //
-                    // $rootScope.$broadcast('newUser');
-                    //
-                    // loginId = accountID || user.defaultAccountID;
-                    //
-                    // user.activeAccounts = _.filter(user.accounts, function (account) {
-                    //     return account.status.id === 1;
-                    // });
-                    //
-                    // // if there is only one unit set it as activeAccount
-                    // if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
-                    //     self.accountModel.activeAccount = user.activeAccounts[0];
-                    // } else if (cookieFactory.read("ACTIVEACCOUNT")) {
-                    //   self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
-                    //     return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
-                    //   });
+                    var user = response.data.user,
+                        subject = response.data.subject,
+                        loginId;
+
+                    console.log('LOGIN SUCCESS');
+                    console.log("USER: ",user);
+
+                    self.accountModel.user = user;
+                    self.accountModel.subject = subject;
+
+                    $rootScope.$broadcast('newUser');
+
+                    loginId = accountID || user.defaultAccountID;
+
+                    user.activeAccounts = _.filter(user.accounts, function (account) {
+                        return account.status.id === 1;
+                    });
+
+                    // if( self.accountModel.subject ) {
+                    //   isLoggingIn = false;
+                    //   return false;
                     // }
-                    //
-                    // if (self.accountModel.tempAccount) {
-                    //     self.accountModel.activeAccount = self.accountModel.tempAccount;
-                    // }
+
+                    // if there is only one unit set it as activeAccount
+                    if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
+                        self.accountModel.activeAccount = user.activeAccounts[0];
+                    } else if (cookieFactory.read("ACTIVEACCOUNT")) {
+                      self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                        return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
+                      });
+                    }
+                    else{
+                      $state.go('main.login', {direct: true}, {reload: true});
+                    }
+
+                    if (self.accountModel.tempAccount) {
+                        self.accountModel.activeAccount = self.accountModel.tempAccount;
+                    }
 
                     isLoggingIn = false;
                 })
@@ -107,11 +123,9 @@ angular.module('ndrApp')
         };
 
 
-        this.bootstrap = function () {
-
-          if(!this.accountModel.user){
+        this.bootstrap = function (type) {
             console.log('AccountService: Bootstrap');
+            if(type == 'subject') return false;
             return self.login();
-          }
         };
     }]);

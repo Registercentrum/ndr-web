@@ -5,22 +5,21 @@ angular.module("ndrApp")
 
         $scope.subject = undefined;
         $scope.socialnumber = undefined;
-		$scope.unitInIQV = undefined;
+				$scope.unitInIQV = undefined;
         
-        console.log("Active Account", Account.activeAccount);
-        
-		$scope.unitInIQV = dataService.isInProject('iqv');
+
+				$scope.unitInIQV = dataService.isInProject('iqv');
 		
-        $scope.model = {
+			$scope.model = {
             id : Account.activeAccount.unit.unitID,
-			activeAccount: Account.activeAccount,
+						activeAccount: Account.activeAccount,
             geoType : "unit",
             unitType : Account.activeAccount.unit.typeID,
             diabetesType : Account.activeAccount.unit.typeID === 1 ? 0 : 1,
-			reportList : [],
-			reportSort : {
-				level: 3,
-				desc: true
+						reportList : [],
+						reportSort : {
+						level: 3,
+						desc: true
 			}
         };
 
