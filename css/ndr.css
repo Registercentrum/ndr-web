@@ -6068,7 +6068,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 55px;
+  min-height: 48px;
   margin-bottom: 22px;
   border: 1px solid transparent;
 }
@@ -6174,10 +6174,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-brand {
   float: left;
-  padding: 16.5px 15px;
+  padding: 13px 15px;
   font-size: 20px;
   line-height: 22px;
-  height: 55px;
+  height: 48px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -6197,8 +6197,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: 10.5px;
-  margin-bottom: 10.5px;
+  margin-top: 7px;
+  margin-bottom: 7px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -6222,7 +6222,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-nav {
-  margin: 8.25px -15px;
+  margin: 6.5px -15px;
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -6260,8 +6260,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 16.5px;
-    padding-bottom: 16.5px;
+    padding-top: 13px;
+    padding-bottom: 13px;
   }
 }
 .navbar-form {
@@ -6272,8 +6272,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 9.5px;
-  margin-bottom: 9.5px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 @media (min-width: 768px) {
   .navbar-form .form-group {
@@ -6358,20 +6358,20 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom-left-radius: 0;
 }
 .navbar-btn {
-  margin-top: 9.5px;
-  margin-bottom: 9.5px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 .navbar-btn.btn-sm {
-  margin-top: 11px;
-  margin-bottom: 11px;
+  margin-top: 7.5px;
+  margin-bottom: 7.5px;
 }
 .navbar-btn.btn-xs {
-  margin-top: 16.5px;
-  margin-bottom: 16.5px;
+  margin-top: 13px;
+  margin-bottom: 13px;
 }
 .navbar-text {
-  margin-top: 16.5px;
-  margin-bottom: 16.5px;
+  margin-top: 13px;
+  margin-bottom: 13px;
 }
 @media (min-width: 768px) {
   .navbar-text {
@@ -6413,7 +6413,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
   color: #FFFFFF;
-  background-color: #555;
+  background-color: #FFFFFF;
 }
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
@@ -6454,7 +6454,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
     color: #FFFFFF;
-    background-color: #555;
+    background-color: #FFFFFF;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
@@ -8661,59 +8661,11 @@ h3, .h3 {
   .Button {
     display: none !important;
   }
-  .col-md-1,
-  .col-md-2,
-  .col-md-3,
-  .col-md-4,
-  .col-md-5,
-  .col-md-6,
-  .col-md-7,
-  .col-md-8,
-  .col-md-9,
-  .col-md-10,
-  .col-md-11,
-  .col-md-12 {
-    float: left;
-  }
-  .col-md-12 {
-    width: 100%;
-  }
-  .col-md-11 {
-    width: 91.66666666666666%;
-  }
-  .col-md-10 {
-    width: 83.33333333333334%;
-  }
-  .col-md-9 {
-    width: 75%;
-  }
-  .col-md-8 {
-    width: 66.66666666666666%;
-  }
-  .col-md-7 {
-    width: 58.333333333333336%;
-  }
-  .col-md-6 {
-    width: 50%;
-  }
-  .col-md-5 {
-    width: 41.66666666666667%;
-  }
-  .col-md-4 {
-    width: 33.33333333333333%;
-  }
-  .col-md-3 {
-    width: 25%;
-  }
-  .col-md-2 {
-    width: 16.666666666666664%;
-  }
-  .col-md-1 {
-    width: 8.333333333333332%;
-  }
   .Panel {
-    border: 2px solid #ccc;
-    background-color: #eee;
+    background: #FFFFFF;
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
   }
 }
 input {
@@ -8727,7 +8679,7 @@ input:-webkit-autofill {
   height: 100% !important;
 }
 body {
-  background: #F6F5EE;
+  background: white;
   line-height: 1.6;
 }
 p {
@@ -8782,6 +8734,7 @@ label input {
 .nav-tabs > li > a {
   padding: 20px 30px;
   margin-right: 0;
+  border: none;
   color: #999999;
   font-weight: bold;
 }
@@ -8791,7 +8744,7 @@ label input {
   left: 30px;
   right: 30px;
   bottom: 0;
-  height: 2px;
+  height: 5px;
   background-color: #ddd;
 }
 .nav-tabs > li > a:hover {
@@ -9309,9 +9262,9 @@ label input {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 8px 30px;
-  font-weight: 300;
-  letter-spacing: 0.03em;
+  padding: 6px 28px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   -webkit-user-select: none;
@@ -9357,16 +9310,21 @@ fieldset[disabled] .Button {
   color: #74BAD8;
   background-color: transparent;
 }
+.Button--grey {
+  background-color: #F2F2F1;
+  color: #1D1D1B;
+  padding: 30px 15px;
+}
 .Button--info {
   color: #fff;
-  background-color: #0058C3;
-  border: 1px solid #0058C3;
+  background-color: #74BAD8;
+  border: 1px solid #74BAD8;
 }
 .Button--info:hover,
 .Button--info:focus,
 .Button--info.focus {
   text-decoration: none;
-  background-color: #006ff6;
+  background-color: #9ccee3;
   color: #FFFFFF;
 }
 .Button--white {
@@ -9397,6 +9355,9 @@ fieldset[disabled] .Button {
 .Button--centered {
   display: block;
   margin: 10px auto;
+}
+.Button--fixed-width {
+  width: 90px;
 }
 .Button--centered--60 {
   width: 60%;
@@ -9458,7 +9419,7 @@ fieldset[disabled] .Button {
   padding: 8px 30px;
   font-weight: 300;
   letter-spacing: 0.03em;
-  border-radius: 3px;
+  border-radius: 0px;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -9572,6 +9533,16 @@ fieldset[disabled] .IndicatorButton {
   height: auto;
   text-align: center;
 }
+.FilterDatePopup-group--fixed {
+  width: 200px;
+  margin: auto;
+}
+.FilterDatePopup-group--fixed input {
+  padding: 5px;
+  font-size: 12px;
+  height: auto;
+  text-align: center;
+}
 .FilterDropdown .selectize-input,
 .FilterDropdown.selectize-dropdown {
   border-color: #555;
@@ -9618,35 +9589,32 @@ fieldset[disabled] .IndicatorButton {
 .Header {
   background-color: white;
 }
-.Header-extras {
-  min-height: 90px;
-}
 .Logo {
   position: relative;
-  top: 18px;
+  top: 13px;
+  width: 275px;
+}
+.LoginButton {
+  display: inline-block;
 }
 .AccountMenu {
-  padding-top: 15px;
   float: right;
 }
 .SecondaryMenu {
-  clear: both;
-  float: right;
+  display: inline-block;
   font-size: 14px;
   padding-top: 0px;
   padding-bottom: 0px;
 }
 .SecondaryMenu > a {
   margin-right: 10px;
+  color: #5B5B5B;
 }
 .SecondaryMenu .dropdown {
   display: inline-block;
   z-index: 5000;
 }
 @media (min-width: 1200px) {
-  .SecondaryMenu {
-    float: right;
-  }
 }
 .Heading,
 .Heading--pageTitle,
@@ -9947,18 +9915,33 @@ fieldset[disabled] .IndicatorButton {
 }
 .NavbarVertical-item-link {
   background-position: center;
-  background-color: #FFCC01;
+  background-color: white;
   border-radius: 4px;
   color: #333;
   height: 140px;
   text-align: center;
   width: 80%;
+  /* Rectangle 10: */
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+}
+.nav-stacked > li {
+  float: none;
+}
+.nav-stacked > li + li {
+  margin-top: 8px;
+  margin-left: 0;
 }
 .NavbarVertical .active > .NavbarVertical-item-link,
 .NavbarVertical .active > .NavbarVertical-item-link:hover,
 .NavbarVertical .active > .NavbarVertical-item-link:focus {
-  border-radius: 4px;
-  background: #333;
+  border-radius: 0px;
+  background: #74BAD8;
+  color: #FFFFFF;
+  fill: #FFFFFF;
+}
+.NavbarVertical .NavbarVertical-item-link:hover {
+  border-radius: 0px;
+  background: #74BAD8;
   color: #FFFFFF;
   fill: #FFFFFF;
 }
@@ -10005,8 +9988,8 @@ fieldset[disabled] .IndicatorButton {
 }
 .NavbarVertical-item-link-name {
   display: block;
-  font-size: 20px;
-  font-weight: 300;
+  font-size: 16px;
+  font-weight: 400;
 }
 @media (max-width: 1200px) {
   .NavbarVertical-item-link-name {
@@ -10018,6 +10001,9 @@ fieldset[disabled] .IndicatorButton {
   background-color: #FFFFFF;
   border-radius: 4px;
   padding: 30px;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
 }
 .Panel .Icon {
   padding-left: 40px;

@@ -14,10 +14,10 @@ angular.module('ndrApp')
       var sessionId = "999a";
 
       // uncomment to get urls without session id
-      return url;
+      // return url;
 
       // uncomment to get urls with sessionid attached
-      // return url + (url.indexOf("?") !== -1 ? "&" : "?") + "SESSIONID=" + sessionId;
+      return url + (url.indexOf("?") !== -1 ? "&" : "?") + "SESSIONID=" + sessionId;
     }
   }]);
 

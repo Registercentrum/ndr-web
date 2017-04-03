@@ -21,12 +21,15 @@ angular.module('ndrApp')
           },
           datePicker: {
             opened: false,
-            format: "yyyy-MM-dd",
+            format: "ÖPPEN TILL yyyy-MM-dd",
             minDate: new Date(),
             dateOptions: {
               formatYear: 'yy',
               startingDay: 1
             }
+          },
+          datePickerNew: {
+            format: "yyyy-MM-dd",
           },
           invites: {
             all      : [], // all the invites
@@ -104,6 +107,23 @@ angular.module('ndrApp')
           dataService.getInvites()
             .then(function (response) {
               var invites = parseInvites(response.data)
+
+              invites.map(function (invite) {
+
+                var statusCodes = ["isExpired", "isDeclined", "isOpen", "isSubmitted", "isSigned"];
+
+                var isExpired = moment(invite.openUntil).isBefore(new Date()) && !invite.isDeclined && !invite.submittedAt;
+                var isDeclined = invite.isDeclined;
+                var isOpen = !invite.isDeclined && !invite.submittedAt;
+                var isSubmitted = invite.submittedAt && !invite.isApprovedNDR;
+                var isSigned = invite.submittedAt && invite.isApprovedNDR;
+
+                var status = statusCodes[_.findIndex([isExpired, isDeclined, isOpen, isSubmitted, isSigned], function(d){ return d == true })]
+
+                invite.status = status;
+                
+              })
+
               $scope.model.invites.all = invites.slice();
               $scope.model.invites.displayed = invites.slice();
               $scope.model.invites.new = _.filter(invites, function (invite) {

@@ -1,21 +1,44 @@
 .NavbarVertical-item-link {
   background-position: center;
-  background-color: @ndr-yellow;
+  background-color: white;
   border-radius: 4px;
   color: @ndr-dark;
   height: 140px;
   text-align: center;
   width: 80%;
+  /* Rectangle 10: */
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
 }
+
+// Stacked pills
+.nav-stacked {
+  > li {
+    float: none;
+    + li {
+      margin-top: 8px;
+      margin-left: 0; // no need for this gap between nav items
+    }
+  }
+}
+
+
 
 .NavbarVertical {
 
   .active > .NavbarVertical-item-link, .active > .NavbarVertical-item-link:hover, .active > .NavbarVertical-item-link:focus{
-    border-radius: 4px;
-    background: @ndr-dark;
+    border-radius: 0px;
+    background: #74BAD8;
     color: @ndr-white;
     fill: @ndr-white;
   }
+
+   .NavbarVertical-item-link:hover{
+    border-radius: 0px;
+    background: #74BAD8;
+    color: @ndr-white;
+    fill: @ndr-white;
+  }
+
 
   > li > a {
     padding: 8px;
@@ -49,8 +72,8 @@
 
 .NavbarVertical-item-link-name {
   display: block;
-  font-size: 20px;
-  font-weight: 300;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 

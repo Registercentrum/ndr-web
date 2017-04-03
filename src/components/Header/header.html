@@ -6,13 +6,19 @@
 
             <div class="AccountMenu">
 
-                <div ng-show="accountModel.activeAccount" class="dropdown">
-                    <button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
-                        <i class="fa fa-user"></i> {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ': ' }} <span style="font-size: 12px">{{ accountModel.activeAccount.unit.name | characters:26 }}</span>
+                <div class="SecondaryMenu">
+                    <a ui-sref="main.english" title="">In English</a>
+                    <a ui-sref="main.compare" title="">Knappen</a>
+                    <a ui-sref="main.risk" title="">Riskmotor</a>
+                    <a ui-sref="main.forms" title="">Dokument</a>
+                </div>
+
+                <div ng-show="accountModel.activeAccount" class="dropdown LoginButton">
+
+                    <button type="button" class="Button dropdown-toggle Button--grey" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
+                        {{ accountModel.user.firstName + ' ' + accountModel.user.lastName + ': ' }} <span style="font-size: 12px">{{ accountModel.activeAccount.unit.name | characters:26 }}</span>
                         <span class="caret"></span>
                     </button>
-
-
 
                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu2">
 
@@ -31,6 +37,11 @@
                         <li ng-show="accountModel.activeAccount.unit.isUsingPROM" role="presentation">
                             <a ui-sref="main.account.survey" title="">Diabetesenkäten</a>
                         </li>
+
+                        <li role="presentation">
+                            <a ui-sref="main.account.patient" title="">Patientprofilen</a>
+                        </li>
+
                         <li role="presentation">
                             <a ui-sref="main.currentUser" title="">Mitt användarkonto</a>
                         </li>
@@ -68,7 +79,7 @@
                     </ul>
                 </div>
 
-                <div ng-show="!accountModel.activeAccount && accountModel.user.activeAccounts" class="dropdown">
+                <div style="margin: 30px 0px; display: inline-block" ng-show="!accountModel.activeAccount && accountModel.user.activeAccounts" class="dropdown">
                     <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" >
                         Logga in
                         <span class="caret"></span>
@@ -80,7 +91,7 @@
                     </ul>
                 </div>
 
-                <a hre ng-if="!accountModel.activeAccount && !accountModel.user.activeAccounts" ui-sref="main.login">
+                <a href ng-if="!accountModel.activeAccount && !accountModel.user.activeAccounts" ui-sref="main.login">
                     Logga in
                 </a>
 
@@ -91,12 +102,6 @@
             <!--<a ui-sref="main.currentUser" ng-show="accountService.accountModel.user" title="">Mitt tjänstekort</a>-->
 
 
-            <div class="SecondaryMenu">
-                <a ui-sref="main.english" title="">In English</a>
-                <a ui-sref="main.compare" title="">Knappen</a>
-                <a ui-sref="main.risk" title="">Riskmotor</a>
-                <a ui-sref="main.forms" title="">Dokument</a>
-            </div>
 
         </div>
     </div>
