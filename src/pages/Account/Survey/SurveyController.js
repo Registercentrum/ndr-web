@@ -209,6 +209,8 @@ angular.module('ndrApp')
 
         $scope.showInviteModal = function (invite) {
 
+          $scope.model.selectedInvite = invite;
+
           modalInstance = $modal.open({
             templateUrl: "inviteModalTmpl",
             backdrop   : true,
