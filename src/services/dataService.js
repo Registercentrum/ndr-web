@@ -406,6 +406,21 @@ angular.module('ndrApp')
                 success : callback
             });
         };
+		
+        this.getReportingStatistics = function (accountID, callback) {
+            var query = query || {};
+            query.APIKey = APIconfigService.APIKey;
+			query.AccountID = accountID;
+
+            $.ajax({
+
+                url     : APIconfigService.baseURL + 'ReportingStatistics',
+                data    : query,
+                type    : 'GET',
+                dataType: 'json',
+                success : callback
+            });
+        };
 
         this.getOptionalQuestionsMeta = function (accountID, callback) {
             var query = query || {};

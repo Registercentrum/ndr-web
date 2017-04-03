@@ -133,7 +133,7 @@
                     </tr>
                     <tr>
                         <td width="80">Diagnos på sämsta ögat</td>
-                        <td width="20">{{ model.latest.diagnosisWorseSeeingEye.label  }}</td>
+                        <td width="20">{{ model.latest.diabeticRetinopathy.value != 0 ? model.latest.diagnosisWorseSeeingEye.label : null  }}</td>
                     </tr>
                     <tr>
                         <td width="80">Laserbehandlad</td>

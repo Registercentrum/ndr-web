@@ -27,6 +27,8 @@ angular.module('ndrApp')
         function ($scope,   $stateParams,   $state,   $modal,  $filter,   List, dataService) {
 
         var account = $scope.accountModel;
+		
+		console.log("from report", account);
         console.log('ReportController: Init',  $stateParams.patientID);
 	
 		
@@ -119,6 +121,7 @@ angular.module('ndrApp')
 		$scope.minYear          = null; //Används för "År rökslut"
         $scope.maxYear          = new Date().getFullYear(); //Används för "År rökslut"
         $scope.optionalQuestions = [];
+		$scope.isAdmin 			= account.user.isAdministrator;
 
 
         $scope.getOptionalQuestions = function() {

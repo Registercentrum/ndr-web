@@ -154,11 +154,14 @@
 				nga.field('typeID', 'reference')
 					.pinned(true)
 					.label('Typ')
-					.targetEntity(unitTypes) // Select a target Entity
-					.targetField(nga.field('name')), // Select a label Field
+					.targetEntity(unitTypes)
+					.targetField(nga.field('name')),
 				nga.field('includeNotActive', 'boolean')
 					.pinned(true)
-					.label('Visa inaktiva')
+					.label('Visa inaktiva'),
+				nga.field('onlyUsingPROM', 'boolean')
+					.pinned(true)
+					.label('Använder PROM')	
 			])
 			.permanentFilters({
 				includeNotReporting: true
@@ -173,6 +176,7 @@
             .fields([
                 nga.field('name').label('Enhetsnamn'),
 				nga.field('isActive', 'boolean').label('Aktiv').defaultValue(true),
+				nga.field('isUsingPROM', 'boolean').label('Använder PROM').defaultValue(false),
 				nga.field('countyCode', 'reference')
 					.label('Landsting')
 					.map(truncate) // Allows to truncate values in the select
@@ -518,7 +522,7 @@
 				nga.field('includeOutsidePeriod', 'boolean')
 					.pinned(true)
 					.label('Inkludera opublicerat'),
-				nga.field('isInternal', 'boolean')
+				nga.field('excludePublic', 'boolean')
 					.pinned(true)
 					.label('Visa endast interna nyheter')
 			])
