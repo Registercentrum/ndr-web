@@ -11,9 +11,9 @@
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 8px 30px;
-  font-weight: 300;
-  letter-spacing: 0.03em;
+  padding: 6px 28px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   .user-select(none);
@@ -58,6 +58,12 @@
   background-color: transparent;
 }
 
+.Button--grey{
+  background-color: #F2F2F1;
+  color: #1D1D1B;
+  padding:30px 15px;
+};
+
 .Button--primary {
   &:extend(.btn-primary);
 }
@@ -69,13 +75,13 @@
 .Button--info {
   &:extend(.btn-info);
   color: #fff;
-  background-color: @ndr-blue-dark;
-  border: 1px solid @ndr-blue-dark;
+  background-color: @ndr-blue;
+  border: 1px solid @ndr-blue;
   &:hover,
   &:focus,
   &.focus {
     text-decoration: none;
-    background-color: lighten(@ndr-blue-dark, 10%);
+    background-color: lighten(@ndr-blue, 10%);
     color: @ndr-white;
   }
 }
@@ -123,6 +129,11 @@
 .Button--centered {
   display: block;
   margin: 10px auto;
+}
+
+
+.Button--fixed-width {
+  width: 90px;
 }
 
 .Button--centered--60 {
@@ -197,7 +208,7 @@
   padding: 8px 30px;
   font-weight: 300;
   letter-spacing: 0.03em;
-  border-radius: 3px;
+  border-radius: 0px;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   .user-select(none);
 

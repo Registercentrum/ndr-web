@@ -31,7 +31,7 @@
               ng-click="setDisplayed('new')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType === 'new'}">
-              Nya ({{ model.invites.new.length }})
+              Osignerade ({{ model.invites.new.length }})
             </button>
             <button
               ng-click="setDisplayed('declined')"
@@ -56,10 +56,10 @@
                 <i ng-show="model.sortType == 'createdAt' && !model.sortReverse" class="fa fa-caret-down"></i>
                 <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'openUntil'; model.sortReverse = !model.sortReverse">
-                Enkätstatus / Öppen till
-                <i ng-show="model.sortType == 'openUntil' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'openUntil' && model.sortReverse" class="fa fa-caret-up"></i>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'status'; model.sortReverse = !model.sortReverse">
+                Enkätstatus
+                <i ng-show="model.sortType == 'status' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'status' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <!--<th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">-->
                 <!--Besvarad-->
@@ -95,10 +95,10 @@
                 </a>
               </td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
-              <td>
-                <div class="FilterDatePopup" ng-show="!invite.submittedAt && !invite.isDeclined">
+              <td style="text-transform: uppercase; font-size: 13px">
+                <div class="FilterDatePopup" ng-show="invite.status == 'isOpen'">
 
-                  <div class="input-group FilterDatePopup-group FilterDatePopup-group--mini">
+                  <div class="input-group FilterDatePopup-group FilterDatePopup-group--fixed">
 
                     <input
                       type="text"
@@ -126,6 +126,38 @@
                   </div>
                 </div>
 
+
+                <div class="FilterDatePopup" ng-show="invite.status == 'isExpired'">
+
+                  <div class="input-group FilterDatePopup-group FilterDatePopup-group--fixed">
+
+                    <input
+                            type="text"
+                            class="form-control"
+                            datepicker-popup="{{ 'yyyy-MM-dd' }}"
+                            ng-change="openUntilEdited(invite)"
+                            ng-model="invite.openUntil"
+                            is-open="invite.datePicker.opened"
+                            min-date="invite.datePicker.minDate"
+                            datepicker-options="model.datePicker.dateOptions"
+                            ng-required="true"
+                            close-text="Close"
+                    />
+
+                    <span class="input-group-addon">
+                      <button
+                              type="button"
+                              class="FilterDatePopup-button"
+                              ng-click="openDatePickerEdit($event, invite)"
+                      >
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </span>
+
+                  </div>
+                </div>
+
+
                 <div ng-if="invite.isDeclined" class="red">Avböjd</div>
                 <div class="orange" ng-if="invite.submittedAt && !invite.isApprovedNDR">Besvarad, ej signerad</div>
                 <div class="green" ng-if="invite.submittedAt && invite.isApprovedNDR">Signerad</div>
@@ -145,27 +177,27 @@
                 <button
                   ng-click="showInviteModal(invite)"
                   ng-hide="invite.submittedAt || invite.isDeclined"
-                  class="Button Button--info Button--mini">
+                  class="Button Button--info Button--mini Button--fixed-width">
                   Inbjudan
                 </button>
                 <button
                   ng-click="showAnswersModal(invite)"
                   ng-if="invite.submittedAt && invite.isApprovedNDR"
-                  class="Button Button--info Button--mini">
+                  class="Button Button--info Button--mini Button--fixed-width">
                   Enkätsvar
                 </button>
                 <button
                   ng-click="showAnswersModal(invite)"
                   ng-if="!invite.isApprovedNDR"
                   ng-hide="!invite.submittedAt"
-                  class="Button Button--warning Button--mini">
+                  class="Button Button--warning Button--mini Button--fixed-width">
                   Signera
                 </button>
                 <button
                   ng-click="showDeleteModal(invite)"
                   ng-hide="invite.submittedAt || invite.isDeclined"
-                  class="Button Button--info Button--mini">
-                  Ta bort
+                  class="Button Button--grey Button--mini">
+                  <i class="fa fa-trash"></i>
                 </button>
               </td>
             </tr>
@@ -204,7 +236,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  datepicker-popup="{{ model.datePicker.format}}"
+                  datepicker-popup="{{ model.datePickerNew.format}}"
                   ng-model="model.newInvite.openUntil"
                   is-open="model.datePicker.opened"
                   min-date="model.datePicker.minDate"
