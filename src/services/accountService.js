@@ -35,7 +35,7 @@ angular.module('ndrApp')
 
         };
 
-        this.login = function (accountID) {
+        this.login = function (type) {
             var url = APIconfigService.baseURL + 'CurrentVisitor?APIKey=' + APIconfigService.APIKey;
 
             console.log('ACCOUNT BOOTSTRAP: LOGGING IN');
@@ -76,8 +76,6 @@ angular.module('ndrApp')
 
                     $rootScope.$broadcast('newUser');
 
-                    loginId = accountID || user.defaultAccountID;
-
                     user.activeAccounts = _.filter(user.accounts, function (account) {
                         return account.status.id === 1;
                     });
@@ -87,20 +85,22 @@ angular.module('ndrApp')
                     //   return false;
                     // }
 
-                    // if there is only one unit set it as activeAccount
-                    if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
+                    if(type != "subject") {
+                      // if there is only one unit set it as activeAccount
+                      if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
                         self.accountModel.activeAccount = user.activeAccounts[0];
-                    } else if (cookieFactory.read("ACTIVEACCOUNT")) {
-                      self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
-                        return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
-                      });
-                    }
-                    else{
-                      $state.go('main.login', {direct: true}, {reload: true});
-                    }
+                      } else if (cookieFactory.read("ACTIVEACCOUNT")) {
+                        self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                          return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
+                        });
+                      }
+                      else {
+                        $state.go('main.login', {direct: true}, {reload: true});
+                      }
 
-                    if (self.accountModel.tempAccount) {
+                      if (self.accountModel.tempAccount) {
                         self.accountModel.activeAccount = self.accountModel.tempAccount;
+                      }
                     }
 
                     isLoggingIn = false;
@@ -125,7 +125,7 @@ angular.module('ndrApp')
 
         this.bootstrap = function (type) {
             console.log('AccountService: Bootstrap');
-            if(type == 'subject') return false;
-            return self.login();
+            // if(type == 'subject') return false;
+            return self.login("subject");
         };
     }]);
