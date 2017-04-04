@@ -189,7 +189,7 @@ angular.module('ndrApp')
 
 
               var series = invite.outcomes.map(function (outcome, index) {
-                return {name : outcome.dimension.desc, y : outcome.outcome, prevOutcome : invite.prevOutcomes.outcomes[index] }
+                return {name : outcome.dimension.desc, y : outcome.outcome, prevOutcome : invite.prevOutcomes ? invite.prevOutcomes.outcomes[index] : '' }
               })
 
 

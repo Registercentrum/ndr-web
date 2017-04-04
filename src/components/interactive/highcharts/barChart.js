@@ -23,11 +23,12 @@ angular.module('ndrApp')
                         chart: {
                             type: 'bar',
                             height : 500,
+                            width: 700,
                             marginTop : 5,
-                            spacingRight:10,
+                            spacingRight:30,
                             spacingLeft:10,
                             spacingBottom : 5,
-                            marginRight: 35
+                            marginRight: 100,
 
                         },
                         title: {
@@ -50,7 +51,7 @@ angular.module('ndrApp')
                           labels: {
                             // rotation: -45,
                             style: {
-                              fontSize: '13px',
+                              fontSize: '14px',
                               fontFamily: 'Roboto'
                             },
                             //
@@ -80,17 +81,19 @@ angular.module('ndrApp')
                                 align: 'high'
                             },
                         },
-                        // tooltip: {
-                        //     formatter: function() {
-                        //
-                        //         var time = Highcharts.dateFormat('%Y', new Date(this.x))
-                        //         return this.key + ': <b>' +  this.y + '</b>';
-                        //     }
-                        // },
+                          tooltip: {
+                            enabled: false
+                          },
                         plotOptions: {
                             bar: {
                                 pointWidth: 10,
                                 dataLabels: {
+                                  crop: false,
+                                  overflow : "none",
+                                  style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Roboto'
+                                  },
                                     enabled: true,
                                     // format: '{y} ({prevOutcome})'
                                     formatter : function (d) {

@@ -41,7 +41,7 @@
 <div ng-repeat="mainGroup in model.PROMFormMeta">
   <div class="pv4 mv5 f2 b bb bt b--light-gray gray tc">{{ mainGroup.description }}</div>
   <div ng-repeat="group in mainGroup.questiongroups | orderBy: 'sortorder'" class="mb5">
-    <div class="f2 light-blue">{{ group.description}}</div>
+    <div class="f2 mb4 ndr-blue">{{ group.description}}</div>
     <div
       ng-click="model.activeQuestion !== question.questionID ? setActiveQuestion(question.questionID) : ''"
       id="question-{{question.questionID}}"
@@ -49,13 +49,13 @@
       class="question-holder pb4 mb4 pl4"
       ng-class="{'o-20': model.activeQuestion !== question.questionID}"
     >
-      <h4 class="b gray cf">
-        <small class="fl w3 pt1 blue">{{ question.questionID }})</small>
+      <h4 class="b cf">
+        <small class="fl w3 pt1 ndr-blue" style="font-weight: bold">{{ question.questionID }})</small>
         <span class="fl mw7"> {{ question.question }}</span>
       </h4>
       <div class="pl5" ng-class="{'events-none': model.activeQuestion !== question.questionID}">
         <div ng-repeat="answer in question.domain.domainValues">
-          <label class="pv2 normal silver">
+          <label class="pv2 normal" style="font-size: 18px">
             <input
               type="radio"
               ng-model="model.answers[question.columnName]"

@@ -36,7 +36,7 @@
               <img src="images/lock_small.png" class="" style="max-height: 50px;" alt=""/>
               <h5 class="f2 fw2">Logga in med engångskod</h5>
               <form ng-submit="loginPROMKey()">
-                <input placeholder="DIN KOD (10 SIFFROR)" type="text" class="db w-80 pa3 mb4 center" ng-model="model.PROMKey" />
+                <input placeholder="DIN KOD" type="text" class="db w-80 pa3 mb4 center" ng-model="model.PROMKey" />
                 <div class="red mb4" ng-if="model.loginPROMKeyFailed">
                   {{ model.loginPROMKeyFailedMessage || "Något gick fel, vänligen försök igen." }}
                 </div>
