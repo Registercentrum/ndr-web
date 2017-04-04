@@ -10579,6 +10579,73 @@ p.lead {
   margin-top: 30px;
   margin-bottom: 10px;
 }
+.valueIndicator:before {
+  content: ' ';
+  display: inline-block;
+  padding: 10px;
+  width: 22px;
+  margin-right: 4px;
+  margin-bottom: -4px;
+}
+.descLabels {
+  margin-bottom: 10px;
+}
+.descLabels .valueIndicator {
+  margin-right: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.valueIndicator.worst:before {
+  background: #E24B2B;
+}
+.valueIndicator.bad:before {
+  background: #ff8000;
+}
+.valueIndicator.ok:before {
+  background: #ECBC00;
+}
+.valueIndicator.good:before {
+  background: #3E9654;
+}
+.tableReporting .colHeader {
+  cursor: pointer;
+  min-width: 60px;
+}
+.tableReporting .rowLabel {
+  width: 300px;
+}
+.tableReporting {
+  font-size: 13px;
+}
+.tableReporting tr {
+  /*cursor: pointer;
+    width: 60%;*/
+  border-bottom: 1px solid #eee !important;
+}
+.tableReporting tr.variable:hover {
+  font-weight: 600;
+  background-color: #eee;
+}
+.tableReporting td.value {
+  width: 130px;
+}
+.tableReporting > thead > tr > th,
+.tableReporting > tbody > tr > th,
+.tableReporting > tfoot > tr > th,
+.tableReporting > thead > tr > td,
+.tableReporting > tbody > tr > td,
+.tableReporting > tfoot > tr > td {
+  border: none;
+}
+.tableReporting > thead > tr > th,
+.tableReporting > tbody > tr > th,
+.tableReporting > tfoot > tr > th,
+.tableReporting > thead > tr > td,
+.tableReporting > tbody > tr > td,
+.tableReporting > tfoot > tr > td {
+  padding: 0px;
+  padding-top: 0px;
+}
 .visits-table td,
 .visits-table th {
   width: 15%;
@@ -10700,6 +10767,20 @@ p.lead {
 .highcharts-container {
   width: 100% !important;
   height: 100% !important;
+}
+.documents {
+  list-style-type: none;
+}
+.documents img {
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+}
+.documents li {
+  margin: 25px 0;
+}
+.documents.yearreports li {
+  margin: 5px 0;
 }
 .about-ndr {
   font-size: 21px;

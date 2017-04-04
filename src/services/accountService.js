@@ -47,6 +47,8 @@ angular.module('ndrApp')
 
                     self.accountModel.visitor = response.data;
 
+
+
                     // if (response.data.user && response.data.user.userID === 22)
                     //     response.data.user.accounts.pop()
 
@@ -85,7 +87,7 @@ angular.module('ndrApp')
                     //   return false;
                     // }
 
-                    if(type != "subject") {
+                    if(self.accountModel.chosenUserType != "subject") {
                       // if there is only one unit set it as activeAccount
                       if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
                         self.accountModel.activeAccount = user.activeAccounts[0];
