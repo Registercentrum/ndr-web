@@ -9,6 +9,7 @@ angular.module('ndrApp')
             isLoggingIn = false;
 
         this.accountModel = {
+            isPROMSubject : false,
             user         : null, //fallback
             visitor      : null, //use this instead
             activeAccount: null,

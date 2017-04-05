@@ -57,6 +57,7 @@
         <div ng-repeat="answer in question.domain.domainValues">
           <label class="pv2 normal" style="font-size: 18px">
             <input
+              ng-disabled="model.activeQuestion !== question.questionID"
               type="radio"
               ng-model="model.answers[question.columnName]"
               name="{{ question.columnName }}"
