@@ -92,6 +92,7 @@ angular.module('ndrApp')
                       // if there is only one unit set it as activeAccount
                       if (!self.accountModel.activeAccount && user.activeAccounts.length === 1) {
                         self.accountModel.activeAccount = user.activeAccounts[0];
+                        $state.go('main.login', {direct: true}, {reload: true});
                       } else if (cookieFactory.read("ACTIVEACCOUNT")) {
                         self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
                           return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
