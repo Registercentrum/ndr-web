@@ -15,6 +15,8 @@ angular.module('ndrApp')
       // When user navigated here from the search page,
       // allow him/her to go back and restore the filter settings
       $scope.backToSearchVisible = $stateParams.backToSearchVisible;
+      $scope.backToSurveysVisible = $stateParams.backToSurveysVisible;
+
 
       $scope.model = {
         data: {

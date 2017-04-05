@@ -1,8 +1,16 @@
 <a
     ui-sref="main.account.patients({restoreFilters: 'restoreFilters'})"
-    class="Button Button--primary Button--large"
+    class="Button Button--info"
     ng-if="backToSearchVisible">
     <i class="fa fa-arrow-left"></i>Gå tillbaka till Söklista
+</a>
+
+
+<a
+    ui-sref="main.account.survey({restoreFilters: 'restoreFilters'})"
+    class="Button Button--info"
+    ng-if="backToSurveysVisible">
+    <i class="fa fa-arrow-left"></i>Gå tillbaka till Enkätadministration
 </a>
 
 <div class="row PatientProfile-Header">

@@ -29,6 +29,7 @@ angular.module('ndrApp')
                             spacingLeft:10,
                             spacingBottom : 5,
                             marginRight: 100,
+                          backgroundColor : "#f0f0f0",
 
                         },
                         title: {
@@ -39,7 +40,7 @@ angular.module('ndrApp')
                             minorTickLength: 0,
                             tickLength: 0,
                             gridLineWidth: 0,
-                            gridLineColor : "#eee",
+                            gridLineColor : "#ccc",
                             lineWidth: 0,
 
                             title: {
@@ -54,25 +55,15 @@ angular.module('ndrApp')
                               fontSize: '14px',
                               fontFamily: 'Roboto'
                             },
-                            //
-                            // formatter: function(d){
-                            //      return d;
-                            // }
+
                           }
-                            // labels: {
-                            //     formatter: function(a){
-                            //         if(this.value == scope.selected){
-                            //             return this.value;
-                            //         }
-                            //     }
-                            // }
 
 
                         },
                         yAxis: {
-                            gridLineWidth: 0,
-                            gridLineColor : "#eee",
-                            lineWidth: 0,
+                            gridLineWidth: 1,
+                            gridLineColor : "#999",
+                            // lineWidth: 2,
                             min : 0,
                             max : 100,
 
@@ -80,13 +71,20 @@ angular.module('ndrApp')
                                 text: '',
                                 align: 'high'
                             },
+                          labels : {
+                            style: {
+                              fontSize: '14px',
+                              fontFamily: 'Roboto'
+                            }
+                          },
                         },
                           tooltip: {
                             enabled: false
                           },
                         plotOptions: {
                             bar: {
-                                pointWidth: 10,
+                                pointWidth: 15,
+
                                 dataLabels: {
                                   crop: false,
                                   overflow : "none",
@@ -98,13 +96,21 @@ angular.module('ndrApp')
                                     // format: '{y} ({prevOutcome})'
                                     formatter : function (d) {
 
-                                        var prev = "saknas";
+                                        var previous = "";
+
                                         if(this.point.prevOutcome.outcome){
-                                            prev = this.point.prevOutcome.outcome;
+
+                                          var diff = this.point.prevOutcome.difference;
+
+                                          if(diff > 0){
+                                            var diff = "+" + diff;
+                                          }
+
+                                          previous = " (" + diff + ")";
                                         }
 
                                         // console.log("test", this.point)
-                                        return this.point.y + " (" + prev + ")"
+                                        return this.point.y + previous;
                                     }
                                 }
                             },
@@ -122,8 +128,8 @@ angular.module('ndrApp')
 
 
                         series: [{
-                            color : "#ccc",
-                            name: 'Amount',
+                            color : "#74BAD8",
+                            name: 'Värde',
                             data: model
                         }]
                     });

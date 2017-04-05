@@ -84,20 +84,26 @@
             <p class="tc pv5 f1 red">Inga matchande patienter hittades</p>
           </div>
 
+          <div ng-show="model.loading == true">
+            <p class="tc pv5 f2 ndr-blue"><img src="images/ajax-loader.gif" alt=""> LADDAR</p>
+          </div>
+
+
           <tbody>
             <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc" style="font-weight: 600">
               <td>
                 <a
-                  ui-sref="main.account.patient({patientID: invite.subject.subjectID})"
-                  target="_blank"
+                  ui-sref="main.account.patient({patientID: invite.subject.subjectID, backToSurveysVisible:'yes'})"
                 >
                   {{ invite.subject.socialNumber }}
                 </a>
               </td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
               <td style="text-transform: uppercase; font-size: 13px">
-                <div class="FilterDatePopup" ng-show="invite.status == 'isOpen'">
 
+                <!--{{ invite.initiatedAt + "|" + invite.status }}-->
+
+                <div class="FilterDatePopup" ng-show="invite.status == 'isOpen' || invite.status == 'isInitiated'">
                   <div class="input-group FilterDatePopup-group FilterDatePopup-group--fixed">
 
                     <input
@@ -194,10 +200,17 @@
                   Signera
                 </button>
                 <button
-                  ng-click="showDeleteModal(invite)"
-                  ng-hide="invite.submittedAt || invite.isDeclined"
-                  class="Button Button--grey Button--mini">
-                  <i class="fa fa-trash"></i>
+                    ng-click="showDeleteModal(invite)"
+                    ng-hide="invite.submittedAt || invite.isDeclined || invite.status == 'isInitiated'"
+                    class="Button Button--grey Button--mini">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <button
+                        tooltip="{{ 'Påbörjad ' + invite.initiatedAt.substr(0, 10) }}"
+
+                        ng-show="invite.status == 'isInitiated'"
+                        class="Button Button--grey Button--mini">
+                  <i class="fa fa-info" ></i>
                 </button>
               </td>
             </tr>
@@ -439,6 +452,9 @@
 
 
       <div style="margin-top: 5px" bar-chart model="model.selectedInviteData"></div>
+        <div>
+          * uppgiften i parentes visar skillnaden mellan den aktuella och föregående enkäten
+        </div>
 
         <!--<div class="cf b mt4 pb2 tl tc-ns bb b&#45;&#45;gray">-->
           <!--<div class="fl-ns pa2 w-40-ns tr-ns">Dimension</div>-->

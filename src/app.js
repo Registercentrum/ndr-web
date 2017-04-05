@@ -379,6 +379,9 @@ angular.module('ndrApp', [
 
                 .state('main.account.survey', {
                     url: '/diabetesenkaten',
+                    params: {
+                      restoreFilters: ''
+                    },
                     templateUrl: 'src/pages/Account/Survey/survey.html',
                     controller : 'SurveyController'
                 })
@@ -421,7 +424,8 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Account/Patients/patient_profile.html',
                     controller : 'PatientController',
                     params: {
-                        backToSearchVisible: ''
+                        backToSearchVisible: '',
+                        backToSurveysVisible: '',
                     }
                 })
 

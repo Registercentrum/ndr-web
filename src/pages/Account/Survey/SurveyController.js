@@ -115,15 +115,16 @@ angular.module('ndrApp')
 
               invites.map(function (invite) {
 
-                var statusCodes = ["isExpired", "isDeclined", "isOpen", "isSubmitted", "isSigned"];
+                var statusCodes = ["isExpired", "isDeclined", "isOpen", "isInitiated", "isSubmitted", "isSigned"];
 
                 var isExpired = moment(invite.openUntil).isBefore(new Date()) && !invite.isDeclined && !invite.submittedAt;
                 var isDeclined = invite.isDeclined;
-                var isOpen = !invite.isDeclined && !invite.submittedAt;
+                var isOpen = _.isNull(invite.initiatedAt) && !invite.isDeclined && !invite.submittedAt;
+                var isInitiated = !_.isNull(invite.initiatedAt) && !invite.submittedAt && !invite.isDeclined;
                 var isSubmitted = invite.submittedAt && !invite.isApprovedNDR;
                 var isSigned = invite.submittedAt && invite.isApprovedNDR;
 
-                var status = statusCodes[_.findIndex([isExpired, isDeclined, isOpen, isSubmitted, isSigned], function(d){ return d == true })]
+                var status = statusCodes[_.findIndex([isExpired, isDeclined, isOpen, isInitiated, isSubmitted, isSigned], function(d){ return d == true })]
 
                 invite.status = status;
                 
@@ -179,19 +180,9 @@ angular.module('ndrApp')
               $scope.model.formMeta = response.data;
               $scope.model.selectedInvite = invite;
 
-
-              // var o = {
-              //   name : obj.unit.name,
-              //   color : obj.unit.levelID != id ? "#D4D4D4" : "#FFCC01",
-              //   y : obj.stat.r,
-              //   cRep : obj.stat.cRep,
-              // }
-
-
               var series = invite.outcomes.map(function (outcome, index) {
                 return {name : outcome.dimension.desc, y : outcome.outcome, prevOutcome : invite.prevOutcomes ? invite.prevOutcomes.outcomes[index] : '' }
               })
-
 
               // prevOutcomes.outcomes[$index].difference < 0
 
