@@ -59,6 +59,7 @@ angular.module('ndrApp').controller('LoginController',
 
       $http(query)
       .then(function (response) {
+        accountService.accountModel.isPROMSubject = true;
         accountService.accountModel.PROMSubject = response.data;
         accountService.accountModel.PROMSubject.key = $scope.model.PROMKey;
         $state.go('main.subject.surveys.survey');
@@ -66,7 +67,7 @@ angular.module('ndrApp').controller('LoginController',
       ['catch'](function (response){
         var code = response.data ? response.data.code : null;
         if (code === 1) {
-          $scope.model.loginPROMKeyFailedMessage = "Enkäten som redan lämnats in.";
+          $scope.model.loginPROMKeyFailedMessage = "Enkäten har redan lämnats in.";
         } else if (code === 2) {
           $scope.model.loginPROMKeyFailedMessage = "Enkäten är avslutad.";
         } else if (code === 3) {

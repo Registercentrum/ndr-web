@@ -8726,6 +8726,12 @@ label input {
     display: none;
   }
 }
+accordion .panel {
+  border: none;
+}
+accordion .panel-default > .panel-heading {
+  background-color: transparent;
+}
 .nav-tabs {
   border: none;
 }

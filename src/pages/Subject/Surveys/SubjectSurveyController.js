@@ -95,6 +95,7 @@ angular.module("ndrApp")
             size       : "lg"
           });
           // clean the model from PROMSubject
+
           delete accountService.accountModel.PROMSubject
           // update subject model so there's no lingering messages about
           // survey to answer
@@ -120,7 +121,7 @@ angular.module("ndrApp")
         accountService.logOut();
       }
 
-      $state.go(stateName, {}, {reload: true});
+      $state.go(stateName, { tab: 'besvarade-enkater' }, {reload: true});
 
       if (confirmModalInstance) confirmModalInstance.dismiss("cancel");
       if (declineModalInstance) declineModalInstance.dismiss("cancel");
