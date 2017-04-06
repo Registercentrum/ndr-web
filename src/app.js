@@ -26,7 +26,7 @@ angular.module('ndrApp', [
     .run(function ($state, $rootScope, accountService, cookieFactory) {
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.log('toState', toState);
+            console.log('NAVIGATING TO', toState);
             $rootScope.$state = toState.name;
         });
 
@@ -70,24 +70,23 @@ angular.module('ndrApp', [
             }
         });*/
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
-            var user = accountService.accountModel.user
-
-          
-            if(!user) return false;
-          
-            //if there is no activeAccount set, redirect to home page to choose unit
-            if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
-                if (cookieFactory.read("ACTIVEACCOUNT")) {
-                  accountService.accountModel.activeAccount = user.accounts.find(function (a) {
-                    return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
-                  });
-                } else {
-                    event.preventDefault();
-                    $state.go('main.home', {}, {reload: true});
-                }
-            }
-        });
+        // $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
+        //     var user = accountService.accountModel.user
+        //
+        //     if(!user) return false;
+        //
+        //     //if there is no activeAccount set, redirect to home page to choose unit
+        //     if (toState.name.indexOf('main.account') === 0 && !accountService.accountModel.activeAccount) {
+        //         if (cookieFactory.read("ACTIVEACCOUNT")) {
+        //           accountService.accountModel.activeAccount = user.accounts.find(function (a) {
+        //             return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
+        //           });
+        //         } else {
+        //             event.preventDefault();
+        //             $state.go('main.home', {}, {reload: true});
+        //         }
+        //     }
+        // });
 
         $rootScope.is = function(name){
             return $state.is(name);

@@ -13,7 +13,6 @@ angular.module('ndrApp')
         };
 
         $scope.accountModel = accountService.accountModel;
-        console.log(accountService.accountModel);
 
         $scope.selectedAccountID = accountService.accountModel.activeAccount != null ?
                                    accountService.accountModel.activeAccount.accountID :
@@ -21,7 +20,6 @@ angular.module('ndrApp')
 
         $scope.AccountIsSelected = function() {
             if ($scope.selectedAccountID > 0) {
-                console.log('user selects account');
                 accountService.updateAccount($scope.selectedAccountID);
             }
         };

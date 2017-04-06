@@ -45,6 +45,8 @@ angular.module('ndrApp').controller('LoginController',
     $scope.loginPROMKey = function () {
       if (!$scope.model.PROMKey) return;
 
+      accountService.accountModel.chosenUserType = 'subject';
+
       $scope.model.loginFailed = false;
       $scope.model.loginPROMKeyFailedMessage = "";
 
@@ -134,7 +136,7 @@ angular.module('ndrApp').controller('LoginController',
 
       $http(query)
         .then(function (response) {
-          console.log("response login", response);
+
           var user = response.data.user;
           accountService.accountModel.chosenUserType = type;
 
@@ -152,6 +154,7 @@ angular.module('ndrApp').controller('LoginController',
               user.activeAccounts = _.filter(user.accounts, function (account) {
                   return account.status.id === 1;
               });
+
 
               if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
                 accountService.accountModel.activeAccount = user.activeAccounts[0];
