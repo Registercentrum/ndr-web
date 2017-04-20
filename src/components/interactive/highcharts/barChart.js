@@ -6,7 +6,8 @@ angular.module('ndrApp')
             template : "<div class='chart-container'></div>",
 
             scope: {
-                model: "="
+                model: "=",
+                categories: "="
             },
 
             // set up the isolate scope so that we don't clobber parent scope
@@ -14,22 +15,24 @@ angular.module('ndrApp')
 
 
                 scope.$watch('model', function(model) {
-                    console.log("Reloading Column Chart", model);
+                    // console.log("Reloading Column Chart", model);
 
                     if(typeof model == "undefined") return false;
+
+                    // console.log("render", model)
 
 
                     var chart = jQuery(".chart-container", element).highcharts({
                         chart: {
                             type: 'bar',
-                            height : 500,
-                            width: 700,
+                            height : 650,
+                            width: 800,
                             marginTop : 5,
                             spacingRight:30,
                             spacingLeft:10,
                             spacingBottom : 5,
                             marginRight: 100,
-                          backgroundColor : "#f0f0f0",
+                            // backgroundColor : "#f0f0f0",
 
                         },
                         title: {
@@ -42,6 +45,8 @@ angular.module('ndrApp')
                             gridLineWidth: 0,
                             gridLineColor : "#ccc",
                             lineWidth: 0,
+
+                            categories :  scope.categories,
 
                             title: {
                                 text: ""
@@ -83,7 +88,7 @@ angular.module('ndrApp')
                           },
                         plotOptions: {
                             bar: {
-                                pointWidth: 15,
+                                pointWidth: 14,
 
                                 dataLabels: {
                                   crop: false,
@@ -96,30 +101,30 @@ angular.module('ndrApp')
                                     // format: '{y} ({prevOutcome})'
                                     formatter : function (d) {
 
-                                        var previous = "";
+                                        // var previous = "";
+                                        //
+                                        // if(this.point.prevOutcome.outcome){
+                                        //
+                                        //   var diff = this.point.prevOutcome.difference;
+                                        //
+                                        //   if(diff > 0){
+                                        //     var diff = "+" + diff;
+                                        //   }
+                                        //
+                                        //   previous = " (" + diff + ")";
+                                        // }
 
-                                        if(this.point.prevOutcome.outcome){
-
-                                          var diff = this.point.prevOutcome.difference;
-
-                                          if(diff > 0){
-                                            var diff = "+" + diff;
-                                          }
-
-                                          previous = " (" + diff + ")";
-                                        }
-
-                                        // console.log("test", this.point)
-                                        return this.point.y + previous;
+                                        return this.point.y;
                                     }
                                 }
                             },
-                            // series : {
-                            //     pointWidth: 6
-                            // }
+                            series : {
+                              pointPadding: 0,
+                              groupPadding: 0.1,
+                            }
                         },
                         legend: {
-                            enabled: false,
+                            enabled: true,
 
                         },
                         credits: {
@@ -127,11 +132,7 @@ angular.module('ndrApp')
                         },
 
 
-                        series: [{
-                            color : "#74BAD8",
-                            name: 'Värde',
-                            data: model
-                        }]
+                        series: model
                     });
 
 

@@ -448,20 +448,22 @@ angular.module('ndrApp')
           .then(function (values) {
             $log.debug('Retrieved subject', values[0]);
 
-            // Sort the contacts by date in desc order
+
+
+              // Sort the contacts by date in desc order
             values[0].contacts = _.sortBy(values[0].contacts, 'contactDate').reverse();
 
             $scope.subject = values[0];
             $scope.contactAttributes = values[1];
+            $scope.socialnumber = $scope.subject.socialNumber;
 
-
-
-            /* PROM */
+              /* PROM */
 
             // update subject's age
             $scope.subject.age = moment().diff(moment($scope.subject.dateOfBirth), 'years');
             // update subject's debut
             $scope.subject.debut = moment().diff(moment([$scope.subject.yearOfOnset, 0, 1]), 'years');
+
 
             // get submitted surveys
             var submitted = _.filter($scope.subject.invites, function (i) { return !!i.submittedAt; });
@@ -491,18 +493,64 @@ angular.module('ndrApp')
                 return datum;
               });
 
+
+            var latestInvite = submitted[submitted.length-1]
+            var previousInvite = submitted[submitted.length-2]
+
+            var categories = [];
+
+            var latest = {
+              name : "Senaste enkätsvar",
+              data : latestInvite.outcomes.map(function (outcome, index) {
+                categories.push(outcome.dimension.desc);
+                return outcome.outcome;
+              }),
+              color : "#5EBCDC"
+            }
+
+            var previous = {
+              name : "Tidigare enkätsvar",
+              data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
+                return outcome.outcome || null;
+              }) : null,
+              color : "#ECECEC"
+            }
+
+
+            $scope.model.categories = categories;
+            $scope.model.selectedInviteData = [latest, previous];
+
+            var promSeries = angular.copy($scope.subject.surveys);
+
+            promSeries.map(function (dimension) {
+
+              dimension.name = dimension.dimension.desc;
+              dimension.data = dimension.series;
+              dimension.color = "#ccc",
+              dimension.lineWidth= 1
+
+            })
+
+            $scope.model.promSeries = promSeries;
+
             // group them by main group ids
             $scope.subject.surveys = _.groupBy(
               $scope.subject.surveys,
               function (s) { return s.dimension.isPREM ? 2 : 1; }
             );
 
+            // $scope.subject.promSeries = _.map(charts, function (chart) {
+            //   chart.latest = _.last(chart.series).y;
+            //   chart.yMax = _.max(chart.series, function (s) { return s.y; }).y;
+            //   return chart;
+            // });
 
-            $scope.subject.charts = _.map(charts, function (chart) {
-              chart.latest = _.last(chart.series).y;
-              chart.yMax = _.max(chart.series, function (s) { return s.y; }).y;
-              return chart;
-            });
+
+            // $scope.subject.charts = _.map(charts, function (chart) {
+            //   chart.latest = _.last(chart.series).y;
+            //   chart.yMax = _.max(chart.series, function (s) { return s.y; }).y;
+            //   return chart;
+            // });
 
             function getSeries (type) {
               return _.map(

@@ -30,6 +30,9 @@ angular.module('ndrApp')
             marginRight: 5,
             spacingLeft : 30
           },
+
+
+
           title: {
             text: ''
           },
@@ -70,6 +73,33 @@ angular.module('ndrApp')
             }
           },
           plotOptions: {
+
+            series : {
+              events : {
+                legendItemClick: function(event) {
+                  
+                  console.log("test", event)
+                  
+                  if (!this.visible)
+                    return false;
+
+                  var seriesIndex = this.index;
+                  var series = this.chart.series;
+
+                  for (var i = 0; i < series.length; i++)
+                  {
+                    if (series[i].index != seriesIndex)
+                    {
+                      series[i].visible ?
+                        series[i].hide() :
+                        series[i].show();
+                    }
+                  }
+                  return false;
+                },
+              }
+            },
+
             bar: {
               dataLabels: {
                 enabled: true

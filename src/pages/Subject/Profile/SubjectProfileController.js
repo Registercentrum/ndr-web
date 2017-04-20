@@ -4,13 +4,15 @@ angular.module("ndrApp")
         function ($scope,   $stateParams,   dataService) {
 
         $scope.tabOversight = {
-          heading: "Översikt",
+          heading: "Mina värden",
           active: $stateParams.tab !== "besvarade-enkater"
         };
         $scope.tabAnsweredSourveys = {
-          heading: "Besvarade enkäter",
+          heading: "Enkätsvar",
           active: $stateParams.tab === "besvarade-enkater"
         };
+
+        $scope.model = {};
 
         $scope.subject = $scope.accountModel.subject;
 
@@ -46,6 +48,47 @@ angular.module("ndrApp")
 
             return datum;
           });
+
+
+          var latestInvite = submitted[submitted.length-1]
+          var previousInvite = submitted[submitted.length-2]
+
+          var categories = [];
+
+          var latest = {
+            name : "Senaste enkätsvar",
+            data : latestInvite.outcomes.map(function (outcome, index) {
+              categories.push(outcome.dimension.desc);
+              return outcome.outcome;
+            }),
+            color : "#5EBCDC"
+          }
+
+          var previous = {
+            name : "Tidigare enkätsvar",
+            data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
+              return outcome.outcome || null;
+            }) : null,
+            color : "#ECECEC"
+          }
+
+
+          $scope.model.categories = categories;
+          $scope.model.selectedInviteData = [latest, previous];
+
+          var promSeries = angular.copy($scope.subject.surveys);
+
+          promSeries.map(function (dimension) {
+
+            dimension.name = dimension.dimension.desc;
+            dimension.data = dimension.series;
+            dimension.color = "#ccc",
+              dimension.lineWidth= 1
+
+          })
+
+          $scope.model.promSeries = promSeries;
+
 
         // group them by main group ids
         $scope.subject.surveys = _.groupBy(

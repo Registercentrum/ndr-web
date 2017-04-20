@@ -119,6 +119,18 @@ label input { cursor: pointer; }
 }
 
 
+.btn-group{
+  a{
+    cursor: pointer;
+    text-decoration: none;
+    color: #bbb;
+    margin-left: 15px;
+  }
+  a.active{
+    color:@brand-primary;
+  }
+}
+
 // Accordion
 accordion{
   .panel{
@@ -128,6 +140,15 @@ accordion{
   .panel-default > .panel-heading{
     background-color: transparent;
   }
+
+  .panel-title > a,
+  .panel-title > small,
+  .panel-title > .small,
+  .panel-title > small > a,
+  .panel-title > .small > a {
+    color: @ndr-blue;
+  }
+
 }
 
 // Tabs

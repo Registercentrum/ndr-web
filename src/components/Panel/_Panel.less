@@ -34,6 +34,36 @@
 @panel-danger-border:         @state-danger-border;
 @panel-danger-heading-bg:     @state-danger-bg;
 
+.P{
+  margin-bottom: @line-height-computed;
+  background-color: @ndr-white;
+  //border-radius: @panel-border-radius;
+  //padding: @panel-body-padding;
+
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+  -moz-box-shadow:    0 2px 16px 0 rgba(0,0,0,0.10);
+  -webkit-box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+
+  .title{
+    background: @ndr-blue;
+    padding: 15px 20px;
+
+    h1{
+      font-size: 20px;
+      font-weight: normal;
+      color:white;
+      margin:0px;
+    }
+  }
+
+  .body{
+    padding: @panel-body-padding;
+  }
+
+}
+
+
+
 .Panel {
   margin-bottom: @line-height-computed;
   background-color: @ndr-white;

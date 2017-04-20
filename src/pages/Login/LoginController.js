@@ -158,6 +158,13 @@ angular.module('ndrApp').controller('LoginController',
 
               if (!accountService.accountModel.activeAccount && user.activeAccounts.length === 1) {
                 accountService.accountModel.activeAccount = user.activeAccounts[0];
+
+
+                // console.log("test2", $scope.model.selectedAccountID)
+                // var accountID = $scope.model.selectedAccountID;
+                // cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
+
+
                 $state.go('main.account.home');
               } else if (cookieFactory.read("ACTIVEACCOUNT")) {
                 accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
@@ -179,6 +186,9 @@ angular.module('ndrApp').controller('LoginController',
           // subject login
           } else {
             if (response.data.isSubject) {
+
+              accountService.accountModel.chosenUserType = 'subject';
+
               $scope.model.message = null;
               accountService.accountModel.PROMSubject = null;
               checkForLoggedIn();

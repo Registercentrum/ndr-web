@@ -78,6 +78,10 @@ angular.module('ndrApp')
 
                 } else if(!self.accountModel.activeAccount && user.activeAccounts.length == 1){
                   self.accountModel.activeAccount = user.activeAccounts[0];
+
+                  var accountID =  self.accountModel.activeAccount.accountID;
+                  cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
+                  console.log("test", accountID)
                   $state.go('main.account.home');
                 } else if(!self.accountModel.activeAccount && user.activeAccounts.length > 1) {
                   $state.go('main.login', {direct: true}, {reload: true});

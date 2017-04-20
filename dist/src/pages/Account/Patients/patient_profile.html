@@ -14,10 +14,11 @@
 </a>
 
 <div class="row PatientProfile-Header">
-    <div class="col-md-5">
+    <div class="col-md-12">
         <h1 class="Page-title">Patientprofil</h1>
     </div>
-    <div class="col-md-7 text-right">
+
+    <div class="">
         <form class="PatientSearch" role="search" name="subjectForm" novalidate>
             <div class="PatientSearch-inner">
                 <span class="PatientSearch-icon"><i class="fa fa-search" style="color:#999"></i></span>
@@ -32,6 +33,14 @@
             </div>
         </form>
     </div>
+
+    <div>
+        <div class="fr mb2">
+            <a class="gray f4" ui-sref="main.account.patientPrint({patientID: subject.subjectID})"><i class="fa fa-print"></i> Skriv ut</a>
+            <a class="gray f4" style="margin-left: 10px" href="#/inloggad/rapportera/{{ subject.subjectID }}"><i class="fa fa-plus-circle"></i> Rapportera / Komplettera</a>
+        </div>
+    </div>
+
 </div>
 
 
@@ -40,8 +49,6 @@
 
     <tab heading="Översikt">
 
-
-
         <div id="patient" ng-show="hasError">
             <span>{{ errorMessage }}</span>
         </div>
@@ -49,19 +56,11 @@
         <div id="patient" ng-show="subject && !hasError">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="PatientHeader clearfix">
-                        <div class="PatientHeader-personNumber col-md-4 u-noLeftPadding">
-                            <i class="fa fa-user"></i>  {{ subject.socialNumber }} <span style="font-size:14px">{{ subject.dateOfDeath ? '(avliden)' : '' }}</span>
-                        </div>
-                        <div class="PatientHeader-navigation col-md-8 u-noRightPadding text-right">
-                            <a class="Button--tight Button Button--dark" ui-sref="main.account.patientPrint({patientID: subject.subjectID})"><i class="fa fa-print"></i> Skriv ut</a>
-                            <a style="margin-right: 20px" href="#/inloggad/rapportera/{{ subject.subjectID }}" class="Button--tight Button Button--dark"><i class="fa fa-plus-circle"></i> Rapportera / Komplettera</a>
-                            <div class="btn-group pull-right">
-                                <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</label>
-                                <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </label>
-                            </div>
-                        </div>
+                    <div class="btn-group fr mt4 mb4">
+                        <a class="" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</a>
+                        <a class="" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </a>
                     </div>
+
                 </div>
             </div>
 
@@ -69,7 +68,7 @@
             <div ng-show="model.mode == 'visual'" class="Profile">
                 <div class="row" id="printableArea">
                     <div class="col-md-12">
-                        <div class="Panel Panel--blue clearfix" style="padding: 0px; height:auto">
+                        <div class="Panel clearfix" style="padding: 0px; height:auto">
                             <div class="Panel--profile col-md-4" style="line-height: 22px; font-size: 14px;font-weight: 300">
                                 <p>{{ subject.sexText + ', ' + calculateAge(subject.dateOfBirth) }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}</p>
                                 <p>{{ getDiabetesType(subject.diabetesType) }}</p>
@@ -96,25 +95,11 @@
                                         <li><i class="fa"></i> <span class="unit">Midjemått</span> {{ model.latest.waist.value }} <span ng-if="model.latest.waist.value>0" class="unit">cm</span></li>
                                     </ul>
 
-                                    <!-- <h4 class="Profile-latest-value" style="float:none;margin-bottom: 20px">
-                                        {{ model.latest.bmi.value }}
-                                        <i class="fa fa-heartfa-dot-circle-o"></i>
-                                    </h4>
-                                    <h4 class="Profile-latest-value"  style="margin-bottom: 20px">
-                                        {{  model.latest.weight.value }}
-                                        <span class="unit">kg</span>
-                                    </h4>
-                                    <h4 class="Profile-latest-value" style="">
-                                        {{ model.latest.height.value }}
-                                        <span class="unit">cm lång</span>
-                                    </h4> -->
                                 </div>
 
                                 <div class="col-md-5 text-center">
                                     <div>
-                                        <i class="Profile-latest-value fa fa-silu"  style="color: #529BBB;font-size: 200px;"></i>
-                                        <!--<h4 class="Profile-latest-value" style="float:none">{{  model.latest.waist.value }} <br/>
-                                            <span class="unit">midjemått cm</span></h4>-->
+                                        <i class="Profile-latest-value fa fa-silu"  style="color: #ccc;font-size: 200px;"></i>
                                     </div>
                                 </div>
                             </div>
@@ -292,38 +277,73 @@
 
     <tab heading="Diabetesenkäten" ng-show="accountModel.activeAccount.unit.isUsingPROM">
 
+
         <!-- PROM -->
 
-        <div ng-repeat="group in PROMFormMeta" class="row">
-            <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
-            <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4 Panel">
 
-                <h4 class="col-md-12">{{ survey.dimension.desc }}</h4>
-                <div class="col-md-9">
-                    <div
-                            line-chart
-                            model="survey.series"
-                            y-min="0"
-                            y-max="100"
-                            height="200"
-                            color="#4A99C5"
-                    ></div>
-                </div>
-                <div class="col-md-3">
-                    Senaste värdet<br />
-                    <span class="f1 b">{{ survey.latestOutcome }}</span>
-                    <sup
-                            ng-show="survey.diffFromPrevious !== null"
-                            ng-class="{red: survey.diffFromPrevious < 0}"
-                    >{{ survey.diffFromPrevious }}</sup>
+
+        <div class="row mt4">
+
+            <div class="col-md-12">
+
+                <div class="P">
+                    <div class="title">
+                        <h1>Senaste enkäten</h1>
+                    </div>
+
+                    <div class="body">
+                        <div bar-chart categories="model.categories" model="model.selectedInviteData"></div>
+                    </div>
+
                 </div>
 
 
-                <div class="clearfix"></div>
+                <div class="P">
+                    <div class="title">
+                        <h1>Utveckling över tid</h1>
+                    </div>
 
+                    <div class="body">
+                        <div line-chart-prom-combined model="model.promSeries"></div>
+                    </div>
+
+                </div>
 
             </div>
+
         </div>
+
+
+        <!--<div ng-repeat="group in PROMFormMeta" class="row">-->
+            <!--<h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>-->
+            <!--<div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4 Panel">-->
+
+                <!--<h4 class="col-md-12">{{ survey.dimension.desc }}</h4>-->
+                <!--<div class="col-md-9">-->
+                    <!--<div-->
+                            <!--line-chart-->
+                            <!--model="survey.series"-->
+                            <!--y-min="0"-->
+                            <!--y-max="100"-->
+                            <!--height="200"-->
+                            <!--color="#4A99C5"-->
+                    <!--&gt;</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-3">-->
+                    <!--Senaste värdet<br />-->
+                    <!--<span class="f1 b">{{ survey.latestOutcome }}</span>-->
+                    <!--<sup-->
+                            <!--ng-show="survey.diffFromPrevious !== null"-->
+                            <!--ng-class="{red: survey.diffFromPrevious < 0}"-->
+                    <!--&gt;{{ survey.diffFromPrevious }}</sup>-->
+                <!--</div>-->
+
+
+                <!--<div class="clearfix"></div>-->
+
+
+            <!--</div>-->
+        <!--</div>-->
 
     </tab>
 

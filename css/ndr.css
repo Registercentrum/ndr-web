@@ -8726,11 +8726,27 @@ label input {
     display: none;
   }
 }
+.btn-group a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #bbb;
+  margin-left: 15px;
+}
+.btn-group a.active {
+  color: #428bca;
+}
 accordion .panel {
   border: none;
 }
 accordion .panel-default > .panel-heading {
   background-color: transparent;
+}
+accordion .panel-title > a,
+accordion .panel-title > small,
+accordion .panel-title > .small,
+accordion .panel-title > small > a,
+accordion .panel-title > .small > a {
+  color: #74BAD8;
 }
 .nav-tabs {
   border: none;
@@ -10004,6 +10020,26 @@ fieldset[disabled] .IndicatorButton {
   .NavbarVertical-item-link-name {
     font-size: 15px;
   }
+}
+.P {
+  margin-bottom: 22px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.1);
+}
+.P .title {
+  background: #74BAD8;
+  padding: 15px 20px;
+}
+.P .title h1 {
+  font-size: 20px;
+  font-weight: normal;
+  color: white;
+  margin: 0px;
+}
+.P .body {
+  padding: 30px;
 }
 .Panel {
   margin-bottom: 22px;

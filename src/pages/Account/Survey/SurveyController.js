@@ -180,13 +180,49 @@ angular.module('ndrApp')
               $scope.model.formMeta = response.data;
               $scope.model.selectedInvite = invite;
 
-              var series = invite.outcomes.map(function (outcome, index) {
-                return {name : outcome.dimension.desc, y : outcome.outcome, prevOutcome : invite.prevOutcomes ? invite.prevOutcomes.outcomes[index] : '' }
+              // var series = invite.outcomes.map(function (outcome, index) {
+              //   return {name : outcome.dimension.desc, y : outcome.outcome, prevOutcome : invite.prevOutcomes ? invite.prevOutcomes.outcomes[index] : '' }
+              // })
+              //
+              // // prevOutcomes.outcomes[$index].difference < 0
+
+              // $scope.model.selectedInviteData = series;
+
+
+              var latestInvite = invite;
+
+              var prevInvites = _.filter($scope.model.invites.all, function (i) {
+                return i.subject.subjectID === invite.subject.subjectID &&
+                  i.inviteID !== invite.inviteID &&
+                  i.submittedAt &&
+                  new Date(i.submittedAt) <= new Date(invite.submittedAt);
               })
+              
 
-              // prevOutcomes.outcomes[$index].difference < 0
+              var previousInvite = prevInvites[prevInvites.length-2]
 
-              $scope.model.selectedInviteData = series;
+              var categories = [];
+
+              var latest = {
+                name : "Senaste enkätsvar",
+                data : latestInvite.outcomes.map(function (outcome, index) {
+                  categories.push(outcome.dimension.desc);
+                  return outcome.outcome || null;
+                }),
+                color : "#5EBCDC"
+              }
+
+              var previous = {
+                name : "Tidigare enkätsvar",
+                data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
+                  return outcome.outcome || null;
+                }) : null,
+                color : "#ECECEC"
+              }
+
+              $scope.model.categories = categories;
+              $scope.model.selectedInviteData = [latest, previous];
+
 
 
               modalInstance = $modal.open({
@@ -234,6 +270,7 @@ angular.module('ndrApp')
 
         $scope.signInvite = function (invite) {
           invite.isApprovedNDR = true;
+          invite.signed = true;
 
           var signedInvite = angular.copy(invite)
           delete signedInvite.datePicker;

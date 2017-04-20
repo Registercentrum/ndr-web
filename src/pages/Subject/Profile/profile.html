@@ -1,47 +1,120 @@
-<div class="Panel">
-  <div class="row Survey">
-    <div class="row">
-      <h2 class="col-md-12 Page-title mt0">Min Diabetesprofil</h2>
-    </div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="Page-title mt0">Min Diabetesprofil</h2>
+    <h4>{{subject.socialNumber}}</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
 
     <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
-      <tab heading="{{ tabOversight.heading }}" active="tabOversight.active">
-        <div class="col-md-12">
-          <p class="pt5 pb3 f2 b">{{ subject.sexText }}, {{ subject.age }} år gammal</p>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <p class="ttu mb0 f4">Typ</p>
-            <p class="mb0">{{ subject.diabetesTypeText }}</p>
-          </div>
-          <div class="col-md-3">
-            <p class="ttu mb0 f4">Debut</p>
-            <p class="mb0">{{ subject.debut }} år sedan</p>
-          </div>
-        </div>
 
-        <div class="row pv4" ng-repeat="chart in subject.charts">
-          <h4 class="col-md-12">{{ chart.title }}</h4>
-          <div class="col-md-9">
-            <div
-              line-chart
-              model="chart.series"
-              y-max="{{ chart.yMax }}"
-              y-min="0"
-              date-format="%Y-%m-%d"
-              height="200"
-              color="#4A99C5"
-            ></div>
-          </div>
-          <div class="col-md-3">
-            Senaste {{ chart.title }}<br />
-            <span class="f1 b">{{ chart.latest }}</span>
-          </div>
-        </div>
+      <tab heading="{{ tabOversight.heading }}" active="tabOversight.active">
+
+        <div class="row mt4">
+
+          <div class="col-md-12">
+
+            <div class="P">
+              <div class="title">
+                <h1>Grunddata</h1>
+              </div>
+              <div class="body">
+                <p class="pt5 pb3 f2 b">{{ subject.sexText }}, {{ subject.age }} år gammal</p>
+                <p class="mb0">{{ subject.diabetesTypeText }}</p>
+                <p class="ttu mb0 f4">Debut</p>
+                <p class="mb0">{{ subject.debut }} år sedan</p>
+              </div>
+            </div> <!-- End of grunddata-->
+
+          </div> <!-- End of column-->
+
+        </div> <!-- End of row-->
+
+
+        <div class="row mt4">
+
+          <div class="col-md-12">
+
+            <div class="P">
+              <div class="title">
+                <h1>Utveckling över tid</h1>
+              </div>
+              <div class="body">
+
+
+                <div class="row pv4" ng-repeat="chart in subject.charts">
+                  <h4 class="col-md-12">{{ chart.title }}</h4>
+                  <div class="col-md-9">
+                    <div
+                            line-chart
+                            model="chart.series"
+                            y-max="{{ chart.yMax }}"
+                            y-min="0"
+                            date-format="%Y-%m-%d"
+                            height="200"
+                            color="#4A99C5"
+                    ></div>
+                  </div>
+                  <div class="col-md-3">
+                    Senaste {{ chart.title }}<br />
+                    <span class="f1 b">{{ chart.latest }}</span>
+                  </div>
+                </div>
+
+
+              </div>
+            </div> <!-- End of charts-->
+
+          </div> <!-- End of column-->
+
+        </div> <!-- End of row-->
+
+
+
+
+
+
       </tab>
 
       <tab heading="{{ tabAnsweredSourveys.heading }}" active="tabAnsweredSourveys.active">
-        <div ng-repeat="group in PROMFormMeta" class="row">
+
+
+        <div class="row mt4">
+
+          <div class="col-md-12">
+
+            <div class="P">
+              <div class="title">
+                <h1>Senaste enkäten</h1>
+              </div>
+
+              <div class="body">
+                <div bar-chart categories="model.categories" model="model.selectedInviteData"></div>
+              </div>
+
+            </div>
+
+
+            <div class="P">
+              <div class="title">
+                <h1>Utveckling över tid</h1>
+              </div>
+
+              <div class="body">
+                <div line-chart-prom-combined model="model.promSeries"></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!--<div ng-repeat="group in PROMFormMeta" class="row">
           <h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>
           <div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4">
             <h4 class="col-md-12">{{ survey.dimension.desc }}</h4>
@@ -64,7 +137,7 @@
               >{{ survey.diffFromPrevious }}</sup>
             </div>
           </div>
-        </div>
+        </div>-->
       </tab>
     </tabset>
   </div>

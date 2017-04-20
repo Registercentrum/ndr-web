@@ -115,6 +115,15 @@ angular.module("ndrApp")
       });
     }
 
+    $scope.showInfoModal = function () {
+      infoModalInstance = $modal.open({
+        templateUrl: "infoModalTmpl",
+        backdrop   : true,
+        scope      : $scope,
+        size       : "lg"
+      });
+    }
+
     $scope.closeAndLogout = function (stateName) {
       if (!stateName) {
         stateName = "main.home";
