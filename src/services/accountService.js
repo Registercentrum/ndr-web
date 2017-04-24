@@ -44,11 +44,6 @@ angular.module('ndrApp')
 
               self.accountModel.visitor = response.data;
 
-              if (response.data.isUser == false) {
-                console.log("IS NOT USER")
-                return false;
-              }
-
               var user = response.data.user,
                 subject = response.data.subject,
                 loginId;
@@ -59,12 +54,21 @@ angular.module('ndrApp')
 
               $rootScope.$broadcast('newUser');
 
-              user.activeAccounts = _.filter(user.accounts, function (account) {
-                return account.status.id === 1;
-              });
+              if (response.data.isSubject == true && self.accountModel.chosenUserType == "subject") {
+                self.accountModel.activeAccount = {};
+              }
+
+              if (response.data.isUser == false) {
+                return false;
+              }
 
 
               if (self.accountModel.chosenUserType !== "subject") {
+                console.log("test", response.data.isUser)
+
+                user.activeAccounts = _.filter(user.accounts, function (account) {
+                  return account.status.id === 1;
+                });
 
                 self.accountModel.chosenUserType = "user";
 
