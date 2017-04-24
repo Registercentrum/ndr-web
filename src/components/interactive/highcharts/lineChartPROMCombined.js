@@ -15,6 +15,7 @@ angular.module('ndrApp')
 
       function updateColor(series){
         if(series == undefined) return;
+
         var color = series.color == '#ccc' ? '#74BAD8' : '#ccc';
         var width = series.color == '#ccc' ? 5 : 1;
 
@@ -95,9 +96,9 @@ angular.module('ndrApp')
             }
           },
           tooltip: {
-            formatter: function() {
+            formatter: function(d) {
               var time = Highcharts.dateFormat('%Y-%m-%d', new Date(this.x))
-              return time + ': <b>' +  this.y + '</b>';
+              return "<b>" +  this.series.name + "</b><br /><br />" + time + ': <b>' +  this.y + '</b>';
             }
           },
           plotOptions: {
@@ -117,7 +118,7 @@ angular.module('ndrApp')
 
               events: {
                 click: function () {
-                  updateColor(this);
+                  // updateColor(this);
                 },
 
                 legendItemClick: function (event) {

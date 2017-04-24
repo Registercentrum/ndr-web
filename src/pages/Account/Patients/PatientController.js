@@ -111,7 +111,11 @@ angular.module('ndrApp')
         populateTableData();
         populateLatestData();
         $timeout(function () {
-          jQuery(window).resize();
+          Highcharts.charts.map(function (c) {
+            if(c){
+              c.reflow();
+            }
+          })
         }, 500);
       });
 
@@ -139,6 +143,7 @@ angular.module('ndrApp')
         var table = [],
           exluded = ['unit', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
           contacts, keys;
+        
 
         if ($scope.unitTypeID == 1) //Remove pumpinfo for "primärdsvårdsenheter"
           exluded = exluded.concat(['pumpIndication', 'pumpOngoing', 'pumpOngoingSerial', 'pumpProblemKeto', 'pumpProblemHypo', 'pumpProblemSkininfection', 'pumpProblemSkinreaction', 'pumpProblemPumperror', 'pumpNew', 'pumpNewSerial', 'pumpClosureReason']);
@@ -192,8 +197,11 @@ angular.module('ndrApp')
           });
         });
 
-        $scope.model.data.table = table;
         $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
+        table = _.filter(table, function (d) {
+          return d.label !== 'Besöksdatum';
+        })
+        $scope.model.data.table = table;
       }
 
 
@@ -497,6 +505,9 @@ angular.module('ndrApp')
             var latestInvite = submitted[submitted.length-1]
             var previousInvite = submitted[submitted.length-2]
 
+            $scope.model.latestInvite = latestInvite;
+
+
             var categories = [];
 
             var latest = {
@@ -511,7 +522,7 @@ angular.module('ndrApp')
             var previous = {
               name : "Tidigare enkätsvar",
               data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
-                return outcome.outcome || null;
+                return outcome.outcome;
               }) : null,
               color : "#ECECEC"
             }

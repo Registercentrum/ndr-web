@@ -207,7 +207,7 @@ angular.module('ndrApp')
                 name : "Senaste enkätsvar",
                 data : latestInvite.outcomes.map(function (outcome, index) {
                   categories.push(outcome.dimension.desc);
-                  return outcome.outcome || null;
+                  return outcome.outcome;
                 }),
                 color : "#5EBCDC"
               }
@@ -215,7 +215,7 @@ angular.module('ndrApp')
               var previous = {
                 name : "Tidigare enkätsvar",
                 data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
-                  return outcome.outcome || null;
+                  return outcome.outcome;
                 }) : null,
                 color : "#ECECEC"
               }
@@ -375,7 +375,11 @@ angular.module('ndrApp')
             ["catch"](function (err) {
               if (err && err.data && err.data.code === 2) {
                 $scope.model.newInviteError = "Personen har redan en öppen inbjudan.";
-              } else {
+              }
+                else if (err && err.data && err.data.code === 7){
+                $scope.model.newInviteError = "Du kan endast bjuda enkäter till personer med rapporterade besök på din enhet.";
+              }
+                else {
                 $scope.model.newInviteError = "Något gick fel, vänligen försök igen.";
               }
             });

@@ -8674,7 +8674,7 @@ input {
 input:-webkit-autofill {
   color: #fff !important;
 }
-.highcharts-container {
+.chart-container {
   width: 100% !important;
   height: 100% !important;
 }

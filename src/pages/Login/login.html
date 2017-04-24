@@ -15,6 +15,7 @@
             <div class="col-md-5">
               <img src="images/bankid_small.png" class="" style="" alt=""/>
               <h5 class="f2 fw2">Logga in med Mobilt BankID </h5>
+              <small class="orange strong mb2 db">(Du kommer legitimera dig mot Registercentrum)</small>
               <form ng-submit="startLogin('subject')">
                 <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
                 <div class="red mb4" ng-if="model.loginFailed">
@@ -63,6 +64,7 @@
             <div class="col-md-6 col-md-offset-3">
               <img src="images/bankid_small.png" class="" style="" alt=""/>
               <h5 class="f2 fw2">Mobilt Bank-ID </h5>
+              <small class="orange strong mb2 db">(Du kommer legitimera dig mot Registercentrum)</small>
               <form ng-submit="startLogin('user')">
                 <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
                 <div class="red mb4" ng-if="model.loginFailed">

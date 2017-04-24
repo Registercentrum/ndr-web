@@ -1,7 +1,7 @@
 angular.module("ndrApp")
     .controller('SubjectProfileController',
-                ['$scope', '$stateParams', 'dataService',
-        function ($scope,   $stateParams,   dataService) {
+                ['$scope', '$stateParams', 'dataService', '$timeout', '$filter',
+        function ($scope,   $stateParams,   dataService, $timeout, $filter) {
 
         $scope.tabOversight = {
           heading: "Mina värden",
@@ -12,7 +12,18 @@ angular.module("ndrApp")
           active: $stateParams.tab === "besvarade-enkater"
         };
 
-        $scope.model = {};
+          $scope.model = {
+            data: {
+              trend: {},
+              chart: {
+                gauge: {
+                  physicalActivity: {}
+                }
+              }
+            },
+            latest: {},
+            mode: 'visual'
+          };
 
         $scope.subject = $scope.accountModel.subject;
 
@@ -53,6 +64,9 @@ angular.module("ndrApp")
           var latestInvite = submitted[submitted.length-1]
           var previousInvite = submitted[submitted.length-2]
 
+          $scope.model.latestInvite = latestInvite;
+
+
           var categories = [];
 
           var latest = {
@@ -67,7 +81,7 @@ angular.module("ndrApp")
           var previous = {
             name : "Tidigare enkätsvar",
             data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
-              return outcome.outcome || null;
+              return outcome.outcome;
             }) : null,
             color : "#ECECEC"
           }
@@ -100,6 +114,7 @@ angular.module("ndrApp")
         var charts = [{
             title: 'HbA1c',
             series: getSeries('hba1c'),
+
           }, {
             title: 'BMI',
             series: getSeries('bmi'),
@@ -118,6 +133,15 @@ angular.module("ndrApp")
           return chart;
         });
 
+        $timeout(function () {
+          Highcharts.charts.map(function (c) {
+            if(c){
+              c.reflow();
+            }
+          })
+        }, 500);
+
+
         function getSeries (type) {
           return _.map(
             _.sortBy($scope.subject.contacts, function (c) { return +(new Date(c.contactDate)); }),
@@ -130,12 +154,232 @@ angular.module("ndrApp")
           );
         }
 
-        dataService.getPROMFormMeta()
+          /**
+           * Get the most recent value for the key
+           * @param  {String} key What are we looking for?
+           * @return {Object} A pair of value and the data
+           */
+          function getLatestValue(key) {
+
+            var visit = _.find($scope.subject.contacts, function (v) {
+                return !_.isNull(v[key]);
+              }),
+              attribute = _.find($scope.contactAttributes, {columnName: key}),
+              value;
+            
+            console.log("test", attribute)
+
+            if (key === 'diabetesType') return {value: null, date: null, label: 'saknas'};
+            if (typeof visit === 'undefined') return {value: null, date: null, label: 'saknas'};
+
+            if (_.isNull(visit[key]) || _.isUndefined(visit[key])) {
+              value = 'saknas';
+
+              // If it's a date, format it in a nice way
+            } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
+              value = $filter('date')(new Date(visit[key]), 'yyyy-MM-dd');
+
+              // Get proper label for the id value
+            } else if (attribute && attribute.domain && attribute.domain.isEnumerated) {
+              value = _.find(attribute.domain.domainValues, {code: visit[key]}).text;
+
+              // If it's a boolean, return proper translation (ja-nej)
+            } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
+              value = visit[key] ? 'Ja' : 'Nej';
+            } else {
+              console.log("test", attribute)
+              value = $filter('number')(visit[key]) + (attribute.measureUnit != null ? ' ' + attribute.measureUnit : '');
+            }
+
+            var ret = visit ?
+              {value: visit[key], date: visit.contactDate, label: value} : //$filter('number')(value)
+              {value: null, date: null, label: value};
+
+            return ret;
+          }
+
+
+          function populateLatestData() {
+            if (!$scope.subject) return false;
+
+            $scope.model.latest.bmi = getLatestValue('bmi');
+            $scope.model.latest.weight = getLatestValue('weight');
+            $scope.model.latest.treatment = getLatestValue('treatment');
+            $scope.model.latest.footRiscCategory = getLatestValue('footRiscCategory');
+            $scope.model.latest.footExaminationDate = getLatestValue('footExaminationDate');
+
+            _.each($scope.contactAttributes, function (obj) {
+              $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
+            });
+
+            console.log($scope.model.latest['pumpNew']);
+            console.log($scope.model.latest['pumpOngoing']);
+
+            //pumpOngoing should be pumpNew if reported later
+            if ($scope.model.latest['pumpNew']) {
+              if ($scope.model.latest['pumpNew'].date >= $scope.model.latest['pumpOngoing'].date) {
+                $scope.model.latest['pumpOngoing'] = $scope.model.latest['pumpNew'];
+              }
+            }
+
+            console.log($scope.model.latest['pumpNew']);
+            console.log($scope.model.latest['pumpOngoing']);
+            console.log($scope.model.latest['pumpClosureReason']);
+
+            //pumpOngoing should be reset if closure reported later
+            if ($scope.model.latest['pumpClosureReason']) {
+              if ($scope.model.latest['pumpClosureReason'].date >= $scope.model.latest['pumpOngoing'].date) {
+                $scope.model.latest['pumpOngoing'] = {value: null, date: null, label: 'saknas'};
+              }
+            }
+
+            console.log($scope.model.latest['pumpNew']);
+            console.log($scope.model.latest['pumpOngoing']);
+            console.log($scope.model.latest['pumpClosureReason']);
+
+            console.log($scope.model.latest);
+          }
+
+
+          function populateSeriesData() {
+            if (!$scope.subject) return false;
+
+            $scope.model.data.trend.hba1c = getSeries('hba1c');
+            $scope.model.data.trend.bpSystolic = getSeries('bpSystolic');
+            $scope.model.data.trend.bpDiastolic = getSeries('bpDiastolic');
+            $scope.model.data.trend.cholesterol = getSeries('cholesterol');
+            $scope.model.data.trend.triglyceride = getSeries('triglyceride');
+            $scope.model.data.trend.ldl = getSeries('ldl');
+            $scope.model.data.trend.hdl = getSeries('hdl');
+
+            $scope.model.data.chart.physicalActivity = getLatestValue('physicalActivity');
+            $scope.model.data.chart.smoking = getLatestValue('smoking');
+
+            $scope.model.data.trend.combinedLDLHDL = [{
+              //dashStyle: "ShortDot",
+              color: 'rgba(89,153,218,1)',
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, 'rgba(89,153,218,0.2)'],
+                  [1, 'rgba(89,153,218,0.2)']
+                ]
+              },
+              name: 'LDL',
+              data: $scope.model.data.trend.ldl
+            }, {
+              //dashStyle: "ShortDot",
+              color: 'rgba(26,188,156,1)',
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, 'rgba(26,188,156,0.2)'],
+                  [1, 'rgba(26,188,156,0.2)']
+                ]
+              },
+              name: 'HDL',
+              data: $scope.model.data.trend.hdl
+            }];
+
+            $scope.model.data.trend.combinedCholesterol = [{
+              //dashStyle: "ShortDot",
+              color: 'rgba(89,153,218,1)',
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, 'rgba(89,153,218,0.2)'],
+                  [1, 'rgba(89,153,218,0.2)']
+                ]
+              },
+
+              name: 'Kolesterol',
+              data: $scope.model.data.trend.cholesterol
+            }, {
+              //dashStyle: "ShortDot",
+              color: 'rgba(26,188,156,1)',
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, 'rgba(26,188,156,0.2)'],
+                  [1, 'rgba(26,188,156,0.2)']
+                ]
+              },
+              name: 'Triglycerider',
+              data: $scope.model.data.trend.triglyceride
+            }];
+
+            $scope.model.data.trend.combinedBp = [{
+              //dashStyle: "ShortDot",
+              color: 'rgba(89,153,218,1)',
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, 'rgba(89,153,218,0.2)'],
+                  [1, 'rgba(89,153,218,0.2)']
+                ]
+              },
+              name: 'Värde',
+              data: $scope.model.data.trend.bpSystolic
+            }, {
+              //dashStyle: "ShortDot",
+              color: 'rgba(26,188,156,1)',
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, 'rgba(26,188,156,0.2)'],
+                  [1, 'rgba(26,188,156,0.2)']
+                ]
+              },
+              name: 'Värde',
+              data: $scope.model.data.trend.bpDiastolic
+            }];
+          }
+
+          dataService.getPROMFormMeta()
           .then(function (response) {
               console.log("test", response)
             $scope.PROMFormMeta = response.data;
           });
 
+          dataService.getContactAttributes().then(function (response) {
+            return response;
+          }) .then(function (values) {
+
+            $scope.contactAttributes = values;
+            populateLatestData();
+            populateSeriesData();
+
+          })
         console.log($scope.subject);
 }]);
 

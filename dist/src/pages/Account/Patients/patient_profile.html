@@ -32,6 +32,9 @@
                 </button>
             </div>
         </form>
+        <div id="patient" ng-show="hasError">
+            <span class="red">{{ errorMessage }}</span>
+        </div>
     </div>
 
     <div>
@@ -48,10 +51,6 @@
 <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
 
     <tab heading="Översikt">
-
-        <div id="patient" ng-show="hasError">
-            <span>{{ errorMessage }}</span>
-        </div>
 
         <div id="patient" ng-show="subject && !hasError">
             <div class="row">
@@ -244,7 +243,7 @@
 
 
             <div ng-show="model.mode == 'table'" class="Panel">
-                <h2>Besök</h2>
+                <h2>Rapporteringar</h2>
                 <div class="row">
                     <div class="btn-group pull-right" style="margin: 0 16px 10px 0;">
                         <a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="tableCount>1 && tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
@@ -288,7 +287,7 @@
 
                 <div class="P">
                     <div class="title">
-                        <h1>Senaste enkäten</h1>
+                        <h1>Senaste enkäten ({{ model.latestInvite.submittedAt }})</h1>
                     </div>
 
                     <div class="body">

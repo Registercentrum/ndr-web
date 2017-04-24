@@ -64,25 +64,27 @@ angular.module('ndrApp')
               });
 
 
-              // user.activeAccounts = user.activeAccounts.slice(-1)
-
-              console.log("TEST", self.accountModel.chosenUserType)
-              
               if (self.accountModel.chosenUserType !== "subject") {
 
+                self.accountModel.chosenUserType = "user";
+
+                //If cookie
                 if (cookieFactory.read("ACTIVEACCOUNT")) {
                   self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
                     return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
                   });
+
                 } else if(self.accountModel.activeAccount){
 
+                //If not logged in and only 1 account
                 } else if(!self.accountModel.activeAccount && user.activeAccounts.length == 1){
                   self.accountModel.activeAccount = user.activeAccounts[0];
 
                   var accountID =  self.accountModel.activeAccount.accountID;
                   cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
-                  console.log("test", accountID)
                   $state.go('main.account.home');
+
+                  //If not logged in and >1 account
                 } else if(!self.accountModel.activeAccount && user.activeAccounts.length > 1) {
                   $state.go('main.login', {direct: true}, {reload: true});
                 }

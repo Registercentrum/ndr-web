@@ -4,7 +4,6 @@ angular.module('ndrApp')
         return {
             restrict: 'A',
             template : '<div class="chart-container"></div>',
-
             scope: {
                 model: '=',
                 type:  '='
@@ -26,7 +25,7 @@ angular.module('ndrApp')
                             spacingLeft : 30,
 
                             style : {
-                                color: 'white'
+                              color: 'rgba(89,153,218,1)',
                             }
                         },
                         title: {
@@ -50,10 +49,10 @@ angular.module('ndrApp')
                             lineWidth: 0,
                             gridLineWidth: 0.5,
                             minorGridLineWidth: 0,
-                            lineColor: '#eee',
+                            lineColor: '#ccc',
                             labels: {
                                 style: {
-                                    color: 'white',
+                                    // color: 'white',
                                     fontSize : '10px'
                                 }
                             },
@@ -64,7 +63,7 @@ angular.module('ndrApp')
 
                         yAxis: {
                            gridLineWidth: 0.5,
-                           gridLineColor : '#eee',
+                           gridLineColor : '#cccc',
                            lineWidth: 0,
 
                             minorGridLineWidth: 0,
@@ -79,7 +78,6 @@ angular.module('ndrApp')
                                 align : 'right',
 
                                 style: {
-                                    color: 'white',
                                     fontSize : '10px'
                                 }
                             }
@@ -136,7 +134,7 @@ angular.module('ndrApp')
                         },
                         series: [{
                             //dashStyle: 'ShortDot',
-                            color : 'white',
+                            color: 'rgba(89,153,218,1)',
                             name: 'Värde',
                             data : [{x: 1, y:10}, {x: 3, y:5}]
 
