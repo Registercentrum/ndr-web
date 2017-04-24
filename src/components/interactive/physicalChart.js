@@ -17,8 +17,6 @@ angular.module('ndrApp')
 
                     if (!model) return;
 
-                    console.log('Physical Stat Bar Chart render', $scope.model);
-
 
                     $scope.model.domainValues = [
                         {

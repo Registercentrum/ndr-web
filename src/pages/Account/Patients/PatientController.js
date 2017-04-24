@@ -36,7 +36,6 @@ angular.module('ndrApp')
       /* PROM */
       dataService.getPROMFormMeta()
         .then(function (response) {
-          console.log("test", response)
           $scope.PROMFormMeta = response.data;
         });
 
@@ -343,19 +342,12 @@ angular.module('ndrApp')
           $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
         });
 
-        console.log($scope.model.latest['pumpNew']);
-        console.log($scope.model.latest['pumpOngoing']);
-
         //pumpOngoing should be pumpNew if reported later
         if ($scope.model.latest['pumpNew']) {
           if ($scope.model.latest['pumpNew'].date >= $scope.model.latest['pumpOngoing'].date) {
             $scope.model.latest['pumpOngoing'] = $scope.model.latest['pumpNew'];
           }
         }
-
-        console.log($scope.model.latest['pumpNew']);
-        console.log($scope.model.latest['pumpOngoing']);
-        console.log($scope.model.latest['pumpClosureReason']);
 
         //pumpOngoing should be reset if closure reported later
         if ($scope.model.latest['pumpClosureReason']) {
@@ -364,11 +356,6 @@ angular.module('ndrApp')
           }
         }
 
-        console.log($scope.model.latest['pumpNew']);
-        console.log($scope.model.latest['pumpOngoing']);
-        console.log($scope.model.latest['pumpClosureReason']);
-
-        console.log($scope.model.latest);
       }
 
 
@@ -476,6 +463,11 @@ angular.module('ndrApp')
             // get submitted surveys
             var submitted = _.filter($scope.subject.invites, function (i) { return !!i.submittedAt; });
             if (submitted.length) submitted = _.sortBy(submitted, function (s) { return +(new Date(s.submittedAt)); })
+
+            submitted = _.filter(submitted, function (d) {
+              return d.isApprovedNDR == true;
+            })
+
             // create time series
             $scope.subject.surveys = !submitted.length ?
               [] :
