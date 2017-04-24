@@ -105,7 +105,10 @@ angular.module('ndrApp')
             return ret;
         };
         this.getContactAttributes = function (filter) {
-            return endpoints.contactAttributes.get({'AccountID': accountService.accountModel.activeAccount.accountID})
+
+
+
+            return endpoints.contactAttributes.get({'AccountID': accountService.accountModel.activeAccount ? accountService.accountModel.activeAccount.accountID : undefined})
                 .then(function (data) {
                     var filtered = [];
 
