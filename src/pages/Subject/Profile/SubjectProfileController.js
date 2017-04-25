@@ -66,29 +66,33 @@ angular.module("ndrApp")
 
           $scope.model.latestInvite = latestInvite;
 
-
           var categories = [];
-
-          var latest = {
-            name : "Senaste enkätsvar",
-            data : latestInvite.outcomes.map(function (outcome, index) {
-              categories.push(outcome.dimension.desc);
-              return outcome.outcome;
-            }),
-            color : "#5EBCDC"
-          }
-
-          var previous = {
-            name : "Tidigare enkätsvar",
-            data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
-              return outcome.outcome;
-            }) : null,
-            color : "#ECECEC"
-          }
-
+			
+		  if (latestInvite)
+			  var latest = {
+				name : "Senaste enkätsvar",
+				data : latestInvite.outcomes.map(function (outcome, index) {
+				  categories.push(outcome.dimension.desc);
+				  return outcome.outcome;
+				}),
+				color : "#5EBCDC"
+			  }
+		  
+		  if (previousInvite)
+			  var previous = {
+				name : "Tidigare enkätsvar",
+				data : previousInvite ? previousInvite.outcomes.map(function (outcome, index) {
+				  return outcome.outcome;
+				}) : null,
+				color : "#ECECEC"
+			  }
+		
 
           $scope.model.categories = categories;
-          $scope.model.selectedInviteData = [latest, previous];
+				
+			$scope.model.selectedInviteData = [];
+			if (latest) $scope.model.selectedInviteData.push(latest);
+			if (previous) $scope.model.selectedInviteData.push(previous);
 
           var promSeries = angular.copy($scope.subject.surveys);
 
