@@ -52,9 +52,14 @@
                 <i ng-show="model.sortType == 'subject.socialNumber' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <th class="tc pointer pb3" ng-click="model.sortType = 'createdAt'; model.sortReverse = !model.sortReverse">
-                Skickad
+                Utskickad
                 <i ng-show="model.sortType == 'createdAt' && !model.sortReverse" class="fa fa-caret-down"></i>
                 <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-up"></i>
+              </th>
+              <th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">
+                Inkommen
+                <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <th class="tc pointer pb3" ng-click="model.sortType = 'status'; model.sortReverse = !model.sortReverse">
                 Enkätstatus
@@ -99,6 +104,7 @@
                 </a>
               </td>
               <td>{{ invite.createdAt | date:'yyyy-MM-dd' }}</td>
+			  <td>{{ invite.submittedAt | date:'yyyy-MM-dd' }}</td>
               <td style="text-transform: uppercase; font-size: 13px">
 
                 <!--{{ invite.initiatedAt + "|" + invite.status }}-->
@@ -165,7 +171,7 @@
 
 
                 <div ng-if="invite.isDeclined" class="red">Avböjd</div>
-                <div class="orange" ng-if="invite.submittedAt && !invite.isApprovedNDR">Besvarad, ej signerad</div>
+                <div class="orange" ng-if="invite.submittedAt && !invite.isApprovedNDR">Ej signerad</div>
                 <div class="green" ng-if="invite.submittedAt && invite.isApprovedNDR">Signerad</div>
 
               </td>

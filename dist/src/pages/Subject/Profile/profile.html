@@ -225,7 +225,7 @@
               </div>
 
               <div class="body">
-                <div bar-chart categories="model.categories" model="model.selectedInviteData"></div>
+                <div ng-if="model.selectedInviteData.length > 0" bar-chart categories="model.categories" model="model.selectedInviteData"></div>
               </div>
 
             </div>
