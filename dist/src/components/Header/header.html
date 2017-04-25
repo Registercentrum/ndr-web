@@ -25,50 +25,50 @@
 
                     <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu2">
 
-                        <li ng-show="accountModel.user" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'user'" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
                             E-tjänster för vårdpersonal
                         </li>
 
-                        <li role="separator" class="divider"></li>
+                        <li ng-show="accountModel.chosenUserType == 'user'" role="separator" class="divider"></li>
 
-                        <li role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'user'" role="presentation">
                             <a ui-sref="main.account.home" title="">Översikt</a>
                         </li>
-                        <li role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'user'" role="presentation">
                             <a ui-sref="main.account.report" title="">Rapportera</a>
                         </li>
                         <li ng-show="accountModel.activeAccount.unit.isUsingPROM" role="presentation">
                             <a ui-sref="main.account.survey" title="">Diabetesenkäten</a>
                         </li>
 
-                        <li role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'user'" role="presentation">
                             <a ui-sref="main.account.patient" title="">Patientprofilen</a>
                         </li>
 
-                        <li role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'user'" role="presentation">
                             <a ui-sref="main.currentUser" title="">Mitt användarkonto</a>
                         </li>
 
-                        <li ng-show="accountModel.subject" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'subject'" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
                             E-tjänster för dig med diabetes
                         </li>
 
                         <li role="separator" class="divider"></li>
 
 
-                        <li ng-show="accountModel.subject" role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'subject'" role="presentation">
                             <a ui-sref="main.subject.home" title="">Översikt</a>
                         </li>
 
-                        <li ng-show="accountModel.subject" role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'subject'" role="presentation">
                             <a ui-sref="main.subject.surveys" title="">Mina enkäter</a>
                         </li>
 
-                        <li ng-show="accountModel.subject" role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'subject'" role="presentation">
                             <a ui-sref="main.subject.profile" title="">Min diabetesprofil</a>
                         </li>
 
-                        <li style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
+                        <li ng-show="accountModel.chosenUserType == 'user'" style="margin-top: 20px; font-weight: bold; font-size: 13px;margin-left:15px;" role="presentation">
                             Mina enheter
                         </li>
 

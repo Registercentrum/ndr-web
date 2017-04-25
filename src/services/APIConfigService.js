@@ -12,7 +12,7 @@ angular.module('ndrApp')
     // with for local development and without for deploy
     this.constructUrl = function (url) {
       // var sessionId = "999a"; //static
-
+      //
       // uncomment to get urls without session id
       return url;
 
