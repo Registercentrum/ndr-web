@@ -74,7 +74,7 @@ angular.module('ndrApp')
 
                 //If cookie
                 if (cookieFactory.read("ACTIVEACCOUNT")) {
-                  self.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                  self.accountModel.activeAccount = _.find(user.activeAccounts, function (a) {
                     return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
                   });
 
