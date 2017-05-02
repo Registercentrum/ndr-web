@@ -99,8 +99,8 @@ angular.module('ndrApp')
                         seriesCountry.push({
                             color : '#999',
                             x : new Date(obj.interval),
-                            y : obj.stat.r,
-                            cRep : obj.stat.cRepInd
+                            y : obj.stat ? obj.stat.r : null,
+                            cRep : obj.stat ? obj.stat.cRepInd : null
                         });
                     });
 
