@@ -113,8 +113,6 @@ angular.module("ndrApp")
 					default:
 						denom = 'total'
 				}
-				
-				console.log(denom);
 			
 				var o = {
 					question: f.question,
