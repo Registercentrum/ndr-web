@@ -53,6 +53,7 @@
         <small class="fl w3 pt1 ndr-blue" style="font-weight: bold">{{ question.questionID }})</small>
         <span class="fl mw7"> {{ question.question }}</span>
       </h4>
+	  <div class="helpNote" ng-if="question.helpNote"> {{ question.helpNote }}</div>
       <div class="pl5" ng-class="{'events-none': model.activeQuestion !== question.questionID}">
         <div ng-repeat="answer in question.domain.domainValues">
           <label class="pv2 normal" style="font-size: 18px">
