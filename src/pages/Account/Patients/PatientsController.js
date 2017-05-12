@@ -7,7 +7,7 @@ angular.module('ndrApp')
 
             $log.debug('PatientsController: Init');
             var filterSettings = {
-                    exclude: ['socialNumber', 'pumpNew', 'pumpOngoingSerial', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear','subjectID'],
+                    exclude: ['socialNumber', 'pumpNew', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear','subjectID'],
                     required: ['d']
                 },
                 filterDisplayIndex;
@@ -69,6 +69,8 @@ angular.module('ndrApp')
                 if (filter.domain.isEnumerated) return _.result(_.find(filter.domain.domainValues, {code : value}), 'text', '');
 				
 				if (filter.domain.domainID == 105) return value.split('T')[0];
+				
+				if (filter.domain.domainID == 106) return value;
 				
                 return $filter('number')(value);
             };
