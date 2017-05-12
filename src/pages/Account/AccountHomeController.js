@@ -1,28 +1,51 @@
 angular.module("ndrApp")
     .controller('AccountHomeController', ['$scope', '$q', '$stateParams', '$state', '$log', '$filter', 'dataService', '$timeout', '$http', 'APIconfigService', function ($scope,   $q,   $stateParams,   $state,   $log,   $filter,   dataService, $timeout, $http, APIconfigService) {
 
-        var Account = $scope.accountModel;
+		var Account = $scope.accountModel;
 
-        $scope.subject = undefined;
-        $scope.socialnumber = undefined;
-				$scope.unitInIQV = undefined;
-        
-
-				$scope.unitInIQV = dataService.isInProject('iqv');
+		$scope.subject = undefined;
+		$scope.socialnumber = undefined;
+		//$scope.unitInIQV = undefined;
+		$scope.unitInIQV = dataService.isInProject('iqv');
+	
+		$scope.model = {
+			id : Account.activeAccount.unit.unitID,
+			activeAccount: Account.activeAccount,
+			geoType : "unit",
+			unitType : Account.activeAccount.unit.typeID,
+			diabetesType : Account.activeAccount.unit.typeID === 1 ? 0 : 1,
+			reportList : [],
+			reportSort : {
+				level: 3,
+				desc: true
+			},
+			allDTTypes: [
+				{ id: 0, name: 'Alla'},
+				{ id: 1, name: 'Typ 1 diabetes'},
+				{ id: 2, name: 'Typ 2 diabetes'},
+				{ id: 3, name: 'Sekundär'},
+				{ id: 5, name: 'Oklar' },
+				{ id: 9, name: 'Typ saknas'}
+			],
+			unitDTTypes: [],
+			activeDTType: null,
+			charStatistics: null
+		};
 		
-			$scope.model = {
-            id : Account.activeAccount.unit.unitID,
-						activeAccount: Account.activeAccount,
-            geoType : "unit",
-            unitType : Account.activeAccount.unit.typeID,
-            diabetesType : Account.activeAccount.unit.typeID === 1 ? 0 : 1,
-						reportList : [],
-						reportSort : {
-						level: 3,
-						desc: true
-			}
-        };
-
+		//$scope.activeTab = dataService.getActiveOverviewTab();
+		
+		$scope.setActiveTab= function(id) {
+			//dataService.GetactiveOverviewTab(id);
+			//$scope.activeTab = id;
+			console.log(id);
+		};
+		
+		$scope.setDisplayedDTType = function(id) {
+			$scope.model.activeDTType = _.find($scope.model.unitDTTypes, function(d) {
+				return id === d.id;
+			});
+		},
+		
 		$scope.getShare = function(d,n) {
 			return parseInt(((d/n)*100).toFixed(0));
 		};
@@ -85,6 +108,105 @@ angular.module("ndrApp")
 			
 			return list;			
 		};
+
+		dataService.getPatientsStatistics(Account.activeAccount.accountID, function(d) {
+			
+
+			$scope.model.charStatistics = d;
+			
+			//om primärvårdsenhet så skall endast Alla visas
+			if (Account.activeAccount.unit.typeID  == 1 ) {
+				$scope.model.unitDTTypes.push($scope.model.allDTTypes[0]);
+				$scope.model.activeDTType = $scope.model.unitDTTypes[0];
+				console.log($scope.model.unitDTTypes);
+			} //om medicinklinik så skall de typer som finns på enheten 
+			else {
+			
+				for (p in d) {
+					if (d[p][3] != null) {
+						$scope.model.unitDTTypes.push(_.find($scope.model.allDTTypes, function(d){					
+							return d.id == p;
+						}))
+					}
+				}
+				
+				//av de typer som finns på enheten visa bara Alla, Typ1, Typ2
+				$scope.model.unitDTTypes = $scope.model.unitDTTypes.filter(function(d) {
+					return [0,1,2].indexOf(d.id) > -1;
+				});
+				
+				//sätt typ 1 som default
+				$scope.model.activeDTType = $scope.model.unitDTTypes[1];
+			}
+				
+			//$scope.model.activeDTType = Account.activeAccount.unit.typeID == 2 ? $scope.model.allDTTypes[1] : $scope.model.allDTTypes[0];
+			
+			$scope.model.charConfig = [
+				{
+					header: 'Kön',
+					hiddenIfDTTypes: [],
+					fields: [
+						{ name: 'male', header: 'män' },
+						{ name: 'female', header: 'kvinnor'}
+					],
+					defaultDenom: 'total'
+				},
+				{
+					header: 'Ålder',
+					hiddenIfDTTypes: [],
+					fields: [
+						{ name: 'ageLT30', header: '18-29 år' },
+						{ name: 'age30to64', header: '30-64 år'},
+						{ name: 'age65to79', header: '65-79 år' },
+						{ name: 'ageGT80', header: '80- år'}					
+					],
+					defaultDenom: 'total'
+				},
+				{
+					header: 'Duration',
+					hiddenIfDTTypes: [],
+					fields: [
+						{ name: 'durLT10', header: '0-9 år' },
+						{ name: 'dur10to20', header: '10-19 år'},
+						{ name: 'dur20to29', header: '20-29 år' },
+						{ name: 'dur30to39', header: '30-39 år'},
+						{ name: 'dur40to49', header: '40-49 år'},
+						{ name: 'durGT50', header: '50- år'}				
+					],
+					defaultDenom: 'dur'
+				},
+				{
+					header: 'Diabetesbehandling',
+					hiddenIfDTTypes: [1],
+					fields: [
+						{ name: 'treat1', header: 'enbart kost' },
+						{ name: 'treat2', header: 'tabletter'},
+						{ name: 'treat3', header: 'insulin' },
+						{ name: 'treat4', header: 'tablett + insulin'},
+						{ name: 'treatglp1', header: 'GLP1'},						
+					],
+					defaultDenom: 'treat'
+				},
+				{
+					header: 'Metod att ge insulin',
+					hiddenIfDTTypes: [0,2,3,4,5,9],
+					fields: [
+						{ name: 'imInjection', header: 'injektion' },
+						{ name: 'imPump', header: 'pump'}
+					],
+					defaultDenom: 'total'
+				},
+				{
+					header: 'CGM',
+					hiddenIfDTTypes: [0,2,3,4,5,9],
+					fields: [
+						{ name: 'cgmYes', header: 'använder CGM', denom: 'insulin', helpText: 'Nämnaren är satt till alla insulinbehandlade.'},
+						{ name: 'fgm', header: 'använder FGM', denom: 'cgmYes', helpText: 'Nämnaren är satt till alla som använder CGM.' }
+					],
+					defaultDenom: 'cgmYes'
+				}
+			];
+		});
 		
 		dataService.getReportingStatistics(Account.activeAccount.accountID, function(d) {
 			
@@ -140,7 +262,29 @@ angular.module("ndrApp")
 			$scope.model.reportList = $scope.sortRepList(list,$scope.model.reportSort);
 		});
 
-        dataService.getAny("News", "?excludePublic=true").then(function (data){
+        dataService.getList("news", "?excludePublic=true").then(function (data){
+
+            data = data.splice(0,4);
+
+            angular.forEach(data, function(item) {
+                item.link = "#/nyheter/" + item.newsID;
+                item.categoryNames = [];
+                angular.forEach(item.categories, function(category){
+                    item.categoryNames.push(category.name);
+                });
+            });
+
+            $scope.model.newsList = {
+                data : data
+            }
+
+            setTimeout(function (){
+                jQuery('.Intro--equalHeights').matchHeight(true);
+            },100);
+
+        })
+		
+        /*dataService.getAny("News", "?excludePublic=true").then(function (data){
 
             data.sort(function (a,b){
                 return new Date(b.publishedFrom) - new Date(a.publishedFrom);
@@ -155,8 +299,8 @@ angular.module("ndrApp")
                 });
             });
 
-            $scope.model.newsList = data;
-        })
+            $scope.model.newsList = { data: data };
+        })*/
 
 
         $scope.gotoProfile = function () {
