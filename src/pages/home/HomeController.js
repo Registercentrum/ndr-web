@@ -72,13 +72,8 @@ angular.module('ndrApp')
         dataService.getStats(query_hba1c_rep).then(function (data){
             $scope.model.stats.hba1c_rep = data;
         })
-
-
+		
         dataService.getList("news").then(function (data){
-
-            //data.sort(function (a,b){
-            //    return new Date(a.publishedFrom) - new Date(a.publishedFrom);
-            //})
 
             data = data.splice(0,4);
 
