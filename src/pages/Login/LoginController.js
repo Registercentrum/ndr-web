@@ -226,7 +226,7 @@ angular.module('ndrApp').controller('LoginController',
             }
           })
           ['catch'](console.error.bind(console));
-      }, 200000);
+      }, 1200000);
     }
 
     if($stateParams.direct){
