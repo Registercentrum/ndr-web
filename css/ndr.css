@@ -10865,9 +10865,11 @@ p.lead {
 	padding: 0 5px;
 }
 .helpNote {
-    margin-left: 4rem;
+    margin-left: 1rem;
     margin-bottom: 1rem;
-    font-style: italic;
+}
+.subjectProfile .helpNote {
+	color: #dfb200;
 }
 .tableReportingChar  {
 	font-size: 13px;
