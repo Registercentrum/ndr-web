@@ -118,16 +118,20 @@ angular.module("ndrApp")
         var charts = [{
             title: 'HbA1c',
             series: getSeries('hba1c'),
+			helpText: 'HbA1c – eller "långtidssocker" – speglar hur blodsockret varit i genomsnitt under cirka två till tre månader före provtagningen. För vuxna som har diabetes är den generella målsättningen enligt socialstyrelsens nationella riktlinjer att HbA1c ska vara lägre än 52 mmol/mol.'
 
           }, {
             title: 'BMI',
             series: getSeries('bmi'),
+			helpText: 'Body Mass Index (BMI) är ett sätt att skatta om man är överviktig genom att mäta förhållandet mellan vikt och längd enligt formeln BMI=vikt (Kg)/ längd2 (Meter)'
           }, {
             title: 'LDL',
             series: getSeries('ldl'),
+			helpText: 'Det finns flera typer av fetter i blodet. De som brukar bedömas är totalkolesterol, LDL-kolesterol, HDL-kolesterol och triglycerider.Höga halter av det skadliga kolesterolet LDL kan bidra till åderförfettning. Det kan leda till olika hjärt-kärlsjukdomar som kärlkramp, hjärtinfarkt, stroke eller försämrad blodcirkulation i benen, så kallad fönstertittarsjuka.'
           }, {
             title: 'Blodtryck',
             series: getSeries('bpSystolic'),
+			helpText: 'För vuxna som har diabetes är den generella målsättningen enligt socialstyrelsens nationella riktlinjer att blodtrycket ska vara lägre än 140/85 mm/Hg.'
           }
         ];
 

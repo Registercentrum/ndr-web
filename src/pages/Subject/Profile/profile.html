@@ -8,7 +8,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 subjectProfile">
 
     <tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
 
@@ -22,7 +22,7 @@
                 <h1>Grunddata</h1>
               </div>
               <div class="body">
-                <p class="mb0">{{ subject.diabetesTypeText }} sedan {{ subject.yearOfOnset }}</p>
+                <p class="mb0">{{ subject.diabetesType == 1 ? 'Diabetes Typ 1' : subject.diabetesTypeText }} sedan {{ subject.yearOfOnset }}</p>
                 <p>
                   Behandling: {{ model.latest.treatment.label }}</p>
                 </p>
@@ -56,7 +56,7 @@
                     <div style="height:35px;border:2px solid #fff;" ng-style="{'background-color' : model.latest.physicalActivity.value == item.code ? '#74bad8' : '#ccc' }"></div>
                     <span style="font-size: 12px">{{ item.text}}</span>
                   </div>
-                  <div style="text-align: center">(gånger per vecka)</div>
+                  <div style="text-align: center">Antal gånger per vecka<i class="fa fa-question-circle helpNote" tooltip="All fysisk aktivitet som pågår minst 30 min räknas."></i></div>
                 </div>
               </div>
             </div> <!-- End of grunddata-->
@@ -115,7 +115,7 @@
               <div class="body">
                 <table class="table table-condensed">
                   <tr>
-                    <td width="80">Diabetesretinopati</td>
+                    <td width="80">Diabetesretinopati<i class="fa fa-question-circle helpNote" tooltip="Diabetesretinopati betyder att blodkärlen i ögats näthinna är skadade på grund av diabetes. Det finns olika grader av diabetesretinopati, där den lindrigaste graden, simplex retinopati inte påverkar synen och inte föranleder någon behandling av ögonen."></i></td>
                     <td width="20" style="width:50%">{{ model.latest.diabeticRetinopathy.label }}</td>
                   </tr>
                   <tr>
@@ -149,15 +149,15 @@
               <div class="body">
                 <table class="table table-condensed">
                   <tr>
-                    <td>Senaste S-Kreatininvärde</td>
+                    <td>Senaste S-Kreatininvärde<i class="fa fa-question-circle helpNote" tooltip="Kreatinin är ett ämne som normalt bildas i muskulaturen och som utsöndras via urinen. Förhöjt kreatininvärde tyder på försämrad njurfunktion. Referensvärdet varierar beroende på ålder och kön.  Kvinnor över 18 år 45-90 µmol/L, män över 18 år 60-105 µmol/L."></i></td>
                     <td>{{ model.latest.creatinine.label }}</td>
                   </tr>
                   <tr>
-                    <td>Makroalbuminuri</td>
+                    <td>Makroalbuminuri<i class="fa fa-question-circle helpNote" tooltip="Albuminuri innebär att njurarna påverkats av diabetessjukdomen och att det läcker ut proteiner i urinen."></i></td>
                     <td>{{ model.latest.macroscopicProteinuria.label }}</td>
                   </tr>
                   <tr ng-hide="model.latest.macroscopicProteinuria.label == 'Ja'">
-                    <td>Mikroalbuminuri</td><td>{{ model.latest.microscopicProteinuria.label }}</td>
+                    <td>Mikroalbuminuri<i class="fa fa-question-circle helpNote" tooltip="Albuminuri innebär att njurarna påverkats av diabetessjukdomen och att det läcker ut proteiner i urinen."></i></td><td>{{ model.latest.microscopicProteinuria.label }}</td>
                   </tr>
                 </table>
               </div>
@@ -179,7 +179,7 @@
               <div class="body">
 
                 <div class="row pv4" ng-repeat="chart in subject.charts">
-                  <h4 class="col-md-12">{{ chart.title }}</h4>
+                  <h4 class="col-md-12">{{ chart.title }}<i class="fa fa-question-circle helpNote" ng-if="chart.helpText" tooltip="{{chart.helpText}}"></i></h4>
                   <div class="col-md-9">
                     <div
                             line-chart
