@@ -108,6 +108,11 @@ angular.module('ndrApp')
               }
             },
             series : {
+              stickyTracking: false,
+              tooltip: {
+                followPointer: true,
+                split: true
+              },
               marker: {
                 symbol: 'circle',
                 //fillColor: '#5999DA',
