@@ -13,15 +13,24 @@ angular.module('ndrApp')
     link: function(scope, element, attrs) {
 
 
-      function updateColor(series){
-        if(series == undefined) return;
+      function updateColor(lineSeries){
+        if(lineSeries == undefined) return;
 
-        var color = series.color == '#ccc' ? '#74BAD8' : '#ccc';
-        var width = series.color == '#ccc' ? 5 : 1;
+        var color = lineSeries.color == '#ccc' ? '#74BAD8' : '#ccc';
+        var width = lineSeries.color == '#ccc' ? 5 : 1;
+        var chartSeries = $('#promCombined').highcharts().series;
+        var sibling = chartSeries[lineSeries.index];
 
-        var sibling = $('#promCombined').highcharts().series[series.index];
-        series.update({color:color});
-        series.update({lineWidth:width});
+        // reset currently selected lines
+        _.each(chartSeries, function (s) {
+          if (s.color != "#ccc") {
+            s.update({color:"#ccc"});
+            s.update({lineWidth:1});
+          }
+        });
+
+        lineSeries.update({color:color});
+        lineSeries.update({lineWidth:width});
         sibling.update({color:color});
         sibling.update({lineWidth:width});
       }
@@ -123,18 +132,11 @@ angular.module('ndrApp')
 
               events: {
                 click: function () {
-                  // updateColor(this);
-                },
-
-                legendItemClick: function (event) {
-                  var visibility = this.visible ? 'visible' : 'hidden';
-                  event.preventDefault();
-
                   updateColor(this);
-
-                  // if (this.visible) series.hide();
-                  //else series.show();
-                  return true;
+                },
+                legendItemClick: function () {
+                  updateColor(this);
+                  return false;
                 },
               },
 
