@@ -11,14 +11,14 @@ angular.module('ndrApp')
     // get a query url with or without the sessionid
     // with for local development and without for deploy
     this.constructUrl = function (url) {
-      var sessionId = "999a"; //static
+      // var sessionId = "999a"; //static
       //
       // uncomment to get urls without session id
-      // return url;
+      return url;
 
 
       // uncomment to get urls with sessionid attached
-      return url + (url.indexOf("?") !== -1 ? "&" : "?") + "SESSIONID=" + sessionId;
+      // return url + (url.indexOf("?") !== -1 ? "&" : "?") + "SESSIONID=" + sessionId;
     }
   }]);
 
