@@ -79,9 +79,11 @@
                         <li role="separator" class="divider"></li>
 
 
-                        <li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
-                            <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
-                        </li>
+                        <div style="max-height: 140px;overflow-y: auto;padding-left: 20px;">
+                            <li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">
+                                <a role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>
+                            </li>
+                        </div>
                         <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="accountService.logOut()">Logga ut</a></li>
                     </ul>
                 </div>

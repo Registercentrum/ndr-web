@@ -22,7 +22,7 @@ angular.module('ndrApp')
 
         };
 
-
+        /* Updates User Account and reloads current route */
         this.updateAccount = function (accountID) {
           var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID: accountID});
           this.accountModel.activeAccount = activeAccount;
@@ -54,8 +54,16 @@ angular.module('ndrApp')
 
               $rootScope.$broadcast('newUser');
 
+
               if (response.data.isSubject == true && self.accountModel.chosenUserType == "subject") {
                 self.accountModel.activeAccount = {};
+                cookieFactory.create("SUBJECT", subject.socialNumber, 7);
+              }
+
+
+              if(cookieFactory.read("SUBJECT")){
+                self.accountModel.chosenUserType = 'subject';
+                return false;
               }
 
               if (response.data.isUser == false) {
@@ -131,6 +139,7 @@ angular.module('ndrApp')
           this.accountModel.activeAccount = null;
           cookieFactory.erase("SESSIONID");
           cookieFactory.erase("ACTIVEACCOUNT");
+          cookieFactory.erase("SUBJECT");
           $state.go('main.home', {}, {reload: true});
         };
 

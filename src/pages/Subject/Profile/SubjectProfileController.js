@@ -94,18 +94,65 @@ angular.module("ndrApp")
 			if (latest) $scope.model.selectedInviteData.push(latest);
 			if (previous) $scope.model.selectedInviteData.push(previous);
 
-          var promSeries = angular.copy($scope.subject.surveys);
+      var promSeries = angular.copy($scope.subject.surveys);
 
-          promSeries.map(function (dimension) {
+      promSeries.map(function (dimension) {
 
-            dimension.name = dimension.dimension.desc;
-            dimension.data = dimension.series;
-            dimension.color = "#ccc",
-              dimension.lineWidth= 1
+        dimension.name = dimension.dimension.desc;
+        dimension.data = dimension.series;
+        dimension.color = "#ccc",
+          dimension.lineWidth= 1
 
-          })
+      })
 
-          $scope.model.promSeries = promSeries;
+      $scope.model.promSeries = promSeries;
+
+      console.log("SERIES", promSeries)
+
+
+          google.charts.setOnLoadCallback(drawChart);
+
+          function drawChart(){
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Datum');
+
+            _.each(promSeries, function(d){
+              data.addColumn('number', d.name);
+            })
+
+            // data.addColumn({type: 'string', role: 'tooltip'});
+
+            _.each(promSeries[0].data, function(d, i){
+
+              var arr = [new Date(d.x)];
+
+              _.each(promSeries, function (d) {
+                arr.push(d.data[i].y);
+              })
+
+              // arr.push(d.name);
+
+              data.addRow(arr);
+            })
+
+
+            var options = {
+              chart: {
+                // title: 'Box Office Earnings in First Two Weeks of Opening',
+                // subtitle: 'in millions of dollars (USD)'
+              },
+              pointsVisible : true,
+              width: 900,
+              height: 600,
+              // colors: ['#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC',,'#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC']
+            };
+
+            $timeout(function() {
+              var chart = new google.charts.Line(document.getElementById('linechart_material'));
+              chart.draw(data, options);
+            }, 200);
+          }
 
 
         // group them by main group ids
@@ -170,8 +217,6 @@ angular.module("ndrApp")
               }),
               attribute = _.find($scope.contactAttributes, {columnName: key}),
               value;
-            
-            console.log("test", attribute)
 
             if (key === 'diabetesType') return {value: null, date: null, label: 'saknas'};
             if (typeof visit === 'undefined') return {value: null, date: null, label: 'saknas'};
@@ -191,7 +236,6 @@ angular.module("ndrApp")
             } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
               value = visit[key] ? 'Ja' : 'Nej';
             } else {
-              console.log("test", attribute)
               value = $filter('number')(visit[key]) + (attribute.measureUnit != null ? ' ' + attribute.measureUnit : '');
             }
 
@@ -200,6 +244,96 @@ angular.module("ndrApp")
               {value: null, date: null, label: value};
 
             return ret;
+          }
+
+
+          function populateTableData() {
+            var table = [],
+              exluded = ['contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'],
+              contacts, keys;
+
+
+            if ($scope.unitTypeID == 1) //Remove pumpinfo for "primärdsvårdsenheter"
+              exluded = exluded.concat(['pumpIndication', 'pumpOngoing', 'pumpOngoingSerial', 'pumpProblemKeto', 'pumpProblemHypo', 'pumpProblemSkininfection', 'pumpProblemSkinreaction', 'pumpProblemPumperror', 'pumpNew', 'pumpNewSerial', 'pumpClosureReason']);
+
+            if (!$scope.subject) return false;
+
+            var startIndex = 0 + (5 * ($scope.tableIndex - 1));
+
+            contacts = angular.copy($scope.subject.contacts).splice(startIndex, 5);
+
+            // Get tha keys for the table
+            keys = _.keys(contacts[0]);
+
+            // Filter exluded
+            keys = _.filter(keys, function (key) {
+              return _.indexOf(exluded, key) === -1;
+            });
+
+            // Construct the table data
+            _.each(keys, function (key, keyIndex) {
+              var attribute = _.find($scope.contactAttributes, {columnName: key}),
+                label = attribute ? attribute.question : key,
+                sequence = attribute ? attribute.sequence : 0;
+
+              console.log("label", keyIndex, label)
+
+              table[keyIndex] = {
+                label: label,
+                sequence: sequence,
+                values: []
+              };
+
+              _.each(contacts, function (contact) {
+                var value = contact[key];
+
+                if (_.isNull(value)) {
+                  value = '-';
+
+                  // If it's a date, format it in a nice way
+                } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
+                  value = $filter('date')(new Date(value), 'yyyy-MM-dd');
+
+                  // Get proper label for the id value
+                } else if (attribute && attribute.domain && attribute.domain.isEnumerated) {
+                  value = _.find(attribute.domain.domainValues, {code: value}).text;
+
+                  // If it's a boolean, return proper translation (ja-nej)
+                } else if (attribute && attribute.domain && attribute.domain.name === 'Bool') {
+                  value = value ? 'Ja' : 'Nej';
+                }
+                else if (attribute && attribute.columnName === 'unit') {
+                  value = value ? 'Ja' : 'Nej';
+                }
+
+                table[keyIndex].values.push(value);
+              });
+            });
+
+            
+            $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
+            table = _.filter(table, function (d) {
+              return d.label !== 'Besöksdatum';
+            })
+
+            unitArray = _.find(table, function (d) {
+              return d.label == 'unit';
+            });
+
+            var replaced = [];
+
+            _.each(unitArray.values, function (unitID) {
+
+              var name =  _.find(dataService.data.units, function (d) {
+                return d.unitID == unitID;
+              }).name;
+
+              replaced.push(name);
+
+            })
+            unitArray.values = replaced;
+
+            $scope.model.data.table = table;
           }
 
 
@@ -216,19 +350,12 @@ angular.module("ndrApp")
               $scope.model.latest[obj.columnName] = getLatestValue(obj.columnName);
             });
 
-            console.log($scope.model.latest['pumpNew']);
-            console.log($scope.model.latest['pumpOngoing']);
-
             //pumpOngoing should be pumpNew if reported later
             if ($scope.model.latest['pumpNew']) {
               if ($scope.model.latest['pumpNew'].date >= $scope.model.latest['pumpOngoing'].date) {
                 $scope.model.latest['pumpOngoing'] = $scope.model.latest['pumpNew'];
               }
             }
-
-            console.log($scope.model.latest['pumpNew']);
-            console.log($scope.model.latest['pumpOngoing']);
-            console.log($scope.model.latest['pumpClosureReason']);
 
             //pumpOngoing should be reset if closure reported later
             if ($scope.model.latest['pumpClosureReason']) {
@@ -237,11 +364,6 @@ angular.module("ndrApp")
               }
             }
 
-            console.log($scope.model.latest['pumpNew']);
-            console.log($scope.model.latest['pumpOngoing']);
-            console.log($scope.model.latest['pumpClosureReason']);
-
-            console.log($scope.model.latest);
           }
 
 
@@ -382,6 +504,7 @@ angular.module("ndrApp")
             $scope.contactAttributes = values;
             populateLatestData();
             populateSeriesData();
+            populateTableData();
 
           })
         console.log($scope.subject);

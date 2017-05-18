@@ -542,18 +542,6 @@ angular.module('ndrApp')
               function (s) { return s.dimension.isPREM ? 2 : 1; }
             );
 
-            // $scope.subject.promSeries = _.map(charts, function (chart) {
-            //   chart.latest = _.last(chart.series).y;
-            //   chart.yMax = _.max(chart.series, function (s) { return s.y; }).y;
-            //   return chart;
-            // });
-
-
-            // $scope.subject.charts = _.map(charts, function (chart) {
-            //   chart.latest = _.last(chart.series).y;
-            //   chart.yMax = _.max(chart.series, function (s) { return s.y; }).y;
-            //   return chart;
-            // });
 
             function getSeries (type) {
               return _.map(
