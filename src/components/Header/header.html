@@ -18,7 +18,7 @@
 
                 <div ng-show="accountModel.activeAccount" class="dropdown LoginButton">
 
-                    <button ng-if="accountModel.chosenUserType === 'user'" type="button" class="Button dropdown-toggle Button--grey" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
+                    <button ng-if="accountModel.chosenUserType !== 'subject'" type="button" class="Button dropdown-toggle Button--grey" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" ui-sref="main.account.home">
                         {{ accountModel.user.firstName + ' ' + accountModel.user.lastName }} <span ng-show="accountModel.activeAccount" style="font-size: 12px">{{ ': ' + accountModel.activeAccount.unit.name | characters:26 }}</span>
                         <span class="caret"></span>
                     </button>

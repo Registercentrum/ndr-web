@@ -1,14 +1,14 @@
-<div class="row">
+<!--<div class="row">
 
     <div class="col-sm-12">
-        <!--<h5 style="font-size: 12px">{{ accountModel.activeAccount.unit.name }}</h5>-->
+        <h5 style="font-size: 12px">{{ accountModel.activeAccount.unit.name }}</h5>
         <h1 class="Page-title">Översikt {{ accountModel.activeAccount.unit.name }}
 
         </h1>
 
     </div>
 
-    <!--<form class="col-sm-12 text-right" role="search" name="subjectForm" novalidate>
+    <form class="col-sm-12 text-right" role="search" name="subjectForm" novalidate>
         <div class="PatientSearch">
             <div class="PatientSearch-inner">
 				<span class="PatientSearch-icon">
@@ -19,8 +19,8 @@
                 <button ng-click="gotoProfile()" style="border-left: 1px solid white;" class="PatientSearch-reportButton" ng-disabled="!subjectForm.$valid">Diabetesprofil</button>
             </div>
         </div>
-    </form>-->
-</div>
+    </form>
+</div>-->
 
 
 <!--<div class="row">
@@ -50,45 +50,154 @@
     </div>
 </div>-->
 <div class="row">
-    <div class="col-md-12">
-        <div class="Panel">
-            <h1 class="Panel-title">Rapporteringsgrad</h1>
-			<p>NDR blir inte bättre än det som rapporteras in. Därför är det viktigt att ni kontrollerar att era uppgifter överförs till NDR 
-				som förväntat. Tabellen nedan visar hur stor andel av era patienter som har en rapporterad uppgift 
-				på respektive variabel de senaste 365 dagarna. Tabellen uppdateras varje natt.
-				</p>
-			<div class="col-md-6 pull-right descLabels">
-				<span class="valueIndicator worst">0-69%</span><span class="valueIndicator bad">70-79%</span><span class="valueIndicator ok">80-89%</span><span class="valueIndicator good">90-100%</span>
+	<div class="col-md-9">
+		<div class="Panel">
+			<div class="Survey">
+			<h2 class="mt0">Översikt</h2>
+			<h4>{{ accountModel.activeAccount.unit.name }}</h4>
+				<tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
+					<tab heading="Resultatöversikt">
+						<br />
+						<div key-indicators light="true" model="model"></div>
+					</tab>
+					<tab heading="Rapporteringsgrad">
+						<br />
+						<h1 class="Panel-title">Rapporteringsgrad</h1>
+						<p>NDR blir inte bättre än det som rapporteras in. Därför är det viktigt att ni kontrollerar att era uppgifter överförs till NDR 
+							som förväntat. Tabellen nedan visar hur stor andel av era patienter som har en rapporterad uppgift 
+							på respektive variabel de senaste 365 dagarna. Tabellen uppdateras varje natt.
+							</p>
+						<div class="col-md-8 pull-right descLabels">
+							<span class="valueIndicator worst">0-69%</span><span class="valueIndicator bad">70-79%</span><span class="valueIndicator ok">80-89%</span><span class="valueIndicator good">90-100%</span>
+						</div>
+						<table class="tableReporting table table-responsive">
+							<thead>
+							  <tr>
+								<th class="colHeader rowLabel" ng-click="handleSortClick(0)">Variabel <span ng-show="model.reportSort.level == 0 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 0 && !model.reportSort.desc">&#9660;</span></th>
+								<th class="colHeader" ng-click="handleSortClick(3)">Vår enhet <span ng-show="model.reportSort.level == 3 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 3 && !model.reportSort.desc">&#9660;</span></th>
+								<th class="colHeader" ng-click="handleSortClick(2)">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 2 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 2 && !model.reportSort.desc">&#9660;</span></th>
+								<th class="colHeader" ng-click="handleSortClick(1)">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 1 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 1 && !model.reportSort.desc">&#9660;</span></th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <tr class="variable" ng-repeat="f in model.reportList">
+								<td class="rowHeader" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}"><span style="">{{f.question}}</span></td>
+								<td class="value myUnit"><span class="valueIndicator" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}">{{f.unitShare.value}}%</span></td>
+								<td class="value myCounty"><span class="valueIndicator" ng-class="{'good':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}">{{f.countyShare.value}}%</span></td>
+								<td class="value"><span class="valueIndicator" ng-class="{'good':(f.sweShare.group === 4), 'ok':(f.sweShare.group === 3), 'bad':(f.sweShare.group === 2), 'worst':(f.sweShare.group === 1)}">{{f.sweShare.value}}%</span></td>
+							  </tr>
+							</tbody>
+						</table>
+					</tab>
+					<tab heading="Våra patienter">
+						<br />
+						<h1 class="Panel-title">Våra Patienter</h1>
+						<p>Upgifterna nedan baseras på besök från de senaste 365 dagarna. Om det finns flera uppgifter rapporterade på personen så kommer den senast rapporterade uppgiften redovisas i statistiken. </p>
+						<div style="margin-bottom: 15px" ng-if="model.unitDTTypes.length>1">
+							<button style="margin-right: 5px"
+								ng-repeat="d in model.unitDTTypes"
+								ng-click="setDisplayedDTType({{d.id}})" class="Button Button--default ng-binding Button--default"
+								ng-class="{'Button--info': model.activeDTType.id === d.id}">
+								{{d.name}}
+							</button>
+						</div>
+						<table class="tableReportingChar table table-responsive">
+							<thead>
+							  <tr>
+								<th></th>
+								<th class="colHeader" colspan="2" style="width: 60px">Vår enhet</th>
+								<th class="colHeader" colspan="1" style="width: 130px">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}}</th>
+								<th class="colHeader" colspan="1" style="width: 130px">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}}</th>
+							  </tr>
+							</thead>
+							<tbody style="border-top: 2px solid white">
+									<td colspan="1" rowspan></td>
+									<td class="smallheader" colspan="1"><span>Antal</span></td>
+									<td class="smallheader" colspan="1"><span>Andel</span></td>
+									<!--<td class="centered smallheader" colspan="1"><span>Antal</span></td>-->
+									<td class="smallheader" colspan="1"><span>(antal={{model.charStatistics[model.activeDTType.id][2]['total']}})</span><br /><span>Andel</span></td>
+									<!--<td class="centered smallheader" colspan="1"><span>Antal</span></td>-->
+									<td class="smallheader" colspan="1"><span>(antal={{model.charStatistics[model.activeDTType.id][1]['total']}})</span><br /><span>Andel</span></td>
+							</tbody>
+							<tbody>
+								<tr class="value" style="background-color: white">
+									<td class="rowLabel rowHeader borderRight" colspan="1"><strong>{{model.activeDTType.name}}</strong></td>
+									<td class="" colspan="1"><strong>{{model.charStatistics[model.activeDTType.id][3]['total']}}</strong></td>
+									<td class="borderRight" colspan="1"></td>
+									<!--<td class="" colspan="1"><span style="font-weight: 600;">{{model.charStatistics[model.activeDTType.id][2]['total']}}</span></td>-->
+									<td class="borderRight" colspan="1"></td>
+									<!--<td class="" colspan="1"><span style="font-weight: 600;">{{model.charStatistics[model.activeDTType.id][1]['total']}}</span></td>-->
+									<td class="" colspan="1"></td>
+								</tr>
+							</tbody>
+							<tbody ng-if="model.activeDTType.id == 0">
+								<tr class="areaHeader">
+									<td class="rowHeader" colspan="5">Diabetestyp</td>
+								</tr>
+								<tr class="value" ng-repeat="d in model.allDTTypes" ng-if="d.id>0">
+									<td class="rowLabel borderRight">{{d.name}}</td>
+									
+									<td class="">{{model.charStatistics[d.id][3]['total']}}</td>
+									<td class="borderRight">{{model.charStatistics[d.id][3]['total'] ? (((model.charStatistics[d.id][3]['total']/model.charStatistics[0][3]['total'])*100).toFixed(0)+'%') : ''}}</td>
+									
+									<!--<td class=""><span>{{model.charStatistics[model.activeDTType.id][2][v.name]}}</span></td>-->
+									<td class="borderRight">{{model.charStatistics[d.id][2]['total'] ? (((model.charStatistics[d.id][2]['total']/model.charStatistics[0][2]['total'])*100).toFixed(0)+'%') : ''}}</td>
+									
+									<!--<td class=""><span>{{model.charStatistics[model.activeDTType.id][1][v.name]}}</span></td>-->
+									<td class="">{{model.charStatistics[d.id][1]['total'] ? (((model.charStatistics[d.id][1]['total']/model.charStatistics[0][1]['total'])*100).toFixed(0)+'%') : ''}}</td>
+								</tr>
+							</tbody>
+							<tbody ng-repeat="area in model.charConfig" ng-if="area.hiddenIfDTTypes.indexOf(model.activeDTType.id) < 0">
+								<tr class="areaHeader">
+									<td class="rowHeader" colspan="5" rowspan>{{area.header}}</td>
+								</tr>
+								<tr class="value" ng-repeat="v in area.fields">
+									<td class="rowLabel borderRight">{{v.header}} <i class="fa fa-question-circle helpNote" ng-show="v.helpText" tooltip="{{v.helpText}}"></i></td>
+									
+									<td class="">{{model.charStatistics[model.activeDTType.id][3][v.name]}}</td>
+									<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][3][v.name]/(model.charStatistics[model.activeDTType.id][3][v.denom] || model.charStatistics[model.activeDTType.id][3][area.defaultDenom]))*100).toFixed(0)+'%'}}</td>
+									
+									<!--<td class=""><span>{{model.charStatistics[model.activeDTType.id][2][v.name]}}</span></td>-->
+									<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][2][v.name]/(model.charStatistics[model.activeDTType.id][2][v.denom] || model.charStatistics[model.activeDTType.id][2][area.defaultDenom]))*100).toFixed(0)+'%'}}</td>
+									
+									<!--<td class=""><span>{{model.charStatistics[model.activeDTType.id][1][v.name]}}</span></td>-->
+									<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][1][v.name]/(model.charStatistics[model.activeDTType.id][1][v.denom] || model.charStatistics[model.activeDTType.id][1][area.defaultDenom]))*100).toFixed(0)+'%'}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</tab>
+				</tabset>
 			</div>
-			<table class="tableReporting table table-responsive">
-			<thead>
-			  <tr>
-				<th class="colHeader rowLabel" ng-click="handleSortClick(0)">Variabel <span ng-show="model.reportSort.level == 0 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 0 && !model.reportSort.desc">&#9660;</span></th>
-				<th class="colHeader" ng-click="handleSortClick(3)">Vår enhet <span ng-show="model.reportSort.level == 3 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 3 && !model.reportSort.desc">&#9660;</span></th>
-				<th class="colHeader" ng-click="handleSortClick(2)">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 2 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 2 && !model.reportSort.desc">&#9660;</span></th>
-				<th class="colHeader" ng-click="handleSortClick(1)">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 1 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 1 && !model.reportSort.desc">&#9660;</span></th>
-			  </tr>
-			</thead>
-			<tbody>
-			  <tr class="variable" ng-repeat="f in model.reportList">
-				<td class="rowHeader" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}"><span style="">{{f.question}}</span></td>
-				<td class="value myUnit"><span class="valueIndicator" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}">{{f.unitShare.value}}%</span></td>
-				<td class="value myCounty"><span class="valueIndicator" ng-class="{'good':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}">{{f.countyShare.value}}%</span></td>
-				<td class="value"><span class="valueIndicator" ng-class="{'good':(f.sweShare.group === 4), 'ok':(f.sweShare.group === 3), 'bad':(f.sweShare.group === 2), 'worst':(f.sweShare.group === 1)}">{{f.sweShare.value}}%</span></td>
-			  </tr>
-			</tbody>
-			</table>
+		</div>
+	</div>
+    <div class="col-md-3">
+
+        <div class="Panel">
+            <h3>Nyheter</h3>
+			
+			<div list model="model.newsList"></div>
+			
+            <!--<ul class="List">
+
+                <li ng-repeat="item in model.newsList" class="List-item">
+
+                    <div class="List-item-inner">
+
+                        <div style="font-size:13px"><span ng-if="item.isNew" class="highlight">Ny</span><span> {{ item.createdAt | date: 'mediumDate' }}</span></div>
+                        <div class="List-item-title"><strong>{{ item.title }}</strong></div>
+                        <p class="News-text-date"></p>
+                        <p class="News-text-body" ng-bind-html="item.body">
+                        </p>
+
+                    </div>
+
+                </li>
+
+            </ul>-->
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="Panel">
-            <div key-indicators light="true" model="model"></div>
-        </div>
-    </div>
-</div>
 <div class="row" ng-if="unitInIQV">
     <div class="col-md-12">
         <div class="Panel Panel--blue">

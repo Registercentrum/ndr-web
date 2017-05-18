@@ -4192,7 +4192,7 @@ th {
   border-top: 0;
 }
 .table > tbody + tbody {
-  border-top: 2px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 .table .table {
   background-color: #F6F5EE;
@@ -10490,6 +10490,9 @@ button[disabled=disabled] {
 .Table--fixed {
   table-layout: fixed;
 }
+.TableIndicators {
+	font-size: 11px;
+}
 .TableIndicators-row-status {
   cursor: pointer;
   width: 60%;
@@ -10689,7 +10692,6 @@ p.lead {
 .tableReporting > tbody > tr > td,
 .tableReporting > tfoot > tr > td {
   padding: 0px;
-  padding-top: 0px;
 }
 .visits-table td,
 .visits-table th {
@@ -10852,7 +10854,85 @@ p.lead {
 .News-text-date {
   color: #888;
 }
+.News-text-body {
+  font-size:smaller;
+}
 .News-text-readmore {
   margin: 1em 0;
 }
+.highlight {
+	background: #ffcc01;
+	padding: 0 5px;
+}
+.helpNote {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+.subjectProfile .helpNote {
+	color: #dfb200;
+}
+.tableReportingChar  {
+	font-size: 13px;
+}
+.tableReportingChar .colHeader {
+	text-align: center;
+	vertical-align: bottom
+}
+.tableReportingChar td.centered {
+	text-align: center;
+}
+.tableReportingChar td.smallheader {
+	vertical-align: bottom;
+	font-weight: 600;
+	text-align: center;
+	font-size: 10px;
+}
+.tableReportingChar td.rowLabel {
+	padding-left: 15px;
+}
+.tableReportingChar td.rowHeader {
+	padding-left: 5px;
+	padding-top: 3px;
+	font-weight: 600;
+}
+.tableReportingChar > thead > tr > th, .tableReportingChar > tbody > tr > th, .tableReportingChar > tfoot > tr > th, .tableReportingChar > thead > tr > td, .tableReportingChar > tbody > tr > td, .tableReportingChar > tfoot > tr > td {
+    padding: 1px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #eee;
+}
+.tableReportingChar  tbody
+{
+	border-top: none;
+}
+.tableReportingChar  td.borderRight
+{
+	border-right: 1px solid #eee;
+}
+.tableReportingChar  tr.areaHeader
+{
+	background-color: #f2f2f2;
+}
+.tableReportingChar tr.value td{
+	text-align: center;
+}
+.tableReportingChar tr.value td.rowLabel{
+	text-align: left;
+}
+.tableReportingChar tr.value:hover {
+  font-weight: 600;
+  background-color: #c4e2ee;
+}
+
+.tableReportingChar tr.value td i.helpNote {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    font-style: inherit;
+}
+
+.tableReportingChar > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: none;
+}
+
 /*# sourceMappingURL=ndr.css.map */

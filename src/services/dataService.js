@@ -134,7 +134,6 @@ angular.module('ndrApp')
                 });
         };
 
-
         this.getSubjectById = function (id) {
           var url = APIconfigService.baseURL + 'Subject/' + id +
             '?AccountID=' + accountService.accountModel.activeAccount.accountID +
@@ -410,13 +409,26 @@ angular.module('ndrApp')
             });
         };
 		
+        this.getPatientsStatistics = function (accountID, callback) {
+            var query = query || {};
+            query.APIKey = APIconfigService.APIKey;
+			query.AccountID = accountID;
+
+            $.ajax({
+                url     : APIconfigService.baseURL + 'CharStatistics',
+                data    : query,
+                type    : 'GET',
+                dataType: 'json',
+                success : callback
+            });
+        };
+		
         this.getReportingStatistics = function (accountID, callback) {
             var query = query || {};
             query.APIKey = APIconfigService.APIKey;
 			query.AccountID = accountID;
 
             $.ajax({
-
                 url     : APIconfigService.baseURL + 'ReportingStatistics',
                 data    : query,
                 type    : 'GET',

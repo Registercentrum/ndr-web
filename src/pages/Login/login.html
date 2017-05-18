@@ -6,16 +6,16 @@
     <tabset justified>
       <tab heading="För dig med diabetes">
         <div ng-if="!model.loginStarted">
-          <h4 class="col-md-6 col-md-offset-3 pv5-ns f2 lh-copy">
+          <!--<h4 class="col-md-6 col-md-offset-3 pv5-ns f2 lh-copy">
             Logga in med Mobilt BankID för att se och besvara Diabetesenkäten.
             Om du inte har Mobilt BankID kan du få engångskod av din vårdenhet.
-          </h4>
+          </h4>-->
 
           <div class="row">
             <div class="col-md-5">
               <img src="images/bankid_small.png" class="" style="" alt=""/>
               <h5 class="f2 fw2">Logga in med Mobilt BankID </h5>
-              <small class="orange strong mb2 db">(Du kommer legitimera dig mot Registercentrum)</small>
+              <small class="orange strong mb2 db">Du kommer legitimera dig mot "Registercentrum"</small>
               <form ng-submit="startLogin('subject')">
                 <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
                 <div class="red mb4" ng-if="model.loginFailed">
@@ -36,6 +36,7 @@
             <div class="col-md-5">
               <img src="images/lock_small.png" class="" style="max-height: 50px;" alt=""/>
               <h5 class="f2 fw2">Logga in med engångskod</h5>
+			  <small class="orange strong mb2 db">Med engångskod kan du endast besvara din diabetesenkät</small>
               <form ng-submit="loginPROMKey()">
                 <input placeholder="DIN KOD" type="text" class="db w-80 pa3 mb4 center" ng-model="model.PROMKey" />
                 <div class="red mb4" ng-if="model.loginPROMKeyFailed">
@@ -44,7 +45,8 @@
                 <button type="submit" class="Button Button--info">
                   Logga in
                 </button>
-              </form>
+				<small class="mb4 db" style="margin-top:15px"> <i class="fa fa-exclamation-circle"></i>Gäller endast dig som behandlas på en klinik/vårdcentral som deltar i testning av <strong>Diabetesenkäten</strong>.</small>
+			  </form>
             </div>
           </div>
         </div>
@@ -64,7 +66,7 @@
             <div class="col-md-6 col-md-offset-3">
               <img src="images/bankid_small.png" class="" style="" alt=""/>
               <h5 class="f2 fw2">Mobilt Bank-ID </h5>
-              <small class="orange strong mb2 db">(Du kommer legitimera dig mot Registercentrum)</small>
+              <small class="orange strong mb2 db">Du kommer legitimera dig mot Registercentrum</small>
               <form ng-submit="startLogin('user')">
                 <input placeholder="19ÅÅMMDDXXXX" type="text" class="db w-80 pa3 mb4 center" ng-model="model.socialnumber" />
                 <div class="red mb4" ng-if="model.loginFailed">

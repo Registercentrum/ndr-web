@@ -167,7 +167,7 @@ angular.module('ndrApp').controller('LoginController',
 
                 $state.go('main.account.home');
               } else if (cookieFactory.read("ACTIVEACCOUNT")) {
-                accountService.accountModel.activeAccount = user.activeAccounts.find(function (a) {
+                accountService.accountModel.activeAccount = _.find(user.activeAccounts,function (a) {
                   return a.accountID === +cookieFactory.read("ACTIVEACCOUNT");
                 });
                 $state.go('main.account.home');
@@ -226,7 +226,7 @@ angular.module('ndrApp').controller('LoginController',
             }
           })
           ['catch'](console.error.bind(console));
-      }, 200000);
+      }, 1200000);
     }
 
     if($stateParams.direct){

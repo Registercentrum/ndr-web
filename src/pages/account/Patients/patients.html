@@ -267,7 +267,7 @@
                             <!--<th>Mer</th>-->
                             <th class="EmpId">Personnummer</th>
                             <th class="EmpId">Senaste besök</th>
-                            <th ng-repeat="f in filters | filter:{isChosen:true}" once-text="f.question"></th>
+                            <th ng-repeat="f in filters | filter:{isChosen:true}">{{f.question}}</th>
 							<th class="EmpId">Avliden</th>
                             <th>Funktioner</th>
                         </tr>
