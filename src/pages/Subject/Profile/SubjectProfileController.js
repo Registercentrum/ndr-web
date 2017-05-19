@@ -107,53 +107,6 @@ angular.module("ndrApp")
 
       $scope.model.promSeries = promSeries;
 
-      console.log("SERIES", promSeries)
-
-
-          google.charts.setOnLoadCallback(drawChart);
-
-          function drawChart(){
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('date', 'Datum');
-
-            _.each(promSeries, function(d){
-              data.addColumn('number', d.name);
-            })
-
-            // data.addColumn({type: 'string', role: 'tooltip'});
-
-            _.each(promSeries[0].data, function(d, i){
-
-              var arr = [new Date(d.x)];
-
-              _.each(promSeries, function (d) {
-                arr.push(d.data[i].y);
-              })
-
-              // arr.push(d.name);
-
-              data.addRow(arr);
-            })
-
-
-            var options = {
-              chart: {
-                // title: 'Box Office Earnings in First Two Weeks of Opening',
-                // subtitle: 'in millions of dollars (USD)'
-              },
-              pointsVisible : true,
-              width: 900,
-              height: 600,
-              // colors: ['#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC',,'#5EBCDC','#5EBCDC','#5EBCDC','#5EBCDC']
-            };
-
-            $timeout(function() {
-              var chart = new google.charts.Line(document.getElementById('linechart_material'));
-              chart.draw(data, options);
-            }, 200);
-          }
-
 
         // group them by main group ids
         $scope.subject.surveys = _.groupBy(

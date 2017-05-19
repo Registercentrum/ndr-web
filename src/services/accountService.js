@@ -57,7 +57,7 @@ angular.module('ndrApp')
 
               if (response.data.isSubject == true && self.accountModel.chosenUserType == "subject") {
                 self.accountModel.activeAccount = {};
-                cookieFactory.create("SUBJECT", subject.socialNumber, 7);
+                cookieFactory.create("SUBJECT", "y", 7);
               }
 
 
