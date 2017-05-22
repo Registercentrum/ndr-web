@@ -5,30 +5,15 @@ angular.module('ndrApp')
 
         function link (scope) {
 
-            var id = scope.model.id;
-
-            scope.model.selectedKeyIndicator = 201;
-            scope.model.sex = 0;
-
-            //scope.model.diabetesType = scope.model.unitType === 1 ? 0 : 1;
-
-
-            //    selectedKeyIndicatorName: undefined,
-                //    sex : 0,
-                //    unitType : scope.unitType || 0,
-                //    diabetesType : scope.unitType == 1 ? 0 : 1,
-                //};
-
-
-            //scope.model = {
-            //    id : id,
-            //    geo : scope.geo,
-            //    selectedKeyIndicator: 201,
-            //    selectedKeyIndicatorName: undefined,
-            //    sex : 0,
-            //    unitType : scope.unitType || 0,
-            //    diabetesType : scope.unitType == 1 ? 0 : 1,
-            //};
+			var localModel = {
+				geoType: "unit",
+				selectedKeyIndicator: 201,
+				sex: 0,
+				diabetesType: scope.model.activeAccount.unit.typeID === 1 ? 0 : 1,
+				unitType: scope.model.activeAccount.unit.typeID
+			}
+		
+			scope.model = jQuery.extend(scope.model, localModel);
 
             scope.data = {
                 keyIndicator : undefined,
@@ -37,10 +22,9 @@ angular.module('ndrApp')
 
             scope.$watch('model', function (newValue, oldValue){
                 getSelectedKeyIndicator();
-                scope.model.selectedKeyIndicatorName = _.find(dataService.data.indicators.byType.target, {id : scope.model.selectedKeyIndicator}).name;
+                scope.model.selectedKeyIndicatorName = _.find(dataService.data.indicators.byType.target, {id: scope.model.selectedKeyIndicator}).name;
                 if(newValue.sex === oldValue.sex || newValue.diabetesType === oldValue.diabetesType) getKeyIndicators();
             }, true);
-
 
             function getSelectedKeyIndicator () {
 
@@ -63,7 +47,7 @@ angular.module('ndrApp')
                 if (scope.model.geoType === 'unit') {
 
                     queryGeo = dataService.queryFactory({
-                        unitID      : scope.model.id,
+                        unitID      : scope.model.activeAccount.unit.unitID,
                         level       : 2,
                         indicatorID : selectedIndicator,
                         interval    : 'y',
@@ -77,7 +61,7 @@ angular.module('ndrApp')
                     //var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
                 } else {
                     queryGeo = dataService.queryFactory({
-                        countyCode  : id,
+                        countyCode  : scope.model.activeAccount.unit.countyCode,
                         indicatorID : selectedIndicator,
                         interval    : 'y',
                         fromYear    : 2010,
@@ -151,7 +135,7 @@ angular.module('ndrApp')
                 var toInclude = [201, 221, 207, 222, 209, 214, 211, 203, 223, 216, 202, 219],
                     promises  = [],
                     query     = dataService.queryFactory({
-                        countyCode  : id,
+                        countyCode  : scope.model.activeAccount.unitID,
                         ID          : toInclude,
                         sex         : scope.model.sex,
                         unitType    : scope.model.unitType,
@@ -160,7 +144,7 @@ angular.module('ndrApp')
 
                 if (scope.model.geoType === 'unit'){
                     query = dataService.queryFactory({
-                        unitID      : scope.model.id,
+                        unitID      : scope.model.activeAccount.unit.unitID,
                         level       : 2,
                         ID          : toInclude,
                         sex         : scope.model.sex,
@@ -221,7 +205,7 @@ angular.module('ndrApp')
             templateUrl: 'src/components/KeyIndicators/KeyIndicators.html',
             link: link,
             scope: {
-                model : '=',
+                model : '='
 
                 //id     : '=',
                 //geo    : '=',
