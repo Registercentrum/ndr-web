@@ -31,7 +31,7 @@
 
     <!-- Basic data -->
     <div class="row" style="margin-top: 15px">
-        <div class="col-md-4">
+        <div class="col-md-4 col-print-4">
             <!--<p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>-->
             <p>{{ getDiabetesType(subject.diabetesType) }}</p>
             <p>Debutår: <span class="strong">{{ subject.yearOfOnset }}</span></p>
@@ -45,14 +45,14 @@
 			<p>Senaste besök: <span class="strong">{{ model.latest.contactDate.label }}</span></p>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 col-print-4">
             <p>Vikt: <span class="strong">{{model.latest.weight.value }} kg</span></p>
             <p>Längd: <span class="strong">{{ model.latest.height.value }} cm</span></p>
             <p>BMI: <span class="strong">{{ model.latest.bmi.value }} kg/m <sup>2</sup></span></p>
             <p>Midjemått: <span class="strong">{{ model.latest.waist.value }} cm</span></p>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 col-print-4">
             <p>Fysisk aktivitet: <span class="strong">{{model.latest.physicalActivity.label }}</span></p>
             <p>Röker: <span class="strong">{{ model.latest.smokingHabit.label }}</span></p>
             <p>Ischemisk hjärtsjukdom: <span class="strong">{{ model.latest.ischemicHeartDisease.label }}</span></p>
@@ -101,7 +101,7 @@
 
     <!-- FEET etc -->
 
-    <div class="row" style="margin-top: 50px">
+    <div class="row">
         <div class="col-md-4">
             <div class="">
                 <h4 class="Profile-heading">Fötter</h4>  <i class="Profile-latest-value fa fa-noun_4820_cc" class="" style="font-size: 55px;"></i>
