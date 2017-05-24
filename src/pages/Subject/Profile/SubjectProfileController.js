@@ -242,11 +242,14 @@ angular.module("ndrApp")
               };
 
               _.each(contacts, function (contact) {
-                var value = contact[key];
 
+                var value = contact[key];
+				
                 if (_.isNull(value)) {
                   value = '-';
-
+                  //Handle the unit
+                } else if (key == 'unit') {
+                  value = value.name;
                   // If it's a date, format it in a nice way
                 } else if (attribute && attribute.domain && attribute.domain.name === 'Date') {
                   value = $filter('date')(new Date(value), 'yyyy-MM-dd');
@@ -260,7 +263,7 @@ angular.module("ndrApp")
                   value = value ? 'Ja' : 'Nej';
                 }
                 else if (attribute && attribute.columnName === 'unit') {
-                  value = value ? 'Ja' : 'Nej';
+					value = value ? 'Ja' : 'Nej';
                 }
 
                 table[keyIndex].values.push(value);
@@ -271,24 +274,7 @@ angular.module("ndrApp")
             $scope.model.data.tableHeader = _.find(table, {label: 'Besöksdatum'});
             table = _.filter(table, function (d) {
               return d.label !== 'Besöksdatum';
-            })
-
-            unitArray = _.find(table, function (d) {
-              return d.label == 'unit';
             });
-
-            var replaced = [];
-
-            _.each(unitArray.values, function (unitID) {
-
-              var name =  _.find(dataService.data.units, function (d) {
-                return d.unitID == unitID;
-              }).name;
-
-              replaced.push(name);
-
-            })
-            unitArray.values = replaced;
 
             $scope.model.data.table = table;
           }
