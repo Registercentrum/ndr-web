@@ -50,29 +50,6 @@
               </div>
             </div> <!-- End of grunddata-->
           </div> <!-- End of column-->
-            <div class="col-md-4">
-              <div class="P">
-                <div class="title">
-                  <h1>Grunddata</h1>
-                </div>
-                <div class="body">
-                  <p class="mb0">{{ subject.diabetesTypeText }} sedan {{ subject.yearOfOnset }}</p>
-                  <p>
-                    Behandling: {{ model.latest.treatment.label }}</p>
-                  </p>
-                  <p ng-show="model.latest.insulinMethod.value == 2">
-                    Metod att ge insulin: {{ model.latest.insulinMethod.label }}
-                  </p>
-                  <p ng-show="model.latest.insulinMethod.label == 'Insulinpump'">
-                    Pågående pumpmodell: {{ model.latest.pumpOngoing.label }}
-                  </p>
-                  <p ng-show="model.latest.cgm.value">
-                    CGM/FGM: {{ model.latest.cgm.label + ((model.latest.cgmType.value && model.latest.cgm.value) ? ', ' + model.latest.cgmType.label : '') }}
-                  </p>
-                </div>
-              </div> <!-- End of grunddata-->
-            </div> <!-- End of column-->
-
 
           <div class="col-md-4">
             <div class="P">
@@ -147,7 +124,7 @@
               <div class="body">
                 <table class="table table-condensed">
                   <tr>
-                    <td width="80">Diabetesretinopati<i class="fa fa-question-circle helpNote" tooltip="Diabetesretinopati betyder att blodkärlen i ögats näthinna är skadade på grund av diabetes. Det finns olika grader av diabetesretinopati, där den lindrigaste graden, simplex retinopati inte påverkar synen och inte föranleder någon behandling av ögonen."></i></td>
+                    <td width="80">Diabetesretinopati<i class="fa fa-question-circle helpNote" tooltip="Diabetesretinopati betyder att blodkärlen i ögats näthinna är påverkade på grund av diabetes. Det finns olika grader av diabetesretinopati, där den lindrigaste graden, simplex retinopati inte påverkar synen och inte föranleder någon behandling av ögonen."></i></td>
                     <td width="20" style="width:50%">{{ model.latest.diabeticRetinopathy.label }}</td>
                   </tr>
                   <tr>

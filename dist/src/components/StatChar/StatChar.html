@@ -1,0 +1,61 @@
+<br />
+<h1 class="Panel-title">Våra Patienter</h1>
+<p>Upgifterna nedan baseras på besök från de senaste 365 dagarna. Om det finns flera uppgifter rapporterade på personen så kommer den senast rapporterade uppgiften redovisas i statistiken. </p>
+<div style="margin-bottom: 15px" ng-if="model.unitDTTypes.length>1">
+	<button style="margin-right: 5px"
+		ng-repeat="d in model.unitDTTypes"
+		ng-click="setDisplayedDTType({{d.id}})" class="Button Button--default ng-binding Button--default"
+		ng-class="{'Button--info': model.activeDTType.id === d.id}">
+		{{d.name}}
+	</button>
+</div>
+<table class="tableReportingChar table table-responsive">
+	<thead>
+	  <tr>
+		<th></th>
+		<th class="colHeader" colspan="2" style="width: 60px">Vår enhet</th>
+		<th class="colHeader" style="width: 130px">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}}</th>
+		<th class="colHeader" style="width: 130px">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}}</th>
+	  </tr>
+	</thead>
+	<tbody style="border-top: 2px solid white">
+			<td rowspan></td>
+			<td class="smallheader"><span>Antal</span></td>
+			<td class="smallheader"><span>Andel</span></td>
+			<td class="smallheader"><span>(antal={{model.charStatistics[model.activeDTType.id][2]['total']}})</span><br /><span>Andel</span></td>
+			<td class="smallheader"><span>(antal={{model.charStatistics[model.activeDTType.id][1]['total']}})</span><br /><span>Andel</span></td>
+	</tbody>
+	<tbody>
+		<tr class="value" style="background-color: white">
+			<td class="rowLabel rowHeader borderRight"><strong>{{model.activeDTType.name}}</strong></td>
+			<td class=""><strong>{{model.charStatistics[model.activeDTType.id][3]['total']}}</strong></td>
+			<td class="borderRight"></td>
+			<td class="borderRight"></td>
+			<td class=""></td>
+		</tr>
+	</tbody>
+	<tbody ng-if="model.activeDTType.id == 0">
+		<tr class="areaHeader">
+			<td class="rowHeader" colspan="5">Diabetestyp</td>
+		</tr>
+		<tr class="value" ng-repeat="d in model.allDTTypes" ng-if="d.id>0">
+			<td class="rowLabel borderRight">{{d.name}}</td>
+			<td class="">{{model.charStatistics[d.id][3]['total']}}</td>
+			<td class="borderRight">{{model.charStatistics[d.id][3]['total'] ? (((model.charStatistics[d.id][3]['total']/model.charStatistics[0][3]['total'])*100).toFixed(0)+'%') : ''}}</td>
+			<td class="borderRight">{{model.charStatistics[d.id][2]['total'] ? (((model.charStatistics[d.id][2]['total']/model.charStatistics[0][2]['total'])*100).toFixed(0)+'%') : ''}}</td>
+			<td class="">{{model.charStatistics[d.id][1]['total'] ? (((model.charStatistics[d.id][1]['total']/model.charStatistics[0][1]['total'])*100).toFixed(0)+'%') : ''}}</td>
+		</tr>
+	</tbody>
+	<tbody ng-repeat="area in model.charConfig" ng-if="area.hiddenIfDTTypes.indexOf(model.activeDTType.id) < 0">
+		<tr class="areaHeader">
+			<td class="rowHeader" colspan="5" rowspan>{{area.header}}</td>
+		</tr>
+		<tr class="value" ng-repeat="v in area.fields">
+			<td class="rowLabel borderRight">{{v.header}} <i class="fa fa-question-circle helpNote" ng-show="v.helpText" tooltip="{{v.helpText}}"></i></td>
+			<td class="">{{model.charStatistics[model.activeDTType.id][3][v.name]}}</td>
+			<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][3][v.name]/(model.charStatistics[model.activeDTType.id][3][v.denom] || model.charStatistics[model.activeDTType.id][3][area.defaultDenom]))*100).toFixed(0)+'%'}}</td>
+			<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][2][v.name]/(model.charStatistics[model.activeDTType.id][2][v.denom] || model.charStatistics[model.activeDTType.id][2][area.defaultDenom]))*100).toFixed(0)+'%'}}</td>
+			<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][1][v.name]/(model.charStatistics[model.activeDTType.id][1][v.denom] || model.charStatistics[model.activeDTType.id][1][area.defaultDenom]))*100).toFixed(0)+'%'}}</td>
+		</tr>
+	</tbody>
+</table>
