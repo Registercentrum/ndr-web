@@ -27,7 +27,7 @@ angular.module('ndrApp')
           var activeAccount = _.find(this.accountModel.user.activeAccounts, {accountID: accountID});
           this.accountModel.activeAccount = activeAccount;
           this.accountModel.tempAccount = activeAccount;
-          cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
+          cookieFactory.create("ACTIVEACCOUNT", accountID);
 
           $state.go($state.current, {}, {reload: true});
         };
@@ -57,7 +57,7 @@ angular.module('ndrApp')
 
               if (response.data.isSubject == true && self.accountModel.chosenUserType == "subject") {
                 self.accountModel.activeAccount = {};
-                cookieFactory.create("SUBJECT", "y", 7);
+                cookieFactory.create("SUBJECT", "y");
               }
 
 
