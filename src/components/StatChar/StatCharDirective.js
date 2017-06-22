@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ndrApp')
-    .directive('statChar', ['$q','dataService', function($q, dataService) {
+    .directive('statChar', ['$q','dataService', '$state', function($q, dataService,$state) {
 
         function link (scope) {
 			
@@ -27,7 +27,75 @@ angular.module('ndrApp')
 					return id === d.id;
 				});
 			};
-
+			
+			scope.countClicked = function(name, dType) {
+				
+				var dateOffset = (24*60*60*1000) * 365;
+				
+				var valueFilter = {
+					dateFrom: new Date(new Date()-dateOffset),
+					dateTo: new Date(),
+					d: { value: 1 }
+				};
+				
+				if (scope.model.activeDTType || dType) {
+					valueFilter.d = { value: scope.model.activeDTType.id || dType };
+					if (dType) 
+						if (dType == 9)
+							valueFilter.d.undef = true;	
+				}
+				
+				switch(name) {
+					case 'male':
+						valueFilter.s = { value: 1 }; break;
+					case 'female':
+						valueFilter.s = { value: 2 }; break;
+					case 'ageLT30':
+						valueFilter.age = { min: 18, max: 29 }; break;
+					case 'age30to64':
+						valueFilter.age = { min: 30, max: 64 }; break;
+					case 'age65to79':
+						valueFilter.age = { min: 65, max: 79 }; break;
+					case 'ageGT80':
+						valueFilter.age = { min: 80, max: 120 }; break;
+					case 'durLT10':
+						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+					case 'dur10to20':
+						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+					case 'dur20to29':
+						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+					case 'dur30to39':
+						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+					case 'dur40to49':
+						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+					case 'durGT50':
+						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+					case 'treat1':
+						valueFilter.treatment = { value: 1 }; break;
+					case 'treat2':
+						valueFilter.treatment = { value: 2 }; break;
+					case 'treat3':
+						valueFilter.treatment = { value: 3 }; break;
+					case 'treat4':
+						valueFilter.treatment = { value: 4 }; break;
+					case 'treatglp1':
+						valueFilter.treatment = {}; break;
+					case 'imInjection':
+						valueFilter.insulinMethod = { value: 1 }; break;
+					case 'imPump':
+						valueFilter.insulinMethod = { value: 2 }; break;
+					case 'cgmYes':
+						valueFilter.cgm = { value: 1 }; break;
+					case 'fgm':
+						valueFilter.cgmType = { value: 4 }; break;				
+						
+				}
+				
+				dataService.setSearchFilters('values', valueFilter);
+				
+				$state.go('main.account.patients');
+			}
+			
 			dataService.getPatientsStatistics(scope.model.activeAccount.accountID, function(d) {
 
 				scope.model.charStatistics = d;

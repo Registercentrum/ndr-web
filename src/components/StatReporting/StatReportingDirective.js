@@ -91,6 +91,11 @@ angular.module('ndrApp')
 			
 					var denom;
 					
+					//Exception presentation question smoker
+					if (f.id == 137) //Smoker is presented as question SmokingHabits
+						f.question = 'Rökvanor';
+					
+					//Fields with different denominator
 					switch(f.columnName) {
 						case 'pumpOngoing':
 							denom = 'pumpUsing';
@@ -108,15 +113,15 @@ angular.module('ndrApp')
 					var o = {
 						question: f.question,
 						unitShare: {
-							value: scope.getShare(d.unitCounts[f.columnName], d.unitCounts[denom]),
+							value: scope.getShare(d.counts[3][f.columnName], d.counts[3][denom]),
 							group: null,
 						},
 						countyShare: {
-							value: scope.getShare(d.countyCounts[f.columnName], d.countyCounts[denom]),
+							value: scope.getShare(d.counts[2][f.columnName], d.counts[2][denom]),
 							group: null,
 						},
 						sweShare: {
-							value: scope.getShare(d.sweCounts[f.columnName], d.sweCounts[denom]),
+							value: scope.getShare(d.counts[1][f.columnName], d.counts[1][denom]),
 							group: null
 						}
 					};
