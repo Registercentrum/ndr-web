@@ -1,13 +1,23 @@
 angular.module('ndrApp')
   .factory('cookieFactory', function () {
-    function create(name, value, days) {
+    function create(name, value, minutes) {
       var expires = "";
-      if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-      }
-      document.cookie = name + "=" + value + expires + "; path=/";
+	  
+		//sets default cookie expiration
+		function minutesUntilMidnight(){
+			var mid= new Date(), 
+			ts= mid.getTime();
+			mid.setHours(24, 0, 0, 0);
+			return Math.floor((mid - ts)/60000);
+		};
+	  
+		var dur = minutes || minutesUntilMidnight();
+	  
+		var date = new Date();
+		date.setTime(date.getTime() + (dur * 60 * 1000));
+		expires = "; expires=" + date.toUTCString();
+
+		document.cookie = name + "=" + value + expires + "; path=/";
     }
 
     function read(name) {
