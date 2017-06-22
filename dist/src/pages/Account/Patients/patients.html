@@ -128,7 +128,7 @@
                         <div ng-if="filter.maxValue !== null && filter.minValue !== 1920">
 
                             <div ng-show="filter.columnName == 'hba1c'" style="font-size:11px">
-                                Snabbval: <a class="mr1" href="" ng-click="shortcut(20,50)"><50</a> <a class="mr1" href="" ng-click="shortcut(20,52)"><52</a> <a class="mr1" href="" ng-click="shortcut(52,60)">52-60</a> <a class="mr1" href="" ng-click="shortcut(60,70)">60-70</a> <a class="mr1" href="" ng-click="shortcut(70,177)">>70</a>
+                                Snabbval: <a class="mr1" href="" ng-click="shortcut(20,49)"><50</a> <a class="mr1" href="" ng-click="shortcut(20,51)"><52</a> <a class="mr1" href="" ng-click="shortcut(52,60)">52-60</a> <a class="mr1" href="" ng-click="shortcut(60,70)">60-70</a> <a class="mr1" href="" ng-click="shortcut(71,177)">>70</a>
                             </div>
 
                             <div
@@ -277,7 +277,7 @@
                         <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
                         <td>{{ ::subject.snr }}</td>
                         <td>{{ ::subject.contactDate | date:'yyyy-MM-dd' }}</td>
-                        <td ng-repeat="f in ::filters | filter:{isChosen:true}">{{ ::lookupName(f, subject[f.columnName]) }}</td>
+                        <td ng-repeat="f in filters | filter:{isChosen:true}">{{ ::lookupName(f, subject[f.columnName]) }}</td>
 						<td style="text-align:center;">{{ ::subject.isDead ? 'X' : '' }}</td>
                         <td><a ui-sref="main.account.patient({patientID: subject.subjectID, backToSearchVisible: 'yes'})" class="Button Button--info Button--small">Visa profil</a></td>
                     </tr>

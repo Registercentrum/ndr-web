@@ -80,6 +80,11 @@
 					<li>Mervete Miftaraj, biostatistiker</li>
 					<li>Stefan Franzén, PhD, biostatistiker</li>
                 </ul>
+				<p>
+					<article class="">
+						<h5><a href="pdfs/javsdeklaration.pdf" target="_blank">Länk till jävsdeklaration</a></h5>
+					</article>
+				</p>
 
                 <h4>Drift- och utvecklingsgrupp</h4>
                 <ul>
@@ -259,23 +264,17 @@
                 <p>Registercentrum Västra Götaland<br>413 45 Göteborg<br>010 – 441 29 29</p>
             </div>
 
-            <div class="Panel Panel--blue">
+            <div class="Panel Panel--blue" ng-if="accountModel.activeAccount">
 			
                 <h3 class="Panel-title">Kontaktpersoner</h3>
-				
-                <article class="">
-                    <h5><img src="images/icon_pdf.png" style="width:30px;height:30px;margin-right: 10px" alt=""/><a href="pdfs/javsdeklaration.pdf" target="_blank">Jävsdeklaration</a></h5>
-                </article>
-				
-				<div ng-if="accountModel.activeAccount">
-					<article class="" >
-						<h5><img src="images/icon_pdf.png" style="width:30px;height:30px;margin-right: 10px" alt=""/><a href="pdfs/NDR_KAS.pdf" target="_blank">KAS-lista</a></h5>
-					</article>
 
-					<article class="" ng-if="accountModel.activeAccount">
-						<h5><img src="images/icon_pdf.png" style="width:30px;height:30px;margin-right: 10px" alt=""/><a href="pdfs/NDR_Koordinatorer.pdf" target="_blank">Koordinator-lista</a></h5>
-					</article>
-				</div>
+				<article class="" >
+					<h5><img src="images/icon_pdf.png" alt=""/><a style="color: #fff" href="pdfs/NDR_KAS.pdf" target="_blank">KAS-lista</a></h5>
+				</article>
+
+				<article class="" ng-if="accountModel.activeAccount">
+					<h5><img src="images/icon_pdf.png" alt=""/><a style="color: #fff"  href="pdfs/NDR_Koordinatorer.pdf" target="_blank">Koordinator-lista</a></h5>
+				</article>
 			
             </div>
 			
