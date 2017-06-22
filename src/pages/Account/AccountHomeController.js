@@ -9,7 +9,10 @@ angular.module("ndrApp")
 		
 		//separated for future needs
 		$scope.model.keyIndicatorModel = {
-			activeAccount: $scope.model.activeAccount,
+			geoType: "unit",
+			unit: $scope.model.activeAccount.unit,
+			unitType: $scope.model.activeAccount.unit.typeID,
+			diabetesType: $scope.model.activeAccount.unit.typeID === 1 ? 0 : 1
 		};
 		
 		//separated for future needs
