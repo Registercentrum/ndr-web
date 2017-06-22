@@ -92,7 +92,9 @@ angular.module('ndrApp').controller('LoginController',
         );
         accountService.accountModel.activeAccount = activeAccount;
         accountService.accountModel.tempAccount   = activeAccount;
-        cookieFactory.create("ACTIVEACCOUNT", accountID, 7);
+				
+        cookieFactory.create("ACTIVEACCOUNT", accountID);
+		
         if (modalInstance) modalInstance.dismiss("cancel");
         $state.go("main.account.home");
       }
