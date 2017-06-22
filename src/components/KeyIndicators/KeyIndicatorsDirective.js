@@ -4,17 +4,18 @@ angular.module('ndrApp')
     .directive('keyIndicators', ['$q','dataService', function($q, dataService) {
 
         function link (scope) {
-
+			
+			console.log('scope',scope);
+			
 			var localModel = {
-				geoType: "unit",
 				selectedKeyIndicator: 201,
-				sex: 0,
-				diabetesType: scope.model.activeAccount.unit.typeID === 1 ? 0 : 1,
-				unitType: scope.model.activeAccount.unit.typeID
+				sex: 0
 			}
 		
 			scope.model = jQuery.extend(scope.model, localModel);
-
+			
+			console.log(scope.model.county);
+			
             scope.data = {
                 keyIndicator : undefined,
                 keyIndicators : undefined
@@ -47,7 +48,7 @@ angular.module('ndrApp')
                 if (scope.model.geoType === 'unit') {
 
                     queryGeo = dataService.queryFactory({
-                        unitID      : scope.model.activeAccount.unit.unitID,
+                        unitID      : scope.model.unit.unitID,
                         level       : 2,
                         indicatorID : selectedIndicator,
                         interval    : 'y',
@@ -61,7 +62,7 @@ angular.module('ndrApp')
                     //var queryCountry = dataService.queryFactory({ indicatorID: selectedIndicator, level : 0, interval : 'y', fromYear : 2010, toYear:2014,  sex : scope.model.sex, unitType: scope.model.unitType, diabetesType : scope.model.diabetesType });
                 } else {
                     queryGeo = dataService.queryFactory({
-                        countyCode  : scope.model.activeAccount.unit.countyCode,
+                        countyCode  : scope.model.county.code,
                         indicatorID : selectedIndicator,
                         interval    : 'y',
                         fromYear    : 2010,
@@ -134,17 +135,11 @@ angular.module('ndrApp')
             function getKeyIndicators () {
                 var toInclude = [201, 221, 207, 222, 209, 214, 211, 203, 223, 216, 202, 219],
                     promises  = [],
-                    query     = dataService.queryFactory({
-                        countyCode  : scope.model.activeAccount.unitID,
-                        ID          : toInclude,
-                        sex         : scope.model.sex,
-                        unitType    : scope.model.unitType,
-                        diabetesType: scope.model.diabetesType
-                    });
+					query;
 
                 if (scope.model.geoType === 'unit'){
                     query = dataService.queryFactory({
-                        unitID      : scope.model.activeAccount.unit.unitID,
+                        unitID      : scope.model.unit.unitID,
                         level       : 2,
                         ID          : toInclude,
                         sex         : scope.model.sex,
@@ -152,7 +147,15 @@ angular.module('ndrApp')
                         diabetesType: scope.model.diabetesType,
                         //countyCode  : null,
                     });
-                }
+                } else {
+                    query = dataService.queryFactory({
+                        countyCode  : scope.model.county.code,
+                        ID          : toInclude,
+                        sex         : scope.model.sex,
+                        unitType    : scope.model.unitType,
+                        diabetesType: scope.model.diabetesType
+                    });
+				}
                 promises.push(dataService.getStats(query));
 
                 //RIKET
