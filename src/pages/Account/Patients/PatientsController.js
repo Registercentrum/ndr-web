@@ -242,10 +242,10 @@ angular.module('ndrApp')
 			}
 
 			$scope.shortcut = function (min, max) {
-        $scope.selectedFilters['hba1c'].min = min;
-        $scope.selectedFilters['hba1c'].max = max;
+				$scope.selectedFilters['hba1c'].min = min;
+				$scope.selectedFilters['hba1c'].max = max;
 
-      }
+			  }
 
 			$scope.oneDateInputIsValid = function(formCmp, valKey) {
 			
@@ -503,6 +503,8 @@ angular.module('ndrApp')
                 } else {
                     $scope.selectedFilters[name] = null;
                 }*/
+				
+				console.log($scope.filters);
 				
 				dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
 				filter();
