@@ -181,11 +181,11 @@ angular.module('ndrApp')
 						defaultDenom: 'total'
 					},
 					{
-						header: 'CGM',
+						header: 'Kontinuerlig klukosmätning',
 						hiddenIfDTTypes: [0,2,3,4,5,9],
 						fields: [
-							{ name: 'cgmYes', header: 'använder CGM', denom: 'insulin', helpText: 'Nämnaren är summan av alla insulinbehandlade.'},
-							{ name: 'fgm', header: 'använder FGM', denom: 'cgmYes', helpText: 'Nämnaren är summan av alla som använder CGM.' }
+							{ name: 'cgmYes', header: 'använder CGM/FGM', denom: 'insulin', helpText: 'Nämnaren är summan av alla insulinbehandlade.'},
+							{ name: 'fgm', header: 'varav FGM', denom: 'cgmYes', helpText: 'Nämnaren är summan av alla som använder CGM.' }
 						],
 						defaultDenom: 'cgmYes'
 					}
