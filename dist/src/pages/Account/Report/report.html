@@ -431,20 +431,27 @@
 									<i class="fa fa-calendar"></i>
 									</button>
 									</span>
-									<input
-										name="fundusExaminationDate"
-										type="text"
-										class="form-control"
-										ng-model="contactModel.fundusExaminationDate"
-										ng-model-options="{ updateOn: 'blur' }"
-										date-disabled="disabled(date, mode)"
-										datepicker-options="dateOptions"
-										datepicker-popup="{{format}}"
-										is-open="datePickers.fundusExaminationDate.opened"
-										close-text="Stäng"
-										current-text="Idag"
-										clear-text="Rensa"
-										placeholder="ÅÅÅÅ-MM-DD">
+									<div ng-class="{ 'has-error' : (contactForm.fundusExaminationDate.$invalid || contactForm.fundusExaminationDate.$error.errorInputformat) }">
+										<input
+											name="fundusExaminationDate"
+											type="text"
+											class="form-control"
+											ng-model="contactModel.fundusExaminationDate"
+											ng-class="{ 'has-error' : (contactForm.fundusExaminationDate.$invalid || contactForm.fundusExaminationDate.$error.errorInputformat) }"
+											ng-change="validateFundusDate()"
+											ng-model-options="{ updateOn: 'blur' }"
+											date-disabled="disabled(date, mode)"
+											datepicker-options="dateOptions"
+											datepicker-popup="{{format}}"
+											is-open="datePickers.fundusExaminationDate.opened"
+											close-text="Stäng"
+											current-text="Idag"
+											clear-text="Rensa"
+											placeholder="ÅÅÅÅ-MM-DD">
+									</div>
+								</div>
+								<div ng-show="contactForm.fundusExaminationDate.$error.errorInputformat" class="has-error">
+									<p class="Report-formItemHelp help-block" >Kontrollera, datum matas in på formen ÅÅÅÅ-MM-DD.</p>
 								</div>
 								<p ng-show="contactForm.fundusExaminationDate.$pristine && contactModel.fundusExaminationDate != null && contactModel.fundusExaminationDate == lastContact.fundusExaminationDate.split('T')[0] && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
 							</div>
@@ -495,20 +502,28 @@
 									<i class="fa fa-calendar"></i>
 									</button>
 									</span>
-									<input
-										name="footExaminationDate"
-										type="text"
-										class="form-control"
-										ng-model="contactModel.footExaminationDate"
-										ng-model-options="{ updateOn: 'blur' }"
-										date-disabled="disabled(date, mode)"
-										datepicker-options="dateOptions"
-										datepicker-popup="{{format}}"
-										is-open="datePickers.footExaminationDate.opened"
-										close-text="Stäng"
-										current-text="Idag"
-										clear-text="Rensa"
-										placeholder="ÅÅÅÅ-MM-DD">
+									<div ng-class="{ 'has-error' : (contactForm.footExaminationDate.$invalid || contactForm.footExaminationDate.$error.errorInputformat) }">
+										<input
+											name="footExaminationDate"
+											type="text"
+											class="form-control"
+											ng-model="contactModel.footExaminationDate"
+											ng-class="{ 'has-error' : (contactForm.footExaminationDate.$invalid || contactForm.footExaminationDate.$error.errorInputformat) }"
+											ng-model-options="{ updateOn: 'blur' }"
+											ng-change="validateFootDate()"
+											ng-model-options="{ updateOn: 'blur' }"
+											date-disabled="disabled(date, mode)"
+											datepicker-options="dateOptions"
+											datepicker-popup="{{format}}"
+											is-open="datePickers.footExaminationDate.opened"
+											close-text="Stäng"
+											current-text="Idag"
+											clear-text="Rensa"
+											placeholder="ÅÅÅÅ-MM-DD">
+									</div>
+								</div>
+								<div ng-show="contactForm.footExaminationDate.$invalid" class="has-error">
+									<p class="Report-formItemHelp help-block" >Kontrollera, datum matas in på formen ÅÅÅÅ-MM-DD.</p>
 								</div>
 								<!--<input name="footExaminationDate" type="text" class="form-control" ng-model="contactModel.footExaminationDate" ng-class="{ 'has-no-error' : !contactForm.footExaminationDate.$invalid && contactModel.footExaminationDate != null}" placeholder="Undersökningsdatum">-->
 								<p ng-show="contactForm.footExaminationDate.$pristine && contactModel.footExaminationDate != null && contactModel.footExaminationDate == lastContact.footExaminationDate.split('T')[0] && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
@@ -583,7 +598,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4 Report-submitWrapper pull-right" >
-						<br /><button type="submit" ng-click="saveContact()" class="Button Button--info btn-block" ng-disabled="!contactForm.contactDate.$valid || !contactOptionalForm.$valid">Spara</button>
+						<br /><button type="submit" ng-click="saveContact()" class="Button Button--info btn-block" ng-disabled="!contactForm.$valid || !contactOptionalForm.$valid">Spara</button>
 					</div>
 				</div>
 			</div>
