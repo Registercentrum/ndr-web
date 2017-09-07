@@ -75,9 +75,9 @@ angular.module('ndrApp')
                 console.log("test", response.data.isUser)
 
                 user.activeAccounts = _.filter(user.accounts, function (account) {
-                  return account.status.id === 1;
+                  return (account.status.id === 1 && account.unit.isActive);
                 });
-
+				
                 self.accountModel.chosenUserType = "user";
 
                 //If cookie
