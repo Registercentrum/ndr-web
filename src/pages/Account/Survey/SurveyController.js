@@ -37,15 +37,92 @@ angular.module('ndrApp')
             all      : [], // all the invites
             displayed: [], // currently shown in the interface, can be set to new or declined
             new      : [], // answered but not signed yet
-            declined : []  // declined to answer
+            declined : [],  // declined to answer
+			open:      [],
+			closed:    [],
+			submitted: [],
+			unsigned:  []
           },
           socialNumberFilter: null,
           filterType: "all",
-          selectedInvite: null
+          selectedInvite: null,
+		  itemsByPage: [],
+		  pageSize: 15,
+		  currentPage: 0
         };
 
         var modalInstance = null;
+		
+		function paged (valLists, pageSize) {
+			var valLength, retVal;
 
+			if (!valLists) return;
+
+			valLength = valLists.length;
+			retVal = [];
+
+			for (var i = 0; i < valLength; i++) {
+				if (i % pageSize === 0) {
+					retVal[Math.floor(i / pageSize)] = [valLists[i]];
+				} else {
+					retVal[Math.floor(i / pageSize)].push(valLists[i]);
+				}
+			}				
+			return retVal;
+		}
+		
+		$scope.sort = function() {
+			//$filter('orderBy')(collection, expression, reverse, comparator)
+			var list = $scope.model.invites.displayed;
+			var rev = $scope.model.sortReverse;
+			var prop = $scope.model.sortType;
+			var aVal, bVal;
+			
+			list = list.sort(function(a,b) {
+			
+				if (prop === 'subject.socialNumber') {
+					aVal = a.subject.socialNumber;
+					bVal = b.subject.socialNumber;
+				}
+				else {
+					aVal = (a[prop] || (rev ? '' : 'ww')); //make empty sort last
+					bVal = (b[prop] || (rev ? '' : 'ww')); //make empty sort last
+				}
+			
+				return  (rev ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal));
+			});
+			
+			$scope.model.invites.displayed = list;
+			$scope.pagination();
+		};
+		
+		$scope.pagination = function () {
+			$scope.model.itemsByPage = paged($scope.model.invites.displayed, $scope.model.pageSize);
+		};
+		
+		$scope.setPage = function () {
+			$scope.currentPage = this.n;
+		};
+
+		$scope.firstPage = function () {
+			$scope.currentPage = 0;
+		};
+
+		$scope.lastPage = function () {
+			$scope.currentPage = $scope.model.itemsByPage.length - 1;
+		};
+
+		$scope.range = function (input, total) {
+			var ret = [];
+			if (!total) {
+				total = input;
+				input = 0;
+			}
+			for (var i = input; i < total; i++)
+				if (i !== 0 && i !== total - 1) ret.push(i);
+			return ret;
+		};
+		
         $scope.printThis = function(){
           $(".modal-body").printThis({
             debug: false,
@@ -95,55 +172,240 @@ angular.module('ndrApp')
           return null;
         }
 
-        function parseInvites(invites) {
-          return _.map(invites, function (invite) {
-            invite.datePicker = {
-              minDate: new Date(invite.createdAt),
-              opened: false
-            };
-            return invite;
-          });
-        }
-
         function getInvites () {
           dataService.getInvites()
             .then(function (response) {
 
-              $scope.model.loading = false;
+				$scope.model.loading = false;
+				
+				$scope.model.invites.all = response.data;
 
-              var invites = parseInvites(response.data)
+				$scope.model.invites.all.map(function (invite) {
+					invite = $scope.setCalculatedValues(invite);
+				})
 
-              invites.map(function (invite) {
-
-                var statusCodes = ["isExpired", "isDeclined", "isOpen", "isInitiated", "isSubmitted", "isSigned"];
-
-                var isExpired = moment(invite.openUntil).isBefore(new Date()) && !invite.isDeclined && !invite.submittedAt;
-                var isDeclined = invite.isDeclined;
-                var isOpen = _.isNull(invite.initiatedAt) && !invite.isDeclined && !invite.submittedAt;
-                var isInitiated = !_.isNull(invite.initiatedAt) && !invite.submittedAt && !invite.isDeclined;
-                var isSubmitted = invite.submittedAt && !invite.isApprovedNDR;
-                var isSigned = invite.submittedAt && invite.isApprovedNDR;
-
-                var status = statusCodes[_.findIndex([isExpired, isDeclined, isOpen, isInitiated, isSubmitted, isSigned], function(d){ return d == true })]
-
-                invite.status = status;
-                
-              })
-
-              $scope.model.invites.all = invites.slice();
-              $scope.model.invites.displayed = invites.slice();
-              $scope.model.invites.new = _.filter(invites, function (invite) {
-                return invite.submittedAt && !invite.isApprovedNDR;
-              });
-              $scope.model.invites.declined = _.filter(invites, function (invite) {
-                return invite.isDeclined;
-              });
+				$scope.setLists();
+				$scope.firstPage();
+				
+				$scope.buildChart($scope.model.invites);
             });
+			
         }
+		$scope.setInvitesOnlyOneYearBack = function() {
+		
+			var now = new Date();
+			var oneYearBack = now.setMonth(now.getMonth() - 12);
+			
+			return invites.filter(function(i) {
+				return !moment(i.openUntil).isBefore(oneYearBack)
+			});
+		};
+		
+		$scope.setCalculatedValues = function(invite) {
+			var statusCodes = ["isExpired", "isDeclined", "isOpen", "isInitiated", "isSigned", "isSubmitted"];
 
+			invite.isExpired = moment(invite.openUntil).isBefore(new Date()) && !invite.isDeclined && !invite.submittedAt;
+			invite.isDeclined = invite.isDeclined;
+			invite.isOpen = _.isNull(invite.initiatedAt) && !invite.isDeclined && !invite.submittedAt && !invite.isExpired;
+			invite.isClosed = _.isNull(invite.initiatedAt) && !invite.isDeclined && !invite.submittedAt  && invite.isExpired;;
+			invite.isInitiated = !_.isNull(invite.initiatedAt) && !invite.submittedAt && !invite.isDeclined;
+			invite.isSubmitted = !_.isNull(invite.submittedAt);
+			invite.isUnsigned = invite.submittedAt && !invite.isApprovedNDR;
+			invite.isSigned = invite.submittedAt && invite.isApprovedNDR;
+			
+			var status = statusCodes[_.findIndex([invite.isExpired, invite.isDeclined, invite.isOpen, invite.isInitiated, invite.isSigned, invite.isSubmitted], function(d){ return d == true })]
+
+			invite.status = status;
+			
+			if(status === 'isSubmitted' && invite.isSigned)
+				console.log(invite);
+
+            invite.datePicker = {
+              minDate: new Date(invite.createdAt),
+              opened: false
+            };
+			
+			return invite;
+		}
+		
+		$scope.setSubsets = function() {
+		
+			var invites = $scope.model.invites.all;
+			
+		  $scope.model.invites.new = _.filter(invites, function (invite) {
+			return invite.submittedAt && !invite.isApprovedNDR;
+		  });
+		  
+		  $scope.model.invites.current = _.filter(invites, function (invite) {
+			return invite.isCurrent;
+		  });
+		  
+		  $scope.model.invites.declined = _.filter(invites, function (invite) {
+			return invite.isDeclined;
+		  });
+		  
+		  $scope.model.invites.open = _.filter(invites, function (invite) {
+			return invite.isOpen;
+		  });
+		  
+		  $scope.model.invites.closed = _.filter(invites, function (invite) {
+			return invite.isClosed;
+		  });
+		  
+		  $scope.model.invites.submitted = _.filter(invites, function (invite) {
+			return invite.isSubmitted;
+		  });
+		};
+		
+		$scope.buildChart = function(model) {
+		
+			$scope.chart = Highcharts.chart('chart', {
+				chart: {
+					height: 120,
+					type: 'bar'
+				},
+				title: {
+					text: '',
+					style: {
+						display: 'none'
+					}
+				},
+				subtitle: {
+					text: '',
+					style: {
+						display: 'none'
+					}
+				},
+				yAxis: {
+					min: 0,
+					visible: false,
+					title: {
+						text: '',
+						style: {
+							display: 'none'
+						}
+					},
+					gridLineWidth: 0,
+					lineWidth: 0,
+					labels: {
+						enabled: false,
+					}
+				},
+				xAxis: {
+					visible: false,
+					 lineWidth: 0, 
+					tickWidth: 0,
+					labels: {
+						enabled: false,
+					}
+				},
+				/*tooltip: {
+					formatter: function() {
+						return '<b>' + this.y + '</b>'
+					}
+				},*/
+				credits: {
+					enabled: false
+				},
+				legend: {
+					reversed: true,
+					padding: 0
+				},
+				plotOptions: {
+					series: {
+						stacking: 'percent',
+						enableMouseTracking: false
+					},
+					bar: {
+						dataLabels: {
+							enabled: true,
+							//distance : -50,
+							formatter: function() {
+								/*var dlabel = this.series.name + '<br/>';*/
+								var dlabel = Math.round(this.percentage) + ' %';
+									return dlabel
+							 },
+							style: {
+								fontSize: '14px'
+							},
+						},
+						
+					}
+				},
+				series: [
+					{
+						name: 'Avböjda',
+						data: [parseInt((100*(model.declined.length/model.all.length)).toFixed(0))],
+						color: '#a6a6a6'
+					},
+					{
+						name: 'Stängda',
+						data: [parseInt((100*(model.closed.length/model.all.length)).toFixed(0))],
+						color: '#bfbfbf'
+					},
+					{
+						name: 'Ännu ej besv.',
+						data: [parseInt((100*(model.open.length/model.all.length)).toFixed(0))],
+						color: '#d9d9d9'
+					},
+					{
+						name: 'Besvarade',
+						data: [parseInt((100*(model.submitted.length/model.all.length)).toFixed(0))],
+						color: '#f2f2f2'
+					}
+				]
+			});
+		}
+		
+		$scope.updateInviteLocal = function(id, invite) {
+			invite = $scope.setCalculatedValues(invite);
+
+			for (var i = 0; i < $scope.model.invites.all.length; i++) { 
+				if ($scope.model.invites.all[i].inviteID === id) {
+					$scope.model.invites.all[i] = invite;
+					break;
+				}
+			}
+		}
+		
+		$scope.removeInviteLocal = function(id) {
+			for (var i = 0; i < $scope.model.invites.all.length; i++) { 
+				if ($scope.model.invites.all[i].id == id) {
+					$scope.model.invites.all.splice(i, 1);
+					break;
+				}
+			}
+		}
+		
+		$scope.setStat = function() {
+						
+			var answered = invites.filter(function(i) {
+				return i.submittedAt;
+			});
+			
+			var declined = invites.filter(function(i) {
+				return i.isDeclined;
+			});
+			
+			return {
+				created: invites.length,
+				answered: answered.length,
+				declined: declined.length,
+				notAnswered: (invites.length - answered.length)
+			};
+		}
+		
+		$scope.setLists = function() {
+			$scope.setSubsets(); 
+			$scope.setDisplayed();
+		};
+		
         $scope.setDisplayed = function (type) {
-          $scope.model.filterType = type;
-
+		
+          $scope.model.filterType = (type || $scope.model.filterType);
+			
+			console.log($scope.model.filterType);
+			
           if (type === "socialnumber") {
             $scope.model.invites.displayed =
               _.filter($scope.model.invites.all, function (invite) {
@@ -151,8 +413,10 @@ angular.module('ndrApp')
                       .indexOf($scope.model.socialNumberFilter.replace("-", "")) !== -1
               });
           } else {
-            $scope.model.invites.displayed = $scope.model.invites[type];
+            $scope.model.invites.displayed = $scope.model.invites[$scope.model.filterType];
           }
+			$scope.sort();
+		  
         }
 
         $scope.showAnswersModal = function (invite) {
@@ -280,6 +544,8 @@ angular.module('ndrApp')
           dataService.updateInvite(invite.inviteID, signedInvite)
             .then(function (response) {
               invite.signed = true;
+			  $scope.updateInviteLocal(invite.inviteID, response.data);
+			  $scope.setLists();
             })
             ["catch"](function (error) {
               modalInstance = $modal.open({
@@ -307,7 +573,8 @@ angular.module('ndrApp')
         $scope.deleteInvite = function (inviteID) {
           dataService.deleteInvite(inviteID)
             .then(function (response) {
-              getInvites()
+			  $scope.deleteInviteLocal(inviteID);
+			  $scope.setLists();
               modalInstance.dismiss("cancel");
             })
             ["catch"](function (error) {
@@ -333,7 +600,10 @@ angular.module('ndrApp')
 
           dataService.updateInvite(invite.inviteID, invite)
             .then(function (response) {
-              console.log(response);
+				console.log(response.data);
+			  $scope.updateInviteLocal(invite.inviteID, response.data);
+			  $scope.setLists();
+              
             })
             ["catch"](function (error) {
               console.log(error)
@@ -346,8 +616,8 @@ angular.module('ndrApp')
 
         // *********************************************************************
         // New Invite Tab
-        // *********************************************************************
-
+        // *********************************************************************	
+		
         $scope.createInvite = function () {
           var invite = $scope.model.newInvite;
 

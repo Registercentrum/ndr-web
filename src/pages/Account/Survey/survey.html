@@ -4,10 +4,28 @@
 
     <tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
       <tab heading="Administrera enkäter">
-        <p class="pv5-ns pv4">Det finns {{ model.invites.new.length }} besvarade enkäter att signera.</p>
-
-        <h5 class="bb b--light-gray pv1 mb4 gray">Filtering</h5>
-        <div class="row pb4">
+		<!--<div class="row">
+			<div class="col-md-3 extraMargin">
+				<span class="statLabel">Skapade:</span><span class="statNo neutral">{{model.stat.created}}</span></span>
+			</div>
+			<div class="col-md-3 extraMargin">
+				<span class="statLabel">Besvarade:</span><span class="statNo pos">{{model.stat.answered}}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3 extraMargin">
+				
+				<span class="statLabel">Icke besvarade:</span><span class="statNo neg">{{model.stat.notAnswered}}</span>
+			</div>
+			<div class="col-md-3 extraMargin">
+				<span class="statLabel">Avböjda:</span><span class="statNo alert">{{model.stat.declined}}</span>
+			</div>
+		</div>-->
+		<div class="row">
+		<h4 class="b mt4-ns">Enkäter senaste 365 dagarna</h4>
+        <h5 class="bb b--light-gray pv1 mb4 gray" style="margin-bottom: 1rem">Filtering</h5>
+		<p class="pv3-ns pv4" style="font-weight: 600" ng-if="model.invites.new.length" ><span class="highlight">OBS</span> Det finns {{ model.invites.new.length }} besvarade enkäter att  signera.</p>
+        <div class="row pb4 searchpanel">
           <div class="col-sm-2">Personnummer</div>
           <div class="col-sm-10">
             <input
@@ -18,15 +36,32 @@
             />
           </div>
         </div>
-        <div class="row pb4">
+        <div class="row pb4 buttonpanel">
           <div class="col-sm-2">Visa</div>
           <div class="col-sm-10">
             <button
               ng-click="setDisplayed('all')"
               class="Button Button--default"
-              ng-class="{'Button--info': model.filterType !== 'new' && model.filterType !== 'declined'}">
-              Alla ({{ model.invites.all.length }})
+              ng-class="{'Button--info': model.filterType === 'all'}">
+              Utskickade ({{ model.invites.all.length }})
             </button>
+            <button
+              ng-click="setDisplayed('submitted')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'submitted'}">
+              Besvarade ({{ model.invites.submitted.length }})
+            </button>
+            <button
+              ng-click="setDisplayed('open')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'open'}">
+              Ännu ej besv. ({{ model.invites.open.length }})
+            </button>
+          </div> 
+        </div>
+        <div class="row pb4 buttonpanel">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
             <button
               ng-click="setDisplayed('new')"
               class="Button Button--default"
@@ -34,37 +69,43 @@
               Osignerade ({{ model.invites.new.length }})
             </button>
             <button
+              ng-click="setDisplayed('closed')"
+              class="Button Button--default"
+              ng-class="{'Button--info': model.filterType === 'closed'}">
+              Stängda ({{ model.invites.closed.length }})
+            </button>
+            <button
               ng-click="setDisplayed('declined')"
               class="Button Button--default"
               ng-class="{'Button--info': model.filterType === 'declined'}">
               Avböjt enkät ({{ model.invites.declined.length }})
             </button>
-          </div>
-        </div>
+		  </div>
+		</div>
 
         <h5 class="bb b--light-gray pv1 mv4 gray">Resultat</h5>
         <table class="Table borderless" style="">
           <thead>
             <tr>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'subject.socialNumber'; model.sortReverse = !model.sortReverse">
+              <th class="tc pointer pb3" ng-click="model.sortType = 'subject.socialNumber'; model.sortReverse = !model.sortReverse; sort()">
                 Personnummer
-                <i ng-show="model.sortType == 'subject.socialNumber' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'subject.socialNumber' && model.sortReverse" class="fa fa-caret-up"></i>
+                <i ng-show="model.sortType == 'subject.socialNumber' && model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'subject.socialNumber' && !model.sortReverse" class="fa fa-caret-up"></i>
               </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'createdAt'; model.sortReverse = !model.sortReverse">
+              <th class="tc pointer pb3" ng-click="model.sortType = 'createdAt'; model.sortReverse = !model.sortReverse; sort()">
                 Utskickad
-                <i ng-show="model.sortType == 'createdAt' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-up"></i>
+                <i ng-show="model.sortType == 'createdAt' && model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'createdAt' && !model.sortReverse" class="fa fa-caret-up"></i>
               </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">
+              <th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse; sort()">
                 Inkommen
-                <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-up"></i>
+                <i ng-show="model.sortType == 'submittedAt' && model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'submittedAt' && !model.sortReverse" class="fa fa-caret-up"></i>
               </th>
-              <th class="tc pointer pb3" ng-click="model.sortType = 'status'; model.sortReverse = !model.sortReverse">
+              <th class="tc pointer pb3" ng-click="model.sortType = 'status'; model.sortReverse = !model.sortReverse; sort()">
                 Enkätstatus
-                <i ng-show="model.sortType == 'status' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'status' && model.sortReverse" class="fa fa-caret-up"></i>
+                <i ng-show="model.sortType == 'status' && model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'status' && !model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <!--<th class="tc pointer pb3" ng-click="model.sortType = 'submittedAt'; model.sortReverse = !model.sortReverse">-->
                 <!--Besvarad-->
@@ -76,10 +117,10 @@
                 <!--<i ng-show="model.sortType == 'isApprovedNDR' && !model.sortReverse" class="fa fa-caret-down"></i>-->
                 <!--<i ng-show="model.sortType == 'isApprovedNDR' && model.sortReverse" class="fa fa-caret-up"></i>-->
               <!--</th>-->
-              <th class="tc pointer pb3" ng-click="model.sortType = 'tag'; model.sortReverse = !model.sortReverse">
+              <th class="tc pointer pb3" ng-click="model.sortType = 'tag'; model.sortReverse = !model.sortReverse; sort()">
                 Etikett
-                <i ng-show="model.sortType == 'tag' && !model.sortReverse" class="fa fa-caret-down"></i>
-                <i ng-show="model.sortType == 'tag' && model.sortReverse" class="fa fa-caret-up"></i>
+                <i ng-show="model.sortType == 'tag' && model.sortReverse" class="fa fa-caret-down"></i>
+                <i ng-show="model.sortType == 'tag' && !model.sortReverse" class="fa fa-caret-up"></i>
               </th>
               <th class="tc pb3">&nbsp;</th>
             </tr>
@@ -95,7 +136,7 @@
 
 
           <tbody>
-            <tr ng-repeat="invite in model.invites.displayed | orderBy:model.sortType:model.sortReverse" class="tc" style="font-weight: 600">
+            <tr ng-repeat="invite in model.itemsByPage[currentPage]" class="tc" style="font-weight: 600">
               <td>
                 <a
                   ui-sref="main.account.patient({patientID: invite.subject.subjectID, backToSurveysVisible:'yes'})"
@@ -109,7 +150,7 @@
 
                 <!--{{ invite.initiatedAt + "|" + invite.status }}-->
 
-                <div class="FilterDatePopup" ng-show="invite.status == 'isOpen' || invite.status == 'isInitiated'">
+                <div class="FilterDatePopup" ng-if="invite.status == 'isOpen' || invite.status == 'isInitiated'">
                   <div class="input-group FilterDatePopup-group FilterDatePopup-group--fixed">
 
                     <input
@@ -139,10 +180,8 @@
                 </div>
 
 
-                <div class="FilterDatePopup" ng-show="invite.status == 'isExpired'">
-
-                  <div class="input-group FilterDatePopup-group FilterDatePopup-group--fixed">
-
+                <div class="FilterDatePopup" ng-if="invite.status == 'isExpired'">
+					<div class="input-group FilterDatePopup-group FilterDatePopup-group--fixed">
                     <input
                             type="text"
                             class="form-control"
@@ -155,14 +194,13 @@
                             ng-required="true"
                             close-text="Close"
                     />
-
                     <span class="input-group-addon">
                       <button
                               type="button"
                               class="FilterDatePopup-button"
                               ng-click="openDatePickerEdit($event, invite)"
                       >
-                        <i class="fa fa-calendar"></i>
+                        <i class="fa fa-lock"></i>
                       </button>
                     </span>
 
@@ -222,6 +260,22 @@
             </tr>
           </tbody>
         </table>
+		<ul class="pagination pagination-sm" ng-show="model.itemsByPage.length > 1" style="cursor: pointer">
+			<li>
+				<a ng-click="firstPage()" ng-class="{'active': currentPage === 0}">Sida 1</a>
+			</li>
+			<li ng-repeat="n in range(model.itemsByPage.length)">
+				<a ng-click="setPage()" ng-class="{'active': currentPage === n}" ng-bind="n+1">
+					1
+				</a>
+			</li>
+			<li ng-show="model.itemsByPage">
+				<a ng-click="lastPage()" ng-class="{'active': currentPage === (model.itemsByPage.length-1)}">Sista sidan</a>
+			</li>
+		</ul>
+		<h5 class="bb b--light-gray pv1 mb4 gray" style="margin-bottom: 0; padding-bottom:0">Totalt {{ model.invites.all.length }} st</h5>
+		</div>
+		<div id="chart"></div>
       </tab>
 
       <tab heading="Ny enkät">
@@ -357,8 +411,6 @@
               </tbody>
 
             </table>
-
-
           </div>
         </div>
       </tab>
