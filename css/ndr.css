@@ -8750,6 +8750,7 @@ accordion .panel-title > .small > a {
 }
 .nav-tabs {
   border: none;
+  margin-bottom: 20px;
 }
 .nav-tabs > li {
   float: none;
@@ -9553,7 +9554,7 @@ fieldset[disabled] .IndicatorButton {
   border-left: 0;
 }
 .FilterDatePopup-group--mini input {
-  padding: 5px;
+  padding: 6px;
   font-size: 12px;
   height: auto;
   text-align: center;
@@ -9563,7 +9564,7 @@ fieldset[disabled] .IndicatorButton {
   margin: auto;
 }
 .FilterDatePopup-group--fixed input {
-  padding: 5px;
+  padding: 6px;
   font-size: 12px;
   height: auto;
   text-align: center;
@@ -9594,6 +9595,7 @@ fieldset[disabled] .IndicatorButton {
   margin-top: 100px;
   background-color: #FFCC01;
   padding: 31px 0;
+  border-top: 1px solid #dfb200;
 }
 .Footer-title {
   margin-bottom: 20px;
@@ -10934,6 +10936,65 @@ p.lead {
     vertical-align: bottom;
     border-bottom: none;
 }
+.tableReportingChar .fieldCount
+{
+    background-color: #74BAD8;
+    color: white;
+	cursor: pointer;
+    /*text-decoration: underline;*/
+}
+.tableReportingChar .fieldCount:hover
+{
+    text-decoration: underline;
+	background-color:  #2d7d9f;
+}
+article img {
+	width:30px;
+	height:30px;
+	margin-right: 10px
+}
+.Panel--blue,.Panel--green,.Panel--purple   a {
+	color: #fff !important;
+}
+.documents  a {
+	color: white !important;
+}
+.statLabel {
+	display: inline-block;
+    width: 120px;
+}
+.statNo {
+    font-size: 18px;
+    font-weight: 600;
+    width: 20px;
+    padding: 10px 5px 5px;
+    border-radius: 24px;
+    display: inline-block;
+    width: 48px;
+    text-align: center;
+    height: 48px;
+	color: white;
+	border:	 1px solid gray;
+}
+.statNo.pos{
+	background-color: #00a651;
+	border: 1px solid #00803e;
+}
+.statNo.neg{
+	background-color: #C2213D;
+	border: 1px solid #831628;
+}
+.statNo.neutral{
+	background-color: #74BAD8;
+	border: 1px solid #4ca6cd;
+}
+.statNo.alert{
+	background-color: #f0ad4e;
+	border: 1px solid #ed9c2c;
+}
+.extraMargin {
+	margin-top: 10px;
+}
 
 .col-print-1 {width:8%;  float:left;}
 .col-print-2 {width:16%; float:left;}
@@ -10947,5 +11008,29 @@ p.lead {
 .col-print-10{width:83%; float:left;}
 .col-print-11{width:92%; float:left;}
 .col-print-12{width:100%; float:left;}
+
+.cookiePanel {
+	background-color: #333333; 
+	text-align: center; 
+	padding: 10px; 
+	color: white;
+}
+.pagination .active {
+	background-color: #4080bf;
+	border-color: #4080bf;
+	color: white;
+}
+.Survey .buttonpanel .Button {
+	padding: 6px 0;
+	width: 150px;
+}
+.Survey .searchpanel input {
+	padding: 5px;
+    width: 150px;
+}
+.Survey .pb4 {
+    padding-bottom: 0.5rem;
+}
+.
 
 /*# sourceMappingURL=ndr.css.map */
