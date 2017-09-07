@@ -1,7 +1,10 @@
 
 
 <div class="Header" ng-controller="HeaderController">
-
+	<div class="cookiePanel" ng-if="!accountModel.cookieConsent">
+		Denna sida använder cookies, genom att använda tjänsterna godkänner du det.
+		<button class="Button Button--info" ng-click="setCookieConsent();">Jag förstår</button>
+	</div>
     <div class="Header-extras">
         <div class="container">
             <a class="Logo pull-left" ui-sref="main.home" title="Start"><img src="images/logo.png" alt="Start"></a>
@@ -87,16 +90,14 @@
                         <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="accountService.logOut()">Logga ut</a></li>
                     </ul>
                 </div>
-
-                <div style="margin: 30px 0px; display: inline-block" ng-show="!accountModel.activeAccount && !accountModel.user.activeAccounts" class="dropdown">
-                    <a href ng-if="!accountModel.activeAccount && !accountModel.user.activeAccounts" ui-sref="main.login">
+				
+                <div style="margin: 30px 0px; display: inline-block" ng-show="!accountModel.activeAccount" class="dropdown">
+                    <a href ng-show="!accountModel.user.hsaid" ui-sref="main.login">
                         Logga in
                     </a>
-                    <!--<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">-->
-                        <!--<li ng-repeat="account in accountModel.user.activeAccounts" role="presentation">-->
-                            <!--<a href="" role="menuitem" tabindex="-1"  ng-click="accountService.updateAccount(account.accountID)">{{account.unit.name}}</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
+					<a href ng-show="accountModel.user.hsaid"  ui-sref="main.currentUser">
+                        Ansök om användarkonto
+                    </a>
                 </div>
 
 
