@@ -9,6 +9,11 @@
     <div class="Panel">
 		<div class="row">
 			<div class="col-md-12">
+				<button ng-click="showInfo = !showInfo" tooltip="" class="Button Button--large">{{showInfo ? 'Dölj' : 'Visa' }} information om hur du skaffar ett användarkonto</button>
+			</div>
+		</div>
+		<div class="row" ng-show="showInfo">
+			<div class="col-md-12">
 				<h3>Ett användarkonto i NDR</h3>
 				<p>För att få tillgång till en vårdenhets patientuppgifter, kunna rapportera in besöksdata och få tillträde till söklista och patientprofilen i NDR krävs det att man har ett personligt användarkonto. En person kan ha flera användarkonton om man tjänstgör vid flera vårdenheter.</p>
 				<h3>Inloggning med SITHS-kort</h3>
@@ -23,7 +28,7 @@
 			</div>
 		</div>
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5" ng-show="visitor.isUser || user.hsaid">
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Mina användaruppgifter</h2>
@@ -79,18 +84,18 @@
                         <table class="table">
                             <tr>
                                 <th>Enhetsnamn</th>
-                                <th>Roll(er)</th>
                                 <th>Status</th>
+								<th>Roll(er)</th>
                             </tr>
-                            <tr ng-show="user" ng-repeat="account in user.accounts">
+                            <tr ng-show="user" ng-repeat="account in user.accounts" ng-if="account.unit.isActive">
                                 <td>
                                     {{ account.unit.name }}
                                 </td>
                                 <td>
-                                    {{ account.rolestring }}
+                                    {{ account.status.name }}
                                 </td>
                                 <td>
-                                    {{ account.status.name }}
+									<button ng-if="account.status.id == 9" ng-click="applyUnit(account.unit.unitID)" class="Button Button--mini">Ansök igen</button>
                                 </td>
                             </tr>
                         </table>
@@ -112,10 +117,23 @@
                 <div class="row">
                     <div class="">
                         <div class="col-md-12">
-                            <p><strong><i class="fa fa-exclamation-circle blue"></i> För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress stämmer.</strong></p>
+                            <p><strong>
+							<i class="fa fa-exclamation-circle blue"></i> För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress stämmer.
+							</strong></p>
                         </div>
                     </div>
                 </div>
+				
+                <div class="row" ng-if="!visitor.isUser && user.hsaid">
+                    <div class="">
+                        <div class="col-md-12">
+                            <p><strong>
+							<i class="fa fa-exclamation-circle blue"></i> Efter att du ansökt om konto kommer du att kunna uppdatera dina användaruppgifter.
+							</strong></p>
+                        </div>
+                    </div>
+                </div>
+				
                 <div class="row" >
                     <div ng-show="newAccountError.length>0" class="alertText">
                         <div class="col-md-12">
@@ -142,7 +160,7 @@
                         </td>
                         <td>
                             <div class="Report-submitWrapper pull-right">
-                                <button ng-click="applyUnit(unit.unitID)" ng-disabled="" tooltip="" class="Button Button--default">Ansök om konto</button>
+                                <button ng-click="applyUnit(unit.unitID)" ng-disabled="" tooltip="" class="Button Button--small">Ansök om konto</button>
                             </div>
                         </td>
                     </tr>

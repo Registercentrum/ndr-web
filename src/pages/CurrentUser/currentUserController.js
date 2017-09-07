@@ -13,15 +13,13 @@ angular.module('ndrApp')
             $scope.unitSearchString = '';
 			$scope.visitor			= accountService.accountModel.visitor;
             $scope.user             = $scope.visitor.user; //fallback
+			$scope.showInfo         = !$scope.visitor.isUser; //fallback
 			
-			console.log($scope.user);
+			console.log($scope.showInfo);
 
             $scope.$on('newUser', function () {
                 $scope.user = accountService.accountModel.user;
             });
-			
-			console.log(accountService.accountModel);
-			console.log($scope.user);
 
             dataService.getList('units').then(function (data) {
                 var units = data.plain();
@@ -47,7 +45,7 @@ angular.module('ndrApp')
 
             //could be moved to Restangular
             $scope.setRoles = function () {
-                angular.forEach($scope.user.accounts, function (account, accountkey) {
+                /*angular.forEach($scope.user.accounts, function (account, accountkey) {
                     var rolestring;
 
                     angular.forEach(account.roles, function (role, rolekey) {
@@ -56,7 +54,7 @@ angular.module('ndrApp')
                     });
 
                     $scope.user.accounts[accountkey].rolestring = rolestring;
-                });
+                });*/
             };
 
 
@@ -113,6 +111,7 @@ angular.module('ndrApp')
                 $scope.resetAccountErrors();
 				
 				console.log($scope.user.email);
+				console.log(unitID);
 				
 				if ($scope.userForm.email.$invalid) {
 					$scope.newAccountError.push('En korrekt e-postadress krävs för att kunna ansöka om konto.');
