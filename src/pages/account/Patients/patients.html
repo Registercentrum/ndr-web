@@ -286,14 +286,14 @@
         </div>
 
         <ul class="pagination pagination-sm" ng-show="ItemsByPage.length > 1" style="cursor: pointer">
-            <li ng-class="{active:0}"><a ng-click="firstPage()">Sida 1</a>
+            <li ng-class="{active:0}"><a ng-click="firstPage()" ng-class="{'active': currentPage === 0}">Sida 1</a>
 
             </li>
-            <li ng-repeat="n in range(ItemsByPage.length)"> <a ng-click="setPage()" ng-bind="n+1">1</a>
+            <li ng-repeat="n in range(ItemsByPage.length)"> <a ng-click="setPage()" ng-bind="n+1" ng-class="{'active': currentPage === n}">1</a>
 
             </li>
             <li ng-show="ItemsByPage">
-                <a ng-click="lastPage()">Sista sidan</a>
+                <a ng-click="lastPage()" ng-class="{'active': currentPage === (model.itemsByPage.length-1)}">Sista sidan</a>
             </li>
         </ul>
 

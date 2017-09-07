@@ -20,7 +20,7 @@ angular.module('ndrApp')
 
             var allSubjects;
 
-            var dateOffset = (24*60*60*1000) * 365; //365
+            var dateOffset = (24*60*60*1000) * 365;
 			
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
