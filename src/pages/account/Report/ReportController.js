@@ -345,9 +345,7 @@ angular.module('ndrApp')
 			isValid = false;
 		}
 		
-		if (typeof date === 'string')
-			if (date.length !== 10)
-				isValid = false;
+		isValid = $scope.validateDate(date);
 				
 		$scope.contactForm.contactDate.$setValidity('checkInput',isValid);
 		
@@ -408,7 +406,30 @@ angular.module('ndrApp')
 			return;
 	
 	
-    }
+    };
+	$scope.validateDate = function(viewVal) {
+		var isValid = true;
+				
+		if (typeof viewVal === 'string')
+			if (viewVal.length !== 10)
+				isValid = false;
+		
+		return isValid;
+	};
+	$scope.validateFootDate = function(e) {
+
+		var date = $scope.contactForm.footExaminationDate.$viewValue;
+		var isValid = $scope.validateDate(date)  || (date === '');
+
+		$scope.contactForm.footExaminationDate.$setValidity('errorInputformat',isValid);
+	};
+	$scope.validateFundusDate = function(e) {
+
+		var date = $scope.contactForm.fundusExaminationDate.$viewValue;
+		var isValid = $scope.validateDate(date) || (date === '');
+
+		$scope.contactForm.fundusExaminationDate.$setValidity('errorInputformat',isValid);	
+	};
     $scope.getStringDate = function(date) {
 
       if (typeof date === 'string')
