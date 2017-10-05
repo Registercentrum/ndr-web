@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ndrApp')
-    .directive('statReporting', ['$q','dataService', function($q, dataService) {
+    .directive('statReporting', ['$q','dataService','$state', function($q, dataService, $state) {
 
         function link (scope) {
 		
@@ -60,6 +60,28 @@ angular.module('ndrApp')
 				scope.model.reportList = scope.sortRepList(scope.model.reportList,scope.model.reportSort);
 			};
 			
+			scope.handleRowClick = function(f) {
+				
+				var dateOffset = (24*60*60*1000) * 365;
+
+				var filters = dataService.getSearchFilters();
+
+				var valueFilter = {
+					dateFrom: new Date(new Date()-dateOffset),
+					dateTo: new Date()
+				};
+				valueFilter[f.columnName] = {
+					min: f.min,
+					max: f.max,
+					undef: true
+				};
+				
+				dataService.setSearchFilters('values', valueFilter);
+				
+				$state.go('main.account.patients');
+				
+			}
+			
 			scope.getShare = function(d,n) {
 				return parseInt(((d/n)*100).toFixed(0));
 			};
@@ -87,10 +109,12 @@ angular.module('ndrApp')
 						return !(f.columnName === 'cgm' || f.columnName === 'pumpOngoing')
 					});
 				
+				console.log(d);
+				
 				var list = d.fields.map(function(f){
 			
 					var denom;
-					
+
 					//Exception presentation question smoker
 					if (f.id == 137) //Smoker is presented as question SmokingHabits
 						f.question = 'Rökvanor';
@@ -111,6 +135,9 @@ angular.module('ndrApp')
 					}
 				
 					var o = {
+						columnName: f.columnName,
+						min: f.minValue,
+						max: f.maxValue,
 						question: f.question,
 						unitShare: {
 							value: scope.getShare(d.counts[3][f.columnName], d.counts[3][denom]),
