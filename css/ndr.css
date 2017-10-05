@@ -4176,7 +4176,7 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.42857143;
-  vertical-align: top;
+  /*vertical-align: top;*/
   border-top: 1px solid #ddd;
 }
 .table > thead > tr > th {
@@ -5918,6 +5918,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a > img {
   max-width: none;
 }
+.nav-tabs.hometabs {
+  margin: 0 -30px 20px;
+}
 .nav-tabs {
   border-bottom: 1px solid #ddd;
 }
@@ -5926,10 +5929,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   margin-bottom: -1px;
 }
 .nav-tabs > li > a {
-  margin-right: 2px;
+  /*margin-right: 2px;*/
   line-height: 1.42857143;
   border: 1px solid transparent;
-  border-radius: 4px 4px 0 0;
+  /*border-radius: 4px 4px 0 0;*/
+  text-transform: none;
 }
 .nav-tabs > li > a:hover {
   border-color: #eee #eee #ddd;
@@ -5938,7 +5942,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   color: #555555;
-  background-color: #fff;
+  background-color: #f6f6f6;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -5958,6 +5962,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   top: auto;
   left: auto;
 }
+
+
 @media (min-width: 768px) {
   .nav-tabs.nav-justified > li {
     display: table-cell;
@@ -9342,7 +9348,7 @@ fieldset[disabled] .Button {
   padding: 30px 15px;
 }
 .Button--info {
-  color: #fff;
+  color: #fff !important;
   background-color: #74BAD8;
   border: 1px solid #74BAD8;
 }
@@ -10102,6 +10108,12 @@ fieldset[disabled] .IndicatorButton {
   background-color: #74BAD8;
   color: #FFFFFF;
 }
+.Panel--blue a,.Panel--green a,.Panel--purple   a {
+	color: #eee !important;
+}
+.documents   a {
+	color: #eee !important;
+}
 .Profile .Panel {
   padding: 15px;
   font-size: 13px;
@@ -10657,6 +10669,9 @@ p.lead {
 .valueIndicator.good:before {
   background: #3E9654;
 }
+.tableReporting .variable {
+	cursor: pointer;
+}
 .tableReporting .colHeader {
   cursor: pointer;
   min-width: 60px;
@@ -10670,8 +10685,12 @@ p.lead {
 .tableReporting tr {
   /*cursor: pointer;
     width: 60%;*/
-  border-bottom: 1px solid #eee !important;
+	border-bottom: 1px solid #eee !important;
 }
+.tableReporting tr td {
+	vertical-align: bottom;
+}
+	
 .tableReporting tr.variable:hover {
   font-weight: 600;
   background-color: #eee;
@@ -10900,7 +10919,6 @@ p.lead {
 .tableReportingChar > thead > tr > th, .tableReportingChar > tbody > tr > th, .tableReportingChar > tfoot > tr > th, .tableReportingChar > thead > tr > td, .tableReportingChar > tbody > tr > td, .tableReportingChar > tfoot > tr > td {
     padding: 1px;
     line-height: 1.42857143;
-    vertical-align: top;
     border-top: 1px solid #eee;
 }
 .tableReportingChar  tbody
@@ -10952,12 +10970,6 @@ article img {
 	width:30px;
 	height:30px;
 	margin-right: 10px
-}
-.Panel--blue,.Panel--green,.Panel--purple   a {
-	color: #fff !important;
-}
-.documents  a {
-	color: white !important;
 }
 .statLabel {
 	display: inline-block;
@@ -11031,6 +11043,6 @@ article img {
 .Survey .pb4 {
     padding-bottom: 0.5rem;
 }
-.
+
 
 /*# sourceMappingURL=ndr.css.map */
