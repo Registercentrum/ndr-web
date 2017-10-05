@@ -440,6 +440,7 @@ angular.module('ndrApp')
                     // Set the available filters
 
                     //filters.missing =
+					console.log('allfilters',filters);
                     $scope.filters = filters;
                     ready = true;
                     tryLoad();
@@ -475,8 +476,9 @@ angular.module('ndrApp')
                 // Realy simple highlight
                 $scope.highlightedFilter = name;
                 $timeout(function () { $scope.highlightedFilter = null; }, 1000);
+				
                 dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
-
+				
                 // Load subjects only if it's a new filter
                 if (!alreadySelected) tryLoad();
             });
@@ -504,7 +506,7 @@ angular.module('ndrApp')
                     $scope.selectedFilters[name] = null;
                 }*/
 				
-				console.log($scope.filters);
+				console.log('the filters',$scope.filters);
 				
 				dataService.setSearchFilters('filters', _.filter($scope.filters, {isChosen: true}));
 				filter();
@@ -581,9 +583,9 @@ angular.module('ndrApp')
 				selectedFilters.dateFrom = $scope.datePickers.from.date;
 				selectedFilters.dateTo = $scope.datePickers.to.date;
 				
-				dataService.setSearchFilters('values', selectedFilters);
+				console.log(selectedFilters);
 				
-				console.log(subjects);
+				dataService.setSearchFilters('values', selectedFilters);
 				
                 //$scope.model.allSubjects = subjects;
                 $scope.model.filteredSubjects = subjects;
