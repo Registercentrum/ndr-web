@@ -5,6 +5,7 @@ angular.module("ndrApp")
 			activeAccount: $scope.accountModel.activeAccount,
 			newsList: null,
 			unitInIQV: dataService.isInProject('iqv'),
+			activeTab: dataService.getHomeActiveTab()
 		};
 		
 		//separated for future needs
@@ -24,7 +25,11 @@ angular.module("ndrApp")
 		$scope.model.statReporting = {
 			activeAccount: $scope.model.activeAccount
 		};
-				
+		$scope.handleTabClick = function(tab) {
+			this.model.activeTab = tab;
+			dataService.setHomeActiveTab(tab);
+		}
+	
         dataService.getList("news", "?excludePublic=true").then(function (data){
 
             data = data.splice(0,4);

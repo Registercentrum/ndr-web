@@ -4,17 +4,25 @@
 			<div class="Survey">
 			<h2 class="mt0">Översikt</h2>
 			<h4>{{ accountModel.activeAccount.unit.name }}</h4>
-				<tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
-					<tab heading="Resultatöversikt">
+				<ul class="nav nav-tabs hometabs" style="background-color: #f6f6f6; display: block">
+					<li ng-class="{active: model.activeTab == 1}" ng-click="handleTabClick(1);"><a href="javascript:void(0)">Resultatöversikt</a></li>
+					<li ng-class="{active: model.activeTab == 2}" ng-click="handleTabClick(2);"><a href="javascript:void(0)">Rapporteringsgrad</a></li>
+					<li ng-class="{active: model.activeTab == 3}" ng-click="handleTabClick(3);"><a href="javascript:void(0)">Våra patienter</a></li>
+				</ul>
+				<!--<tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
+					<tab active="model.activeTab == 1" heading="Resultatöversikt" ng-click="handleTabClick(1);">
 						<div key-indicators light="true" model="model.keyIndicatorModel"></div>
 					</tab>
-					<tab heading="Rapporteringsgrad">
+					<tab active="model.activeTab == 2" heading="Rapporteringsgrad" ng-click="handleTabClick(2);">
 						<div stat-reporting  model="model.statReporting"></div>
 					</tab>
-					<tab heading="Våra patienter">
+					<tab active="model.activeTab == 3" heading="Våra patienter" ng-click="handleTabClick(3);">
 						<div stat-char model="model.statCharModel"></div>
 					</tab>
-				</tabset>
+				</tabset>-->
+				<div ng-show="model.activeTab == 1" key-indicators light="true" model="model.keyIndicatorModel"></div>
+				<div ng-show="model.activeTab == 2" stat-reporting  model="model.statReporting"></div>
+				<div ng-show="model.activeTab == 3" stat-char model="model.statCharModel"></div>
 			</div>
 		</div>
 	</div>
