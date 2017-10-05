@@ -13,8 +13,10 @@ angular.module('ndrApp')
             indicators     : [],
             preparedGeoList: [],
             promFormMeta:   null,
+			//contactAttributes:	[], maybe cache later
             koo:            null,
-            kas:            null
+            kas:            null,
+			homeActiveTab:	1,
         };
 
 
@@ -133,7 +135,17 @@ angular.module('ndrApp')
                     return error;
                 });
         };
-
+		
+		this.setHomeActiveTab = function(tab) {
+			console.log('settingtab=',tab);
+			this.data.homeActiveTab = tab;
+		}
+		
+		this.getHomeActiveTab = function(tab) {
+			console.log('homeactivetab=',this.data.homeActiveTab);
+			return this.data.homeActiveTab;
+		}
+		
         this.getSubjectById = function (id) {
           var url = APIconfigService.baseURL + 'Subject/' + id +
             '?AccountID=' + accountService.accountModel.activeAccount.accountID +
