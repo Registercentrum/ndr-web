@@ -199,8 +199,8 @@ angular.module('ndrApp')
 
             //Skapa modell
             $scope.contactModel = !contactToUpdate ? $scope.getNewContactModel() : $scope.getUpdateModel();
-
-            $scope.showPumpProblem = $scope.contactModel.pumpProblemKeto || $scope.contactModel.pumpProblemHypo || $scope.contactModel.pumpProblemSkininfection || $scope.contactModel.pumpProblemSkinreaction;
+			
+            $scope.showPumpProblem = $scope.contactModel.pumpProblemKeto || $scope.contactModel.pumpProblemHypo || $scope.contactModel.pumpProblemSkininfection || $scope.contactModel.pumpProblemSkinreaction  || $scope.contactModel.pumpProblemPumperror;
             $scope.showPumpClosureReason = $scope.contactModel.pumpClosureReason > 0;
             $scope.contactDateChanged();
             $scope.contactForm.$setPristine();
@@ -510,7 +510,7 @@ angular.module('ndrApp')
     $scope.getUpdateModel = function() {
 
       $scope.setOptionalQuestionsValue();
-
+		
       return {
         contactID: $scope.contactToUpdate.contactID,
         socialNumber: $scope.subject.socialNumber,
@@ -531,7 +531,7 @@ angular.module('ndrApp')
         pumpProblemHypo: $scope.contactToUpdate.pumpProblemHypo>0,
         pumpProblemSkininfection: $scope.contactToUpdate.pumpProblemSkininfection>0,
         pumpProblemSkinreaction: $scope.contactToUpdate.pumpProblemSkinreaction>0,
-        pumpProblemPumperror: $scope.contactToUpdate.PumpProblemPumperror>0,
+        pumpProblemPumperror: $scope.contactToUpdate.pumpProblemPumperror>0,
         pumpClosureReason: $scope.contactToUpdate.pumpClosureReason,
         height: $scope.contactToUpdate.height,
         weight: $scope.contactToUpdate.weight,
@@ -701,7 +701,7 @@ angular.module('ndrApp')
     };
     $scope.macroChanged = function() {
       if ($scope.contactModel.macroscopicProteinuria == 1)
-        $scope.contactModel.microscopicProteinuria = 1;
+        $scope.contactModel.microscopicProteinuria = 0;
       else
         $scope.contactModel.microscopicProteinuria = null;
     };
