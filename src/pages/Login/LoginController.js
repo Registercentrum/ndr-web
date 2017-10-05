@@ -222,7 +222,7 @@ angular.module('ndrApp').controller('LoginController',
           .then(function (response) {
             console.log("Checking if still logged in:", response);
 
-            if (response.data.isUser == false) {
+            if (!response.data.isUser && !response.data.isSubject) {
               clearInterval(waitFor);
               accountService.logOut();
             }
