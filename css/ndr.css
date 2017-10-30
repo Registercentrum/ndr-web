@@ -10412,7 +10412,7 @@ button[disabled=disabled] {
   clear: both;
 }
 .Report-formGroup:nth-child(2n+1) {
-  background-color: rgba(225, 210, 200, 0.3);
+  background-color: #ebf5f9 /* rgba(225, 210, 200, 0.3); */
 }
 .Report-formGroup-label {
   margin: 0;
