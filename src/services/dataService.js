@@ -17,6 +17,7 @@ angular.module('ndrApp')
             koo:            null,
             kas:            null,
 			homeActiveTab:	1,
+			promAdmFilter: 	null
         };
 
 
@@ -136,16 +137,13 @@ angular.module('ndrApp')
                 });
         };
 		
-		this.setHomeActiveTab = function(tab) {
-			console.log('settingtab=',tab);
-			this.data.homeActiveTab = tab;
+		this.setValue = function(key, val) {
+			this.data[key] = val;
 		}
 		
-		this.getHomeActiveTab = function(tab) {
-			console.log('homeactivetab=',this.data.homeActiveTab);
-			return this.data.homeActiveTab;
-		}
-		
+		this.getValue = function(key) {
+			return this.data[key];
+		}		
         this.getSubjectById = function (id) {
           var url = APIconfigService.baseURL + 'Subject/' + id +
             '?AccountID=' + accountService.accountModel.activeAccount.accountID +

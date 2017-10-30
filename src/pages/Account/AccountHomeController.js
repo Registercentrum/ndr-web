@@ -5,7 +5,7 @@ angular.module("ndrApp")
 			activeAccount: $scope.accountModel.activeAccount,
 			newsList: null,
 			unitInIQV: dataService.isInProject('iqv'),
-			activeTab: dataService.getHomeActiveTab()
+			activeTab: dataService.getValue('homeActiveTab')
 		};
 		
 		//separated for future needs
@@ -27,7 +27,7 @@ angular.module("ndrApp")
 		};
 		$scope.handleTabClick = function(tab) {
 			this.model.activeTab = tab;
-			dataService.setHomeActiveTab(tab);
+			dataService.setValue('homeActiveTab', tab);
 		}
 	
         dataService.getList("news", "?excludePublic=true").then(function (data){
