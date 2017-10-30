@@ -44,7 +44,7 @@ angular.module('ndrApp')
 			unsigned:  []
           },
           socialNumberFilter: null,
-          filterType: "all",
+          filterType: dataService.getValue('promAdmFilter'),
           selectedInvite: null,
 		  itemsByPage: [],
 		  pageSize: 15,
@@ -144,6 +144,15 @@ angular.module('ndrApp')
 
         getInvites();
 
+		$scope.setFilter = function() {
+		
+			var activeFilter = dataService.getValue('promAdmFilter')
+			console.log('activeFilter',activeFilter);
+			$scope.model.filterType =  activeFilter ? activeFilter : $scope.getDefaultFilter();
+		}
+		$scope.getDefaultFilter = function() {
+			return $scope.model.invites.new.length ? 'new' : 'all';
+		}
         function getPrevOutcomes(invite) {
           if (invite.prevOutcomes) return invite.prevOutcomes;
 
@@ -368,9 +377,9 @@ angular.module('ndrApp')
 			}
 		}
 		
-		$scope.removeInviteLocal = function(id) {
+		$scope.deleteInviteLocal = function(id) {
 			for (var i = 0; i < $scope.model.invites.all.length; i++) { 
-				if ($scope.model.invites.all[i].id == id) {
+				if ($scope.model.invites.all[i].inviteID === id) {
 					$scope.model.invites.all.splice(i, 1);
 					break;
 				}
@@ -396,15 +405,17 @@ angular.module('ndrApp')
 		}
 		
 		$scope.setLists = function() {
-			$scope.setSubsets(); 
+			$scope.setSubsets();
+			$scope.setFilter();			
 			$scope.setDisplayed();
 		};
 		
         $scope.setDisplayed = function (type) {
 		
-          $scope.model.filterType = (type || $scope.model.filterType);
+          $scope.firstPage();
+		  $scope.model.filterType = (type || $scope.model.filterType);
 			
-			console.log($scope.model.filterType);
+		  dataService.setValue('promAdmFilter',$scope.model.filterType);
 			
           if (type === "socialnumber") {
             $scope.model.invites.displayed =
@@ -427,17 +438,14 @@ angular.module('ndrApp')
                               _.find(invite.prevOutcomes.outcomes, function (i) {
                                 return i.dimension.id === n.dimension.id
                               });
-            var changeSinceLast = prevOutcome && prevOutcome.difference ?
-                                  prevOutcome.difference :
-                                  "saknas"
 
             var outcome = n.outcome || "saknas"
 
-            return p + n.dimension.desc + ' | ' + outcome  + ' | ' + changeSinceLast + '\n';
+            return p + n.dimension.desc + ' ' + outcome + '\n';
           }, "");
 
 
-          invite.copyText = "Dimension | Värde | Förändring\n" + invite.copyText;
+          invite.copyText = "Dimension Värde \n" + invite.copyText;
 
           dataService.getPROMFormMeta()
             .then(function (response) {
