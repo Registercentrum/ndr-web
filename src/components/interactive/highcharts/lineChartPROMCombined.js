@@ -62,8 +62,8 @@ angular.module('ndrApp')
             type: 'datetime',
 
             dateTimeLabelFormats: {
-              year: '%Y',
-              month : '%B'
+              year: '',//'%Y',
+              month: '',//'%B'
             },
 
             lineWidth: 0,
@@ -71,6 +71,7 @@ angular.module('ndrApp')
             minorGridLineWidth: 0,
             lineColor: '#666',
             labels: {
+			  enabled: false,
               style: {
                 color: '#666',
                 fontSize : '12px'
@@ -124,9 +125,9 @@ angular.module('ndrApp')
               },
               marker: {
                 symbol: 'circle',
-                //fillColor: '#5999DA',
+                fillColor: '#a6a6a6',//'#5999DA',
                 lineWidth: 1,
-                radius : 2,
+                radius : 4,
                 lineColor: null // inherit from series
               },
 
@@ -146,7 +147,7 @@ angular.module('ndrApp')
                   color : 'blue'
                 },
                 select : {
-                  lineWidth: 2,
+                  lineWidth: 4,
                   color: '#851E20'
                 }
               }
