@@ -143,17 +143,28 @@ angular.module("ndrApp")
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           accountService.logOut();
+		  
           // clean the model from PROMSubject
           delete accountService.accountModel.PROMSubject;
           // update subject model so there's no lingering messages about
           // survey to answer
-          var declinedInvite = accountService.accountModel.subject.invites.find(function (i) {
-            return $scope.model.survey.inviteID === i.inviteID;
-          });
-          if (declinedInvite) declinedInvite.isDeclined = true;
+		   
+			if (accountService.accountModel.visitor.principal != null) {
+				var declinedInvite = accountService.accountModel.subject.invites.find(function (i) {
+					return $scope.model.survey.inviteID === i.inviteID;
+				});
 
-          $state.go("main.subject.home", {}, {reload: true});
+				if (declinedInvite) declinedInvite.isDeclined = true;
+				
+				$state.go("main.subject.home", {}, {reload: true});		  
+				
+				return;
+			} else {
+				$state.go('main.home', {}, {reload: true});
+			}
+
           declineModalInstance.dismiss("cancel");
+
         });
     };
 
