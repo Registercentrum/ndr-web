@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
   .controller('SurveyController', [
-                 '$window', '$scope', '$stateParams', '$state', '$filter', '$modal', 'List', 'dataService', 'accountService',
-        function ($window,   $scope,   $stateParams,   $state,   $filter,   $modal,   List,   dataService,   accountService) {
+                 '$window', '$scope', '$stateParams', '$state', '$filter', '$modal', 'dataService', 'accountService',
+        function ($window,   $scope,   $stateParams,   $state,   $filter,   $modal,   dataService,   accountService) {
 
         var account = $scope.accountModel;
         console.log('SurveyController: Init');
@@ -78,19 +78,21 @@ angular.module('ndrApp')
 			var prop = $scope.model.sortType;
 			var aVal, bVal;
 			
-			list = list.sort(function(a,b) {
-			
-				if (prop === 'subject.socialNumber') {
-					aVal = a.subject.socialNumber;
-					bVal = b.subject.socialNumber;
-				}
-				else {
-					aVal = (a[prop] || (rev ? '' : 'ww')); //make empty sort last
-					bVal = (b[prop] || (rev ? '' : 'ww')); //make empty sort last
-				}
-			
-				return  (rev ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal));
-			});
+			if (list) {
+				list = list.sort(function(a,b) {
+				
+					if (prop === 'subject.socialNumber') {
+						aVal = a.subject.socialNumber;
+						bVal = b.subject.socialNumber;
+					}
+					else {
+						aVal = (a[prop] || (rev ? '' : 'ww')); //make empty sort last
+						bVal = (b[prop] || (rev ? '' : 'ww')); //make empty sort last
+					}
+				
+					return  (rev ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal));
+				});
+			}
 			
 			$scope.model.invites.displayed = list;
 			$scope.pagination();
