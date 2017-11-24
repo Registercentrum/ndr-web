@@ -268,13 +268,10 @@
 			
                 <h3 class="Panel-title">Kontaktpersoner</h3>
 
-				<article class="" >
-					<h5><img src="images/icon_pdf.png" alt=""/><a style="color: #fff" href="pdfs/NDR_KAS.pdf" target="_blank">KAS-lista</a></h5>
-				</article>
-
-				<article class="" ng-if="accountModel.activeAccount">
-					<h5><img src="images/icon_pdf.png" alt=""/><a style="color: #fff"  href="pdfs/NDR_Koordinatorer.pdf" target="_blank">Koordinator-lista</a></h5>
-				</article>
+				<ul class="documents" >
+					<li><a download target="_blank" href="pdfs/NDR_KAS.pdf"><img src="images/icon_pdf.png" alt=""/>KAS-lista</a></li>
+					<li ng-if="accountModel.activeAccount"><a download target="_blank" href="pdfs/NDR_Koordinatorer.pdf"><img src="images/icon_pdf.png" alt=""/>Koordinator-lista</a></li>
+				</ul>
 			
             </div>
 			
