@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
 .controller('HeaderController', [
-		 '$scope', 'accountService', 'cookieFactory',
-function ($scope,   accountService, cookieFactory) {
+		 '$scope', 'accountService', 'cookieFactory', 'dataService',
+function ($scope,   accountService, cookieFactory, dataService) {
 	$scope.accountService = accountService;
 	$scope.accountModel = accountService.accountModel;
 	
@@ -17,6 +17,11 @@ function ($scope,   accountService, cookieFactory) {
 		var minutes = 60*24*365*20; //20 år
 		cookieFactory.create(cookieKey,1,minutes);
 		readCookieConsent();
+	};
+	
+	$scope.setAccount = function(accountID) {
+		accountService.updateAccount(accountID)
+		dataService.setValue('optionalQuestions', null);
 	};
 
 	readCookieConsent();
