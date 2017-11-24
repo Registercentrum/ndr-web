@@ -24,13 +24,13 @@
             <div class="Panel ServicesShortcuts">
                 <!--<div>Inloggad på {{accountModel.activeAccount.unit.name}}.</div>-->
                 <span style="margin-right: 10px">E-tjänster:</span>
-                <a ui-sref="main.account.home" class="Button Button--default Button--strong">Översikt</a>
-                <a ui-sref="main.account.report" class="Button Button--default Button--strong">Rapportera/Komplettera</a>
-                <a ui-sref="main.account.patients" class="Button Button--default Button--strong">Söklista</a>
-                <a ui-sref="main.account.patient" class="Button Button--default Button--strong">Patientprofil</a>
-                <a ng-show="accountModel.activeAccount.unit.isUsingPROM" ui-sref="main.account.survey" class="Button Button--default Button--strong">Diabetesenkäten</a>
+                <a ui-sref="main.account.home" class="Button Button--primary .btn-primary Button--strong">Översikt</a>
+                <a ui-sref="main.account.report" class="Button Button--primary Button--strong">Rapportera/Komplettera</a>
+                <a ui-sref="main.account.patients" class="Button Button--primary Button--strong">Söklista</a>
+                <a ui-sref="main.account.patient" class="Button Button--primary Button--strong">Patientprofil</a>
+                <a ng-show="accountModel.activeAccount.unit.isUsingPROM" ui-sref="main.account.survey" class="Button Button--primary Button--strong">Diabetesenkäten</a>
                 <div ng-if="accountModel.activeAccount.unit.contactPerson" style="line-height: 1.5">
-					<span style="font-size: 13px;">Kontaktperson på din enhet är <span style="color:#428bca">{{accountModel.activeAccount.unit.contactPerson}}</span></span>
+					<span style="font-size: 13px;">Kontaktperson på <span style="color:#428bca">{{accountModel.activeAccount.unit.name}}</span> är <span style="color:#428bca">{{accountModel.activeAccount.unit.contactPerson}}</span></span>
 				</div>
             </div>
         </div>
