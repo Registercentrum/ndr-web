@@ -13,13 +13,15 @@ angular.module('ndrApp')
             indicators     : [],
             preparedGeoList: [],
             promFormMeta:   null,
-			//contactAttributes:	[], maybe cache later
+			attributesLists:	null,
             koo:            null,
             kas:            null,
 			homeActiveTab:	1,
-			promAdmFilter: 	null
+			promAdmFilter: 	null,
+			optionalQuestions: null,
+			metafields: null,
+			domains: null
         };
-
 
         /* RESTANGULAR CONFIG */
         Restangular.setBaseUrl(APIconfigService.baseURL);
@@ -27,7 +29,15 @@ angular.module('ndrApp')
             APIKey : APIconfigService.APIKey
         });
 
-
+		//START getters and setters for store
+		this.setValue = function(key, val) {
+			this.data[key] = val;
+		}
+		this.getValue = function(key) {
+			return this.data[key];
+		}
+		//END getters and setters for store
+	
         /* RESTANGULAR OBJECTS */
         var endpoints = {
             indicator        : Restangular.one('indicator'),
@@ -88,6 +98,40 @@ angular.module('ndrApp')
          * @return {Array} Array with filter options
          */
 
+		
+		this.getContactFields = function() {
+			
+			if (!this.data.metafields) {
+				return null;
+			}
+			
+			return this.data.metafields.filter(function(m) {
+				return (m.formID == null && !m.isChildcareExclusive);
+			});
+		}
+		
+		this.getFormFields = function(formID) {
+			
+			if (!this.data.metafields) {
+				return null;
+			}
+			
+			return this.data.metafields.filter(function(m) {
+				return m.formID == formID;
+			});
+		}
+		
+		this.getOptionalFields = function(formID) {
+			
+			if (!this.data.metafields) {
+				return null;
+			}
+			
+			return this.data.metafields.filter(function(m) {
+				return m.isOptional;
+			});
+		}
+		 
         this.getUserProjects = function () {
             var unitID = accountService.accountModel.activeAccount.unit.unitID
             var projects = _.filter(this.projects, function (d) {
@@ -96,6 +140,7 @@ angular.module('ndrApp')
 
             return projects;
         };
+		
         this.isInProject = function (name) {
 
             var userProjects = this.getUserProjects();
@@ -107,9 +152,8 @@ angular.module('ndrApp')
 
             return ret;
         };
+		
         this.getContactAttributes = function (filter) {
-
-
 
             return endpoints.contactAttributes.get({'AccountID': accountService.accountModel.activeAccount ? accountService.accountModel.activeAccount.accountID : undefined})
                 .then(function (data) {
@@ -136,14 +180,8 @@ angular.module('ndrApp')
                     return error;
                 });
         };
+	
 		
-		this.setValue = function(key, val) {
-			this.data[key] = val;
-		}
-		
-		this.getValue = function(key) {
-			return this.data[key];
-		}		
         this.getSubjectById = function (id) {
           var url = APIconfigService.baseURL + 'Subject/' + id +
             '?AccountID=' + accountService.accountModel.activeAccount.accountID +
@@ -211,11 +249,22 @@ angular.module('ndrApp')
             };
 
             return $http(query);
-                //.then(function (response) { return response.data; })
-                //['catch'](console.error.bind(console));
 
         };
+		
+        this.saveIncidence = function (data, update) {
+            var url = APIconfigService.baseURL + 'Incidence/' + (update ? data.subjectID : '') +
+                      '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                      '&APIKey=' + APIconfigService.APIKey;
+            var query = {
+              url: APIconfigService.constructUrl(url),
+              method: update ? 'PUT' : 'POST',
+              data: data
+            };
 
+            return $http(query);
+
+        };
 
         this.getInvites = function () {
             var url = APIconfigService.baseURL + 'prominvite' +
@@ -447,19 +496,56 @@ angular.module('ndrApp')
             });
         };
 
-        this.getOptionalQuestionsMeta = function (accountID, callback) {
+        this.getOptionalQuestions = function (accountID) {
             var query = query || {};
+			var cache = this.data;
             query.APIKey = APIconfigService.APIKey;
             query.AccountID = accountID;
 
-            $.ajax({
+            return $.ajax({
                 url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'ContactOptionalMeta'),
                 data    : query,
                 type    : 'GET',
                 dataType: 'json',
-                success : callback
+                success : function(data) {
+					cache.optionalQuestions = data;
+				}
             });
         };
+		
+        this.getMetaFields = function (accountID) {
+            var query = query || {};
+			var cache = this.data;
+            query.APIKey = APIconfigService.APIKey;
+            query.AccountID = accountID;
+
+            return $.ajax({
+                url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'MetaField'),
+                data    : query,
+                type    : 'GET',
+                dataType: 'json',
+                success : function(data) {
+					cache.metafields = data;
+				}
+            });
+        };
+		
+		this.getAttributesLists = function(accountID) {
+			var query = query || {};
+			var cache = this.data;
+            query.APIKey = APIconfigService.APIKey;
+            query.AccountID = accountID;
+			
+            return $.ajax({
+                url     : APIconfigService.constructUrl(APIconfigService.baseURL + 'ContactAttribute'),
+                data    : query,
+                type    : 'GET',
+                dataType: 'json',
+                success : function(data) {
+					cache.attributesLists = _.indexBy(data, "columnName");
+				}
+            });			
+		}
 
         this.getSubjects = function (query) {
             query = query || {};
