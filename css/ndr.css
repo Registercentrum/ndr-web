@@ -4449,6 +4449,10 @@ output {
   line-height: 1.42857143;
   color: #555555;
 }
+input[type="text"]:disabled ,
+input[type="number"]:disabled {
+    background: #ebf5f9;
+}
 .form-control {
   display: block;
   width: 100%;
@@ -4459,10 +4463,10 @@ output {
   color: #555555;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #c4e2ed;
+  /*border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);*/
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -4490,7 +4494,7 @@ output {
 .form-control[disabled],
 .form-control[readonly],
 fieldset[disabled] .form-control {
-  background-color: #eee;
+  background-color: #ebf5f9;
   opacity: 1;
 }
 .form-control[disabled],
@@ -4503,6 +4507,7 @@ textarea.form-control {
 input[type="search"] {
   -webkit-appearance: none;
 }
+
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   input[type="date"].form-control,
   input[type="time"].form-control,
@@ -4812,7 +4817,7 @@ select[multiple].input-lg {
 .help-block {
   display: block;
   margin-top: 5px;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
   color: #737373;
 }
 @media (min-width: 768px) {
@@ -6124,6 +6129,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-fixed-top .navbar-collapse,
 .navbar-fixed-bottom .navbar-collapse {
   max-height: 340px;
+}
+option {
+	margin: 5px 0;
 }
 @media (max-device-width: 480px) and (orientation: landscape) {
   .navbar-fixed-top .navbar-collapse,
@@ -9327,15 +9335,14 @@ accordion .panel-title > .small > a {
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-.Button.disabled,
-.Button[disabled],
-fieldset[disabled] .Button {
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -webkit-box-shadow: none;
-  box-shadow: none;
+.Button.disabled, .Button[disabled], fieldset[disabled] .Button {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.25;
+    color: black;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 .Button--default {
   border: 1px solid #74BAD8;
@@ -9350,13 +9357,20 @@ fieldset[disabled] .Button {
 .Button--info {
   color: #fff !important;
   background-color: #74BAD8;
-  border: 1px solid #74BAD8;
+  /*border: 1px solid #74BAD8;*/
 }
 .Button--info:hover,
 .Button--info:focus,
 .Button--info.focus {
   text-decoration: none;
   background-color: #9ccee3;
+  color: #FFFFFF;
+}
+.Button--primary:hover,
+.Button--primary:focus,
+.Button--primary.focus {
+  text-decoration: none;
+  background-color: #88b5dd;
   color: #FFFFFF;
 }
 .Button--white {
@@ -10139,9 +10153,6 @@ fieldset[disabled] .IndicatorButton {
   font-size: 26px;
   font-weight: 300;
 }
-.PatientHeader-showVisit {
-  margin-top: 3px;
-}
 .modernizr-no-svg .IE-message {
   display: block !important;
 }
@@ -10178,7 +10189,7 @@ button[disabled=disabled] {
   border: none;
   background: transparent;
   width: 200px;
-  padding: 8px 10px;
+  padding: 10px 10px;
   font-size: 14px;
   color: #888;
   margin-left: 30px;
@@ -10201,7 +10212,7 @@ button[disabled=disabled] {
   background: #333;
   border: none;
   color: #fff;
-  padding: 7px 15px;
+  padding: 10px 15px;
 }
 .PatientSearch-searchButton {
   border-left: 1px solid #999;
@@ -10402,7 +10413,7 @@ button[disabled=disabled] {
   font-size: 13px !important;
 }
 .Report-formGroup {
-  padding: 12px 0;
+  padding: 16px 0;
   position: relative;
   counter-reset: item;
 }
@@ -10426,7 +10437,8 @@ button[disabled=disabled] {
   margin: 0 !important;
 }
 .Report-formGroup-form {
-  padding-bottom: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 .Report-formGroup .helpNote {
   margin-left: 5px;
@@ -10838,6 +10850,7 @@ p.lead {
 }
 .documents {
   list-style-type: none;
+  padding-left: 0;
 }
 .documents img {
   width: 40px;
@@ -10845,21 +10858,12 @@ p.lead {
   margin-right: 20px;
 }
 .documents li {
-  margin: 25px 0;
-}
-.documents.yearreports li {
-  margin: 5px 0;
+  margin: 15px 0 5px;
 }
 .about-ndr {
   font-size: 21px;
   margin-bottom: 0;
   line-height: 2;
-}
-.ServicesShortcuts span {
-  margin-right: 10px;
-}
-.ServicesShortcuts .Button {
-  margin-right: 10px;
 }
 .News {
   margin: 30px 0;
@@ -10966,11 +10970,11 @@ p.lead {
     text-decoration: underline;
 	background-color:  #2d7d9f;
 }
-article img {
-	width:30px;
-	height:30px;
+/*article img {
+	width:130px;
+	height:130px;
 	margin-right: 10px
-}
+}*/
 .statLabel {
 	display: inline-block;
     width: 120px;
