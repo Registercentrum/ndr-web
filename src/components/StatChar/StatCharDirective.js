@@ -28,13 +28,16 @@ angular.module('ndrApp')
 				});
 			};
 			
-			scope.countClicked = function(name, dType) {
+			scope.countClicked = function(area, field, dType) {
+				
+				if (area.noClick) return;
 				
 				var dateOffset = (24*60*60*1000) * 365;
+				var today = new Date();
 				
 				var valueFilter = {
-					dateFrom: new Date(new Date()-dateOffset),
-					dateTo: new Date(),
+					dateFrom: new Date(today-dateOffset),
+					dateTo: today,
 					d: { value: 1 }
 				};
 				
@@ -45,7 +48,7 @@ angular.module('ndrApp')
 							valueFilter.d.undef = true;	
 				}
 				
-				switch(name) {
+				switch(field.name) {
 					case 'male':
 						valueFilter.s = { value: 1 }; break;
 					case 'female':
@@ -59,17 +62,17 @@ angular.module('ndrApp')
 					case 'ageGT80':
 						valueFilter.age = { min: 80, max: 120 }; break;
 					case 'durLT10':
-						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+						valueFilter.y = { min: 1920, max: today.getFullYear() }; break;
 					case 'dur10to20':
-						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+						valueFilter.y = { min: 1920, max: today.getFullYear() }; break;
 					case 'dur20to29':
-						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+						valueFilter.y = { min: 1920, max: today.getFullYear() }; break;
 					case 'dur30to39':
-						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+						valueFilter.y = { min: 1920, max: today.getFullYear() }; break;
 					case 'dur40to49':
-						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+						valueFilter.y = { min: 1920, max: today.getFullYear() }; break;
 					case 'durGT50':
-						valueFilter.y = { min: 1920, max: new Date().getFullYear() }; break;
+						valueFilter.y = { min: 1920, max: today.getFullYear() }; break;
 					case 'treat1':
 						valueFilter.treatment = { value: 1 }; break;
 					case 'treat2':
@@ -139,7 +142,7 @@ angular.module('ndrApp')
 						header: 'Ålder',
 						hiddenIfDTTypes: [],
 						fields: [
-							{ name: 'ageLT30', header: '18-29 år' },
+							{ name: 'ageLT30', header: '18-29 år'},
 							{ name: 'age30to64', header: '30-64 år'},
 							{ name: 'age65to79', header: '65-79 år' },
 							{ name: 'ageGT80', header: '80- år'}					
@@ -149,13 +152,14 @@ angular.module('ndrApp')
 					{
 						header: 'Duration',
 						hiddenIfDTTypes: [],
+						noClick: true,
 						fields: [
 							{ name: 'durLT10', header: '0-9 år' },
-							{ name: 'dur10to20', header: '10-19 år'},
+							{ name: 'dur10to20', header: '10-19 år' },
 							{ name: 'dur20to29', header: '20-29 år' },
-							{ name: 'dur30to39', header: '30-39 år'},
-							{ name: 'dur40to49', header: '40-49 år'},
-							{ name: 'durGT50', header: '50- år'}				
+							{ name: 'dur30to39', header: '30-39 år' },
+							{ name: 'dur40to49', header: '40-49 år' },
+							{ name: 'durGT50', header: '50- år' }				
 						],
 						defaultDenom: 'dur'
 					},
