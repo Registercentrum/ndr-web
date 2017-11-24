@@ -70,7 +70,7 @@ angular.module('ndrApp')
 				
 				if (filter.domain.domainID == 105) return value.split('T')[0];
 				
-				if (filter.domain.domainID == 106) return value;
+				if (filter.domain.domainID == 106 || filter.domain.domainID == 101) return value;
 				
                 return $filter('number')(value);
             };
