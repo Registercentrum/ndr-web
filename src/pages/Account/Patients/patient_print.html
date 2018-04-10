@@ -1,209 +1,62 @@
-<div class="print-wrapper" style="font-size: 13px;background-color: white;padding: 30px">
+<div ng-show="subject" class="print-wrapper" style="font-size: 13px;background-color: white;padding: 30px">
 
-<div class="PatientProfile-Search">
+    <div class="PatientProfile-Search">
 
-    <div class="row PatientProfile-Header">
-        <div class="col-md-8">
-            <h1 class="Page-title">Patientprofil <span style="font-size: 22px">(anpassad för utskrift)</span></h1>
-            <!--<p>Fyll i en kommentar och klicka därefter skriv ut.</p>-->
-        </div>
-
-        <div class="col-md-4 text-right">
-            <div class="btn-group pull-right">
-                <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</label>
-                <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </label>
-            </div>
-            <a style="margin-right: 10px;" class="Button--tight Button Button--dark pull-right" ng-click="print()"><i class="fa fa-print"></i> Skriv ut</a>
-        </div>
-    </div>
-</div>
-
-<div class="" style="width:900px" ng-show="model.mode == 'visual'">
-
-    <!-- Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h4 style="margin-top: 0px">
-                <i class="fa fa-user"></i>  {{ subject.socialNumber }}
-            </h4>
-        </div>
-    </div>
-
-    <!-- Basic data -->
-    <div class="row" style="margin-top: 15px">
-        <div class="col-md-4 col-print-4">
-            <!--<p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>-->
-            <p>{{ getDiabetesType(subject.diabetesType) }}</p>
-            <p>Debutår: <span class="strong">{{ subject.yearOfOnset }}</span></p>
-            <p>Diabetesbehandling: <span class="strong">{{ model.latest.treatment.label }}</span></p>
-            <p ng-show="model.latest.treatment.label == 'Insulin'">
-                Metod att ge insulin: <span class="strong">{{ model.latest.insulinMethod.label }}</span>
-            </p>
-            <p ng-show="model.latest.insulinMethod.label == 'Insulinpump'">
-                Pågående pumpmodell: <span class="strong">{{ model.latest.pumpOngoing.label }}</span>
-            </p>
-			<p>Senaste besök: <span class="strong">{{ model.latest.contactDate.label }}</span></p>
-        </div>
-
-        <div class="col-md-4 col-print-4">
-            <p>Vikt: <span class="strong">{{model.latest.weight.value }} kg</span></p>
-            <p>Längd: <span class="strong">{{ model.latest.height.value }} cm</span></p>
-            <p>BMI: <span class="strong">{{ model.latest.bmi.value }} kg/m <sup>2</sup></span></p>
-            <p>Midjemått: <span class="strong">{{ model.latest.waist.value }} cm</span></p>
-        </div>
-
-        <div class="col-md-4 col-print-4">
-            <p>Fysisk aktivitet: <span class="strong">{{model.latest.physicalActivity.label }}</span></p>
-            <p>Röker: <span class="strong">{{ model.latest.smokingHabit.label }}</span></p>
-            <p>Ischemisk hjärtsjukdom: <span class="strong">{{ model.latest.ischemicHeartDisease.label }}</span></p>
-            <p>Cerebrovaskulär sjukdom: <span class="strong">{{ model.latest.cerebrovascularDisease.label  }}</span></p>
-            <p>Behandling med ASA: <span class="strong">{{ model.latest.aspirin.label  }}</span></p>
-        </div>
-    </div>
-
-    <div class="row" style="">
-        <div class="col-md-12">
-         <h5 style="margin-top:0px">Kommentar</h5>
-            <textarea placeholder="Plats för kommentar" style="padding:5px; width:800px;height:60px; margin-bottom: 25px"></textarea>
-        </div>
-    </div>
-
-    <!-- HBA1C -->
-    <div class="row">
-
-        <div style="width:430px; float:left">
-            <!--<b>Behandlas med blodtryckssänkande läkemedel: <strong>{{ model.latest.antihypertensives.label }}</strong></b>-->
-            <b style="margin-left: 20px">HbA1c <span>(Senaste värde: {{ model.latest.hba1c.value }} mmol/mol</span>)</b>
-            <div class="" style="width:430px" line-chart-print model="model.data.trend.hba1c"></div>
-        </div>
-
-        <div style="width:430px;float:left;margin-left: 30px">
-            <b>Blodtryck <span>(Senaste värde: {{ model.latest.bpSystolic.value + "/" + model.latest.bpDiastolic.value }} mm Hg</span>)</b>
-            <div class="" style="width:430px" line-chart-combined-print model="model.data.trend.combinedBp"></div>
-        </div>
-    </div>
-
-    <!-- Lipids -->
-    <div class="row" style="margin-top: 10px">
-        <!--<div>Behandlas med lipidsänkande läkemedel: <strong>{{ model.latest.lipidLoweringDrugs.label }}</strong></div>-->
-
-        <div style="width:430px; float:left">
-                <b style="margin-left: 20px">Blodlipider</b>
-                <div line-chart-combined-print title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
+        <div class="row PatientProfile-Header">
+            <div class="col-md-8">
+                <h1 class="Page-title">Patientprofil <span style="font-size: 22px">(anpassad för utskrift)</span></h1>
+                <!--<p>Fyll i en kommentar och klicka därefter skriv ut.</p>-->
             </div>
 
-        <div style="width:430px; float:left; margin-left: 30px">
-                <div line-chart-combined-print title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
+            <div class="col-md-4 text-right">
+                <div class="btn-group pull-right">
+                    <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</label>
+                    <label class="btn Button--tight Button Button--dark" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </label>
+                </div>
+                <a style="margin-right: 10px;" class="Button--tight Button Button--dark pull-right" ng-click="print()"><i class="fa fa-print"></i> Skriv ut</a>
             </div>
-
-
+        </div>
     </div>
 
-    <!-- FEET etc -->
+    <div class="" style="width:900px" ng-show="model.mode == 'visual'">
+        <div ng-if="subject">
+            <div ng-if="unitTypeID != 3" patient-profile-print-grownup subject="subject" latest="model.latest" />
+            <div ng-if="unitTypeID == 3" patient-profile-print-kids subject="subject" latest="model.latest" />
+        </div>
+        <div class="row new-page">
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="">
-                <h4 class="Profile-heading">Fötter</h4>  <i class="Profile-latest-value fa fa-noun_4820_cc" class="" style="font-size: 55px;"></i>
-                <table class="table table-condensed">
+            <h4>Senaste 5 besök</h4>
+            <!-- Heading -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 style="margin-top: 0px">
+                        <i class="fa fa-user"></i>  {{ subject.socialNumber }}
+                    </h4>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
+                <thead>
                     <tr>
-                        <td>Riskkategori</td>
-                        <td>{{ model.latest.footRiscCategory.label }}</td>
+                        <th class="key"></th>
+                        <th ng-repeat="date in model.data.table.header.values">{{ date | date : 'dd MMM yyyy'}}</th>
                     </tr>
-                    <tr>
-                        <td>Senaste fotundersökning</td>
-                        <td>{{ model.latest.footExaminationDate.label }}</td>
-                        <td>
-                            <div ng-show="checkFootDate(model.latest.footExaminationDate)">
-                                <i tooltip="OBS: Senaste rapporterade fotundersökning har ett datum mer än 1 år tillbaka i tiden." class="fa fa-exclamation"></i>
-                            </div>
-                        </td>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="contact in model.data.table.body | orderBy: 'sequence'">
+                        <td class="key">{{ contact.label }}</td>
+                        <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="">
-                <h4 class="Profile-heading">Ögon</h4>  <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
-                <table class="table table-condensed">
-                    <tr>
-                        <td width="80">Diabetesretinopati</td>
-                        <td width="20" style="width:50%">{{ model.latest.diabeticRetinopathy.label }}</td>
-                    </tr>
-                    <tr>
-                        <td width="80">Diagnos på sämsta ögat</td>
-                        <td width="20">{{ model.latest.diabeticRetinopathy.value != 0 ? model.latest.diagnosisWorseSeeingEye.label : null  }}</td>
-                    </tr>
-                    <tr>
-                        <td width="80">Laserbehandlad</td>
-                        <td width="20">{{ model.latest.laserTreatment.label}}</td>
-                    </tr>
-                    <tr>
-                        <td width="80">Senaste ögonbottenundersökning</td>
-                        <td width="20">{{  model.latest.fundusExaminationDate.label }}</td>
-                    </tr>
-                    <tr>
-                        <td width="80">Synnedsättning p.g.a. diabetes</td>
-                        <td width="20">{{ model.latest.visualLoss.label  }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="">
-                <h4 class="Profile-heading">Njurar</h4>  <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
-                <table class="table table-condensed">
-                    <tr>
-                        <td>Senaste S-Kreatininvärde</td>
-                        <td>{{ model.latest.creatinine.label }}</td>
-                    </tr>
-                    <tr>
-                        <td>Makroalbuminuri</td>
-
-                        <td>{{ model.latest.macroscopicProteinuria.label }}</td>
-                    </tr>
-                    <tr ng-hide="model.latest.macroscopicProteinuria.label == 'Ja'">
-                        <td>Mikroalbuminuri</td><td>{{ model.latest.microscopicProteinuria.label }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div style="clear:both"></div>
-
-    <div class="row new-page" style="clear:both;">
-
-        <h4>Senaste 5 besök</h4>
-		<!-- Heading -->
-		<div class="row">
-			<div class="col-md-12">
-				<h4 style="margin-top: 0px">
-					<i class="fa fa-user"></i>  {{ subject.socialNumber }}
-				</h4>
-			</div>
-		</div>
-        <div class="table-responsive">
-            <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
-               <!-- <thead>
-                <tr>
-                    <th class="key"></th>
-                    <th ng-repeat="date in model.data.tableHeader.values">{{ date | date : 'dd MMM yyyy'}}</th>
-                </tr>
-                </thead>-->
-                <tbody>
-                <tr ng-repeat="contact in model.data.table | orderBy: 'sequence'">
-                    <td class="key">{{ contact.label }}</td>
-                    <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
-                </tr>
-                </tbody>
-            </table>
+    
         </div>
 
     </div>
-</div>
+
+
+
 
     <div class="" style="width:900px" ng-show="model.mode == 'table'">
 
@@ -213,7 +66,7 @@
                 <h4 style="margin-right:10px;display:inline-block;margin-top: 0px">
                     <span class="visible-print">Patientprofil: </span><i class="fa fa-user"></i>  {{ subject.socialNumber }}
                 </h4>
-                <p style="margin-right:10px;display: inline-block">{{ getDiabetesType(subject.diabetesType) }}</p>
+                <p style="margin-right:10px;display: inline-block">{{ subject.diabetesTypeText }}</p>
                 <p style="display: inline-block">Debutår: <span class="strong">{{ subject.yearOfOnset }}</span></p>
             </div>
         </div>
@@ -224,16 +77,16 @@
                 <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
 
                     <thead>
-                    <tr>
-                        <th class="key"></th>
-                        <th ng-repeat="date in model.data.tableHeader.values">{{ date | date : 'dd MMM yyyy'}}</th>
-                    </tr>
+                      <tr>
+                          <th class="key"></th>
+                          <th ng-repeat="date in model.data.fullTable.header.values">{{ date | date : 'dd MMM yyyy'}}</th>
+                      </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contact in model.data.fullTable | orderBy: 'sequence'">
-                        <td class="key">{{ contact.label }}</td>
-                        <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
-                    </tr>
+                      <tr ng-repeat="contact in model.data.fullTable.body  | orderBy: 'sequence'">
+                          <td class="key">{{ contact.label }}</td>
+                          <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
+                      </tr>
                     </tbody>
                 </table>
             </div>
