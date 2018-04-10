@@ -4,9 +4,6 @@ angular.module('ndrApp')
     .directive('reportForm', ['$q','dataService','$state', '$modal', '$filter', function($q, dataService, $state, $modal, $filter) {
 
         function link (scope, element, attrs) {
-		
-			console.log(scope.contactToUpdate);
-			console.log(scope.accountModel.activeAccount);
 
 			scope.activeAccount = scope.accountModel.activeAccount;
 			scope.serverSaveErrors  = [];
@@ -14,14 +11,17 @@ angular.module('ndrApp')
 			scope.maxYear          = new Date().getFullYear(); //Används för "År rökslut"
 			scope.optionalQuestions = null;
 			scope.lists              = null;
-			
+
 			scope.$on('newUser', scope.load);
-			
+
             scope.$watch('contactToUpdate', function(newValue) {
-				console.log('new contactToUpdate', newValue);
 				scope.init();
             });
-			
+
+            scope.$watch('subject', function(newValue) {
+				scope.init();
+            });
+
 			scope.init = function() {
 				if (scope.isLoaded) {
 					scope.setContact();
@@ -34,33 +34,36 @@ angular.module('ndrApp')
 			scope.setContact = function () {
 				if (scope.subject) {
 					scope.lastContact = scope.subject.contacts.length>0 ? scope.subject.contacts[0] : null;
-					scope.setOptionalQuestionsValue();
 					scope.contactModel = !scope.contactToUpdate ? scope.getNewContactModel() : scope.getUpdateModel();
+
+					scope.setOptionalQuestionsValue();
+
 					scope.showPumpProblem = scope.contactModel.pumpProblemKeto || scope.contactModel.pumpProblemHypo || scope.contactModel.pumpProblemSkininfection || scope.contactModel.pumpProblemSkinreaction  || scope.contactModel.pumpProblemPumperror;
 					scope.showPumpClosureReason = scope.contactModel.pumpClosureReason > 0;
 					scope.contactDateChanged();
-					
+
 					scope.contactForm.$setPristine();
 					scope.contactOptionalForm.$setPristine();
 				}
 			};
-			
+
 			scope.load = function() {
 				scope.getOptionalQuestions();
 				scope.getContactAttributes();
 			};
-			
+
 			/*scope.getList = function(listName) {
 				return this.lists[listName];
 			}*/
-			
+
 			scope.tryIsLoaded = function() {
+
 				if (scope.lists && scope.optionalQuestions) {
 					scope.isLoaded = true
 					scope.init();
 					return;
 				}
-				
+
 				scope.isLoaded = false
 			};
 			//Start
@@ -68,16 +71,16 @@ angular.module('ndrApp')
 				if(isNaN(String.fromCharCode($event.keyCode)) && $event.keyCode !== 44 && $event.keyCode !== 46){
 					$event.preventDefault();
 				}
-			};		
-			
-			
+			};
+
+
 			/*$scope.newContact = function () {
 				//$scope.setContact(0);
 				$scope.contactToUpdate = null;
 				$scope.view = 'ReportForm';
 				//$scope.contactModel = $scope.getNewContactModel();
 			};*/
-			
+
 			/*scope.getOptionalQuestions = function() {
 				dataService.getOptionalQuestionsMeta(scope.activeAccount.accountID, function (data) {
 					scope.optionalQuestions = data;
@@ -89,9 +92,9 @@ angular.module('ndrApp')
 			if (scope.activeAccount) scope.getOptionalQuestions();*/
 
 			scope.getOptionalQuestions = function() {
-			
+
 				scope.optionalQuestions = dataService.getValue('optionalQuestions');
-				
+
 				if (!scope.optionalQuestions) {
 					dataService.getOptionalQuestions(scope.activeAccount.accountID).then(function (data) {
 						scope.optionalQuestions = dataService.getValue('optionalQuestions');
@@ -101,37 +104,35 @@ angular.module('ndrApp')
 				} else {
 					scope.tryIsLoaded();
 				}
-				
-			};	
-			
+
+			};
+
 			scope.getContactAttributes = function() {
-			
+
 				scope.lists = dataService.getValue('attributesLists');
-				
-				if (!scope.optionalQuestions) {
+
+				if (!scope.lists) {
 					dataService.getAttributesLists(scope.activeAccount.accountID).then(function (data) {
 						scope.lists = dataService.getValue('attributesLists');
 						scope.tryIsLoaded();
 						return;
 					});
 				} else {
-					scope.setOptionalQuestionsValue();
 					scope.tryIsLoaded();
 				}
-			};	
-			
+			};
+
 		   scope.setOptionalQuestionsValue = function() {
-			  
+
 			  var iterateAttributes = ['dal','das'];
-			  
 			  angular.forEach(scope.optionalQuestions, function(q) {
 				q.value = "";
-				
+
 				if (scope.contactToUpdate) { //update contact
 				  if (scope.contactToUpdate.optionals) {
 					if (scope.contactToUpdate.optionals[q.columnName] != undefined) {
 						q.iterate = false;
-						q.value = scope.contactToUpdate.optionals[q.columnName];
+						q.value = scope.contactToUpdate.optionals[q.columnName].toString();
 					}
 				  }
 				} else { //new contact => iterate values
@@ -140,17 +141,20 @@ angular.module('ndrApp')
 							if (scope.lastContact.optionals != null)
 								if (scope.lastContact.optionals[q.columnName] != undefined) {
 									q.iterate = true;
-									q.value = scope.lastContact.optionals[q.columnName];
+									q.value = scope.lastContact.optionals[q.columnName].toString();
 								}
 					}
 				}
 			  });
+
+			  scope.optionalQuestionsIsSet = true;
+
 			}
-			
+
 			scope.getNewContactModel = function () {
 				return scope.getNewModel(scope.lastContact);
 			};
-			
+
 			scope.getUpdateModel = function() {
 
 			  return {
@@ -208,9 +212,9 @@ angular.module('ndrApp')
 				optionals: null
 			  }
 			};
-			
+
 			scope.getNewModel = function(lastContact) {
-			  
+
 			  return {
 				contactID: null,
 				socialNumber: scope.subject != null ? scope.subject.socialNumber : null,
@@ -265,8 +269,9 @@ angular.module('ndrApp')
 				hypoglycemiaSevere: null,
 				optionals: null
 			  }
+
 			};
-			
+
 			scope.deleteContact = function (contactID) {
 				dataService.deleteContact(contactID)
 					.then(function () {
@@ -311,10 +316,10 @@ angular.module('ndrApp')
 			};
 
 			scope.tryCalculateGFR = function() {
-				
+
 			  if (scope.contactModel.creatinine == null || scope.contactModel.contactDate == null) {
-				scope.contactModel.gfr = null;
-				return;
+  				scope.contactModel.gfr = null;
+  				return;
 			  }
 
 			  var femaleFactor = 0.742;
@@ -326,7 +331,7 @@ angular.module('ndrApp')
 			  scope.contactModel.gfr = parseFloat(gfr.toFixed(2));
 
 			};
-			
+
 			scope.calculateAge = function(birthDate, contactDate) {
 			  var age;
 
@@ -390,34 +395,34 @@ angular.module('ndrApp')
 			scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'yyyy.MM.dd', 'shortDate'];
 			scope.format = scope.formats[0];
 			//END datePicker
-		
+
 			//Todo, this could use an overview
 			scope.validateContactDateInput = function() {
 				var date = scope.contactForm.contactDate.$viewValue;
 				var isValid = true;
-				
+
 				if (scope.contactModel.contactDate === undefined) {
 					isValid = false;
 				}
-				
+
 				isValid = scope.validateDate(date);
-						
+
 				scope.contactForm.contactDate.$setValidity('checkInput',isValid);
-				
+
 				return isValid;
-				
-			};	
-			
+
+			};
+
 			scope.validatePreviousContacts = function() {
-			
+
 				var isValid = true;
 				var dateToCheck = scope.getStringDate(scope.contactModel.contactDate);
 				var m = scope.contactModel;
-				
+
 				scope.contactModel.contactDate = dateToCheck.replace('.','-');
 
 				var compare = function(thisDate, thatDate) {
-				
+
 						if (thisDate == thatDate) {
 							return false;
 						}
@@ -447,13 +452,13 @@ angular.module('ndrApp')
 
 				scope.contactForm.contactDate.$setValidity('checkContactDate', isValid);
 				return isValid;
-			
+
 			};
-			
+
 			scope.setMaxYear = function() {
 				scope.maxYear = scope.getStringDate(scope.contactModel.contactDate).substring(0,4);
 			}
-			
+
 			scope.contactDateChanged = function() {
 
 				if (!scope.validateContactDateInput())
@@ -461,19 +466,19 @@ angular.module('ndrApp')
 
 				if (!scope.validatePreviousContacts())
 					return;
-			
+
 			};
-			
+
 			scope.validateDate = function(viewVal) {
 				var isValid = true;
-						
+
 				if (typeof viewVal === 'string')
 					if (viewVal.length !== 10)
 						isValid = false;
-				
+
 				return isValid;
 			};
-			
+
 			scope.validateFootDate = function(e) {
 
 				var date = scope.contactForm.footExaminationDate.$viewValue;
@@ -481,15 +486,15 @@ angular.module('ndrApp')
 
 				scope.contactForm.footExaminationDate.$setValidity('errorInputformat',isValid);
 			};
-			
+
 			scope.validateFundusDate = function(e) {
 
 				var date = scope.contactForm.fundusExaminationDate.$viewValue;
 				var isValid = scope.validateDate(date) || (date === '');
 
-				scope.contactForm.fundusExaminationDate.$setValidity('errorInputformat',isValid);	
+				scope.contactForm.fundusExaminationDate.$setValidity('errorInputformat',isValid);
 			};
-			
+
 			scope.getStringDate = function(date) {
 
 			  if (typeof date === 'string')
@@ -511,18 +516,18 @@ angular.module('ndrApp')
 			scope.pumpOngoingChanged = function() {
 			  scope.contactModel.pumpOngoingSerial = null;
 			};
-			
+
 			scope.pumpNewChanged = function() {
 			  scope.contactModel.pumpNewSerial = null;
 			};
-			
-			scope.setOptionalQuestionsValue = function() {
-			  
+
+			/*scope.setOptionalQuestionsValue = function() {
+
 			  var iterateAttributes = ['dal','das'];
-			  
+
 			  angular.forEach(scope.optionalQuestions, function(q) {
 				q.value = "";
-				
+
 				if (scope.contactToUpdate != null) { //update contact
 				  if (scope.contactToUpdate.optionals != null) {
 					if (scope.contactToUpdate.optionals[q.columnName] != undefined) {
@@ -541,11 +546,11 @@ angular.module('ndrApp')
 					}
 				}
 			  });
-			}
-		
+			}*/
+
 			//hardcoded since this is the ony need variable with need for this functionality in report form
 			scope.getSmokingHabitText = function(code) {
-				
+
 				switch(code) {
 					case 1:
 						return "Aldrig varit rökare"
@@ -556,7 +561,7 @@ angular.module('ndrApp')
 					case 4:
 						return "Slutat röka"
 				}
-				
+
 			};
 
 			scope.setDateValues = function() {
@@ -573,11 +578,10 @@ angular.module('ndrApp')
 			  //Dates are javascript dates until saved, here converted to string dates, better idea?
 			  scope.setDateValues();
 			  scope.contactModel.optionals = scope.getOptionals();
-			  console.log('optionals',scope.getOptionals());
 
 			  var dfd = dataService.saveContact(scope.contactModel)
 				.then(function (response) {
-				
+
 					//scope.getSubject(false);
 					scope.isSaving = false;
 
@@ -590,9 +594,9 @@ angular.module('ndrApp')
 				})
 				['catch'](function (response) {
 					//todo behöver utökas
-					
+
 					var data = response.data;
-					
+
 					if (data.ModelState != null) {
 					  for (var prop in data.ModelState) {
 						if (data.ModelState.hasOwnProperty(prop)) scope.serverSaveErrors.push(data.ModelState[prop][0]);
@@ -600,7 +604,7 @@ angular.module('ndrApp')
 					} else {
 					  scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
 					}
-					
+
 					scope.isSaving = false;
 				});
 			};
@@ -611,37 +615,37 @@ angular.module('ndrApp')
 				return d.contactID !== id;
 			  });
 			};
-			
+
 			scope.getContactFromContactDate = function(array, date) {
 			  return $filter('filter')(scope.subject.contacts, function (d)
 			  {
 				return d.contactDate.split('T')[0] == date;
 			  })[0];
 			};
-			
+
 			scope.macroChanged = function() {
 			  if (scope.contactModel.macroscopicProteinuria == 1)
 				scope.contactModel.microscopicProteinuria = 0;
 			  else
 				scope.contactModel.microscopicProteinuria = null;
 			};
-			
+
 			scope.retinopathyChanged = function() {
 				if (scope.contactModel.diabeticRetinopathy != 1)
 					if (scope.contactModel.diagnosisWorseSeeingEye != null)
 						scope.contactModel.diagnosisWorseSeeingEye = null;
 			};
-			
+
 			scope.cgmChanged = function() {
-			
-			
+
+
 				if (scope.contactModel.cgm != 1)
 					if (scope.contactModel.cgmType != null)
 						scope.contactModel.cgmType = null;
 			};
-			
+
 			scope.init();
-			
+
 
 			scope.patternTriglyceride = (function() {
 				return {
@@ -666,7 +670,7 @@ angular.module('ndrApp')
 					}
 				};
 			})();
-			
+
 			scope.patternWeight = (function() {
 				return {
 					test: function(input) {
@@ -714,7 +718,7 @@ angular.module('ndrApp')
 					}
 				};
 			})();
-			
+
 			scope.getOptionals = function() {
 
 			  var optionals = null;
