@@ -1,0 +1,25 @@
+﻿<div class="container">
+
+    <!--<h1 class="Page-title">Knappen 2.0 - här utvecklas den nya versionen av Knappen</h1>-->
+    <div class="" style="display: flex;margin-top: 10px;" id="start">
+      <div class="" style="width: 130px; display: flex; align-items: center;">
+        <img width="120" src="images/knappen2.jpg" alt="kanppenlogo" style="cursor: pointer" ng-click="reload()" tooltip="Rensa alla mina val och återgå till startsidan">
+      </div>
+      <div class="" style="flex: 1; display: flex; flex-direction: column;justify-content: center">
+          <h1 style="margin: 0;" class="Page-title">Ett knapptryck för förbättringsarbete</h1> <!-- här utvecklas den nya versionen av Knappen -->
+      </div>
+    </div>
+    <div class="pull-right">
+      <a ui-sref="main.compare1" title="">Länk till gamla Knappen</a>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <iframe id="iframe" onload="iFrameResize({heightCalculationMethod: 'taggedElement', checkOrigin: false}, '#iframe');" style="width:100%;box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 7px 1px;margin-top: 10px;" ng-src="{{ url }}" frameborder="0"></iframe>
+
+        </div>
+
+    </div>
+
+</div>
