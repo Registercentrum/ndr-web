@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 angular.module('ndrApp')
     .controller('CurrentUserController',
@@ -11,10 +11,10 @@ angular.module('ndrApp')
             $scope.accountHelpers   = accountService.helpers;
             $scope.filteredUnits    = [];
             $scope.unitSearchString = '';
-			$scope.visitor			= accountService.accountModel.visitor;
+            $scope.visitor			= accountService.accountModel.visitor;
             $scope.user             = $scope.visitor.user; //fallback
-			$scope.showInfo         = !$scope.visitor.isUser; //fallback
-			
+            $scope.showInfo         = !$scope.visitor.isUser; //fallback
+
 			console.log($scope.showInfo);
 
             $scope.$on('newUser', function () {
@@ -109,17 +109,17 @@ angular.module('ndrApp')
 				var httpConfig;
 
                 $scope.resetAccountErrors();
-				
+
 				console.log($scope.user.email);
 				console.log(unitID);
-				
+
 				if ($scope.userForm.email.$invalid) {
 					$scope.newAccountError.push('En korrekt e-postadress krävs för att kunna ansöka om konto.');
 					console.log($scope.userForm.email.$invalid);
 					//$scope.userForm.$setSubmitted();
 					return;
 				}
-				
+
                 angular.forEach($scope.user.accounts, function (account) {
                     if (account.unit.unitID === unitID && account.status.id === 1) {
                         $scope.newAccountError.push('Du har redan ett konto på denna enhet.');
@@ -129,11 +129,11 @@ angular.module('ndrApp')
 						reActivateAccount = account;
 					}
                 });
-				
+
 				console.log($scope.newAccountError);
-				
+
 				if ($scope.newAccountError.length) return;
-				
+
 				//Removed since alla requests for new or newed accounts handled through POST
 				/*if (reActivateAccount != null) {
 					httpConfig = {
@@ -144,9 +144,9 @@ angular.module('ndrApp')
 						url   : APIconfigService.baseURL + 'Account/' + reActivateAccount.accountID + '?APIKey=' + APIconfigService.APIKey
 					};
 				} else {*/
-				
+
 				/*};*/
-				
+
 				accountModel = {
 					unitID  : unitID,
 					userID  : $scope.user.userID,
@@ -165,7 +165,7 @@ angular.module('ndrApp')
                     .success(function (data) {
                         $scope.user = data;
 						$scope.visitor.isUser=true;
-						
+
                         $scope.setRoles();
                         $scope.newAccountSuccess = true;
                     })
