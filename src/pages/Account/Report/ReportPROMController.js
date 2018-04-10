@@ -88,4 +88,3 @@ angular.module('ndrApp')
 				console.log('go to start');
 			};*/
   }]);
-
