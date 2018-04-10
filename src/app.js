@@ -119,13 +119,14 @@ angular.module('ndrApp', [
     })
 
     // The routing system
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 
             var templateURL = 'templates/';
 
             // Default and fallback state
             $urlRouterProvider.otherwise('/');
+			$locationProvider.hashPrefix(''); // by default '!'
 
             $stateProvider
                 .state('main', {
@@ -151,14 +152,14 @@ angular.module('ndrApp', [
                 .state('main.home', {
                     controller : 'HomeController',
                     url: '/',
-                    templateUrl: 'src/pages/Home/home.html'
+                    templateUrl: 'src/pages/Home/home.html?v=3'
                 })
 
 
                 .state('main.guidelines', {
                     url: '/guidelines',
                     controller : 'GuidelinesController',
-                    templateUrl: 'src/pages/Guidelines/guidelines.html',
+                    templateUrl: 'src/pages/Guidelines/guidelines.html?v=3',
 
                     resolve: {
 
@@ -168,15 +169,15 @@ angular.module('ndrApp', [
                 .state('main.accountAbout', {
                     url: '/konto',
                     //controller : 'GuidelinesController',
-                    templateUrl: 'src/pages/About/aboutAccount.html',
+                    templateUrl: 'src/pages/About/aboutAccount.html?v=3',
                     resolve: {
                     }
                 })
 
                 .state('main.login', {
-                    url: '/login:direct',
+                    url: '/login?direct',
                     controller : 'LoginController',
-                    templateUrl: 'src/pages/Login/login.html',
+                    templateUrl: 'src/pages/Login/login.html?v=3',
                     resolve: {
                     }
                 })
@@ -184,8 +185,7 @@ angular.module('ndrApp', [
                 .state('main.currentUser', {
                     url: '/currentuser',
                     controller : 'CurrentUserController',
-                    templateUrl: 'src/pages/CurrentUser/currentUser.html',
-
+                    templateUrl: 'src/pages/CurrentUser/currentUser.html?v=3',
                     resolve: {
 
                     }
@@ -194,8 +194,7 @@ angular.module('ndrApp', [
                 .state('main.english', {
                     url: '/english',
                     //controller : 'GuidelinesController',
-                    templateUrl: 'src/pages/Language/english.html',
-
+                    templateUrl: 'src/pages/Language/english.html?v=3',
                     resolve: {
 
                     }
@@ -204,77 +203,89 @@ angular.module('ndrApp', [
                 .state('main.patient', {
                     url: '/for-dig-med-diabetes',
                     controller: 'FilterUnitsController',
-                    templateUrl: 'src/pages/Patient/patient.html'
+                    templateUrl: 'src/pages/Patient/patient.html?v=3'
                 })
 
                 .state('main.contribute', {
                     url: '/du-bidrar',
                     //controller: 'FilterUnitsController',
-                    templateUrl: 'src/pages/Patient/contribute.html'
+                    templateUrl: 'src/pages/Patient/contribute.html?v=3'
                 })
 
                 /* Statistics */
 
                 .state('main.statistics', {
                     url: '/statistik',
-                    templateUrl: 'src/pages/Statistics/statistics.html',
+                    templateUrl: 'src/pages/Statistics/statistics.html?v=3',
                     controller: 'StatisticsController'
                 })
 
                 .state('main.statisticsAbout', {
                     url: '/om-statistiken',
-                    templateUrl: 'src/pages/Statistics/statisticsAbout.html'
+                    templateUrl: 'src/pages/Statistics/statisticsAbout.html?v=3'
                     //controller: 'StatisticsController'
                 })
 
                 .state('main.annualReport', {
                     url: '/arsrapport',
-                    templateUrl: 'src/pages/Statistics/annualReport.html'
+                    templateUrl: 'src/pages/Statistics/annualReport.html?v=3'
+                })
+
+                .state('main.compare1', {
+                    url: '/knappen1',
+                    templateUrl: 'src/pages/Compare/compare.html?v=3'
                 })
 
                 .state('main.compare', {
                     url: '/knappen',
-                    templateUrl: 'src/pages/Compare/compare.html'
+                    templateUrl: 'src/pages/Knappen2/knappen2.html?v=3',
+                    controller: 'Knappen2Controller'
+                })
+
+                .state('main.compareSearch', {
+                    url: '/knappen/:s',
+                    templateUrl: 'src/pages/Knappen2/knappen2.html?v=3',
+                    controller: 'Knappen2Controller'
                 })
 
                 .state('main.risk', {
                     url: '/risk',
-                    templateUrl: 'src/pages/Risk/risk.html'
+                    templateUrl: 'src/pages/Risk/risk.html?v=3'
                 })
 
                 .state('main.profiles', {
                     url: '/profil',
-                    templateUrl: 'src/pages/Profiles/profiles.html'
+                    templateUrl: 'src/pages/Profiles/profiles.html?v=3'
                     //controller: 'StatisticsController'
                 })
 
                 .state('main.profiles.county', {
                     controller : 'CountyController',
                     url: '/landsting/:id',
-                    templateUrl: 'src/pages/Profiles/profiles.county.html'
+                    templateUrl: 'src/pages/Profiles/profiles.county.html?v=3'
                 })
 
                 .state('main.profiles.unit', {
                     controller : 'UnitController',
                     url: '/enhet/:id',
-                    templateUrl: 'src/pages/Profiles/profiles.unit.html'
+                    templateUrl: 'src/pages/Profiles/profiles.unit.html?v=3'
                 })
 
                 .state('main.research', {
                     url: '/forskning',
-                    templateUrl: 'src/pages/Research/research.html',
+                    templateUrl: 'src/pages/Research/research.html?v=3',
                     controller : 'ResearchController'
                 })
 
                 .state('main.researchItem', {
                     url: '/forskning/:id',
-                    templateUrl: 'src/components/Publication/Publication.html',
+                    templateUrl: 'src/components/Publication/Publication.html?v=3',
                     controller : 'PublicationController'
                 })
 
                 .state('news', {
                     url: '/nyheter',
-                    templateUrl: 'src/pages/News/news.html',
+                    templateUrl: 'src/pages/News/news.html?v=3',
                     controller : 'NewsController'
                 })
 
@@ -286,31 +297,37 @@ angular.module('ndrApp', [
 
                 .state('main.improvement', {
                     url: '/forbattringsprojekt',
-                    templateUrl: 'src/pages/Improvement/improvement.html'
+                    templateUrl: 'src/pages/Improvement/improvement.html?v=3'
                    // controller : 'ResearchController'
                 })
 
                 .state('main.about', {
                     url: '/om-ndr',
-                    templateUrl: 'src/pages/About/about.html',
+                    templateUrl: 'src/pages/About/about.html?v=3',
+                    controller : 'AboutController'
+                })
+
+                .state('main.aboutSwediabkids', {
+                    url: '/om-swediabkids',
+                    templateUrl: 'src/pages/About/aboutSwediabkids.html?v=3',
                     controller : 'AboutController'
                 })
 
                 .state('main.forms', {
                     url: '/blanketter',
-                    templateUrl: 'src/pages/Forms/forms.html'
+                    templateUrl: 'src/pages/Forms/forms.html?v=3'
                     //controller : 'ResearchController'
                 })
 
                 .state('main.press', {
                     url: '/press',
-                    templateUrl: 'src/pages/Press/press.html'
+                    templateUrl: 'src/pages/Press/press.html?v=3'
                     //controller : 'ResearchController'
                 })
 
                 .state('main.prom', {
                     url: '/prom',
-                    templateUrl: 'src/pages/Prom/prom.html'
+                    templateUrl: 'src/pages/Prom/prom.html?v=3'
                     //controller : 'ResearchController'
                 })
 
@@ -318,7 +335,7 @@ angular.module('ndrApp', [
 
                 .state('main.subject', {
                     url: '/subjekt',
-                    templateUrl: 'src/pages/Subject/subject.html',
+                    templateUrl: 'src/pages/Subject/subject.html?v=3',
                     controller : 'SubjectController',
                     resolve: {
                         config: function (accountService) {
@@ -329,31 +346,31 @@ angular.module('ndrApp', [
 
                 .state('main.subject.home', {
                     url: '/hem',
-                    templateUrl: 'src/pages/Subject/home.html',
+                    templateUrl: 'src/pages/Subject/home.html?v=3',
                     controller : 'SubjectHomeController'
                 })
 
                 .state('main.subject.surveys', {
                     url: '/enkater',
-                    templateUrl: 'src/pages/Subject/Surveys/surveys.html',
+                    templateUrl: 'src/pages/Subject/Surveys/surveys.html?v=3',
                     controller : 'SubjectSurveysController'
                 })
 
                 .state('main.subject.surveys.info', {
                     url: '/info',
-                    templateUrl: 'src/pages/Subject/Surveys/info.html'
+                    templateUrl: 'src/pages/Subject/Surveys/info.html?v=3'
                 })
 
                 .state('main.subject.surveys.survey', {
-                    url: '/besvara/:inviteID',
-                    templateUrl: 'src/pages/Subject/Surveys/survey.html',
+                    url: '/besvara/?inviteID',
+                    templateUrl: 'src/pages/Subject/Surveys/survey.html?v=3',
                     controller : 'SubjectSurveyController'
                 })
 
                 .state('main.subject.profile', {
                     url: '/profil',
                     params: { tab: null },
-                    templateUrl: 'src/pages/Subject/Profile/profile.html',
+                    templateUrl: 'src/pages/Subject/Profile/profile.html?v=5',
                     controller : 'SubjectProfileController'
                 })
 
@@ -361,7 +378,7 @@ angular.module('ndrApp', [
 
                 .state('main.account', {
                     url: '/inloggad',
-                    templateUrl: 'src/pages/Account/account.html',
+                    templateUrl: 'src/pages/Account/account.html?v=3',
                     controller : 'AccountController',
                     resolve: {
                         config: function (accountService) {
@@ -372,7 +389,7 @@ angular.module('ndrApp', [
 
                 .state('main.account.home', {
                     url: '/hem',
-                    templateUrl: 'src/pages/Account/home.html',
+                    templateUrl: 'src/pages/Account/home.html?v=3',
                     controller : 'AccountHomeController'
                 })
 
@@ -381,31 +398,43 @@ angular.module('ndrApp', [
                     params: {
                       restoreFilters: ''
                     },
-                    templateUrl: 'src/pages/Account/Survey/survey.html',
+                    templateUrl: 'src/pages/Account/Survey/survey.html?v=3',
                     controller : 'SurveyController'
                 })
 
                 .state('surveyPrint', {
                     url: '/skriv-inbjudan?unitName?socialNumber?key',
-                    templateUrl: 'src/pages/Account/SurveyPrint/surveyPrint.html',
+                    templateUrl: 'src/pages/Account/SurveyPrint/surveyPrint.html?v=3',
                     controller : 'SurveyPrintController'
                 })
 
                 .state('main.account.report', {
+                    url: '/rapportera',
+                    templateUrl: 'src/pages/Account/Report/report.html?v=3',
+                    controller : 'ReportController'
+                })
+
+                .state('main.account.reportone', {
                     url: '/rapportera/:patientID',
-                    templateUrl: 'src/pages/Account/Report/report.html',
+                    templateUrl: 'src/pages/Account/Report/report.html?v=3',
+                    controller : 'ReportController'
+                })
+
+                .state('main.account.reportoneview', {
+                    url: '/rapportera/:patientID/:view',
+                    templateUrl: 'src/pages/Account/Report/report.html?v=3',
                     controller : 'ReportController'
                 })
 
                 .state('main.reportPROM', {
                     url: '/rapporteraPROM/:patientID',
-                    templateUrl: 'src/pages/Account/Report/reportPROM.html',
+                    templateUrl: 'src/pages/Account/Report/reportPROM.html?v=3',
                     controller : 'ReportPROMController'
                 })
 
                 .state('main.account.patients', {
                     url: '/patienter',
-                    templateUrl: 'src/pages/Account/Patients/patients.html',
+                    templateUrl: 'src/pages/Account/Patients/patients.html?v=3',
                     controller : 'PatientsController',
                     params: {
                         restoreFilters: ''
@@ -414,13 +443,13 @@ angular.module('ndrApp', [
 
                 .state('main.account.patients2', {
                     url: '/patienter2',
-                    templateUrl: 'src/pages/Account/Patients/patients2.html',
+                    templateUrl: 'src/pages/Account/Patients/patients2.html?v=3',
                     controller : 'Patients2Controller'
                 })
 
                 .state('main.account.patient', {
-                    url: '/patient/:patientID',
-                    templateUrl: 'src/pages/Account/Patients/patient_profile.html',
+                    url: '/patient/?patientID',
+                    templateUrl: 'src/pages/Account/Patients/patient_profile.html?v=3',
                     controller : 'PatientController',
                     params: {
                         backToSearchVisible: '',
@@ -430,7 +459,7 @@ angular.module('ndrApp', [
 
                 .state('main.account.patientPrint', {
                     url: '/patient/print/:patientID',
-                    templateUrl: 'src/pages/Account/Patients/patient_print.html',
+                    templateUrl: 'src/pages/Account/Patients/patient_print.html?v=4',
                     controller : 'PatientPrintController'
                 })
 
