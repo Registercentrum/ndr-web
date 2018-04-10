@@ -1,0 +1,54 @@
+﻿<div class="row Report">
+	<div class="col-md-5">
+		<h2 class="Page-title">
+		Rapportera/Komplettera</h1>
+	</div>
+	<div class="col-md-7 text-right">
+		<form class="PatientSearch" role="search" name="subjectForm" novalidate>
+			<div class="PatientSearch-inner">
+				<span class="PatientSearch-icon"><i class="fa fa-search" style="color:#999"></i></span>
+				<input class="PatientSearch-input" id="socialnumber-input" ng-model="socialnumber" type="search" placeholder="Skriv in personnummer" required ng-pattern="accountHelpers.pnrRegex">
+				<button class="PatientSearch-searchButton" ng-click="getSubject(true)" ng-disabled="!subjectForm.$valid">Rapportera / Komplettera</button>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-12" ng-show="serverSubjectError">
+		<span>{{serverSubjectError}}</span>
+	</div>
+</div>
+<div class="row" ng-show="subject != null">
+	<div class="col-md-12">
+		<div class="PatientHeader clearfix">
+			<div class="PatientHeader-personNumber col-md-3 u-noLeftPadding">{{ subject.socialNumber }}</div>
+			<div class="pull-right">
+				<button ng-click="setIncidence()" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left" style="margin-right: 25px;">Incidens</button>
+				<button ng-click="setContact()" id="bnNewContact" type="submit" class="Button Button--primary Button--strong pull-left" style="margin-right: 25px;">Ny rapportering</button>
+				<form id="contactSelect" class="PatientHeader-showVisit form-horizontal pull-left" role="form">
+					<select
+						ng-model="contactToUpdate"
+						ng-change="setContact(contactToUpdate)"
+						ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts"
+						style="width:250px"
+						class="form-control">
+						<option value="">Komplettera</option>
+					</select>
+				</form>
+			</div>
+		</div>
+		<div ng-show="view == 1" report-form account-model="accountModel" subject="subject" contact-to-update="contactToUpdate"></div>
+		<div ng-show="view == 2" incidence-form account-model="accountModel" subject="subject"></div>
+	</div>
+</div>
+<!-- end Panel -->
+<script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-body text-center">
+	  <a class="pull-right" ng-click="cancel()"><i style="color:#333" class="fa fa-close"></i></a>
+	
+	  <h3>Sparat</h3>
+	  <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
+	
+	  <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="close()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
+	  <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="clear()">Rapportera för en annan patient</a>
+	  <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="close()">Avsluta rapportering</a>
+	</div>
+</script>

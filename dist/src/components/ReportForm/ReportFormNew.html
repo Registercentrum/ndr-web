@@ -1,0 +1,53 @@
+<div style="margin-top: 30px;">
+
+	<h5 class="text-info">{{accountModel.activeAccount.unit.name}}</h5>
+	<h3 class="Report-title" style="margin:1rem 0 2rem">{{contactToUpdate ? 'Komplettera' : 'Rapportera nytt'}} besök</h3>
+
+	<div class="upperlist" style="display: flex;">
+		<div class="" style="width: 462px;margin-right: 40px;">
+
+		</div>
+		<div class="" style="flex: 1;padding:5px 10px; border-bottom: 3px solid #74BAD8;display: flex;align-items: center;justify-content: center; text-align: center">
+			<i class="fa fa-arrow-circle-left contactSelector left" ng-show="model.refIndex>0" ng-click="sooner()"></i><span>{{!model.refContacts.length ? 'Inga T' : 'T'}}idigare besök</span><i class="fa fa-arrow-circle-right contactSelector right" ng-click="later()" ng-show="subject.contacts.length > (model.refIndex+1)"></i>
+		</div>
+	</div>
+	<div class="" style="box-shadow: inset -2px -2px 1px 2px rgba(0, 0, 0, 0.15);padding-bottom: 2px;">
+		<div class="" style="max-height: 800px;overflow-y: scroll;">
+			<div form
+				name = "model.formName"
+				subject = "subject"
+				update-entity = "contactToUpdate"
+				iterate-entity = "model.lastContact"
+				ref-models = "model.refContacts"
+				questions = "questions"
+				config = "formConfig"
+				new-index = "newIndex"
+				model  = "model.contactModel"
+				unit-type = "accountModel.activeAccount.unit.typeID" />
+
+				<div ng-if="optionalQuestions.length">
+					<h4 style="margin-top: 4rem;margin-left: 14px">Enhetens valbara frågor</h4>
+					<div form
+						name = "model.formOptionalsName"
+						subject = "subject"
+						update-entity = "contactToUpdate.optionals"
+						iterate-entity = "model.lastContact.optionals"
+						ref-models = "model.refContactsOptionals"
+						questions = "optionalQuestions"
+						config = "formOptionalsConfig"
+						new-index = "newIndex"
+						model  = "model.contactOptionalsModel" />
+				</div>
+
+				<ul ng-show="serverSaveErrors.length>0" style="margin-top: 3rem;padding: 0;margin-left: 220px;list-style-type:none;">
+					<li ng-repeat="s in serverSaveErrors">
+						{{s}}
+					</li>
+				</ul>
+
+				<div style="margin-bottom: 3rem;">
+					<button type="submit" style="margin-left: calc(220px + 1.5rem); margin-top:3rem;width: 242px" ng-disabled="!model.contactModel.isValid || (model.optionalQuestions.length && !model.contactOptionalsModel.isValid)" ng-click="saveContact()" class="Button Button--large Button--info">Spara</button>
+				</div>
+			</div>
+	</div>
+</div>

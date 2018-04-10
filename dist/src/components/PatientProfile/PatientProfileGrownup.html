@@ -1,0 +1,276 @@
+<tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
+
+    <tab heading="Översikt">
+
+        <div id="patient" ng-show="subject && !hasError">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group fr mt4 mb4">
+                        <a class="" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</a>
+                        <a class="" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="model.mode == 'visual'" class="Profile">
+                <div class="row" id="printableArea">
+                    <div class="col-md-12">
+                        <div class="Panel clearfix" style="padding: 0px; height:auto">
+                            <div class="Panel--profile col-md-5" style="line-height: 22px; font-size: 14px;font-weight: 300">
+                                <h5><span class="strong">{{ subject.sexText + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}, {{ subject.diabetesTypeText }}</span></h5>
+                                <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
+                                <p>Diabetesbehandling: <span class="strong">{{ latest.treatment.label }}</span></p>
+                                <p ng-show="[3,4,9,10].indexOf(latest.treatment.value) != -1">Metod att ge insulin: <span class="strong">{{ latest.insulinMethod.label }}</span></p>
+                                <p ng-show="latest.insulinMethod.value == 2">Pumpmodell: <span class="strong">{{ latest.pumpOngoing.label }}</span></p>
+                                <p ng-show="latest.cgm.value"> CGM/FGM: <span class="strong">{{ latest.cgm.label + ((latest.cgmType.value && latest.cgm.value) ? ', ' + latest.cgmType.label : '') }}</span></p>
+                                <p>Senaste besök: <span class="strong">{{ latest.contactDate.label }}</span></p>
+                            </div>
+
+                            <div class="col-md-2 profilebg center" ng-class="{1:'man', 2:'woman'}[subject.sex]"  style="height: 280px;flex-direction: column;">
+                                <p>Vikt: <span class="strong">{{  latest.weight.label }}</span></p>
+                                <p>Längd: <span class="strong">{{  latest.height.label }}</span></p>
+                                <p>BMI: <span class="strong">{{  latest.bmi.label }}</span></p>
+                            </div>
+
+                            <div class="Panel--profile Panel--profile-last col-md-5">
+                                <h4 class="Profile-heading">HbA1c</h4> <h4 class="Profile-latest-value">{{ latest.hba1c.value }} <span class="unit">mmol/mol</span></h4>
+                                <div class="" line-chart-patient-hba1c model="model.data.trend.hba1c"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="Panel">
+                            <h4>Blodlipider</h4>
+                            <div class="col-sm-6" line-chart-patient-cholesterol title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
+                            <div class="col-sm-6" line-chart-patient-cholesterol title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
+                            <div> Behandlas med lipidsänkande läkemedel: <strong>{{ latest.lipidLoweringDrugs.label }}</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="Panel">
+                            <h4 class="Profile-heading">Blodtryck</h4><h4 class="Profile-latest-value">{{latest.bpSystolic.value + "/" + latest.bpDiastolic.value }} <span class="unit">mm Hg</span></h4>
+                            <div class="" line-chart-patient-bp model="model.data.trend.combinedBp"></div>
+                            <div>Behandlas med blodtryckssänkande läkemedel: <strong>{{ latest.antihypertensives.label }}</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="Panel Panel--purple">
+                            <h4 class="Profile-heading">Hjärt-/kärlsjukdom</h4><i class="Profile-latest-value fa fa-heart" class="pull-right" style="font-size: 30px;"></i>
+                            <table class="table table-condensed">
+                                <tbody>
+                                <tr><td>Ischemisk hjärtsjukdom</td><td>{{ latest.ischemicHeartDisease.label }}</td></tr>
+                                <tr><td>Cerebrovaskulär sjukdom</td><td>{{ latest.cerebrovascularDisease.label }}</td></tr>
+                                <tr><td>Behandlas med ASA</td><td>{{ latest.aspirin.label }}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="Panel">
+                            <h4 class="Profile-heading">Fysisk aktivitet</h4>  <i class="Profile-latest-value icon " class="" style="font-size: 30px;"></i>
+                            <div class="PhysicalChart" physical-chart model="latest.physicalActivity">
+                                <div style="padding-top:50px;clear:both"></div>
+                                <div
+                                        ng-repeat="item in latest.physicalActivity.domainValues"
+                                        ng-style="{'font-weight' : latest.physicalActivity.value == item.code ? 'bold' : 'normal' }"
+                                        style="text-align:center;width: 20%;float:left"
+                                        ng-class="{'active' : latest.physicalActivity.value == item.code }">
+                                    <div style="height:35px;border:2px solid #fff;" ng-style="{'background-color' : latest.physicalActivity.value == item.code ? '#74bad8' : '#ccc' }"></div>
+                                    <span style="font-size: 12px">{{ item.text}}</span>
+                                </div>
+                                <div style="text-align: center">(gånger per vecka)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="Panel Panel--purple">
+                            <h4 class="Profile-heading">Nikotin</h4>  <i class="Profile-latest-value fa fa-noun_100084_cc" style="font-size: 40px;"></i>
+                            <h5 class="text-center" style="margin-top: 80px" >{{ latest.smokingEndYear.value ? 'Slutat röka ' + latest.smokingEndYear.label : (latest.smokingHabit.value ? latest.smokingHabit.label :'Uppgift om rökvanor saknas')  }}</h3>
+                            <h5 class="text-center" style="margin-top: 80px" >{{ latest.snuffingEndYear.value ? 'Slutat snusa ' + latest.snuffingEndYear.label : (latest.snuffingHabit.value ? latest.snuffingHabit.label :'Uppgift om snusvanor saknas')  }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="Panel Panel--green">
+                            <h4 class="Profile-heading">Fötter</h4>  <i class="Profile-latest-value fa fa-noun_4820_cc" class="" style="font-size: 55px;"></i>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td>Riskkategori</td>
+                                    <td>{{ latest.footRiscCategory.label }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Senaste fotundersökning</td>
+                                    <td>{{ latest.footExaminationDate.label }}</td>
+                                    <td>
+                                        <div ng-show="checkFootDate(latest.footExaminationDate)">
+                                            <i tooltip="OBS: Senaste rapporterade fotundersökning har ett datum mer än 1 år tillbaka i tiden." class="fa fa-exclamation"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="Panel Panel--green">
+                            <h4 class="Profile-heading">Ögon</h4>  <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td width="80">Diabetesretinopati</td>
+                                    <td width="20" style="width:50%">{{ latest.diabeticRetinopathy.label }}</td>
+                                </tr>
+                    						<tr>
+                    							<td width="80">Retinopati, diagnos på sämsta ögat</td>
+                    							<td width="20">{{ latest.retinopathyDiagnosis.value != 0 ? latest.retinopathyDiagnosis.label : null  }}</td>
+                    						</tr>
+                                <tr>
+                                    <td width="80">Behandlad för ögonkomplikation</td>
+                                    <td width="20">{{ latest.eyeTreated.label}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="80">Senaste ögonbottenundersökning</td>
+                                    <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                                </tr>
+                                <tr>
+                                    <td width="80">Synnedsättning p.g.a. diabetes</td>
+                                    <td width="20">{{ latest.visualLoss.label  }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="Panel Panel--green">
+                            <h4 class="Profile-heading">Njurar</h4>  <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td>Senaste S-Kreatininvärde</td>
+                                    <td>{{ latest.creatinine.label }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Albuminuri</td>
+                                    <td>{{ latest.albuminuria.label }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div ng-show="model.mode == 'table'" class="Panel">
+                <h2>Rapporteringar</h2>
+                <div class="row">
+                    <div class="btn-group pull-right" style="margin: 0 16px 10px 0;">
+                        <a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="model.tableCount>1 && model.tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
+                        <a class="Button Button--info Button--small" ng-click="tableBack()"  ng-show="model.tableCount>1 && model.tableIndex<model.tableCount" >Bakåt  <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
+                        <thead>
+                        <tr>
+                            <th class="key"></th>
+                            <th ng-repeat="date in model.data.table.header.values">{{ date | date : 'dd MMM yyyy'}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="contact in model.data.table.body | orderBy: 'sequence'">
+                            <td class="key">{{ contact.label }}</td>
+                            <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </tab>
+
+
+    <tab heading="Diabetesenkäten" ng-if="activeAccount.unit.isUsingPROM && model.latestInvite">
+
+
+        <!-- PROM -->
+
+
+
+        <div class="row mt4">
+
+            <div class="col-md-12">
+
+                <div class="P">
+                    <div class="title">
+                        <h1>Senaste enkäten ({{ model.latestInvite.submittedAt }})</h1>
+                    </div>
+
+                    <div class="body">
+                        <div bar-chart categories="model.categories" model="model.selectedInviteData"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="P">
+                    <div class="title">
+                        <h1>Utveckling över tid</h1>
+                    </div>
+
+                    <div class="body">
+                        <div line-chart-prom-combined model="model.promSeries"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!--<div ng-repeat="group in PROMFormMeta" class="row">-->
+            <!--<h3 class="col-md-12 pv5">{{ group.groupID }}. {{ group.description }}</h3>-->
+            <!--<div ng-repeat="survey in subject.surveys[group.groupID]" class="pv4 Panel">-->
+
+                <!--<h4 class="col-md-12">{{ survey.dimension.desc }}</h4>-->
+                <!--<div class="col-md-9">-->
+                    <!--<div-->
+                            <!--line-chart-->
+                            <!--model="survey.series"-->
+                            <!--y-min="0"-->
+                            <!--y-max="100"-->
+                            <!--height="200"-->
+                            <!--color="#4A99C5"-->
+                    <!--&gt;</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-3">-->
+                    <!--Senaste värdet<br />-->
+                    <!--<span class="f1 b">{{ survey.latestOutcome }}</span>-->
+                    <!--<sup-->
+                            <!--ng-show="survey.diffFromPrevious !== null"-->
+                            <!--ng-class="{red: survey.diffFromPrevious < 0}"-->
+                    <!--&gt;{{ survey.diffFromPrevious }}</sup>-->
+                <!--</div>-->
+
+
+                <!--<div class="clearfix"></div>-->
+
+
+            <!--</div>-->
+        <!--</div>-->
+
+    </tab>
+
+
+</tabset>

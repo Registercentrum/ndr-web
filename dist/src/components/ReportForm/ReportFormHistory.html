@@ -1,0 +1,22 @@
+<!--<div style="display: flex">
+	<div ng-repeat="contact in model.contacts" style="flex: 1; border: 1px solid gray">
+			<div report-form-column contact="contact" optional-questions="model.optionalQuestions" questions="model.questions" editable="false" new="false">
+	</div>
+</div>-->
+<div style="margin-top: 20px;">
+	<form name="contactForm" class="contactForm" novalidate ng-model-options="{ 'updateOn': 'blur' }">
+		<div ng-repeat="q in model.questions" class="qrow" ng-if="model.contactModel" ng-show="isVisible(q)">
+			<div style="width: 220px; font-weight: 600;padding: 18px 0">{{ q.question }}<i class="fa fa-question-circle helpNote" style="color: #74BAD8; margin-left: 0.5rem" ng-show="q.helpNote != null" tooltip="{{q.helpNote}}"></i></div>
+			<div ndr-Question-New question="q" model="model.contactModel" methods="config.methods" subject="subject" style="width: 242px; padding: 10px 10px 6px; font-size: 13px"></div>
+			<div ng-if="model.refContacts.length" ng-repeat="c in model.refContacts" style="flex: 1; padding: 18px 10px;"><span style="display: inline-block;color:#8c8c8c">{{ viewVal(q, c)}}</span></div>
+		</div>
+	</form>
+	<form ng-if="model.optionalQuestions" name="optionalsForm" class="contactForm" novalidate ng-model-options="{ 'updateOn': 'blur' }" style="margin-top: 5rem;">
+		<h4>Din enhets valbara frågor</h4>
+		<div ng-repeat="q in model.optionalQuestions" class="qrow" ng-if="model.contactModel" ng-show="isVisible(q)">
+			<div style="width: 220px; font-weight: 600;padding: 18px 0">{{ q.question }}<i class="fa fa-question-circle helpNote" style="color: #74BAD8; margin-left: 0.5rem" ng-show="q.helpNote != null" tooltip="{{q.helpNote}}"></i></div>
+			<div ndr-Question-New question="q" model="model.contactModel.optionals" methods="config.methods" subject="subject" style="width: 242px; padding: 10px 10px 6px; font-size: 13px"></div>
+			<div ng-if="model.refContacts.length" ng-repeat="c in model.refContacts" style="flex: 1; padding: 18px 10px;"><span style="display: inline-block;color:#8c8c8c">{{ viewVal(q, c)}}</span></div>
+		<div>
+	</form>
+</div>

@@ -1,0 +1,315 @@
+<tabset justified class="nav-tabs-secondary nav-tabs-negative-15">
+
+    <tab heading="Översikt">
+
+        <div id="patient" ng-show="subject && !hasError">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group fr mt4 mb4">
+                        <a class="" ng-model="model.mode" btn-radio="'visual'"><i class="fa fa-area-chart"></i> Profil</a>
+                        <a class="" ng-model="model.mode" btn-radio="'table'"><i class="fa fa-table"></i> Tabell </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="model.mode == 'visual'" class="Profile">
+                <div class="row" id="printableArea">
+                    <div class="col-md-12">
+                        <div class="clearfix" style="padding: 0px; height:auto">
+
+                          <div class="Panel Panel--blue col-md-4">
+                            <div class="Profile-Panel">
+                              <div class="Profile-Header">
+
+                                <h4>Diabetesbehandling</h4>
+
+                              </div>
+                              <div class="Profile-Content">
+                                <div class="Profile-Center">
+
+                                  <p ng-show="latest.insulinMethod.value">Insulinbehandlas med {{ latest.insulinMethod.label }}</p>
+                                  <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
+                                  <p ng-show="latest.insulinMethod.value == 2">Pumpmodell: {{ latest.pumpOngoing.label }}</p>
+                                  <hr />
+                                  <p>Totaldos per dygn: {{ latest.noInsDosePerDay.label }}</p>
+                                  <p>E/Kg/dygn: {{  latest.eKgPerDay.label }}</p>
+                                  <p>Antal E bas-/långv./dygn: {{  latest.noUnitsBasePerDay.label }}</p>
+                                  <hr />
+                                  <p>Kolhydraträknar: {{  latest.carbohydrate.label }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4 profilebg" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 18px; font-size: 14px;font-weight: 300;height: 280px;">
+                              <h5>{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}</h5>
+                              <p><span class="strong">{{ subject.diabetesTypeText }}</span></p>
+                              <hr />
+                              <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
+                              <p>Vikt: <span class="strong">{{  latest.weight.label }}</span></p>
+                              <p>Längd: <span class="strong">{{  latest.height.label }}</span></p>
+                              <p><span class="strong">{{  latest.isoBMI.label }}</span> (iso-BMI)</p>
+                              <p>BMI-SDS: <span class="strong">{{  latest.bmiSDS.label }}</span></p>
+                              <hr />
+                              <p>Senaste besök: <span class="strong">{{ latest.contactDate.label }}</span></p>
+                              <p>Egenvårdsplan: <span class="strong">{{ latest.selfcarePlanDate.label }}</span></p>
+                          </div>
+
+                          <div class="Panel Panel--blue col-md-4">
+                            <div class="Profile-Panel">
+                              <div class="Profile-Header">
+
+                                <h4>Glukoskontroll</h4>
+
+                              </div>
+                              <div class="Profile-Content">
+                                <div class="Profile-Center">
+                                  <p>Kontinuerlig glukosmätning: {{ latest.cgm.label }}</p>
+                                  <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
+                                  <p ng-show="latest.cgm.value == 1"> CGM/FGM modell: {{ latest.cgmType.label }}</p>
+                                  <hr />
+                                  <p>Medelglukos i CGM/FGM*: {{ latest.sdCGMLast2W.label }}</p>
+                                  <p>Medelglukos SD*: {{ latest.meanGlukosesLast2W.label }}</p>
+                                  <p>Andel glukosvärden under 4 mmol/L*: {{ latest.shareGlucoseLast2W.label }}</p>
+                                  <p>Andel glukosvärden inom målområdet*: {{ latest.shareGlucoseTarget.label }}</p>
+                                </div>
+                                <div class="Profile-Footer">
+                                  * avser 2 veckor tillbaka vid senaste rapporteringen
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="Panel">
+                      <h4 class="Profile-heading">HbA1c</h4> <h4 class="Profile-latest-value">Senaste värde {{ latest.hba1c.value }} <span class="unit">mmol/mol</span></h4>
+                      <div class="" line-chart-patient-hba1c model="model.data.trend.hba1c"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="Panel Panel--purple">
+                            <h4 class="Profile-heading">Hypoglykemi/ketoacidos</h4>
+                            <table class="table table-condensed">
+                                <tbody>
+                                <tr><td>Hypoglukemi, antal episoder sedan föregående besök</td><td>{{ latest.hypoglycemiaKids.label }}</td></tr>
+                                <tr><td>Ketoacidos, antal episoder sedan föregående besök</td><td>{{ latest.ketoKids.label }}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                      <div class="Panel">
+                        <div class="Profile-Panel">
+                          <div class="Profile-Header">
+
+                            <h4>Fysisk aktivitet</h4>
+                            <i class="Profile-latest-value icon " class="" style="font-size: 30px;"></i>
+
+                          </div>
+                          <div class="Profile-Content">
+                            <div class="Profile-Center">
+
+                              <p>Hur många av de senaste 7 dagarna har innehållit minst 60 minuters sammanlagd fysik aktivitet</p>
+                              <div class="PhysicalChart" physical-chart model="latest.physicalActivityKids" style="display: flex;">
+                                  <div
+                                          ng-repeat="item in model.domainPhysical.domainValues"
+                                          ng-style="{'font-weight' : latest.physicalActivityKids.value == item.code ? 'bold' : 'normal' }"
+                                          style="text-align:center;flex: 1"
+                                          ng-class="{'active' : latest.physicalActivityKids.value == item.code }">
+                                      <div style="height:35px;border:2px solid #fff;" ng-style="{'background-color' : latest.physicalActivityKids.value == item.code ? '#74bad8' : '#ccc' }"></div>
+                                      <span style="font-size: 12px">{{ item.code}}</span>
+                                  </div>
+                                  <!--<div style="text-align: center">(gånger per vecka)</div>-->
+                              </div>
+
+                            </div>
+                            <div class="Profile-Footer">
+
+                              * Från 5 år
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="Panel Panel--purple">
+                        <div class="Profile-Panel">
+                          <div class="Profile-Header">
+
+                            <h4>Nikotin</h4>
+                            <i class="Profile-latest-value fa fa-noun_100084_cc" style="width: 40px;font-size: 40px;"></i>
+
+                          </div>
+                          <div class="Profile-Content">
+                            <div class="Profile-Center">
+
+                              <h5 class="text-center" style="flex: 1">{{ latest.smokingEndYear.value ? 'Slutat röka ' + latest.smokingEndYear.label : (latest.smokingHabit.value ? latest.smokingHabit.label :'Uppgift om rökvanor saknas')  }}</h3>
+                              <h5 class="text-center" style="flex: 1">{{ latest.snuffingEndYear.value ? 'Slutat snusa ' + latest.snuffingEndYear.label : (latest.snuffingHabit.value ? latest.snuffingHabit.label :'Uppgift om snusvanor saknas')  }}</h3>
+
+                            </div>
+                            <div class="Profile-Footer">
+
+                              * Från 13 år
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                      <div class="Panel Panel--green">
+                        <div class="Profile-Panel">
+                          <div class="Profile-Header">
+
+                            <h4>Blodtryck</h4>
+                            <i class="Profile-latest-value fa fa-heart" class="pull-right" style="font-size: 30px;"></i>
+
+                          </div>
+                          <div class="Profile-Content">
+                            <div class="Profile-Center">
+
+                              <table class="table table-condensed">
+                                  <tr ng-if="latest.bpSystolic.value && latest.bpDiastolic.value">
+                                      <td>Senaste blodtryck</td>
+                                      <td>{{ latest.bpSystolic.value }} / {{ latest.bpDiastolic.value }} mmHg</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Hypertoni</td>
+                                      <td>{{ latest.hypertension.label }}</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Behandlad med blodtryckssänkande lkm</td>
+                                      <td>{{ latest.antihypertensives.label }}</td>
+                                  </tr>
+                              </table>
+
+                            </div>
+                            <div class="Profile-Footer">
+
+                              * Från 10 år
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="Panel Panel--green">
+                        <div class="Profile-Panel">
+                          <div class="Profile-Header">
+
+                            <h4>Ögon</h4>
+                            <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
+
+                          </div>
+                          <div class="Profile-Content">
+                            <div class="Profile-Center">
+
+                              <table class="table table-condensed">
+                                  <tr>
+                                      <td width="80">Diabetesretinopati</td>
+                                      <td width="20" style="width:50%">{{ latest.diabeticRetinopathy.label }}</td>
+                                  </tr>
+                                  <tr>
+                                      <td width="80">Senaste ögonbotten-<br />undersökning</td>
+                                      <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                                  </tr>
+                              </table>
+
+                            </div>
+                            <div class="Profile-Footer">
+
+                              * Från 10 år
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="Panel Panel--green">
+                        <div class="Profile-Panel">
+                          <div class="Profile-Header">
+
+                            <h4>Njurar</h4>
+                            <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
+
+                          </div>
+                          <div class="Profile-Content">
+                            <div class="Profile-Center">
+
+                              <table class="table table-condensed">
+                                  <tr>
+                                      <td>Senaste U-Albumin/Kreatinin</td>
+                                      <td>{{ latest.uAlbCreatinine.label }}</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Datum U-Albumin/Kreatinin</td>
+                                      <td>{{ latest.uAlbCreatinine.date }}</td>
+                                  </tr>
+                                  <tr>
+                                      <td>Albuminuri</td>
+                                      <td>{{ latest.albuminuria.label }}</td>
+                                  </tr>
+                              </table>
+
+                            </div>
+                            <div class="Profile-Footer">
+
+                              * Från 10 år
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div ng-show="model.mode == 'table'" class="Panel">
+                <h2>Rapporteringar</h2>
+                <div class="row">
+                  <div class="btn-group pull-right" style="margin: 0 16px 10px 0;">
+                      <a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="model.tableCount>1 && model.tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
+                      <a class="Button Button--info Button--small" ng-click="tableBack()"  ng-show="model.tableCount>1 && model.tableIndex<model.tableCount" >Bakåt  <i class="fa fa-arrow-circle-right"></i></a>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                    <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
+                      <thead>
+                        <tr>
+                            <th class="key"></th>
+                            <th ng-repeat="date in model.data.table.header.values">{{ date | date : 'dd MMM yyyy'}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="contact in model.data.table.body | orderBy: 'sequence'">
+                            <td class="key">{{ contact.label }}</td>
+                            <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </tab>
+
+</tabset>

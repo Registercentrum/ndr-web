@@ -1,0 +1,236 @@
+<div>
+	<div class="Panel" ng-class="isSaving ? 'Panel-loading' : ''">
+		<div class="Panel-loading-overlay"></div>
+		<div>
+			<form name="incidenceForm" class="Report-form form-horizontal" role="form" novalidate>
+				<div class="row">
+					<h5 class="col-md-12 text-info">{{accountModel.activeAccount.unit.name}}</h5>
+					<h3 class="Panel-title Report-title col-md-12">Incidens</h3>
+				</div>
+				<div class="Report-formGroup">
+					<div class="row">
+						<div class="col-md-5">
+							<label class="" for="incDate">Diagnosdatum</label><i class="fa fa-question-circle helpNote" ng-show="lists['incDate'].helpNote != null" tooltip="{{lists['incDate'].helpNote}}"></i>
+							<div class="Report-formGroup-form">
+								<div class="input-group FilterDatePopup-group">
+									<span class="input-group-addon">
+									<button
+										type="button"
+										class="FilterDatePopup-button"
+										ng-click="openPicker($event, 'incDate')">
+									<i class="fa fa-calendar"></i>
+									</button>
+									</span>
+									<div ng-class="{ 'has-error' : (incidenceForm.incidence.$invalid || incidenceForm.incidence.$error.checkContactDate) }">
+										<input
+											name="incDate"
+											type="text"
+											class="form-control"
+											ng-model="incidenceModel.incDate"
+											ng-class="{ 'has-error' : (incidenceForm.incDate.$invalid || incidenceForm.incDate.$error.checkContactDate) }"
+											ng-change="setAge()"
+											ng-model-options="{ updateOn: 'blur' }"
+											date-disabled="disabled(date, mode)"
+											datepicker-options="dateOptions"
+											datepicker-popup="{{format}}"
+											max-date="datePickers.maxDate"
+											is-open="datePickers.incDate.opened"
+											ng-required="true"
+											close-text="Stäng"
+											current-text="Idag"
+											clear-text="Rensa"
+											placeholder="ÅÅÅÅ-MM-DD">
+									</div>
+								</div>
+								<div ng-show="incidenceForm.incDate.$invalid && !incidenceForm.incDate.$pristine" class="has-error"> <!-- && !incidenceForm.incDate.$error.checkincDate -->
+									<p class="Report-formItemHelp help-block" >Kontrollera incidensdatum!</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="Report-formGroup">
+					<div class="row">
+						<div class="col-md-12">
+							<h5>Insjuknandesymtom</h5>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incPolyuri" class="">Polyuri</label><i class="fa fa-question-circle helpNote" ng-show="questions['incPolyuri'].helpNote != null" tooltip="{{questions['incPolyuri'].helpNote}}"></i>
+							<select name="incPolyuri" class="form-control" ng-model="incidenceModel.incPolyuri" ng-class="{ 'has-no-error' : incidenceModel.incPolyuri != null}" ng-options="type.code as type.text for type in questions.incPolyuri.domain.domainValues">
+								<option value="">-- välj --</option>
+							</select>
+							<p ng-show="incidenceForm.incPolyuri.$pristine && incidenceModel.incPolyuri != null && incidenceModel.incPolyuri == lastContact.incPolyuri && !incidenceModel.contactID" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incPolydipsi" class="">Polydipsi</label><i class="fa fa-question-circle helpNote" ng-show="questions['incPolydipsi'].helpNote != null" tooltip="{{questions['incPolydipsi'].helpNote}}"></i>
+							<select name="incPolydipsi" class="form-control" ng-model="incidenceModel.incPolydipsi" ng-class="{ 'has-no-error' : incidenceModel.incPolydipsi != null}" ng-options="type.code as type.text for type in questions.incPolyuri.domain.domainValues">
+								<option value="">-- välj --</option>
+							</select>
+							<p ng-show="incidenceForm.incPolydipsi.$pristine && incidenceModel.incPolydipsi != null && incidenceModel.incPolydipsi == lastContact.incPolydipsi && !incidenceModel.contactID" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incWeightloss" class="">Viktnedgång</label><i class="fa fa-question-circle helpNote" ng-show="questions['incWeightloss'].helpNote != null" tooltip="{{questions['incWeightloss'].helpNote}}"></i>
+							<select name="incWeightloss" class="form-control" ng-model="incidenceModel.incWeightloss" ng-class="{ 'has-no-error' : incidenceModel.incWeightloss != null}" ng-options="type.code as type.text for type in questions.incWeightloss.domain.domainValues">
+								<option value="">-- välj --</option>
+							</select>
+							<p ng-show="incidenceForm.incWeightloss.$pristine && incidenceModel.incWeightloss != null && incidenceModel.incWeightloss == lastContact.incWeightloss && !incidenceModel.contactID" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incAcantosisNigricans" class="">Acantosis Nigricans</label><i class="fa fa-question-circle helpNote" ng-show="questions['incAcantosisNigricans'].helpNote != null" tooltip="{{questions['incAcantosisNigricans'].helpNote}}"></i>
+							<select name="incAcantosisNigricans" class="form-control" ng-model="incidenceModel.incAcantosisNigricans" ng-class="{ 'has-no-error' : incidenceModel.incAcantosisNigricans != null}" ng-options="type.code as type.text for type in questions.incAcantosisNigricans.domain.domainValues">
+								<option value="">-- välj --</option>
+							</select>
+							<p ng-show="incidenceForm.incAcantosisNigricans.$pristine && incidenceModel.incAcantosisNigricans != null && incidenceModel.incAcantosisNigricans == lastContact.incAcantosisNigricans && !incidenceModel.contactID" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>
+						</div>
+					</div>
+				</div>
+				<div class="Report-formGroup">
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incHeight" class="">Längd, cm</label><i class="fa fa-question-circle helpNote" ng-show="questions['incHeight'].helpNote != null" tooltip="{{questions['incHeight'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incHeight.$invalid && !incidenceForm.incHeight.$pristine }">
+								<input name="incHeight" type="number" ng-min="questions['incHeight'].minValue" ng-max="questions['incHeight'].maxValue" step="1" class="form-control" placeholder="" ng-change="tryCalculateBMI()" ng-model="incidenceModel.incHeight" ng-class="{ 'has-no-error' : !incidenceForm.incHeight.$invalid && incidenceModel.incHeight != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incHeight.$error.min || incidenceForm.incHeight.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incHeight'].minValue}} och {{questions['incHeight'].maxValue}}.</p>
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incWeight" class="">Vikt, kg</label><i class="fa fa-question-circle helpNote" ng-show="questions['incWeight'].helpNote != null" tooltip="{{questions['incWeight'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incWeight.$invalid && !incidenceForm.incWeight.$pristine }">
+								<input name="incWeight" type="number" ng-min="questions['incWeight'].minValue" ng-max="questions['incWeight'].maxValue" decimals="1" step="0.1" class="form-control" placeholder="" ng-change="tryCalculateBMI()" ng-model="incidenceModel.incWeight" ng-class="{ 'has-no-error' : !incidenceForm.incWeight.$invalid && incidenceModel.incWeight != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incWeight.$error.min || incidenceForm.incWeight.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incWeight'].minValue}} och {{questions['incWeight'].maxValue}}.</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incBMI" class="">BMI</label><i class="fa fa-question-circle helpNote" ng-show="questions['incBMI'].helpNote != null" tooltip="{{questions['incBMI'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incBMI.$invalid && !incidenceForm.incBMI.$pristine }">
+								<input name="incBMI" type="number" ng-min="questions['incBMI'].minValue" ng-max="questions['incBMI'].maxValue" steps="0.1" disabled decimals="1" class="form-control" placeholder="" ng-model="incidenceModel.incBMI" ng-class="{ 'has-no-error' : !incidenceForm.incBMI.$invalid && incidenceModel.incBMI != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incBMI.$invalid" class="Report-formItemHelp help-block">BMI kan anta ett värde mellan 5 och 60.</p>
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incBMISDS" class="">BMI, SDS</label><i class="fa fa-question-circle helpNote" ng-show="questions['incBMISDS'].helpNote != null" tooltip="{{questions['incBMISDS'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incBMISDS.$invalid && !incidenceForm.incBMISDS.$pristine }">
+								<input name="incBMISDS" type="number" ng-min="questions['incBMISDS'].minValue" ng-max="questions['incBMISDS'].maxValue" disabled class="form-control" placeholder="" ng-model="incidenceModel.incBMISDS" decimals="1" ng-class="{ 'has-no-error' : !incidenceForm.incBMISDS.$invalid && incidenceModel.incBMISDS != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incBMISDS.$error.min || incidenceForm.incBMISDS.$error.max" class="Report-formItemHelp help-block">BMI-SDS kan anta ett värde mellan -20 och 20.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="Report-formGroup">
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incBPSystolic" class="">Systoliskt blodtryck, mm Hg</label><i class="fa fa-question-circle helpNote" ng-show="questions['incBPSystolic'].helpNote != null" tooltip="{{questions['incBPSystolic'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incBPSystolic.$invalid && !incidenceForm.incBPSystolic.$pristine }">
+								<input name="incBPSystolic" type="number" ng-min="questions['incBPSystolic'].minValue" ng-max="questions['incBPSystolic'].maxValue" step="1" class="form-control" placeholder="" ng-change="setIncBPSystolicSDS()" ng-model="incidenceModel.incBPSystolic" ng-class="{ 'has-no-error' : !incidenceForm.incBPSystolic.$invalid && incidenceModel.incBPSystolic != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incBPSystolic.$error.min || incidenceForm.incBPSystolic.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incBPSystolic'].minValue}} och {{questions['incBPSystolic'].maxValue}}.</p>
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incBPDiastolic" class="">Diastoliskt blodtryck, mm Hg</label><i class="fa fa-question-circle helpNote" ng-show="questions['incBPDiastolic'].helpNote != null" tooltip="{{questions['incBPDiastolic'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incBPDiastolic.$invalid && !incidenceForm.incBPDiastolic.$pristine }">
+								<input name="incBPDiastolic" type="number" ng-min="questions['incBPDiastolic'].minValue" ng-max="questions['incBPDiastolic'].maxValue" step="1" class="form-control" placeholder="" ng-change="setIncBPDiastolicSDS()" ng-model="incidenceModel.incBPDiastolic" ng-class="{ 'has-no-error' : !incidenceForm.incBPDiastolic.$invalid && incidenceModel.incBPDiastolic != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incBPDiastolic.$error.min || incidenceForm.incBPDiastolic.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incBPDiastolic'].minValue}} och {{questions['incBPDiastolic'].maxValue}}.</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incBPSystolicSDS" class="">Systoliskt blodtryck, SDS</label><i class="fa fa-question-circle helpNote" ng-show="questions['incBPSystolicSDS'].helpNote != null" tooltip="{{questions['incBPSystolicSDS'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incBPSystolicSDS.$invalid && !incidenceForm.incBPSystolicSDS.$pristine }">
+								<input name="incBPSystolicSDS" disabled type="number" class="form-control" placeholder="" ng-model="incidenceModel.incBPSystolicSDS" ng-class="{ 'has-no-error' : !incidenceForm.incBPSystolicSDS.$invalid && incidenceModel.incBPSystolicSDS != null}" ng-model-options="{ updateOn: 'blur' }">
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incBPDiastolicSDS" class="">Diastoliskt blodtryck, SDS</label><i class="fa fa-question-circle helpNote" ng-show="questions['incBPDiastolicSDS'].helpNote != null" tooltip="{{questions['incBPDiastolicSDS'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incBPDiastolicSDS.$invalid && !incidenceForm.incBPDiastolicSDS.$pristine }">
+								<input name="incBPDiastolicSDS" disabled type="number" class="form-control" placeholder="" ng-model="incidenceModel.incBPDiastolicSDS" ng-class="{ 'has-no-error' : !incidenceForm.incBPDiastolicSDS.$invalid && incidenceModel.incBPDiastolicSDS != null}" ng-model-options="{ updateOn: 'blur' }">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="Report-formGroup">
+					<div class="row">
+						<div class="col-md-12">
+							<h5>Prover första dygnet</h5>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incFDPH" class="">Lägsta PH</label><i class="fa fa-question-circle helpNote" ng-show="questions['incFDPH'].helpNote != null" tooltip="{{questions['incFDPH'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incFDPH.$invalid && !incidenceForm.incFDPH.$pristine }">
+								<input name="incFDPH" type="number" ng-min="questions['incFDPH'].minValue" ng-max="questions['incFDPH'].maxValue" step="0.01" decimals="2" class="form-control" placeholder="" ng-change="SetIncBPSystolicSDS" ng-model="incidenceModel.incFDPH" ng-class="{ 'has-no-error' : !incidenceForm.incFDPH.$invalid && incidenceModel.incFDPH != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incFDPH.$error.min || incidenceForm.incFDPH.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incFDPH'].minValue}} och {{questions['incFDPH'].maxValue}}.</p>
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incFDSB" class="">Lägsta stand. bik, mmol/L</label><i class="fa fa-question-circle helpNote" ng-show="questions['incFDSB'].helpNote != null" tooltip="{{questions['incFDSB'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incFDSB.$invalid && !incidenceForm.incFDSB.$pristine }">
+								<input name="incFDSB" type="number" ng-min="questions['incFDSB'].minValue" ng-max="questions['incFDSB'].maxValue" step="0.1" decimals="1" class="form-control" placeholder="" ng-change="SetIncBPDiastolicSDS" ng-model="incidenceModel.incFDSB" ng-class="{ 'has-no-error' : !incidenceForm.incFDSB.$invalid && incidenceModel.incFDSB != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incFDSB.$error.min || incidenceForm.incFDSB.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incFDSB'].minValue}} och {{questions['incFDSB'].maxValue}}.</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incFDBE" class="">Lägsta BE, mmol/L</label><i class="fa fa-question-circle helpNote" ng-show="questions['incFDBE'].helpNote != null" tooltip="{{questions['incFDBE'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incFDBE.$invalid && !incidenceForm.incFDBE.$pristine }">
+								<input name="incFDBE" type="number" ng-min="questions['incFDBE'].minValue" ng-max="questions['incFDBE'].maxValue" step="0.1" decimals="1" class="form-control" placeholder="" ng-model="incidenceModel.incFDBE" ng-class="{ 'has-no-error' : !incidenceForm.incFDBE.$invalid && incidenceModel.incFDBE != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incFDBE.$error.min || incidenceForm.incFDBE.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incFDBE'].minValue}} och {{questions['incFDBE'].maxValue}}.</p>
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incFDPG" class="">Högsta P-glukos, mmol/L</label><i class="fa fa-question-circle helpNote" ng-show="questions['incFDPG'].helpNote != null" tooltip="{{questions['incFDPG'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incFDPG.$invalid && !incidenceForm.incFDPG.$pristine }">
+								<input name="incFDPG" type="number" ng-min="questions['incFDPG'].minValue" ng-max="questions['incFDPG'].maxValue" step="0.1" decimals="1" class="form-control" placeholder="" ng-model="incidenceModel.incFDPG" ng-class="{ 'has-no-error' : !incidenceForm.incFDPG.$invalid && incidenceModel.incFDPG != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incFDPG.$error.min || incidenceForm.incFDPG.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incFDPG'].minValue}} och {{questions['incFDPG'].maxValue}}.</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incFDHbA1c" class="">HbA1c, mmol/mol</label><i class="fa fa-question-circle helpNote" ng-show="questions['incFDHbA1c'].helpNote != null" tooltip="{{questions['incFDHbA1c'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incFDHbA1c.$invalid && !incidenceForm.incFDHbA1c.$pristine }">
+								<input name="incFDHbA1c" type="number" ng-min="questions['incFDHbA1c'].minValue" ng-max="questions['incFDHbA1c'].maxValue" step="1" class="form-control" placeholder="" ng-model="incidenceModel.incFDHbA1c" ng-class="{ 'has-no-error' : !incidenceForm.incFDHbA1c.$invalid && incidenceModel.incFDHbA1c != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incFDHbA1c.$error.min || incidenceForm.incFDHbA1c.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incFDHbA1c'].minValue}} och {{questions['incFDHbA1c'].maxValue}}.</p>
+							</div>
+						</div>
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="" for="incFDBK" class="">Blodketoner, mmol/L</label><i class="fa fa-question-circle helpNote" ng-show="questions['incFDBK'].helpNote != null" tooltip="{{questions['incFDBK'].helpNote}}"></i>
+							<div ng-class="{ 'has-error' : incidenceForm.incFDBK.$invalid && !incidenceForm.incFDBK.$pristine }">
+								<input name="incFDBK" type="number" ng-min="questions['incFDBK'].minValue" ng-max="questions['incFDBK'].maxValue" step="0.1" decimals="1" class="form-control" placeholder="" ng-model="incidenceModel.incFDBK" ng-class="{ 'has-no-error' : !incidenceForm.incFDBK.$invalid && incidenceModel.incFDBK != null}" ng-model-options="{ updateOn: 'blur' }">
+								<p ng-show="incidenceForm.incFDBK.$error.min || incidenceForm.incFDBK.$error.max" class="Report-formItemHelp help-block">Kan anta ett värde mellan {{questions['incFDBK'].minValue}} och {{questions['incFDBK'].maxValue}}.</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5 Report-formGroup-form">
+							<label class="form-check-label">
+								<input ng-model="incidenceModel.incDone" class="form-check-input" type="checkbox"><span class="chkCenter"> Registrering klar</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row" ng-show="serverSaveErrors.length>0">
+				<div class="col-md-12">
+					<div class="col-md-12 alert alert-danger">
+						<ul>
+							<li ng-repeat="s in serverSaveErrors">
+								{{s}}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 Report-sutWrapper pull-right" >
+					<br /><button type="sut" ng-click="saveForm()" class="Button Button--info btn-block" ng-disabled="!incidenceForm.$valid">Spara</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end ng-show -->
+	<div id="serverMessage" class="error"></div>
+</div>
