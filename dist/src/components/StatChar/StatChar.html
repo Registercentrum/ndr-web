@@ -39,7 +39,7 @@
 		</tr>
 		<tr class="value" ng-repeat="d in model.allDTTypes" ng-if="d.id>0">
 			<td class="rowLabel borderRight">{{d.name}}</td>
-			<td class="borderRight" ng-class="{ 'fieldCount': model.charStatistics[d.id][3].total }" ng-click="countClicked(area,null,d.id)">{{model.charStatistics[d.id][3]['total']}}</td>
+			<td class="borderRight" ng-class="{ 'fieldCount': model.charStatistics[d.id][3].total }" ng-click="countClicked(null,null,d.id)">{{model.charStatistics[d.id][3]['total']}}</td>
 			<td class="borderRight">{{model.charStatistics[d.id][3]['total'] ? (((model.charStatistics[d.id][3]['total']/model.charStatistics[0][3]['total'])*100).toFixed(0)+'%') : ''}}</td>
 			<td class="borderRight">{{model.charStatistics[d.id][2]['total'] ? (((model.charStatistics[d.id][2]['total']/model.charStatistics[0][2]['total'])*100).toFixed(0)+'%') : ''}}</td>
 			<td class="">{{model.charStatistics[d.id][1]['total'] ? (((model.charStatistics[d.id][1]['total']/model.charStatistics[0][1]['total'])*100).toFixed(0)+'%') : ''}}</td>

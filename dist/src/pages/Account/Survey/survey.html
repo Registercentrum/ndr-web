@@ -1,7 +1,9 @@
 ﻿<div class="Panel">
   <div class="Survey">
     <h2 class="mt0">Diabetesenkäten</h2>
-
+    <div class="f3" style="display: flex; justify-content: flex-end">
+		<a target="_blank" href="pdfs/Enkat_Patientinformation.pdf"><i class="fa fa-print"></i> Patientinformation</a>
+    </div>
     <tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
       <tab heading="Administrera enkäter">
 		<!--<div class="row">
@@ -421,7 +423,7 @@
 <script type="text/ng-template" id="inviteModalTmpl">
   <div class="modal-body">
     <a
-      ng-click="$dismiss('cancel')"
+      ng-click="$close()"
       class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
       style="text-decoration: none;"
     ></a>
@@ -464,10 +466,10 @@
 <script type="text/ng-template" id="answersModalTmpl">
   <div ng-show="model.selectedInvite.signed" class="modal-body text-center">
     <a
-      ng-click="$dismiss('cancel')"
+      ng-click="$close()"
       class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
       style="text-decoration: none;"
-    ></a>
+    >HIT ME</a>
     <p class="cf f2 tl bb bw1 pb2 mb5">
        <b>{{ model.selectedInvite.subject.socialNumber }}</b> &gt; Enkätsvar {{ model.selectedInvite.submittedAt | date:'yyyy-MM-dd' }}
     </p>
@@ -493,7 +495,7 @@
 
   <div ng-show="!model.selectedInvite.signed" class="modal-body text-center">
     <a
-          ng-click="$dismiss('cancel')"
+          ng-click="$close()"
           class="absolute top-0 right-0 mt3 mr3 link black pointer no-underline fa fa-close"
           style="text-decoration: none;"
     ></a>
@@ -582,7 +584,7 @@
       Ja, ta bort inbjudan
     </button>
     <button
-      ng-click="$close()"
+      ng-click="backdrop: false"
       class="Button Button--info mt2 mt4-ns">
       Nej, avbryt
     </button>

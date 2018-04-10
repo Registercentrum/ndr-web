@@ -81,7 +81,7 @@
       ng-repeat="id in model.unansweredQuestions"
       ng-click="setActiveQuestion(id)"
       class="blue pointer"
-    ><span class="underline">fråga {{ id }}</span><span ng-show="!$last">, </span></span>.
+    ><span class="underline" style="color: red;">fråga {{ id }}</span><span ng-show="!$last">, </span></span>.
   </div>
   <div class="pt4">
     <button
