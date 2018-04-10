@@ -28,8 +28,8 @@ angular.module('ndrApp')
           this.accountModel.activeAccount = activeAccount;
           this.accountModel.tempAccount = activeAccount;
           cookieFactory.create("ACTIVEACCOUNT", accountID);
-
-          $state.go($state.current, {}, {reload: true});
+          //$state.go($state.current, {}, {reload: true});
+		      $state.go('main.account.home', {}, {reload: true});
         };
 
         this.login = function () {
@@ -72,12 +72,11 @@ angular.module('ndrApp')
 
 
               if (self.accountModel.chosenUserType !== "subject") {
-                console.log("test", response.data.isUser)
 
                 user.activeAccounts = _.filter(user.accounts, function (account) {
                   return (account.status.id === 1 && account.unit.isActive);
                 });
-				
+
                 self.accountModel.chosenUserType = "user";
 
                 //If cookie
