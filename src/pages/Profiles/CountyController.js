@@ -11,6 +11,16 @@ angular.module("ndrApp")
             id: id,
             data: {},
             diabetesType : 1,
+			unitTypes: [
+				{
+					id: 1,
+					name: 'Primärvårdsenhet'
+				},
+				{
+					id: 2,
+					name: 'Medicinklinik'
+				}
+			],
             autocompleteModel: {
                 selected: autocompleteSelected,
                 options: dataService.data.preparedGeoList
@@ -22,6 +32,7 @@ angular.module("ndrApp")
         }
 
         dataService.getOne("county", id).then(function (data){
+          console.log('unit found', data);
             $scope.model.county = data;
             $scope.model.data.no = _.countBy($scope.model.county.units, 'typeID');
             $scope.model.data.noUnits = $scope.model.county.units.length;
@@ -34,17 +45,17 @@ angular.module("ndrApp")
         })
 
         function updateKeyStats(){
-			
+
 			var date = new Date();
-			
+
             // GET DATA FOR BAR CHART
             var query = dataService.queryFactory(
                 {
                     unitType : $scope.model.unitType,
-					fromYear    : date.getFullYear()-1,
-					toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
-					fromMonth   : date.getMonth()+1,
-					toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
+          					fromYear    : date.getFullYear()-1,
+          					toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+          					fromMonth   : date.getMonth()+1,
+          					toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
                     indicatorID: 101,
 
                 }
@@ -105,10 +116,10 @@ angular.module("ndrApp")
                     unitType : $scope.model.unitType,
                     countyCode : id,
                     //interval : "m",
-					fromYear    : date.getFullYear()-1,
-					toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
-					fromMonth   : date.getMonth()+1,
-					toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
+          					fromYear    : date.getFullYear()-1,
+          					toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
+          					fromMonth   : date.getMonth()+1,
+          					toMonth   : date.getMonth() == 0 ? 12 : date.getMonth(),
                     indicatorID: 101
                 });
 
@@ -118,8 +129,3 @@ angular.module("ndrApp")
             });
         }
     }]);
-
-
-
-
-
