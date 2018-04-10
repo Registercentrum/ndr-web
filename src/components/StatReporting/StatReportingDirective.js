@@ -4,7 +4,7 @@ angular.module('ndrApp')
     .directive('statReporting', ['$q','dataService','$state', function($q, dataService, $state) {
 
         function link (scope) {
-		
+
 			var localModel = {
 				reportList : [],
 				reportSort : {
@@ -13,13 +13,13 @@ angular.module('ndrApp')
 				},
 				unitType: scope.model.activeAccount.unit.typeID
 			};
-			
+
 			scope.model = jQuery.extend(scope.model, localModel);
-		
+
 			scope.sortRepList = function(list, sort) {
 				//Riket = 1, County=2, Unit=3
 				var sortField;
-				
+
 				switch(sort.level) {
 					case 1:
 						sortField = 'sweShare';
@@ -34,20 +34,20 @@ angular.module('ndrApp')
 						sortField = 'question';
 						break;
 				}
-				
+
 				var getSortFunction = function(level,sortField) {
-					
+
 					if(level)
 						return function(a,b) { return sort.desc ? a[sortField].value - b[sortField].value : b[sortField].value - a[sortField].value; };
 					else
 						return function(a,b) { return sort.desc ? a[sortField].localeCompare(b[sortField]) : b[sortField].localeCompare(a[sortField]) };
 				};
-							
+
 				list.sort(getSortFunction(sort.level, sortField));
-				
-				return list;			
+
+				return list;
 			};
-		
+
 			scope.handleSortClick = function(level){
 				if(level == scope.model.reportSort.level) {
 					scope.model.reportSort.desc = !scope.model.reportSort.desc;
@@ -59,9 +59,9 @@ angular.module('ndrApp')
 				}
 				scope.model.reportList = scope.sortRepList(scope.model.reportList,scope.model.reportSort);
 			};
-			
+
 			scope.handleRowClick = function(f) {
-				
+
 				var dateOffset = (24*60*60*1000) * 365;
 
 				var filters = dataService.getSearchFilters();
@@ -75,17 +75,17 @@ angular.module('ndrApp')
 					max: f.max,
 					undef: true
 				};
-				
+
 				dataService.setSearchFilters('values', valueFilter);
-				
+
 				$state.go('main.account.patients');
-				
+
 			}
-			
+
 			scope.getShare = function(d,n) {
 				return parseInt(((d/n)*100).toFixed(0));
 			};
-			
+
 			scope.getValueGroup = function(v) {
 				switch(true) {
 					case (v>=90):
@@ -101,24 +101,33 @@ angular.module('ndrApp')
 						return 1;
 				}
 			};
-			
+
 			dataService.getReportingStatistics(scope.model.activeAccount.accountID, function(d) {
-			
+
 				if (scope.model.unitType == 1)
 					d.fields = d.fields.filter(function(f) {
 						return !(f.columnName === 'cgm' || f.columnName === 'pumpOngoing')
 					});
-				
+
 				console.log(d);
-				
+
 				var list = d.fields.map(function(f){
-			
+
 					var denom;
 
 					//Exception presentation question smoker
-					if (f.id == 137) //Smoker is presented as question SmokingHabits
-						f.question = 'Rökvanor';
-					
+					//if (f.id == 137) //Smoker is presented as question SmokingHabits
+					//	f.question = 'Rökvanor';
+
+          if (f.id == 193)
+						f.question = 'Behandlad för ögonkomplikation';
+
+          if (f.id == 140)
+						f.question = 'Fysisk aktivitet';
+
+          if (f.id == 141)
+						f.question = 'Hypoglykemiförekomst svåra';
+
 					//Fields with different denominator
 					switch(f.columnName) {
 						case 'pumpOngoing':
@@ -133,7 +142,7 @@ angular.module('ndrApp')
 						default:
 							denom = 'total'
 					}
-				
+
 					var o = {
 						columnName: f.columnName,
 						min: f.minValue,
@@ -152,17 +161,17 @@ angular.module('ndrApp')
 							group: null
 						}
 					};
-					
+
 					o.unitShare.group = scope.getValueGroup(o.unitShare.value);
 					o.countyShare.group = scope.getValueGroup(o.countyShare.value);
 					o.sweShare.group = scope.getValueGroup(o.sweShare.value);
-					
+
 					return o;
 				});
-							
+
 				scope.model.reportList = scope.sortRepList(list,scope.model.reportSort);
 			});
-			
+
         }
         return {
             restrict : 'A',
