@@ -23,8 +23,8 @@
             <tr class="TableIndicators-thead">
                 <td class="TableIndicators-thead-title TableIndicators-thead-status">Indikator (andel med)</td>
                 <!--<td class="TableIndicators-thead-title">Status</td>-->
-                <td class="TableIndicators-thead-title TableIndicators-thead-county">{{ model.geo.name }}<br />2016</td>
-                <td class="TableIndicators-thead-title TableIndicators-thead-country">Riket<br />2016</td>
+                <td class="TableIndicators-thead-title TableIndicators-thead-county">{{ model.geo.name }}<br />2017</td>
+                <td class="TableIndicators-thead-title TableIndicators-thead-country">Riket<br />2017</td>
             </tr>
             </thead>
 
@@ -45,17 +45,17 @@
     <div class="col-md-7">
         <h4 class="text-center">{{  model.selectedKeyIndicatorName }}</h4>
 		<div class="col-md-7">
-			<select ng-model="model.sex" class="form-control" style="font-size:smaller">
-				<option value="0">Kvinnor och män</option>
-				<option value="2">Kvinnor</option>
-				<option value="1">Män</option>
+			<select ng-model="model.sex" 
+				class="form-control" 
+				style="font-size:smaller"
+				ng-options="type.id as type.name for type in model.sexes">
 			</select>
 		</div>
 		<div class="col-md-5">
-			<select ng-model="model.diabetesType" class="form-control" style="font-size:smaller">
-				<option value="0">Typ 1 och 2</option>
-				<option value="1">Typ 1</option>
-				<option value="2">Typ 2</option>
+			<select ng-model="model.diabetesType" 
+				class="form-control" 
+				style="font-size:smaller"
+				ng-options="type.id as type.name for type in model.diabetesTypes">
 			</select>
 		</div>
         <div  line-chart-key model="data.keyIndicator"></div>

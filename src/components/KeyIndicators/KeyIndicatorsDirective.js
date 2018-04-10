@@ -5,17 +5,24 @@ angular.module('ndrApp')
 
         function link (scope) {
 			
-			console.log('scope',scope);
-			
 			var localModel = {
 				selectedKeyIndicator: 201,
-				sex: 0
+				diabetesType: 0,
+				diabetesTypes: [
+					{ id: 0, name: 'Typ 1 och 2'},
+					{ id: 1, name: 'Typ 1' },
+					{ id: 2, name: 'Typ 2' }
+				],
+				sex: 0,
+				sexes: [
+					{ id: 0, name: 'Kvinnor och män'},
+					{ id: 2, name: 'Kvinnor' },
+					{ id: 1, name: 'Män' }
+				],
 			}
 		
 			scope.model = jQuery.extend(scope.model, localModel);
-			
-			console.log(scope.model.county);
-			
+
             scope.data = {
                 keyIndicator : undefined,
                 keyIndicators : undefined
@@ -28,8 +35,6 @@ angular.module('ndrApp')
             }, true);
 
             function getSelectedKeyIndicator () {
-
-                //console.log("ABC", scope.model);
 
                 var selectedIndicator = scope.model.selectedKeyIndicator,
                     promises          = [],
