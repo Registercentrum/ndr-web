@@ -68,7 +68,9 @@ angular.module("ndrApp")
       var value = $event.target.value;
       var model = $scope.model;
 
-      answers[name] = +answers[name] === +value ? null : value;
+      console.log('event fired',value);
+
+      answers[name] = value ? value : null;
       model.answers[name] = answers[name];
 
       model.answersCount = getAnswersCount();
@@ -143,21 +145,21 @@ angular.module("ndrApp")
       dataService.savePROMForm($scope.model.survey.inviteID, answers)
         .then(function (response) {
           accountService.logOut();
-		  
+
           // clean the model from PROMSubject
           delete accountService.accountModel.PROMSubject;
           // update subject model so there's no lingering messages about
           // survey to answer
-		   
+
 			if (accountService.accountModel.visitor.principal != null) {
 				var declinedInvite = accountService.accountModel.subject.invites.find(function (i) {
 					return $scope.model.survey.inviteID === i.inviteID;
 				});
 
 				if (declinedInvite) declinedInvite.isDeclined = true;
-				
-				$state.go("main.subject.home", {}, {reload: true});		  
-				
+
+				$state.go("main.subject.home", {}, {reload: true});
+
 				return;
 			} else {
 				$state.go('main.home', {}, {reload: true});
@@ -252,5 +254,3 @@ angular.module("ndrApp")
       }
     });
   }]);
-
-
