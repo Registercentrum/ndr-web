@@ -1,0 +1,145 @@
+<div>
+    <!-- Heading -->
+    <div class="row">
+        <div class="col-md-12">
+            <h4 style="margin-top: 0px">
+                <i class="fa fa-user"></i>  {{ subject.socialNumber }}
+            </h4>
+        </div>
+    </div>
+
+    <!-- Basic data -->
+    <div class="row" style="margin-top: 15px">
+        <div class="col-md-4 col-print-4">
+            <!--<p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>-->
+            <p>{{ subject.diabetesTypeText }}</p>
+            <p>Debutår: <span class="strong">{{ subject.yearOfOnset }}</span></p>
+            <p>Diabetesbehandling: <span class="strong">{{ latest.treatment.label }}</span></p>
+            <p ng-show="[3,4,9,10].indexOf(latest.treatment.value) != -1">Metod att ge insulin: <span class="strong">{{ latest.insulinMethod.label }}</span></p>
+            <p ng-show="latest.insulinMethod.value == 2">Pumpmodell: <span class="strong">{{ latest.pumpOngoing.label }}</span></p>
+            <p ng-show="latest.cgm.value"> CGM/FGM: <span class="strong">{{ latest.cgm.label + ((latest.cgmType.value && latest.cgm.value) ? ', ' + latest.cgmType.label : '') }}</span></p>
+            <p>Senaste besök: <span class="strong">{{ latest.contactDate.label }}</span></p>
+        </div>
+
+        <div class="col-md-4 col-print-4">
+            <p>Vikt: <span class="strong">{{latest.weight.value }} kg</span></p>
+            <p>Längd: <span class="strong">{{ latest.height.value }} cm</span></p>
+            <p>BMI: <span class="strong">{{ latest.bmi.value }} kg/m <sup>2</sup></span></p>
+        </div>
+
+        <div class="col-md-4 col-print-4">
+            <p>Fysisk aktivitet: <span class="strong">{{latest.physicalActivity.label }}</span></p>
+            <p>Röker: <span class="strong">{{ latest.smokingHabit.label }}</span></p>
+            <p>Snusar: <span class="strong">{{ latest.snuffingHabit.label }}</span></p>
+            <p>Ischemisk hjärtsjukdom: <span class="strong">{{ latest.ischemicHeartDisease.label }}</span></p>
+            <p>Cerebrovaskulär sjukdom: <span class="strong">{{ latest.cerebrovascularDisease.label  }}</span></p>
+            <p>Behandling med ASA: <span class="strong">{{ latest.aspirin.label  }}</span></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+        <h5 style="margin-top:0px">Kommentar</h5>
+            <textarea placeholder="Plats för kommentar" style="padding:5px; width:800px;height:60px; margin-bottom: 25px"></textarea>
+        </div>
+    </div>
+
+    <!-- HBA1C -->
+    <div class="row">
+
+        <div style="width:430px; float:left">
+            <!--<b>Behandlas med blodtryckssänkande läkemedel: <strong>{{ latest.antihypertensives.label }}</strong></b>-->
+            <b style="margin-left: 20px">HbA1c <span>(Senaste värde: {{ latest.hba1c.value }} mmol/mol</span>)</b>
+            <div class="" style="width:430px" line-chart-print model="model.data.trend.hba1c"></div>
+        </div>
+
+        <div style="width:430px;float:left;margin-left: 30px">
+            <b>Blodtryck <span>(Senaste värde: {{ latest.bpSystolic.value + "/" + latest.bpDiastolic.value }} mm Hg</span>)</b>
+            <div class="" style="width:430px" line-chart-combined-print model="model.data.trend.combinedBp"></div>
+        </div>
+    </div>
+
+    <!-- Lipids -->
+    <div class="row" style="margin-top: 10px">
+        <!--<div>Behandlas med lipidsänkande läkemedel: <strong>{{ latest.lipidLoweringDrugs.label }}</strong></div>-->
+
+        <div style="width:430px; float:left">
+                <b style="margin-left: 20px">Blodlipider</b>
+                <div line-chart-combined-print title="'Kolesterol &amp; Triglycerider'" model="model.data.trend.combinedCholesterol"></div>
+            </div>
+
+        <div style="width:430px; float:left; margin-left: 30px">
+                <div line-chart-combined-print title="'LDL &amp; HDL'" model="model.data.trend.combinedLDLHDL"></div>
+            </div>
+
+
+    </div>
+
+    <!-- FEET etc -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="">
+                <h4 class="Profile-heading">Fötter</h4>  <i class="Profile-latest-value fa fa-noun_4820_cc" class="" style="font-size: 55px;"></i>
+                <table class="table table-condensed">
+                    <tr>
+                        <td>Riskkategori</td>
+                        <td>{{ latest.footRiscCategory.label }}</td>
+                    </tr>
+                    <tr>
+                        <td>Senaste fotundersökning</td>
+                        <td>{{ latest.footExaminationDate.label }}</td>
+                        <td>
+                            <div ng-show="checkFootDate(latest.footExaminationDate)">
+                                <i tooltip="OBS: Senaste rapporterade fotundersökning har ett datum mer än 1 år tillbaka i tiden." class="fa fa-exclamation"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="">
+                <h4 class="Profile-heading">Ögon</h4>  <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
+                <table class="table table-condensed">
+                <tr>
+                    <td width="80">Diabetesretinopati</td>
+                    <td width="20" style="width:50%">{{ latest.diabeticRetinopathy.label }}</td>
+                </tr>
+                <tr>
+                    <td width="80">Retinopati, diagnos på sämsta ögat</td>
+                    <td width="20">{{ latest.retinopathyDiagnosis.value != 0 ? latest.retinopathyDiagnosis.label : null  }}</td>
+                </tr>
+                <tr>
+                    <td width="80">Behandlad för ögonkomplikation</td>
+                    <td width="20">{{ latest.eyeTreated.label}}</td>
+                </tr>
+                <tr>
+                    <td width="80">Senaste ögonbottenundersökning</td>
+                    <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                </tr>
+                <tr>
+                    <td width="80">Synnedsättning p.g.a. diabetes</td>
+                    <td width="20">{{ latest.visualLoss.label  }}</td>
+                </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="">
+                <h4 class="Profile-heading">Njurar</h4>  <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
+                <table class="table table-condensed">
+                    <tr>
+                        <td>Senaste S-Kreatininvärde</td>
+                        <td>{{ latest.creatinine.label }}</td>
+                    </tr>
+                    <tr>
+                        <td>Albuminuri</td>
+                        <td>{{ latest.albuminuria.label }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
