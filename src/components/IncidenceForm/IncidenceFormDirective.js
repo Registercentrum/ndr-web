@@ -1,300 +1,347 @@
 'use strict';
 
 angular.module('ndrApp')
-    .directive('incidenceForm', ['$q','dataService','$state', '$modal', '$filter', function($q, dataService, $state, $modal, $filter) {
+    .directive('incidenceForm', ['$q', 'dataService', 'calcService', '$state', '$modal', '$filter', function($q, dataService, calcService, $state, $modal, $filter) {
 
-        function link (scope, element, attrs) {
-		
-			scope.activeAccount = scope.accountModel.activeAccount;
-			scope.serverSaveErrors  = [];
-			scope.questions = null;
-			scope.isLoaded = false;
-			scope.$on('newUser', scope.load);
-			
+        function link(scope, element, attrs) {
+
+            scope.activeAccount = scope.accountModel.activeAccount;
+            scope.serverSaveErrors = [];
+            scope.isLoaded = false;
+            scope.age = null;
+            scope.config = {
+                onChange: {
+                    incHeight: function(qscope) {
+                        var isValid = (qscope.model.incHeight >= qscope.question.minValue && qscope.model.incHeight <= qscope.question.maxValue);
+                        qscope.model.incBMI = isValid ? qscope.methods.tryCalculateBMI(qscope.model.incWeight, qscope.model.incHeight) : null;
+                        qscope.model.incBMISDS = isValid ? qscope.methods.tryCalculateBMISDS(qscope.model.incBMI, qscope.model.incDate, qscope.subject) : null;
+                    },
+                    incWeight: function(qscope) {
+                        var isValid = (qscope.model.incWeight >= qscope.question.minValue && qscope.model.incWeight <= qscope.question.maxValue);
+                        qscope.model.incBMI = isValid ? qscope.methods.tryCalculateBMI(qscope.model.incWeight, qscope.model.incHeight) : null;
+                        qscope.model.incBMISDS = isValid ? qscope.methods.tryCalculateBMISDS(qscope.model.incBMI, qscope.model.incDate, qscope.subject) : null;
+                    }
+                },
+                methods: {
+                    tryCalculateBMI: function(height, weight) {
+                        if (weight > 0 && height > 0) {
+                            return calcService.calcBMI(height, weight, 1);
+                        }
+
+                        return null;
+                    },
+                    tryCalculateBMISDS: function(bmi, date, subject) {
+                        if (bmi > 0 && date) {
+                            var age = calcService.calcAge(subject.socialNumber, date)
+                            return calcService.calcBMISDS(bmi, subject.sex, age, 1); //bmi, sex, age, precision
+                        }
+
+                        return null;
+                    },
+                    tryCalculateBPSystolicSDS: function() {
+
+                        if (!scope.model.incBPSystolic || !scope.subject.sex || !scope.age || !scope.model.incHeight) return null;
+
+                        scope.model.incBPSystolicSDS = calcService.calcSystSDS(scope.model.incBPSystolic, scope.subject.sex, scope.age, scope.model.incHeight, 1); //bpSystolic, sex, age, height, precision
+
+                    },
+                    tryCalculateIncBPDiastolicSDS: function() {
+                        if (!scope.model.incBPDiastolic || !scope.subject.sex || !scope.age || !scope.model.incHeight) return null;
+
+                        scope.model.incBPDiastolicSDS = calcService.calcDiastSDS(scope.model.incBPDiastolic, scope.subject.sex, scope.age, scope.model.incHeight, 1); //bpSystolic, sex, age, height, precision
+                    }
+
+                }
+            };
+
+
+            scope.$on('newUser', scope.load);
+
             scope.$watch('subject', function(newValue) {
-				console.log('new subject', newValue);
-				scope.init();
+                scope.init();
             });
-			
-			scope.init = function() {
-				if (scope.isLoaded) {
-					console.log('questions=',scope.questions);
-					scope.setModel();
-					scope.incidenceForm.$setPristine();
-				}
-				else {
-					scope.load();
-				}
-			};
 
-			scope.setModel = function () {
-				console.log('subject=', scope.subject);
-				scope.incidenceModel = scope.subject ? scope.getModel(scope.subject.incidence,scope.subject.subjectID) : scope.getModel();
-			};
-			
-			scope.load = function() {
-				scope.getQuestions();
-			};
-			
-			//Start
-			scope.filterValue = function($event){
-				if(isNaN(String.fromCharCode($event.keyCode)) && $event.keyCode !== 44 && $event.keyCode !== 46){
-					$event.preventDefault();
-				}
-			};
-			
-			scope.getQuestions = function() {
-			
-				scope.data = dataService.getFormFields(2);
-				
-				if (!scope.questions) {
-					dataService.getMetaFields(scope.activeAccount.accountID).then(function (data) {
-						scope.setQuestions(data);
-						scope.isLoaded = true;
-						return;
-					});
-				} else {
-					scope.setQuestions(data);
-				}
-			};	
-			
-			scope.setQuestions = function(data) {
-				scope.questions = _.indexBy(dataService.getFormFields(2), "columnName");
-			};
-			
-			scope.getModel = function(incidence, subjectID) {
-				return {
-					subjectID: subjectID,
-					incDate: (incidence ? incidence.incDate : null),
-					incPolyuri: (incidence ? incidence.incPolyuri : null),
-					incPolydipsi: (incidence ? incidence.incPolydipsi : null),
-					incWeightloss: (incidence ? incidence.incWeightloss : null),
-					incAcantosisNigricans: (incidence ? incidence.incAcantosisNigricans : null),
-					incHeight: (incidence ? incidence.incHeight : null),
-					incWeight: (incidence ? incidence.incWeight : null),
-					incBMI: (incidence ? incidence.incBMI : null),
-					incBMISDS: (incidence ? incidence.incBMISDS : null),
-					incBPSystolic: (incidence ? incidence.incBPSystolic : null),
-					incBPDiastolic: (incidence ? incidence.incBPDiastolic : null),
-					incFDPH: (incidence ? incidence.incFDPH : null),
-					incFDSB: (incidence ? incidence.incFDSB : null),
-					incFDBE: (incidence ? incidence.incFDBE : null),
-					incFDPG: (incidence ? incidence.incFDPG : null),
-					incFDHbA1c: (incidence ? incidence.incFDHbA1c : null),
-					incFDBK: (incidence ? incidence.incFDBK : null)
-				};
-			};
+            scope.init = function() {
+                scope.setOnChange();
+                scope.setModel();
+                scope.setGroups();
+                scope.incidenceForm.$setPristine();
+            };
 
-			scope.tryCalculateBMI = function () {
-			
-				console.log('calcBMI',scope.incidenceModel);
-				if (scope.incidenceModel.incWeight > 0 && scope.incidenceModel.incHeight > 0) {
-					scope.incidenceModel.incBMI = parseFloat((scope.incidenceModel.incWeight / Math.pow(scope.incidenceModel.incHeight/100,2)).toFixed(1));
-				} else {
-					scope.incidenceModel.incBMI = null;
-				}
-			};
+            scope.setOnChange = function() {
+                for (var qc in scope.config.onChange) {
+                    scope.questions.forEach(function(q) {
+                        if (q.columnName == qc) {
+                            q.onChange = scope.config.onChange[qc];
+                        }
+                    });
+                }
+            }
 
-			//START datePicker example
-			scope.today = function() {
-			  scope.contactModel.incidenceDate = new Date();
-			};
+            scope.setGroups = function() {
 
-			scope.clear = function () {
-			  scope.contactModel.incidenceDate = null;
-			};
+                var groups = [
+                    {
+                        header: null,
+                        columnNames: ['incDate', 'incDiagnosisSweden','incHeight', 'incWeight', 'incBMI', 'incBMISDS', 'incBPSystolic', 'incBPDiastolic'],
+                        questions: []
+                    },
+                    {
+                        header: 'Insjuknandesymtom',
+                        columnNames: ['incPolyuri', 'incPolydipsi', 'incWeightloss', 'incAcantosisNigricans'],
+                        questions: []
+                    },
+                    {
+                        header: 'Prover första dygnet',
+                        columnNames: ['incFDPH', 'incFDSB', 'incFDPG', 'incFDHbA1c', 'incFDBK', 'incHap1', 'incHap2', 'incGAD', 'incOCell', 'incCPep', 'incIAA', 'incIA2RBA', 'incZnt8A'],
+                        questions: []
+                    }
+                ];
 
-			scope.datePickers = {
-			  incDate: {
-				//date: $filter('date')(new Date(), scope.format),
-				opened: false
-			  }
-			};
+                groups.forEach(function(g) {
+                  g.columnNames.forEach(function(c) {
+                    scope.questions.forEach(function(q) {
+                        if (c == q.columnName) g.questions.push(q);
+                    });
+                  });
+                });
+                console.log('groups',groups);
+                scope.groups = groups;
+            }
 
-			// Disable future dates
-			scope.disabled = function(date, mode) {
-			  var d = new Date();
-			  return date >= d.setDate(d.getDate() + 1) //no future
-			};
+            scope.getQuestionClass = function(hasError, hasValue) {
+                if (hasError) return 'has-error';
 
-			scope.toggleMin = function() {
-			  scope.minDate = scope.minDate ? null : new Date();
-			};
-			scope.toggleMin();
+                return hasValue ? 'has-value' : 'has-no-error';
+            };
 
-			scope.openPicker = function($event, dateField) {
-			  $event.preventDefault();
-			  $event.stopPropagation();
-			  scope.datePickers[dateField].opened = true;
-			};
+            scope.setModel = function() {
+                scope.model = scope.subject ? scope.getModel(scope.subject.incidence, scope.subject.socialNumber, scope.subject.subjectID) : scope.getModel();
+                scope.setAge();
+                scope.setIncBPSystolicSDS();
+                scope.setIncBPDiastolicSDS();
+            };
 
-			scope.dateOptions = {
-			  formatYear: 'yy',
-			  startingDay: 1
-			};
+            scope.filterValue = function($event) {
+                if (isNaN(String.fromCharCode($event.keyCode)) && $event.keyCode !== 44 && $event.keyCode !== 46) {
+                    $event.preventDefault();
+                }
+            };
 
-			scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'yyyy.MM.dd', 'shortDate'];
-			scope.format = scope.formats[0];
-			//END datePicker
-		
-			//Todo, this could use an overview
-			scope.validateContactDateInput = function() {
-				var date = scope.incidenceForm.incidenceDate.$viewValue;
-				var isValid = true;
-				
-				if (scope.contactModel.incidenceDate === undefined) {
-					isValid = false;
-				}
-				
-				isValid = scope.validateDate(date);
-						
-				scope.incidenceForm.incidenceDate.$setValidity('checkInput',isValid);
-				
-				return isValid;
-				
-			};	
-			
-			scope.validateDate = function(viewVal) {
-				var isValid = true;
-						
-				if (typeof viewVal === 'string')
-					if (viewVal.length !== 10)
-						isValid = false;
-				
-				return isValid;
-			};
-			
-			scope.getStringDate = function(date) {
+            scope.setAge = function() {
+                scope.age = scope.model.incDate ? calcService.calcAge(scope.subject.socialNumber, scope.model.incDate) : null;
+            }
 
-			  if (typeof date === 'string')
-				return date;
-			  if (date === undefined)
-				return;
-			  if (date === null)
-				return;
-			  if (!(date instanceof Date && !isNaN(date.valueOf())))
-				return
+            //todo build model dynamically
+            scope.getModel = function(incidence, socialNumber, subjectID) {
+                return {
+                    socialNumber: socialNumber,
+                    subjectID: subjectID,
+                    incDate: (incidence ? incidence.incDate : null),
+                    incDiagnosisSweden: (incidence ? incidence.incDiagnosisSweden : null),
+                    incPolyuri: (incidence ? incidence.incPolyuri : null),
+                    incPolydipsi: (incidence ? incidence.incPolydipsi : null),
+                    incWeightloss: (incidence ? incidence.incWeightloss : null),
+                    incAcantosisNigricans: (incidence ? incidence.incAcantosisNigricans : null),
+                    incHeight: (incidence ? incidence.incHeight : null),
+                    incWeight: (incidence ? incidence.incWeight : null),
+                    incBMI: (incidence ? incidence.incBMI : null),
+                    incBMISDS: (incidence ? incidence.incBMISDS : null),
+                    incBPSystolic: (incidence ? incidence.incBPSystolic : null),
+                    incBPDiastolic: (incidence ? incidence.incBPDiastolic : null),
+                    incFDPH: (incidence ? incidence.incFDPH : null),
+                    incFDSB: (incidence ? incidence.incFDSB : null),
+                    incFDBE: (incidence ? incidence.incFDBE : null),
+                    incFDPG: (incidence ? incidence.incFDPG : null),
+                    incFDHbA1c: (incidence ? incidence.incFDHbA1c : null),
+                    incFDBK: (incidence ? incidence.incFDBK : null),
+                    incDone: (incidence != null ? incidence.incDone : false),
+                    incGAD: (incidence ? incidence.incGAD : null),
+                    incOCell: (incidence ? incidence.incOCell : null),
+                    incCPep: (incidence ? incidence.incCPep : null),
+                    incHap1: (incidence ? incidence.incHap1 : null),
+                    incHap2: (incidence ? incidence.incHap2 : null),
+                    incIAA: (incidence ? incidence.incIAA : null),
+                    incIA2RBA: (incidence ? incidence.incIA2RBA : null),
+                    incZnt8A: (incidence ? incidence.incZnt8A : null)
 
-			  var yyyy = date.getFullYear().toString();
-			  var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
-			  var dd  = date.getDate().toString();
+                    //incBPSystolicSDS: null,
+                    //incBPDiastolicSDS: null,
+                };
+            };
+            scope.setIncBPSystolicSDS = function() {
 
-			  return (yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]));
-			};
+                if (!scope.model.incBPSystolic || !scope.subject.sex || !scope.age || !scope.model.incHeight) return null;
 
-			scope.setDateValues = function() {
-			  scope.incidenceModel.incDate = scope.getStringDate(scope.incidenceModel.incDate);
-			};
+                scope.model.incBPSystolicSDS = calcService.calcSystSDS(scope.model.incBPSystolic, scope.subject.sex, scope.age, scope.model.incHeight, 1); //bpSystolic, sex, age, height, precision
 
-			scope.saveForm = function () {
+            }
+            scope.setIncBPDiastolicSDS = function() {
+                if (!scope.model.incBPDiastolic || !scope.subject.sex || !scope.age || !scope.model.incHeight) return null;
 
-			  scope.serverSaveErrors = [];
-			  scope.isSaving = true;
+                scope.model.incBPDiastolicSDS = calcService.calcDiastSDS(scope.model.incBPDiastolic, scope.subject.sex, scope.age, scope.model.incHeight, 1); //bpSystolic, sex, age, height, precision
+            }
+            scope.tryCalculateBMI = function() {
 
-			  //Dates are javascript dates until saved, here converted to string dates, better idea?
-			  scope.setDateValues();
-				console.log(scope.incidenceModel);
-			  dataService.saveIncidence(scope.incidenceModel, scope.subject.incidence)
-				.then(function (response) {
-				
-					//scope.getSubject(false);
-					scope.isSaving = false;
+                if (scope.model.incWeight > 0 && scope.model.incHeight > 0) {
 
-					$modal.open({
-					  templateUrl: 'myModalContent.html',
-					  controller : 'ModalInstanceCtrl',
-					  backdrop   : true,
-					  scope      : scope
-					});
-				})
-				['catch'](function (response) {
-					//todo behöver utökas
-					
-					var data = response.data;
-					
-					if (data.ModelState != null) {
-					  for (var prop in data.ModelState) {
-						if (data.ModelState.hasOwnProperty(prop)) scope.serverSaveErrors.push(data.ModelState[prop][0]);
-					  }
-					} else {
-					  scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
-					}
-					
-					scope.isSaving = false;
-				});
-			};
+                    scope.model.incBMI = calcService.calcBMI(scope.model.incWeight, scope.model.incHeight, 1);
+                    //Calc BMISDS
+                    console.log('bmi', scope.model.incBMI);
 
-			scope.removeItemFromArray = function(array, id) {
-			  return $filter('filter')(scope.subject.contacts, function (d)
-			  {
-				return d.contactID !== id;
-			  });
-			};
-			
-			scope.init();
+                    if (scope.model.incBMI && scope.age) {
+                        scope.model.incBMISDS = calcService.calcBMISDS(scope.model.incBMI, scope.subject.sex, scope.age, 1); //bmi, gender, age, precision
+                    }
 
-			/*incHeight	30	240
-			incWeight	0,4	200
-			incBMI	5	60
-			incBMISDS	-20	20*/
-	
-			
-			scope.patternBMI = (function() {
-				return {
-					test: function(input) {
-						if(input < 5 || input > 60){
-							return false;
-						} else{
-							return true;
-						}
-					}
-				};
-			})();
-			
-			scope.patternHbA1c = (function() {
-				return {
-					test: function(input) {
-						if(input < 20 || input > 177){
-							return false;
-						} else{
-							return true;
-						}
-					}
-				};
-			})();
-			
-			scope.patternWeight = (function() {
-				return {
-					test: function(input) {
-						if(input < 0.4 || input > 200){
-							return false;
-						} else{
-							return true;
-						}
-					}
-				};
-			})();
-			
-			scope.patternHeight = (function() {
-				return {
-					test: function(input) {
-						if(input < 30 || input > 240){
-							return false;
-						} else{
-							return true;
-						}
-					}
-				};
-			})();
+                } else {
+                    scope.model.incBMI = null;
+                }
+            };
 
+            //START datePicker example
+            scope.today = function() {
+                scope.contactModel.incidenceDate = new Date();
+            };
+
+            scope.clear = function() {
+                scope.contactModel.incidenceDate = null;
+            };
+
+            scope.datePickers = {
+                incDate: {
+                    //date: $filter('date')(new Date(), scope.format),
+                    opened: false
+                }
+            };
+
+            // Disable future dates
+            scope.disabled = function(date, mode) {
+                var d = new Date();
+                return date >= d.setDate(d.getDate() + 1) //no future
+            };
+
+            scope.toggleMin = function() {
+                scope.minDate = scope.minDate ? null : new Date();
+            };
+            scope.toggleMin();
+
+            scope.openPicker = function($event, dateField) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                scope.datePickers[dateField].opened = true;
+            };
+
+            scope.dateOptions = {
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'yyyy.MM.dd', 'shortDate'];
+            scope.format = scope.formats[0];
+            //END datePicker
+
+            //Todo, this could use an overview
+            scope.validateContactDateInput = function() {
+                var date = scope.incidenceForm.incidenceDate.$viewValue;
+                var isValid = true;
+
+                if (scope.contactModel.incidenceDate === undefined) {
+                    isValid = false;
+                }
+
+                isValid = scope.validateDate(date);
+
+                scope.incidenceForm.incidenceDate.$setValidity('checkInput', isValid);
+
+                return isValid;
+
+            };
+
+            scope.validateDate = function(viewVal) {
+                var isValid = true;
+
+                if (typeof viewVal === 'string')
+                    if (viewVal.length !== 10)
+                        isValid = false;
+
+                return isValid;
+            };
+
+            scope.getStringDate = function(date) {
+
+                if (typeof date === 'string')
+                    return date;
+                if (date === undefined)
+                    return;
+                if (date === null)
+                    return;
+                if (!(date instanceof Date && !isNaN(date.valueOf())))
+                    return
+
+                var yyyy = date.getFullYear().toString();
+                var mm = (date.getMonth() + 1).toString(); // getMonth() is zero-based
+                var dd = date.getDate().toString();
+
+                return (yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]));
+            };
+
+            scope.setDateValues = function() {
+                scope.model.incDate = scope.getStringDate(scope.model.incDate);
+            };
+
+            scope.saveForm = function() {
+
+                scope.serverSaveErrors = [];
+                scope.isSaving = true;
+
+                //Dates are javascript dates until saved, here converted to string dates, better idea?
+                scope.setDateValues();
+                dataService.saveIncidence(scope.model, scope.subject.incidence)
+                    .then(function(response) {
+
+                        //scope.getSubject(false);
+                        scope.isSaving = false;
+
+                        $modal.open({
+                            templateUrl: 'myModalContent.html',
+                            controller: 'ModalInstanceCtrl',
+                            backdrop: true,
+                            scope: scope
+                        });
+                    })['catch'](function(response) {
+                        //todo behöver utökas
+
+                        var data = response.data;
+
+                        if (data.ModelState != null) {
+                            for (var prop in data.ModelState) {
+                                if (data.ModelState.hasOwnProperty(prop)) scope.serverSaveErrors.push(data.ModelState[prop][0]);
+                            }
+                        } else {
+                            scope.serverSaveErrors.push('Ett okänt fel inträffade. Var god försök igen senare.');
+                        }
+
+                        scope.isSaving = false;
+                    });
+            };
+
+            scope.removeItemFromArray = function(array, id) {
+                return $filter('filter')(scope.subject.contacts, function(d) {
+                    return d.contactID !== id;
+                });
+            };
+
+            scope.init();
         }
+
         return {
-            restrict : 'A',
+            restrict: 'A',
             templateUrl: 'src/components/IncidenceForm/IncidenceForm.html',
             link: link,
             scope: {
-				accountModel 	: '=',
-                subject 		: '='
+                accountModel: '=',
+                subject: '=',
+                questions: '='
             }
         };
     }]);
