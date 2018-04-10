@@ -4,86 +4,86 @@
 
     var app = angular.module('myApp', ['ng-admin']);
 	var baseApiUrl = 'https://www.ndr.nu/api/';
-	//var baseApiUrl = 'https://w10-038.rcvg.local/api/';// Henrik local development
-	
+	var baseApiUrl = 'https://w10-038.rcvg.local/api/';// Henrik local development
+
 	app.controller('adminCtrl', function adminCtrl($scope, $http)
 	{
 		$scope.isAdmin = false;
-		
-		var dfd = $http.get(baseApiUrl + 'currentvisitor')	
+
+		var dfd = $http.get(baseApiUrl + 'currentvisitor')
 		dfd.success(function(data, status, headers, config) {
 			$scope.isAdmin = data.user.isAdministrator;
 		})
 		.error(function(data, status, headers, config) {
 
 		});
-	
+
 	});
-	
+
     /*app.config(function (NgAdminConfigurationProvider, RestangularProvider) {*/
 	app.config(['NgAdminConfigurationProvider', 'RestangularProvider', function (NgAdminConfigurationProvider, RestangularProvider) {
         var nga = NgAdminConfigurationProvider;
-		
+
         function truncate(value) {
-            
+
 			if(value === '')
 				return null;
-			
+
 			if (!value) {
                 return '';
             }
 
             return value.length > 75 ? value.substr(0, 75) + '...' : value;
         }
-		
+
         RestangularProvider.setDefaultRequestParams({APIKey: 'G6jlpk43DvnMkrWcggjk'});//jEGPvHoP7G4eMkjLQwE5
-				
+
         var app = nga.application('NDR Admin') // application main title
 			.baseApiUrl(baseApiUrl);
-			
+
 		var contactOptionalMeta = nga.entity('ContactOptionalMeta')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
+
 		var integrationSystems = nga.entity('IntegrationSystem')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
+
 		var newsCategories = nga.entity('NewsCategory')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
+
 		var roles = nga.entity('Role')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
+
 		var unitTypes = nga.entity('UnitType')
             .readOnly(); // a readOnly entity has disabled creation, edition, and deletion views
-			
+
 		var counties = nga.entity('County')
             .readOnly() // a readOnly entity has disabled creation, edition, and deletion views
 			.identifier(nga.field('code'));
-			
+
         var news = nga.entity('News')
             .identifier(nga.field('newsID'))
 			.label('Nyheter');
-		
+
         var publications = nga.entity('Publication')
              .identifier(nga.field('id'))
 			 .label('Publikationer');
-			 
+
         var units = nga.entity('Unit')
              .identifier(nga.field('unitID'))
 			 .label('Enheter');
-			 
+
         var users = nga.entity('User')
              .identifier(nga.field('userID'))
 			 .label('Användare');
-		
+
 		var accounts = nga.entity('Account')
 			.identifier(nga.field('accountID'))
 			.label('Användarkonton');
 
 		var contactAttributes = nga.entity('ContactAttribute')
-			.label('Metavariabler');			
-		
-		
+			.label('Metavariabler');
+
+
         // set the application entities
         app.addEntity(units)
 			.addEntity(users)
@@ -91,7 +91,7 @@
 			.addEntity(news)
 			.addEntity(publications)
 			.addEntity(contactAttributes);
-			
+
 		// ****** UNIT ******
         units.dashboardView()
             .title('Enheter')
@@ -100,7 +100,7 @@
                 nga.field('unitID').label('NDR-ID'),
                 nga.field('name').label('Enhetsnamn').map(truncate)
             ]);
-			
+
         units.listView()
             .title('Enheter')
 			.sortField('name')
@@ -161,16 +161,16 @@
 					.label('Visa inaktiva'),
 				nga.field('onlyUsingPROM', 'boolean')
 					.pinned(true)
-					.label('Använder PROM')	
+					.label('Använder PROM')
 			])
 			.permanentFilters({
 				includeNotReporting: true
 			});
 
-			
+
 		var ownership = [{value: 1, label: 'Offentlig'},
-						{value: 2, label: 'Privat'}];	
-			
+						{value: 2, label: 'Privat'}];
+
         units.creationView()
 			.title('Ny enhet')
             .fields([
@@ -212,17 +212,17 @@
 				nga.field('lastUpdatedAt','date').label('Senast uppdaterad').editable(false),
 				nga.field('comment','text').label('Kommentar')
             ]);
-		
+
         units.editionView()
 			.title('Uppdatera enhet')
 			.description('{{ entry.values.name }}')
             .fields([
                 //new Field('newsID'),
                 units.creationView().fields()
-            ]);	
-			
+            ]);
+
 		units.deletionView().disable();
-		
+
 		// ****** METAVARIABLER ******
 		contactAttributes.listView()
              .title('Metavariabler')
@@ -233,24 +233,24 @@
 				nga.field('helpNote').label('Hjälptext').map(truncate)
              ])
 			.listActions(['edit']);
-		
+
         contactAttributes.editionView()
 			.title('Uppdatera variabel')
             .fields([
                 nga.field('question').label('Etikett'),
                 nga.field('definition','text').label('Beskrivning'),
                 nga.field('helpNote','text').label('Hjälptext')
-            ]);	
-			
+            ]);
+
 		contactAttributes.deletionView().disable();
-			
-			
+
+
 		// ****** ACCOUNTS ******
 		var accountStatus = [{value: 1, label: 'Aktiv'},
 						{value: 2, label: 'Inväntar godkännande'},
 						{value: 3, label: 'Inkommen'},
 						{value: 9, label: 'Inaktivt'}];
-			 
+
         accounts.listView()
              .title('Användarkonton')
 			 .perPage(50)
@@ -302,7 +302,7 @@
 						return 'inActive';
 					if (entry.values.statusID == 2 || entry.values.statusID == 3)
 						return 'isPending';
-				}), 
+				}),
 				/*nga.field('unitContactPhone').label('Telefon').cssClasses(function(entry) {
 					if (entry.values.statusID == 9)
 						return 'inActive';
@@ -338,7 +338,7 @@
 					.choices(accountStatus)
 			])
 			.listActions(['edit']);
-		
+
         accounts.creationView()
 			.title('Nytt användarkonto')
             .fields([
@@ -351,7 +351,7 @@
 				nga.field('statusID', 'choice').label('Status')
 					.choices(accountStatus)
             ]);
-		
+
         accounts.editionView()
 			.title('Uppdatera användarkonto')
             .fields([
@@ -362,10 +362,10 @@
 				nga.field('statusID', 'choice')
 					.label('Status')
 					.choices(accountStatus)
-            ]);	
-		
+            ]);
+
 		accounts.deletionView().disable();
-		
+
 		// ****** USER ******
 		users.dashboardView()
 			.title('Användare')
@@ -375,8 +375,8 @@
 				nga.field('hsaid').label('HSAID').map(truncate),
 				nga.field('firstName').label('Förnamn').map(truncate),
 				nga.field('lastName').label('Efternamn').map(truncate)
-			]);		
-		
+			]);
+
 		users.listView()
 			.title('Användare')
 			.sortField('hsaid')
@@ -443,7 +443,7 @@
 				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
 				nga.field('comment','text').label('Kommentar')
             ]);
-		
+
         users.editionView()
 			.title('Uppdatera användare')
 			.description('"{{ entry.values.hsaid }}"')
@@ -479,16 +479,16 @@
 					.map(truncate)
 					.targetEntity(unitTypes)
 					.targetField(nga.field('name'))
-					.defaultValue(null),	
+					.defaultValue(null),
 				nga.field('phone').label('Tel'),
 				//nga.field('isKAS','boolean').label('KAS'),
 				//nga.field('isCoordinator','boolean').label('Koordinator'),
 				nga.field('isAdministrator','boolean').label('NDR-Administratör'),
 				nga.field('comment','text').label('Kommentar')
             ]);
-		
+
 		users.deletionView().disable();
-		
+
 		// ****** NEWS ******
         news.dashboardView()
             .title('Nyheter')
@@ -528,8 +528,8 @@
 			])
 			.permanentFilters({
 				includeOutsidePeriod: true
-			});	
-		
+			});
+
         news.creationView()
 			.title('Ny')
             .fields([
@@ -555,16 +555,16 @@
                 nga.field('body','wysiwyg').label('Brödtext'),
                 nga.field('priority').label('Prioritet?')
             ]);
-		
+
         news.editionView()
 			.title('Uppdatera')
 			.description('"{{ entry.values.title }}"')
             .fields([
                 news.creationView().fields()
             ]);
-		
+
 		// ****** PUBLICATIONS ******
-		
+
         publications.dashboardView()
              .title('Publikationer')
 			 .limit(5)
@@ -604,7 +604,7 @@
 				nga.field('pubMedID').label('ID PubMed'),
 				nga.field('doi').label('DOI')
 			]);
-		
+
         publications.editionView()
 			.title('Uppdatera')
 			.description('{{ entry.values.name }}')
@@ -613,7 +613,7 @@
             ]);
 
 		RestangularProvider.addElementTransformer('Account', true, function(elements) {
-			
+
 			//do my stuff here
 			for (var i = 0, len = elements.length; i < len; i++) {
 			  elements[i].userID=elements[i].user.userID;
@@ -629,42 +629,42 @@
 			  elements[i].statusText=elements[i].status.name;
 			}
 			//console.log(elements);
-			
+
 			return elements;
 		});
-		
+
 		/*RestangularProvider.addElementTransformer('Unit', false, function(element) {
-			
+
 			function GetTextString(array, property) {
-				
+
 				var defaultVal = 'Inga';
-				
+
 				if (!array)
 					return defaultVal;
-				
+
 				if (array.length == 0)
 					return defaultVal;
-				
+
 				var tempArray = [];
-				
+
 				for (var i = 0, len = array.length; i < len; i++)
 					tempArray.push(array[i][property]);
-				
+
 				if (tempArray.length>0)
 					return tempArray.join(', ');
-					
+
 				return defaultVal;
-				
+
 			};
-			
+
 			//add optionalsText
 			element.systemsText = GetTextString(element.systems, 'name');
 			element.optionalsText = GetTextString(element.optionals, 'question');
-			
+
 			return element;
-			
+
 		});*/
-		
+
 		//Menu
 		app.menu().getChildByTitle('Enheter')
 			.icon('<span class="glyphicon glyphicon-home"></span>');
@@ -678,9 +678,9 @@
 			.icon('<span class="glyphicon glyphicon-book"></span>');
 		app.menu().getChildByTitle('Metavariabler')
 			.icon('<span class="glyphicon glyphicon-list"></span>');
-		
+
 		app.header('<div class="navbar-header"><a class="navbar-brand" href="#" ng-click="appController.displayHome()">NDR Admin</a></div>');
-		
+
         NgAdminConfigurationProvider.configure(app);
     }]);
 }());
