@@ -24,7 +24,7 @@ angular.module('ndrApp')
     }]);
 angular.module('ndrApp')
     .directive('ndrQuestionList', [function() {
-		
+		//template: '<select id="{{ question.columnName }}" name="{{ question.columnName }}" placeholder="{{question.question}}" ng-model="question.value" class="form-control" ng-options="type.code as type.text for type in question.domain.domainValues"><option value="">-- välj --</option></select>',
 		return {
 			restrict: 'A',
 			template: '<select id="{{ question.columnName }}" name="{{ question.columnName }}" placeholder="{{question.question}}" ng-model="question.value" class="form-control"><option value="">-- välj --</option><option ng-repeat="domainvalue in question.domain.domainValues" value="{{domainvalue.code}}">{{domainvalue.text}}</option></select>',

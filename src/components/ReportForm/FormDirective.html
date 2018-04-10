@@ -1,0 +1,7 @@
+<form name="form" class="contactForm" novalidate ng-model-options="{ 'updateOn': 'blur' }">
+	<div ng-repeat="q in questions" class="qrow" ng-show="isVisible(q, subject)">
+		<div class="questionText">{{ q.question }}<i class="fa fa-question-circle helpNote" ng-show="q.helpNote != null" tooltip="{{q.helpNote}}"></i></div>
+		<div ndr-Question-New question="q" model="model.contactModel" methods="config.methods" subject="subject"></div> <!-- padding: 2px 10px 2px; font-size: 13px -->
+		<div class="refContainer" ng-if="model.refModels.length" ng-repeat="c in model.refModels"><span class="refValue">{{ viewVal(q, c)}}</span></div>
+	</div>
+</form>
