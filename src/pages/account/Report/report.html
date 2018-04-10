@@ -15,13 +15,27 @@
 	<div class="col-md-12" ng-show="serverSubjectError">
 		<span>{{serverSubjectError}}</span>
 	</div>
+	<div class="col-md-12" >
+		<span>{{serverSubjectError}}</span>
+	</div>
+	<!--<div class="row" ng-show="!subject">
+		<div class="col-md-12">
+			<div class="Panel Panel--alert">
+				För er som rapporterar med <b>Internet Explorer</b> som webläsare måste man i nuläget använda <b>punkt</b> istället för <b>komma</b> när man matar in decimaltal. Vi arbetar med en lösning på problemet.
+			</div>
+		</div>
+	</div>-->
+
 </div>
-<div class="row" ng-show="subject != null">
+<div class="row" ng-show="subject" id="subject">
 	<div class="col-md-12">
+		<div class="f4" style="display: flex; justify-content: flex-end">
+			<a target="_blank" ng-if="accountModel.activeAccount.unit.typeID == 3" ng-show="subject.incidence.incDone" href="" ng-click="setIncidence()">Incidensuppgifter <i class="fa fa-tag"></i></a>
+		</div>
 		<div class="PatientHeader clearfix">
 			<div class="PatientHeader-personNumber col-md-3 u-noLeftPadding">{{ subject.socialNumber }}</div>
 			<div class="pull-right">
-				<button ng-click="setIncidence()" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left" style="margin-right: 25px;">Incidens</button>
+				<button ng-click="setIncidence()" ng-show="!subject.incidence.incDone" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left" style="margin-right: 25px;">Incidens</button>
 				<button ng-click="setContact()" id="bnNewContact" type="submit" class="Button Button--primary Button--strong pull-left" style="margin-right: 25px;">Ny rapportering</button>
 				<form id="contactSelect" class="PatientHeader-showVisit form-horizontal pull-left" role="form">
 					<select
@@ -30,25 +44,30 @@
 						ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts"
 						style="width:250px"
 						class="form-control">
-						<option value="">Komplettera</option>
+						<option selected value="">Komplettera</option>
 					</select>
 				</form>
 			</div>
 		</div>
-		<div ng-show="view == 1" report-form account-model="accountModel" subject="subject" contact-to-update="contactToUpdate"></div>
-		<div ng-show="view == 2" incidence-form account-model="accountModel" subject="subject"></div>
+		<!--<div ng-show="view == 1" report-form account-model="accountModel" subject="subject" contact-to-update="contactToUpdate"></div>-->
+		<!--<div ng-show="view == 1" report-form-history account-model="accountModel" subject="subject" new-index="newIndex" contact-to-update="contactToUpdate"></div>-->
+		<div ng-if="subject && metafields">
+			<div ng-show="view == 1" report-form-new account-model="accountModel" subject="subject" questions="contactQuestions" optional-questions="optionalQuestions" new-index="newIndex" contact-to-update="contactToUpdate"></div>
+			<div ng-if="view == 2" incidence-form account-model="accountModel" subject="subject" questions="incidenceQuestions" ></div>
+		</div>
 	</div>
 </div>
 <!-- end Panel -->
 <script type="text/ng-template" id="myModalContent.html">
 	<div class="modal-body text-center">
 	  <a class="pull-right" ng-click="cancel()"><i style="color:#333" class="fa fa-close"></i></a>
-	
+
 	  <h3>Sparat</h3>
 	  <p>Du har sparat information för patient {{ subject.socialNumber }}</p>
-	
-	  <a href="#/inloggad/patient/{{ subject.subjectID }}" ng-click="close()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
-	  <a class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="clear()">Rapportera för en annan patient</a>
-	  <a  ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="close()">Avsluta rapportering</a>
+
+	  <a href="#/inloggad/patient/?patientID={{ subject.subjectID }}" ng-click="reload()" class="Button Button--default Button--centered Button--info Button--centered--80">Visa profil</a>
+		<a ng-if="$parent.groups" href="#/inloggad/rapportera/{{ subject.subjectID }}" ng-click="reload()" class="Button Button--default Button--centered Button--info Button--centered--80">Rapportera nytt besök på denna patient</a>
+		<a href="#/inloggad/rapportera" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="reload()">Rapportera för en annan patient</a>
+	  <a ui-sref="main.home" class="Button Button--default Button--centered Button--info Button--centered--80" ng-click="cancel()">Avsluta rapportering</a>
 	</div>
 </script>
