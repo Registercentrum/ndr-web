@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:ng="http://angularjs.org" ng-app="ndrApp" id="ng-app">
+<html xmlns:ng="http://angularjs.org" ng-app="ndrApp" id="ng-app" lang="sv">
 <head>
 
     <!--[if lte IE 8]>
@@ -20,10 +20,10 @@
     <title>Nationella Diabetesregistret</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="expires" content="-1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
     <meta name="description" content="Officiell sida för svenska Nationella Diabetesregistret - NDR.">
-	<meta name="keywords" content="diabetes,ndr,kvalitetsregister,quality-registry,sverige,sweden,förbättringsarbete,forskning,publications,statistik,statistics,vårdenheter,sjukhus,landsting,vård">
+    <meta name="keywords" content="diabetes,ndr,kvalitetsregister,quality-registry,sverige,sweden,förbättringsarbete,forskning,publications,statistik,statistics,vårdenheter,sjukhus,landsting,vård">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" href="favicon.ico">
@@ -145,6 +145,8 @@
 <script src="src/services/dataService.js"></script>
 <script src="src/services/APIConfigService.js"></script>
 <script src="src/services/accountService.js"></script>
+<script src="src/services/calcService.js"></script>
+<script src="src/services/commonService.js"></script>
 <script src="src/factories/cookieFactory.js"></script>
 
 <!-- Interctive charts -->
@@ -169,10 +171,21 @@
 <script src="src/components/Autocomplete/autocompleteDirective.js"></script>
 <script src="src/components/KeyIndicators/KeyIndicatorsDirective.js"></script>
 <script src="src/components/StatReporting/StatReportingDirective.js"></script>
-<script src="src/components/ReportForm/ReportFormDirective.js"></script>
+<script src="src/components/ReportForm/FormDirective.js"></script>
+<script src="src/components/ReportForm/ReportFormNewDirective.js"></script>
+<!--<script src="src/components/ReportForm/ReportFormDirective.js"></script>-->
+<!--<script src="src/components/ReportForm/ReportFormHistoryDirective.js"></script>-->
+<!--<script src="src/components/ReportForm/ReportFormColumnDirective.js"></script>-->
 <script src="src/components/IncidenceForm/IncidenceFormDirective.js"></script>
 <script src="src/components/StatChar/StatCharDirective.js"></script>
 <script src="src/components/Question/Question.js"></script>
+<script src="src/components/Question/QuestionNew.js"></script>
+
+<script src="src/components/PatientProfile/PatientProfileGrownupDirective.js"></script>
+<script src="src/components/PatientProfile/PatientProfileKidsDirective.js"></script>
+
+<script src="src/components/PatientProfile/PatientProfilePrintGrownupDirective.js"></script>
+<script src="src/components/PatientProfile/PatientProfilePrintKidsDirective.js"></script>
 
 <!-- Utils -->
 <script src="src/utils/AsNumberDirective.js"></script>
@@ -194,7 +207,7 @@
 <script src="src/pages/Statistics/StatisticsController.js"></script>
 <script src="src/pages/Login/LoginController.js"></script>
 <script src="src/pages/KAS/KASController.js"></script>
-
+<script src="src/pages/Knappen2/Knappen2Controller.js"></script>
 <script src="src/pages/Subject/SubjectController.js"></script>
 <script src="src/pages/Subject/SubjectHomeController.js"></script>
 <script src="src/pages/Subject/Surveys/SubjectSurveysController.js"></script>
@@ -224,6 +237,7 @@
 
 </script>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.15/iframeResizer.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAazHBxiKGEF4vRJMH3j2GjsqPONZCpIJ8"></script>
 
 </body>
