@@ -497,8 +497,6 @@ angular.module('ndrApp')
               $scope.model.categories = categories;
               $scope.model.selectedInviteData = [latest, previous];
 
-
-
               modalInstance = $modal.open({
                 templateUrl: "answersModalTmpl",
                 backdrop   : true,
@@ -518,6 +516,7 @@ angular.module('ndrApp')
             scope      : $scope,
             size       : "lg"
           });
+		  
         }
 
         $scope.goToPrintView = function (invite) {
@@ -577,7 +576,11 @@ angular.module('ndrApp')
             templateUrl: "deleteModalTmpl",
             backdrop   : true,
             scope      : $scope,
-          });
+          }).result.catch(function(res) {
+		    if (!(res === 'cancel' || res === 'escape key press')) {
+		      throw res;
+		    }
+		  });
         }
 
         $scope.deleteInvite = function (inviteID) {
@@ -588,7 +591,6 @@ angular.module('ndrApp')
               modalInstance.dismiss("cancel");
             })
             ["catch"](function (error) {
-              console.log(error)
               modalInstance = $modal.open({
                 template   : "<p>Något gick fel, vänligen försök igen.</p>",
                 backdrop   : true,
@@ -610,13 +612,11 @@ angular.module('ndrApp')
 
           dataService.updateInvite(invite.inviteID, invite)
             .then(function (response) {
-				console.log(response.data);
 			  $scope.updateInviteLocal(invite.inviteID, response.data);
 			  $scope.setLists();
               
             })
             ["catch"](function (error) {
-              console.log(error)
               modalInstance = $modal.open({
                 template   : "<p>Något gick fel, vänligen försök igen.</p>",
                 backdrop   : true,
