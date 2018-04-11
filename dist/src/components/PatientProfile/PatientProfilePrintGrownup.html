@@ -89,7 +89,7 @@
                         <td>Senaste fotundersökning</td>
                         <td>{{ latest.footExaminationDate.label }}</td>
                         <td>
-                            <div ng-show="checkFootDate(latest.footExaminationDate)">
+                            <div ng-show="checkFootDate()">
                                 <i tooltip="OBS: Senaste rapporterade fotundersökning har ett datum mer än 1 år tillbaka i tiden." class="fa fa-exclamation"></i>
                             </div>
                         </td>
@@ -106,7 +106,7 @@
                     <td width="80">Diabetesretinopati</td>
                     <td width="20" style="width:50%">{{ latest.diabeticRetinopathy.label }}</td>
                 </tr>
-                <tr>
+                <tr ng-show="latest.diabeticRetinopathy.value == 1">
                     <td width="80">Retinopati, diagnos på sämsta ögat</td>
                     <td width="20">{{ latest.retinopathyDiagnosis.value != 0 ? latest.retinopathyDiagnosis.label : null  }}</td>
                 </tr>

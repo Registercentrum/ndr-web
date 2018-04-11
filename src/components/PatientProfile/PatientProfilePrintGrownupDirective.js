@@ -24,7 +24,6 @@ angular.module('ndrApp')
                 };
 
                 scope.init = function() {
-                    console.log(scope.latest);
                   scope.setTrendData();
                 }
 
@@ -153,6 +152,13 @@ angular.module('ndrApp')
                 scope.calculateAge = function(birthDate) {
                     return moment().diff(birthDate, 'years');
                 };
+
+                scope.checkFootDate = function() {
+                    if (scope.latest.footExaminationDate.value) {
+                        return commonService.dateWithinYears(scope.latest.footExaminationDate.label, 1);
+                    }
+                    return true;
+                }
                 
                 scope.init();
 

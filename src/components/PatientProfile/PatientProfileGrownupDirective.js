@@ -297,8 +297,12 @@ angular.module('ndrApp')
               );
             }
 
-
-
+            scope.checkFootDate = function() {
+              if (scope.latest.footExaminationDate.value) {
+                  return commonService.dateWithinYears(scope.latest.footExaminationDate.label, 1);
+              }
+              return true;
+            }
           }
 
         }

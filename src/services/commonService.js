@@ -147,10 +147,10 @@ angular.module('ndrApp')
       return table;
 
     }
-    this.footDateWithinYears = function(d, years) {
+    this.dateWithinYears = function(d, years) {
         if (!d) return false;
-        var diff = moment().diff(moment(d.label), 'years');
-        return diff > years ? true : false;
+        var diff = moment().diff(moment(d), 'years');
+        return diff >= years ? true : false;
     };
     this.currentAge = function(subject) {
       return moment().diff(subject.dateOfBirth, 'years');
