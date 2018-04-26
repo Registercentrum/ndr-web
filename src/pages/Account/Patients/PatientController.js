@@ -17,6 +17,11 @@ angular.module('ndrApp')
       $scope.backToSearchVisible = $stateParams.backToSearchVisible;
       $scope.backToSurveysVisible = $stateParams.backToSurveysVisible;
 
+      $scope.diabetesTypeText = function() {
+        if (!$scope.contactAttributes) return;
+        return commonService.getLabelByKeyVal($scope.contactAttributes,'diabetesType',$scope.subject.diabetesType);
+      }
+
       $scope.getSubject = function () {
         if (!$scope.socialnumber) return;
 
