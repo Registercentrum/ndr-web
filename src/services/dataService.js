@@ -640,7 +640,15 @@ angular.module('ndrApp')
                     };
                     return metafields;
                 }
-
+                var setTextTypeOne = function(metafields) {
+                    for (var i = 0; i < metafields.length; i++) {
+                        if (metafields[i].columnName == 'diabetesType') {
+                            console.log(metafields[i]);
+                            metafields[i].domain.domainValues[0].text = 'Typ 1'
+                        }
+                    }
+                    return metafields;
+                }
 
                 return $.ajax({
                     url: APIconfigService.constructUrl(APIconfigService.baseURL + 'MetaField'),
@@ -648,7 +656,10 @@ angular.module('ndrApp')
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        if (unitType == 3) data = transformTreatment(data);
+                        if (unitType == 3) {
+                            data = transformTreatment(data);
+                            data = setTextTypeOne(data);
+                        }
                         cache.metafields = data;
                     }
                 });
@@ -708,14 +719,16 @@ angular.module('ndrApp')
                 var preparedGeoList = [];
 
                 _.each(self.data.units, function(obj, key) {
-                    //if(obj.isActive) {
+
                     var o = {
                         type: 'unit',
                         name: obj.name,
                         id: 'unit_' + obj.unitID
                     };
-                    preparedGeoList.push(o);
-                    //}
+                    if (obj.typeID != 3) { //exclude kids, to be removed later
+                        preparedGeoList.push(o);
+                    }
+
                 });
 
                 _.each(self.data.counties, function(obj, key) {
@@ -797,7 +810,7 @@ angular.module('ndrApp')
 
                 var useStaticUnits = false;
 
-                if (!Modernizr.svg) {
+                /*if (!Modernizr.svg) {
                     useStaticUnits = true;
                     var units = [{
                             "unitID": 718,
@@ -13685,7 +13698,7 @@ angular.module('ndrApp')
                     units = _.where(units, {
                         isActive: true
                     });
-                }
+                }*/
 
                 if (!useStaticUnits) {
                     return $q.all([
