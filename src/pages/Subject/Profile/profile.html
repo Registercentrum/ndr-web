@@ -34,7 +34,7 @@
                 <h1>Grunddata</h1>
               </div>
               <div class="body">
-                <p class="mb0">{{ subject.diabetesType == 1 ? 'Diabetes Typ 1' : subject.diabetesTypeText }} sedan {{ subject.yearOfOnset }}</p>
+                <p class="mb0">{{ (subject.diabetesType ? diabetesTypeText() : 'Saknar diabetesTyp') + (subject.yearOfOnset ? ' sedan ' + subject.yearOfOnset : '') }}</p>
                 <p>
                   Behandling: {{ model.latest.treatment.label }}</p>
                 </p>
@@ -129,11 +129,11 @@
                   </tr>
                   <tr>
                     <td width="80">Diagnos på sämsta ögat</td>
-                    <td width="20">{{ model.latest.diabeticRetinopathy.value != 0 ? model.latest.diagnosisWorseSeeingEye.label : null  }}</td>
+                    <td width="20">{{ model.latest.diabeticRetinopathy.value != 0 ? model.latest.retinopathyDiagnosis.label : null  }}</td>
                   </tr>
                   <tr>
-                    <td width="80">Laserbehandlad</td>
-                    <td width="20">{{ model.latest.laserTreatment.label}}</td>
+                    <td width="80">Behandlad för ögonkomplikation</td>
+                    <td width="20">{{ model.latest.eyeTreated.label}}</td>
                   </tr>
                   <tr>
                     <td width="80">Senaste ögonbottenundersökning</td>
@@ -162,11 +162,8 @@
                     <td>{{ model.latest.creatinine.label }}</td>
                   </tr>
                   <tr>
-                    <td>Makroalbuminuri<i class="fa fa-question-circle helpNote" tooltip="Albuminuri innebär att njurarna påverkats av diabetessjukdomen och att det läcker ut proteiner i urinen."></i></td>
-                    <td>{{ model.latest.macroscopicProteinuria.label }}</td>
-                  </tr>
-                  <tr ng-hide="model.latest.macroscopicProteinuria.label == 'Ja'">
-                    <td>Mikroalbuminuri<i class="fa fa-question-circle helpNote" tooltip="Albuminuri innebär att njurarna påverkats av diabetessjukdomen och att det läcker ut proteiner i urinen."></i></td><td>{{ model.latest.microscopicProteinuria.label }}</td>
+                    <td>Albuminuri<i class="fa fa-question-circle helpNote" tooltip="Albuminuri innebär att njurarna påverkats av diabetessjukdomen och att det läcker ut proteiner i urinen."></i></td>
+                    <td>{{ model.latest.albuminuria.label }}</td>
                   </tr>
                 </table>
               </div>
@@ -217,25 +214,25 @@
           <h2>Registerutdrag</h2>
           <div class="row">
             <div class="btn-group pull-right" style="margin: 0 16px 10px 0;">
-              <a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="tableCount>1 && tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
-              <a class="Button Button--info Button--small" ng-click="tableBack()"  ng-show="tableCount>1 && tableIndex<tableCount" >Bakåt  <i class="fa fa-arrow-circle-right"></i></a>
+              <a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="model.tableCount>1 && model.tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
+              <a class="Button Button--info Button--small" ng-click="tableBack()"  ng-show="model.tableCount>1 && model.tableIndex<model.tableCount" >Bakåt  <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <div class="table-responsive">
             <table style="font-size: 13px" class="Table--fixed table table-striped table-bordered row-border hover visits-table">
               <thead>
               <tr>
-                <th class="key"></th>
-                <th ng-repeat="date in model.data.tableHeader.values">{{ date | date : 'dd MMM yyyy'}}</th>
+                  <th class="key"></th>
+                  <th ng-repeat="date in model.data.table.header.values">{{ date | date : 'dd MMM yyyy'}}</th>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="contact in model.data.table | orderBy: 'sequence'">
-                <td class="key">{{ contact.label == "unit" ? "Enhet" : contact.label }}</td>
-                <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
+              <tr ng-repeat="contact in model.data.table.body | orderBy: 'sequence'">
+                  <td class="key">{{ contact.label }}</td>
+                  <td ng-repeat="value in contact.values track by $index">{{ value }}</td>
               </tr>
               </tbody>
-            </table>
+          </table>
           </div>
         </div>
 
