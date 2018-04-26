@@ -22,48 +22,65 @@ angular.module('ndrApp')
       var ret = {};
 
       for (var i = 0; i < metafields.length; i++) {
-        var contact = this.getLatestContactWithValue(subject, metafields[i])
-        var model =  contact ? this.getValueModel(contact, metafields[i]) : ({value: null, date: null, label: 'saknas'})
-        ret[metafields[i].columnName] = model;
+        var contact = this.getLatestContactWithValue(subject, metafields[i]);
+
+        if (!contact || contact[metafields[i]]) {
+          ret[metafields[i].columnName] = {value: null, date: null, label: ' - '}
+        } else {
+          var model =  this.getValueModel(contact, metafields[i]);
+          ret[metafields[i].columnName] = model;
+        }
       }
 
       return ret;
     }
 
     this.getValueModel = function(contact, metafield) {
-      var label  = this.getContactAttributeLabel(contact, metafield)
- 
+
+      var label  = this.getMetafieldLabel(contact[metafield.columnName], metafield);
       return {value: contact[metafield.columnName], date: contact.contactDate, label: label}; //$filter0('number')(value)
     }
 
-    this.getContactAttributeLabel = function(contact, metafield) {
+    this.getMetafieldLabel = function(value, metafield) {
 
       var ret = null;
       var key = metafield.columnName;
 
-      if (!contact) return ' - ';
-      if (typeof(contact[key]) === "undefined") return ' - '
-      if (contact[key] === null) return ' - '
+      if (!value) return ' - ';
+      if (typeof(value) === "undefined") return ' - '
+      if (value === null) return ' - '
 
       // If it's a date, format it in a nice way
       if (metafield.domain.name === 'Date') {
-        ret = $filter('date')(new Date(contact[key]), 'yyyy-MM-dd');
+        ret = $filter('date')(new Date(value), 'yyyy-MM-dd');
         // Get proper label for the id value
       } else if (metafield.domain.isEnumerated) {
-        ret = _.find(metafield.domain.domainValues, {code: contact[key]}).text;
+        ret = _.find(metafield.domain.domainValues, {code: value}).text;
         // If it's a boolean, return proper translation (ja-nej)
       } else if (metafield.domain.name === 'Bool') {
-        ret = contact[key] ? 'Ja' : 'Nej';
+        ret = value ? 'Ja' : 'Nej';
       } else {
-        ret = contact[key].toString().replace('.', ',') + (metafield.measureUnit != null ? ' ' + metafield.measureUnit : '');
-        //value = $filter('number')(contact[key]) + (metafield.measureUnit != null ? ' ' + metafield.measureUnit : '');
+        ret = value.toString().replace('.', ',') + (metafield.measureUnit != null ? ' ' + metafield.measureUnit : '');
       }
 
       return ret;
     }
 
+    this.getLabelByKeyVal = function(metafields,key,val) {
+      var m = this.getMetafieldByQuestionKey(metafields, key);
+      var l = this.getMetafieldLabel(val, m);
+      return l;
+    }
     this.getDomainValue = function(metafield, code) {
       return _.find(metafield.domain.domainValues, {code: code})
+    }
+
+    this.getMetafieldByQuestionKey = function(metafields, key) {
+      for (var i = 0; i < metafields.length; i++) {
+        if (metafields[i].columnName == key){
+          return metafields[i];
+        }
+      }
     }
 
     this.getMetafieldByQuestionText = function(metafields, text) {
@@ -133,7 +150,7 @@ angular.module('ndrApp')
         };
 
         for (var j = 0; j < contacts.length; j++) {
-          f.values.push(contacts[j] ? this.getContactAttributeLabel(contacts[j], metafields[i]) : "-")
+          f.values.push(contacts[j] ? this.getMetafieldLabel(contacts[j][metafields[i].columnName], metafields[i]) : "-")
         }
 
         if(metafields[i].columnName == headerkey) {
