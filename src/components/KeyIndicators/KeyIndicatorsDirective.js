@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ndrApp')
-    .directive('keyIndicators', ['$q','dataService', function($q, dataService) {
+    .directive('keyIndicators', ['$q','dataService', 'accountService', function($q, dataService, accountService) {
 
         function link (scope) {
 			
@@ -138,9 +138,19 @@ angular.module('ndrApp')
 
 
             function getKeyIndicators () {
-                var toInclude = [201, 221, 207, 222, 209, 214, 211, 203, 223, 216, 202, 219],
+
+                var account = accountService.accountModel.activeAccount;
+
+                var toInclude = [201,221,207,222,209,214,211,203,223,216,202,219],
                     promises  = [],
-					query;
+                    query;
+                    
+                if (account) {
+                    if (scope.model.unitType == 3) {
+                        console.log('show kids');
+                        toInclude = [225,201,226,221,223,211,219,227,228]
+                    }
+                }
 
                 if (scope.model.geoType === 'unit'){
                     query = dataService.queryFactory({
@@ -149,8 +159,7 @@ angular.module('ndrApp')
                         ID          : toInclude,
                         sex         : scope.model.sex,
                         unitType    : scope.model.unitType,
-                        diabetesType: scope.model.diabetesType,
-                        //countyCode  : null,
+                        diabetesType: scope.model.diabetesType
                     });
                 } else {
                     query = dataService.queryFactory({
