@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="Panel clearfix" style="padding: 0px; height:auto">
                             <div class="Panel--profile col-md-5" style="line-height: 22px; font-size: 14px;font-weight: 300">
-                                <h5><span class="strong">{{ subject.sexText + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}, {{ subject.diabetesTypeText }}</span></h5>
+                                <h5><span class="strong">{{ subject.sexText + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}, {{ diabetesTypeText() }}</span></h5>
                                 <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
                                 <p>Diabetesbehandling: <span class="strong">{{ latest.treatment.label }}</span></p>
                                 <p ng-show="[3,4,9,10].indexOf(latest.treatment.value) != -1">Metod att ge insulin: <span class="strong">{{ latest.insulinMethod.label }}</span></p>

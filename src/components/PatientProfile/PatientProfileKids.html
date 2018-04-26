@@ -42,7 +42,7 @@
 
                           <div class="col-md-4 profilebg" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 18px; font-size: 14px;font-weight: 300;height: 280px;">
                               <h5>{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}</h5>
-                              <p><span class="strong">{{ subject.diabetesTypeText }}</span></p>
+                              <p><span class="strong">{{ diabetesTypeText() }}</span></p>
                               <hr />
                               <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
                               <p>Vikt: <span class="strong">{{  latest.weight.label }}</span></p>

@@ -47,6 +47,11 @@ angular.module('ndrApp')
             scope.init();
           });
 
+          scope.diabetesTypeText = function() {
+            if (!scope.contactAttributes) return;
+            return commonService.getLabelByKeyVal(scope.contactAttributes,'diabetesType',scope.subject.diabetesType);
+          }
+
           scope.tableForward = function () {
             scope.model.tableIndex--;
             populateTableData();

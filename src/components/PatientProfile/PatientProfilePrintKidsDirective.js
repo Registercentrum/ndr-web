@@ -30,6 +30,11 @@ angular.module('ndrApp')
                 scope.setTrendData = function() {
                   scope.model.data.trend = commonService.getSeries(scope.subject, scope.model.trendKeys, 3)
                 }
+
+                scope.diabetesTypeText = function() {
+                    if (!scope.contactAttributes) return;
+                    return commonService.getLabelByKeyVal(scope.contactAttributes,'diabetesType',scope.subject.diabetesType);
+                }
                 
                 scope.init();
 
@@ -40,7 +45,8 @@ angular.module('ndrApp')
                 link: link,
                 scope: {
                     subject: '=',
-                    latest: '='
+                    latest: '=',
+                    contactAttributes: "="
                 }
             };
         }

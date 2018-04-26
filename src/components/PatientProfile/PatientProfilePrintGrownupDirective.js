@@ -25,7 +25,20 @@ angular.module('ndrApp')
 
                 scope.init = function() {
                   scope.setTrendData();
+
+                  $timeout(function () {
+                    Highcharts.charts.map(function (c) {
+                      if(c){
+                        c.reflow();
+                      }
+                    })
+                  }, 500);
                 }
+
+                scope.diabetesTypeText = function() {
+                    if (!scope.contactAttributes) return;
+                    return commonService.getLabelByKeyVal(scope.contactAttributes,'diabetesType',scope.subject.diabetesType);
+                  }
 
                 scope.setTrendData = function() {
 
@@ -169,7 +182,8 @@ angular.module('ndrApp')
                 link: link,
                 scope: {
                     subject: '=',
-                    latest: '='
+                    latest: '=',
+                    contactAttributes: "="
                 }
             };
         }
