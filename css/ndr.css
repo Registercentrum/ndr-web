@@ -10880,12 +10880,13 @@ p.lead {
 .Profile-Panel {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 280px;
   font-size: 14px;
 }
 .Profile-Header {
   display: flex;
   flex-direction: row;
+  height: 40px;
 }
 .Profile-Header h4 {
   flex: 1;
@@ -10907,7 +10908,7 @@ p.lead {
   flex: 1;
 }*/
 .Profile-Footer {
-  height: 20px;
+  height: 40px;
   text-align: right;
   font-size: 1.2rem;
 }
