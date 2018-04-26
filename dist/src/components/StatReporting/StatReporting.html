@@ -9,8 +9,8 @@
 	  <tr>
 		<th class="colHeader rowLabel" ng-click="handleSortClick(0)">Variabel <span ng-show="model.reportSort.level == 0 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 0 && !model.reportSort.desc">&#9660;</span></th>
 		<th class="colHeader" ng-click="handleSortClick(3)">Vår enhet <span ng-show="model.reportSort.level == 3 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 3 && !model.reportSort.desc">&#9660;</span></th>
-		<th class="colHeader" ng-click="handleSortClick(2)">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 2 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 2 && !model.reportSort.desc">&#9660;</span></th>
-		<th class="colHeader" ng-click="handleSortClick(1)">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}} <span ng-show="model.reportSort.level == 1 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 1 && !model.reportSort.desc">&#9660;</span></th>
+		<th class="colHeader" ng-click="handleSortClick(2)">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : (model.unitType === 2 ? 'Medicinkliniker' : 'Barnkliniker')}}<span ng-show="model.reportSort.level == 2 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 2 && !model.reportSort.desc">&#9660;</span></th>
+		<th class="colHeader" ng-click="handleSortClick(1)">Riket<br />{{model.unitType === 1 ? 'Primärvård' : (model.unitType === 2 ? 'Medicinkliniker' : 'Barnkliniker')}} <span ng-show="model.reportSort.level == 1 && model.reportSort.desc">&#9650;</span><span ng-show="model.reportSort.level == 1 && !model.reportSort.desc">&#9660;</span></th>
 	  </tr>
 	</thead>
 	<tbody>

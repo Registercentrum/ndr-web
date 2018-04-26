@@ -13,8 +13,8 @@
 	  <tr>
 		<th></th>
 		<th class="colHeader" colspan="2" style="width: 60px">Vår enhet</th>
-		<th class="colHeader" style="width: 130px">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}}</th>
-		<th class="colHeader" style="width: 130px">Riket<br />{{model.unitType === 1 ? 'Primärvård' : 'Medicinkliniker'}}</th>
+		<th class="colHeader" style="width: 130px">{{model.activeAccount.unit.countyName}}<br />{{model.unitType === 1 ? 'Primärvård' : (model.unitType === 2 ? 'Medicinkliniker' : 'Barnkliniker' ) }}</th>
+		<th class="colHeader" style="width: 130px">Riket<br />{{model.unitType === 1 ? 'Primärvård' : (model.unitType === 2 ? 'Medicinkliniker' : 'Barnkliniker' ) }}</th>
 	  </tr>
 	</thead>
 	<tbody style="border-top: 2px solid white">

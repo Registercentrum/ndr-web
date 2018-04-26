@@ -12,7 +12,7 @@
     <div class="row" style="margin-top: 15px">
         <div class="col-md-4 col-print-4">
             <!--<p>{{ subject.sexText + ", " + calculateAge(subject.dateOfBirth) }} år gammal</p>-->
-            <p>{{ subject.diabetesTypeText }}</p>
+            <p>{{ diabetesTypeText() }}</p>
             <p>Debutår: <span class="strong">{{ subject.yearOfOnset }}</span></p>
             <p>Diabetesbehandling: <span class="strong">{{ latest.treatment.label }}</span></p>
             <p ng-show="[3,4,9,10].indexOf(latest.treatment.value) != -1">Metod att ge insulin: <span class="strong">{{ latest.insulinMethod.label }}</span></p>

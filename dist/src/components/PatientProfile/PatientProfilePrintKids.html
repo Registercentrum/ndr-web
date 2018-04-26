@@ -25,7 +25,7 @@
         <div class="col-md-4 col-print-4">
             <div class="panel-wrapper">
                 <h5><span class="strong">{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}<span class="strong"></h5>
-                <p<span class="strong"></p>{{ subject.diabetesTypeText }}</p>
+                <p<span class="strong"></p>{{ diabetesTypeText() }}</p>
                 <p>Vikt: <span class="strong">{{  latest.weight.label }}</span></p>
                 <p>Längd: <span class="strong">{{  latest.height.label }}</span></p>
                 <p><span class="strong">{{  latest.isoBMI.label }}</span> (iso-BMI)</p>
@@ -66,48 +66,45 @@
     <!-- FEET etc -->
     <div class="row">
         <div class="col-md-4">
-            <div class="">
-                <div class="Profile-Panel">
-                    <div class="Profile-Header">
+            <div class="Profile-Panel">
+                <div class="Profile-Header">
 
-                        <h4>Blodtryck</h4>
-                        <i class="Profile-latest-value fa fa-heart" class="pull-right" style="font-size: 30px;"></i>
+                    <h4>Blodtryck</h4>
+                    <i class="Profile-latest-value fa fa-heart" class="pull-right" style="font-size: 30px;"></i>
 
+                </div>
+                <div class="Profile-Content">
+                    <div class="Profile-Center">
+                        <table class="table table-condensed">
+                            <tr ng-if="latest.bpSystolic.value && latest.bpDiastolic.value">
+                                <td>Senaste blodtryck</td>
+                                <td>{{ latest.bpSystolic.value }} / {{ latest.bpDiastolic.value }} mmHg</td>
+                            </tr>
+                            <tr>
+                                <td>Hypertoni</td>
+                                <td>{{ latest.hypertension.label }}</td>
+                            </tr>
+                            <tr>
+                                <td>Behandlad med blodtryckssänkande lkm</td>
+                                <td>{{ latest.antihypertensives.label }}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="Profile-Content">
-                        <div class="Profile-Center">
-                            <table class="table table-condensed">
-                                <tr ng-if="latest.bpSystolic.value && latest.bpDiastolic.value">
-                                    <td>Senaste blodtryck</td>
-                                    <td>{{ latest.bpSystolic.value }} / {{ latest.bpDiastolic.value }} mmHg</td>
-                                </tr>
-                                <tr>
-                                    <td>Hypertoni</td>
-                                    <td>{{ latest.hypertension.label }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Behandlad med blodtryckssänkande lkm</td>
-                                    <td>{{ latest.antihypertensives.label }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="Profile-Footer"></div>
-                    </div>
+                    <div class="Profile-Footer"></div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="">
-                <div class="Profile-Panel">
-                    <div class="Profile-Header">
+            <div class="Profile-Panel">
+                <div class="Profile-Header">
 
-                        <h4>Ögon</h4>
-                        <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
+                    <h4>Ögon</h4>
+                    <i class="Profile-latest-value fa fa-eye" class="" style="font-size: 30px;"></i>
 
-                    </div>
-                    <div class="Profile-Content">
-                        <div class="Profile-Center">
+                </div>
+                <div class="Profile-Content">
+                    <div class="Profile-Center">
 
                         <table class="table table-condensed">
                             <tr>
@@ -120,50 +117,47 @@
                             </tr>
                         </table>
 
-                        </div>
-                        <div class="Profile-Footer">
+                    </div>
+                    <div class="Profile-Footer">
 
                         * Från 10 år
 
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="">
-                <div class="Profile-Panel">
-                    <div class="Profile-Header">
+            <div class="Profile-Panel">
+                <div class="Profile-Header">
 
-                        <h4>Njurar</h4>
-                        <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
+                    <h4>Njurar</h4>
+                    <i class="Profile-latest-value fa fa-noun_17376_cc" class="" style="font-size: 40px;"></i>
+
+                </div>
+                <div class="Profile-Content">
+                    <div class="Profile-Center">
+
+                    <table class="table table-condensed">
+                        <tr>
+                            <td>Senaste U-Albumin/Kreatinin</td>
+                            <td>{{ latest.uAlbCreatinine.label }}</td>
+                        </tr>
+                        <tr>
+                            <td>Datum U-Albumin/Kreatinin</td>
+                            <td>{{ latest.uAlbCreatinine.date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Albuminuri</td>
+                            <td>{{ latest.albuminuria.label }}</td>
+                        </tr>
+                    </table>
 
                     </div>
-                    <div class="Profile-Content">
-                        <div class="Profile-Center">
-
-                        <table class="table table-condensed">
-                            <tr>
-                                <td>Senaste U-Albumin/Kreatinin</td>
-                                <td>{{ latest.uAlbCreatinine.label }}</td>
-                            </tr>
-                            <tr>
-                                <td>Datum U-Albumin/Kreatinin</td>
-                                <td>{{ latest.uAlbCreatinine.date }}</td>
-                            </tr>
-                            <tr>
-                                <td>Albuminuri</td>
-                                <td>{{ latest.albuminuria.label }}</td>
-                            </tr>
-                        </table>
-
-                        </div>
-                        <div class="Profile-Footer">
+                    <div class="Profile-Footer">
 
                         * Från 10 år
 
-                        </div>
                     </div>
                 </div>
             </div>
