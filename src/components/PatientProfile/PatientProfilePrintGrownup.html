@@ -17,7 +17,7 @@
             <p>Diabetesbehandling: <span class="strong">{{ latest.treatment.label }}</span></p>
             <p ng-show="[3,4,9,10].indexOf(latest.treatment.value) != -1">Metod att ge insulin: <span class="strong">{{ latest.insulinMethod.label }}</span></p>
             <p ng-show="latest.insulinMethod.value == 2">Pumpmodell: <span class="strong">{{ latest.pumpOngoing.label }}</span></p>
-            <p ng-show="latest.cgm.value"> CGM/FGM: <span class="strong">{{ latest.cgm.label + ((latest.cgmType.value && latest.cgm.value) ? ', ' + latest.cgmType.label : '') }}</span></p>
+            <p ng-show="latest.cgm.value != null"> CGM/FGM: <span class="strong">{{ latest.cgm.label + ((latest.cgmType.value && latest.cgm.value) ? ', ' + latest.cgmType.label : '') }}</span></p>
             <p>Senaste besök: <span class="strong">{{ latest.contactDate.label }}</span></p>
         </div>
 
