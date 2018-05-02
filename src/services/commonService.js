@@ -23,8 +23,10 @@ angular.module('ndrApp')
 
       for (var i = 0; i < metafields.length; i++) {
         var contact = this.getLatestContactWithValue(subject, metafields[i]);
-
-        if (!contact || contact[metafields[i]]) {
+        if (metafields[i].columnName == 'albuminuria') console.log(contact);
+        //console.log(metafields[i].columnName, contact[metafields[i].columnName]);
+        if (!contact) {
+          console.log(metafields[i].columnName);
           ret[metafields[i].columnName] = {value: null, date: null, label: ' - '}
         } else {
           var model =  this.getValueModel(contact, metafields[i]);
@@ -46,7 +48,6 @@ angular.module('ndrApp')
       var ret = null;
       var key = metafield.columnName;
 
-      if (!value) return ' - ';
       if (typeof(value) === "undefined") return ' - '
       if (value === null) return ' - '
 
