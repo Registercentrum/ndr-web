@@ -147,7 +147,6 @@ angular.module('ndrApp')
                     
                 if (account) {
                     if (scope.model.unitType == 3) {
-                        console.log('show kids');
                         toInclude = [225,201,226,221,223,211,219,227,228]
                     }
                 }

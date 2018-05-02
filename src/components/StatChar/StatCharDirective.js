@@ -320,8 +320,6 @@ angular.module('ndrApp')
                 Andel med CGM/FGM totalt och andel endast Flash (FGM)
                 Andel med upprättad Egenvårdsplan senaste året.*/
 
-                console.log(scope.model.unitType);
-
                 if (scope.model.unitType === 3) {
                     scope.model.charConfig = [{
                             header: 'Kön',
