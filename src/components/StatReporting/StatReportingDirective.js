@@ -125,10 +125,6 @@ angular.module('ndrApp')
 
                     var denom;
 
-                    //Exception presentation question smoker
-                    //if (f.id == 137) //Smoker is presented as question SmokingHabits
-                    //	f.question = 'Rökvanor';
-
                     if (f.id == 193)
                         f.question = 'Behandlad för ögonkomplikation';
 
@@ -146,8 +142,53 @@ angular.module('ndrApp')
                         case 'cgm':
                             denom = 'insulinTreated';
                             break;
-                        case 'diagnosisWorseSeeingEye':
+                        case 'retinopathyDiagnosis':
                             denom = 'hasRetinopathy';
+                            break;
+                        case 'smokingHabit':
+                            denom = 'ageGT13';
+                            break;
+                        case 'snuffingHabit':
+                            denom = 'ageGT13';
+                            break;
+                        case 'smokingEndYear':
+                            denom = 'ageGT13';
+                            break;
+                        case 'snuffingEndYear':
+                            denom = 'ageGT13';
+                            break;
+                        case 'uAlbCreatinine':
+                            denom = 'ageGT10';
+                            break;
+                        case 'albuminuria':
+                            denom = 'ageGT10';
+                            break;
+                        case 'fundusExaminationDate':
+                            denom = 'ageGT10';
+                            break;
+                        case 'bpSystolic':
+                            denom = 'ageGT10';
+                            break;
+                        case 'bpDiastolic':
+                            denom = 'ageGT10';
+                            break;
+                        case 'hypertension':
+                            denom = 'ageGT10';
+                            break;
+                        case 'antihypertensives':
+                            denom = 'ageGT10';
+                            break;
+                        case 'diabeticRetinopathy':
+                            denom = 'ageGT10';
+                            break;
+                        case 'retinopathyDiagnosis':
+                            denom = 'ageGT10';
+                            break;
+                        case 'lipidLoweringDrugs':
+                            denom = 'ageGT10';
+                            break;
+                        case 'physicalActivityKids':
+                            denom = 'ageGT5';
                             break;
                         default:
                             denom = 'contactDate'
