@@ -235,7 +235,7 @@
                     <tbody>
                         <tr ng-repeat="subject in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
                             <!--<td ng-click="toggleDetail(subject)" class="details-control"><i class="fa fa-plus-circle fa-1x"></i></td>-->
-                            <td>{{ ::subject.snr }}</td>
+                            <td>{{ ::subject.snr }}<br /><span style="font-weight: 600">{{ ::subject.name }}</span></td> <!-- ng-click="showName(subject)" -->
                             <td>{{ ::subject.contactDate | date:'yyyy-MM-dd' }}</td>
                             <td ng-repeat="f in filters | filter:{isChosen:true}">{{ ::lookupName(f, subject[f.columnName]) }}</td>
                             <td style="text-align:center;">{{ ::subject.isDead ? 'X' : '' }}</td>

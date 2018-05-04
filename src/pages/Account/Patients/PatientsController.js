@@ -18,15 +18,14 @@ angular.module('ndrApp')
             $log.debug('PatientsController: Init');
             var filterSettings = {
                     exclude: ['socialNumber', 'pumpNew', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear', 'snuffingEndYear', 'subjectID'],
-                    required: ['d']
+                    required: ['d','s','sex']
                 },
                 filterDisplayIndex;
 
             $scope.filterSettings = {
                     excluded: ['socialNumber', 'pumpNew', 'pumpNewSerial', 'contactDate', 'dateOfDeath', 'smokingEndYear', 'snuffingEndYear', 'subjectID'],
-                    required: ['d']
+                    required: ['d','s','sex']
                 };
-
             $scope.isLoadingSubjects = false;
 
             // If we don't want to restore filters, unset them
@@ -38,7 +37,9 @@ angular.module('ndrApp')
 
             /* Date picker options */
             $scope.format = 'yyyy-MM-dd';
+
             var filters = dataService.getSearchFilters('values');
+            
             $scope.datePickers = {
 
                 maxDate: new Date(),
@@ -61,11 +62,10 @@ angular.module('ndrApp')
             //fields not included in forms
             $scope.addExtraFields = function(fields, keys) {
                 var extraFields = dataService.getFieldByKey(keys);
-
                 for (var i = 0; i <= extraFields.length - 1; i++) {
                     fields.splice(1, 0, extraFields[i]);
                 }
-                    
+                
                 return fields;
             }
 
@@ -80,7 +80,7 @@ angular.module('ndrApp')
                 }
 
                 //add extra fields
-                fields = $scope.addExtraFields(fields, ['age']);
+                fields = $scope.addExtraFields(fields, ['age','sex','s']);
                 //add optional questions
                 fields = $scope.addOptionalFields(fields);
                 fields = $scope.removeExcluded(fields);
@@ -109,14 +109,40 @@ angular.module('ndrApp')
             $scope.loadFilters = function(unitTypeID) {
 
                 $scope.isLoading = true;
-                dataService.getMetaFields($scope.accountModel.activeAccount.accountID).then(function() {
+                dataService.getMetaFields($scope.accountModel.activeAccount.accountID,unitTypeID).then(function() {
                     $scope.init();
                     return;
                 });
 
             };
+            $scope.showName = function(subject) {
+                
+                var subjectInfo;
 
+                var getSubjectInfo = function(snr) {
+                    subjectInfo = dataService.getSubjectInfo(subject.snr);
+                    return subjectInfo;
+                }
 
+                var setSubjectInfo = function(subjectInfo) {
+                    subject.name = subjectInfo.firstName + ' ' + subjectInfo.lastName;
+                }
+
+                subjectInfo = getSubjectInfo(subject.snr);
+
+                if (subjectInfo) {
+                    setSubjectInfo(subjectInfo)
+                    return;
+                } else {
+                    var accountID = $scope.accountModel.activeAccount.accountID
+                    dataService.fetchSubjectInfo(accountID,subject.snr)
+                    .then(function(data) {
+                        setSubjectInfo(data);
+                        $scope.$digest();
+                    });
+                }
+                
+            }
             $scope.today = function() {
                 $scope.dt = new Date();
             };
@@ -462,7 +488,7 @@ angular.module('ndrApp')
             $scope.getContactAttributes = function(filterSettings, filters) {
 
                 var selected,
-                    preselected = dataService.getSearchFilters();
+                    preselected = dataService.getSearchFilters()// dataService.getSearchFilters();
 
                 $scope.dateFrom = $filter('date')(preselected.values.dateFrom, $scope.format)
                 $scope.dateTo = $filter('date')(preselected.values.dateTo, $scope.format)
@@ -478,7 +504,7 @@ angular.module('ndrApp')
                     }
 
                     // Fill out missing props
-                    if (filter.columnName === 'age') {
+                    /*if (filter.columnName === 'age') {
                         filter.min = 0;
                         filter.max = 120;
                         filter.maxValue = 120;
@@ -495,7 +521,7 @@ angular.module('ndrApp')
                         filter.min = 1900;
                         filter.max = 2020;
                         filter.range = [1900, 2020];
-                    }
+                    }*/
 
                     // If the filter is required or preselected choose it instantly
                     filter.isChosen = $scope.isRequired(filter.columnName) || _.keys(preselected.values).indexOf(filter.columnName) !== -1;
@@ -526,6 +552,7 @@ angular.module('ndrApp')
                             };
                         }
                     }
+
                 });
 
                 // Make sure that selected filters are always first in the list
@@ -587,8 +614,6 @@ angular.module('ndrApp')
                 $timeout(function() {
                     $scope.highlightedFilter = null;
                 }, 1000);
-
-                
 
                 dataService.setSearchFilters('filters', _.filter($scope.filters, {
                     isChosen: true
@@ -766,6 +791,16 @@ angular.module('ndrApp')
                         domainID: 106
                     }
                 });
+
+                attributes.push({
+                    columnName: 'name',
+                    question: 'Namn',
+                    domain: {
+                        isEnumerated: false,
+                        domainID: 106
+                    }
+                });
+
                 attributes.push({
                     columnName: 'contactDate',
                     question: 'Senaste besök',
@@ -792,13 +827,6 @@ angular.module('ndrApp')
                         domainID: 107
                     }
                 });
-
-                //Dina kolumner
-                //console.log(attributes);
-
-                //För uthämtning av sökkriterier
-                //console.log(dataService.getSearchFilters());
-
 
                 //Write headers
                 var firstInRow = true;
