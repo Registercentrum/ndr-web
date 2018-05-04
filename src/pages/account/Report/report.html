@@ -31,11 +31,12 @@
 	<div class="col-md-12">
 		<div class="f4" style="display: flex; justify-content: flex-end">
 			<a target="_blank" ng-if="accountModel.activeAccount.unit.typeID == 3" ng-show="subject.incidence.incDone" href="" ng-click="setIncidence()">Incidensuppgifter <i class="fa fa-tag"></i></a>
+			<span ng-if="accountModel.activeAccount.unit.typeID == 3" ng-show="subject.incRepOtherUnit">Incidens inrapporterad från annan vårdenhet</span>
 		</div>
 		<div class="PatientHeader clearfix">
 			<div class="PatientHeader-personNumber col-md-3 u-noLeftPadding">{{ subject.socialNumber }}</div>
 			<div class="pull-right">
-				<button ng-click="setIncidence()" ng-show="!subject.incidence.incDone" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left" style="margin-right: 25px;">Incidens</button>
+				<button ng-click="setIncidence()" ng-show="!subject.incidence.incDone && !subject.incRepOtherUnit" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left" style="margin-right: 25px;">Incidens</button>
 				<button ng-click="setContact()" id="bnNewContact" type="submit" class="Button Button--primary Button--strong pull-left" style="margin-right: 25px;">Ny rapportering</button>
 				<form id="contactSelect" class="PatientHeader-showVisit form-horizontal pull-left" role="form">
 					<select

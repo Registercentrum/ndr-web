@@ -134,8 +134,6 @@ angular.module('ndrApp')
                 dataService.getSubjectBySocialNumber($scope.socialnumber)
                     .then(function(data) {
 
-                        console.log('data', data);
-
                         if (data.status) { //something has gone wrong
                             $scope.subject = null;
                             $scope.serverSubjectError = 'Ingen patient hittades. Kontrollera personnummer.';
