@@ -11,6 +11,7 @@ angular.module('ndrApp')
                 counties: [],
                 indicators: [],
                 preparedGeoList: [],
+                subjectInfo:{},
                 promFormMeta: null,
                 attributesLists: null,
                 koo: null,
@@ -133,15 +134,7 @@ angular.module('ndrApp')
 
             this.getFieldByKey = function(keys) {
 
-                /*var ret = this.data.metafields.filter(function(m) {
-
-                    return keys.indexOf(m.columnName) != -1)
-
-                });*/
-
                 var ret = [];
-
-                console.log(keys);
 
                 for (var i = 0; i < this.data.metafields.length; i++) { 
 
@@ -598,6 +591,35 @@ angular.module('ndrApp')
                     }
                 });
             };
+            this.getSubjectInfo = function(snr) {
+                if (this.data.subjectInfo[snr])
+                    return this.data.subjectInfo[snr];
+                else
+                    return null;
+            }
+            this.fetchSubjectInfo = function(accountID, snr) {
+                
+                var query = query || {};
+                var cache = this.data;
+                query.APIKey = APIconfigService.APIKey;
+                query.AccountID = accountID;
+                query.socialNumber = snr;
+
+                return $.ajax({
+                    url: APIconfigService.constructUrl(APIconfigService.baseURL + 'Navet'),
+                    data: query,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(cache);
+                        cache.subjectInfo[snr] = data;
+                    },
+                    error: function(data) {
+                        alert('Ingen information om personen kunde hittas in folkbokföringen');
+                    }
+                });
+
+            }
 
             this.getMetaFields = function(accountID, unitType) {
                 var query = query || {};
@@ -606,49 +628,51 @@ angular.module('ndrApp')
                 query.AccountID = accountID;
                 var self = this;
 
-                //treatment exception for kidsunit
-                var transformTreatment = function(metafields) {
-                    for (var i = 0; i < metafields.length; i++) {
-                        if (metafields[i].columnName == 'treatment') {
-                            metafields[i].domain.domainValues = [{
-                                    text: "Insulin",
-                                    code: 3,
-                                    XMLText: "Insulin",
-                                    isActive: true
-                                },
-                                {
-                                    text: "Tabletter",
-                                    code: 2,
-                                    XMLText: "Tabletter",
-                                    isActive: true
-                                },
-                                {
-                                    text: "Tabl. och insulin",
-                                    code: 4,
-                                    XMLText: "TabletterOchInsulin",
-                                    isActive: true
-                                },
-                                {
-                                    text: "Enbart kost",
-                                    code: 1,
-                                    XMLText: "EnbartKost",
-                                    isActive: true
-                                }
-                            ];
-                            break;
+                //surfaceexceptions för kids domains
+                var setTreatmentDomain = function(domain) {
+                    domain.domainValues = [
+                        {
+                            text: "Insulin",
+                            code: 3,
+                            XMLText: "Insulin",
+                            isActive: true
+                        },
+                        {
+                            text: "Tabletter",
+                            code: 2,
+                            XMLText: "Tabletter",
+                            isActive: true
+                        },
+                        {
+                            text: "Tabl. och insulin",
+                            code: 4,
+                            XMLText: "TabletterOchInsulin",
+                            isActive: true
+                        },
+                        {
+                            text: "Enbart kost",
+                            code: 1,
+                            XMLText: "EnbartKost",
+                            isActive: true
                         }
-                    };
-                    return metafields;
+                    ];
                 }
-                var setTextTypeOne = function(metafields) {
+
+                var setDomainsForKids = function(metafields) {
                     for (var i = 0; i < metafields.length; i++) {
+                        if (metafields[i].columnName == 'sex') {
+                            metafields[i].domain.domainValues[0].text = 'Pojke'
+                            metafields[i].domain.domainValues[1].text = 'Flicka'
+                        }
                         if (metafields[i].columnName == 'diabetesType') {
-                            console.log(metafields[i]);
-                            metafields[i].domain.domainValues[0].text = 'Typ 1'
+                            metafields[i].domain.domainValues[0].text = 'Typ 1';
+                        }
+                        if (metafields[i].columnName == 'treatment') {
+                            setTreatmentDomain(metafields[i].domain);
                         }
                     }
                     return metafields;
-                }
+                };
 
                 return $.ajax({
                     url: APIconfigService.constructUrl(APIconfigService.baseURL + 'MetaField'),
@@ -657,8 +681,7 @@ angular.module('ndrApp')
                     dataType: 'json',
                     success: function(data) {
                         if (unitType == 3) {
-                            data = transformTreatment(data);
-                            data = setTextTypeOne(data);
+                            data = setDomainsForKids(data);
                         }
                         cache.metafields = data;
                     }
