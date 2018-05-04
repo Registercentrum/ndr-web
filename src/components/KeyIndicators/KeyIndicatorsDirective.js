@@ -14,13 +14,21 @@ angular.module('ndrApp')
 					{ id: 2, name: 'Typ 2' }
 				],
 				sex: 0,
-				sexes: [
+				sexes: [ //default
 					{ id: 0, name: 'Kvinnor och män'},
 					{ id: 2, name: 'Kvinnor' },
 					{ id: 1, name: 'Män' }
 				],
 			}
-		
+            
+            if (scope.model.unitType == 3) {
+                localModel.sexes = [ //override
+					{ id: 0, name: 'Flickor och pojkar'},
+					{ id: 2, name: 'Flickor' },
+					{ id: 1, name: 'Pojkar' }
+				]
+            }
+
 			scope.model = jQuery.extend(scope.model, localModel);
 
             scope.data = {

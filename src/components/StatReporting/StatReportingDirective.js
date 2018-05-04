@@ -181,9 +181,9 @@ angular.module('ndrApp')
                         case 'diabeticRetinopathy':
                             denom = 'ageGT10';
                             break;
-                        case 'retinopathyDiagnosis':
-                            denom = 'ageGT10';
-                            break;
+                        //case 'retinopathyDiagnosis':
+                        //    denom = 'ageGT10';
+                        //    break;
                         case 'lipidLoweringDrugs':
                             denom = 'ageGT10';
                             break;
