@@ -119,7 +119,7 @@ angular.module('ndrApp')
                 });
             }
 
-            this.getFormFields = function(formID) {
+            this.getFormFields = function(formID, unitType) {
 
                 if (!this.data.metafields) return null;
 
@@ -127,8 +127,19 @@ angular.module('ndrApp')
                     var ret = true;
                     if (formID)
                         ret = (m.formID === formID);
+                    if (unitType) {
+                        var isAdult = (unitType === 1 || unitType === 2)
+                        if (isAdult) {
+                            ret = (ret && !m.isChildcareExclusive);
+                        } else {
+                            ret = (ret && !m.isAdultcareExclusive);
+                        }
+                    }
+
                     return ret;
                 });
+
+                console.log(ret);
                 return ret;
             }
 
@@ -658,8 +669,12 @@ angular.module('ndrApp')
                     ];
                 }
 
-                var setDomainsForKids = function(metafields) {
+                var polishDomainsForKids = function(metafields) {
                     for (var i = 0; i < metafields.length; i++) {
+                        if (metafields[i].recAgeFrom != null) {
+                            var noteToAdd = "Enligt riktlinje från " + metafields[i].recAgeFrom + " år."
+                            metafields[i].helpNote = (metafields[i].helpNote ? metafields[i].helpNote + ' ' + noteToAdd : noteToAdd)
+                        }
                         if (metafields[i].columnName == 'sex') {
                             metafields[i].domain.domainValues[0].text = 'Pojke'
                             metafields[i].domain.domainValues[1].text = 'Flicka'
@@ -667,8 +682,24 @@ angular.module('ndrApp')
                         if (metafields[i].columnName == 'diabetesType') {
                             metafields[i].domain.domainValues[0].text = 'Typ 1';
                         }
+                        if (metafields[i].columnName == 'albuminuria') {
+                            metafields[i].helpNote = ['För diagnos krävs förhöjd alb/kreatininratio i 2 av 3 prov av morgonurin inom 6 månader. '
+                            ,'-Mikroalbuminuri: flickor 3,5-25 mg/mmol, pojkar 2,5-25 mg/mmol.'
+                            ,'-Makroalbuminuri: >25 mg/mmol. - Normaliserat värde: efter farmakologisk behandling.'].join('')
+                        }
                         if (metafields[i].columnName == 'treatment') {
                             setTreatmentDomain(metafields[i].domain);
+                        }
+                    }
+                    return metafields;
+                };
+                var polishDomainsForAdults = function(metafields) {
+                    for (var i = 0; i < metafields.length; i++) {
+                        if (metafields[i].columnName == 'albuminuria') {
+                            metafields[i].helpNote = ['- Mikroalbuminuri: för diagnos krävs kvantifiering där 2 av 3 prov tagna inom 1 år skall vara positiva, dvs. alb/kreatininratio 3-30 mg/mmol (eller U-alb 20-200 µg/min eller 20-300 mg/l).'
+                            ,'-Makroalbuminuri: för diagnos krävs kvantifiering  dvs. alb/kreatininratio >30 mg/mmol (eller >200 µg/min eller >300 mg/l).'
+                            ,'-Normaliserat värde: efter farmakologisk behandling.'].join('')
+                            break;
                         }
                     }
                     return metafields;
@@ -681,7 +712,9 @@ angular.module('ndrApp')
                     dataType: 'json',
                     success: function(data) {
                         if (unitType == 3) {
-                            data = setDomainsForKids(data);
+                            data = polishDomainsForKids(data);
+                        } else {
+                            data = polishDomainsForAdults(data);
                         }
                         cache.metafields = data;
                     }
