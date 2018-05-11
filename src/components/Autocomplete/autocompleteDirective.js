@@ -14,7 +14,7 @@ angular.module('ndrApp')
                         searchField      : 'name',
                         sortField        : 'name',
                         delimiter        : '|',
-                        placeholder      : 'Landsting, sjukhus eller vårdcentral',
+                        placeholder      : 'Sök här efter landsting, sjukhus eller vårdcentral',
                         maxItems         : 1,
                         maxOptions       : 2000,
                         lockOptgroupOrder: true,
