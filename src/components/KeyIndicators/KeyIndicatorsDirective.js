@@ -155,7 +155,7 @@ angular.module('ndrApp')
                     
                 if (account) {
                     if (scope.model.unitType == 3) {
-                        toInclude = [225,201,226,221,223,211,219,227,228]
+                        toInclude = [225,201,226,221,223,211,219]
                     }
                 }
 
