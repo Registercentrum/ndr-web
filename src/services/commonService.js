@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('ndrApp')
-  .service('commonService', ['$filter',
-  function ($filter) {
+  .service('commonService', ['$filter','dataService',
+  function ($filter,dataService) {
 
 
     this.getMetaFieldByKey = function(metafields, key) {
@@ -23,10 +23,7 @@ angular.module('ndrApp')
 
       for (var i = 0; i < metafields.length; i++) {
         var contact = this.getLatestContactWithValue(subject, metafields[i]);
-        if (metafields[i].columnName == 'albuminuria') console.log(contact);
-        //console.log(metafields[i].columnName, contact[metafields[i].columnName]);
         if (!contact) {
-          console.log(metafields[i].columnName);
           ret[metafields[i].columnName] = {value: null, date: null, label: ' - '}
         } else {
           var model =  this.getValueModel(contact, metafields[i]);
@@ -172,6 +169,17 @@ angular.module('ndrApp')
     };
     this.currentAge = function(subject) {
       return moment().diff(subject.dateOfBirth, 'years');
+    }
+
+    this.getPersonInfoLocal = function(subject) {
+      return dataService.getSubjectInfo(subject.snr);
+    }
+    this.setPersonName = function(subject, personInfo) {
+      if (!personInfo.firstName || !personInfo.lastName) {
+          alert('Ingen information kunde hittas för personnummer ' + snr + ' i folkbokföringen');
+      } else {
+          subject.name = personInfo.firstName + ' ' + personInfo.lastName;
+      }
     }
 
 

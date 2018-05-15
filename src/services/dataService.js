@@ -623,11 +623,10 @@ angular.module('ndrApp')
                     type: 'POST',
                     dataType: 'json',
                     success: function(data) {
-                        console.log(cache);
                         cache.subjectInfo[snr] = data;
                     },
                     error: function(data) {
-                        alert('Ingen information om personen kunde hittas in folkbokföringen');
+                        alert('Ingen information kunde hittas för personnummer ' + snr + ' i folkbokföringen');
                     }
                 });
 
