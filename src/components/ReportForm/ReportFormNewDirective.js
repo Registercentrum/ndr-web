@@ -481,11 +481,11 @@ angular.module('ndrApp')
             if (scope.accountModel.activeAccount.unit.typeID == 3) {
                if (scope.model.contactModel.hypoglycemiaKids == null) {
                  var hi= confirm("Du har glömt att spara in uppgift om Hypoglykemi? Vill du spara ändå?");
-                 if (hi== false) return
+                 if (hi == false) return;
                }
                if (scope.model.contactModel.ketoKids == null) {
                  var hi= confirm("Du har glömt att spara in uppgift om Ketoacidos? Vill du spara ändå?");
-                 if (hi== false) return
+                 if (hi == false) return;
                }
             }
 
