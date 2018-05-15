@@ -75,6 +75,15 @@ angular.module('ndrApp')
                     dateFrom: new Date(new Date() - dateOffset),
                     dateTo: new Date()
                 };
+
+                //exception, set retinpathy to "Yes" if foolow question
+                if (f.columnName == 'retinopathyDiagnosis') {
+                    valueFilter.diabeticRetinopathy = {
+                        value: '1'
+                    }
+                }
+
+
                 valueFilter[f.columnName] = {
                     min: f.min,
                     max: f.max,
@@ -120,6 +129,8 @@ angular.module('ndrApp')
                         return !(f.columnName === 'cgm' || f.columnName === 'pumpOngoing')
                     });
                 }
+
+                console.log(d);
 
                 var list = d.fields.map(function(f) {
 
