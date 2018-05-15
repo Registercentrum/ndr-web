@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('ndrApp')
-    .directive('patientProfilePrintKids', ['$q', '$timeout', 'commonService',
-        function($q, $timeout, commonService) {
+    .directive('patientProfilePrintKids', ['$q', '$timeout', 'commonService', 'dataService',
+        function($q, $timeout, commonService, dataService) {
 
             function link(scope, element, attrs) {
 
@@ -25,6 +25,26 @@ angular.module('ndrApp')
 
                 scope.init = function() {
                   scope.setTrendData();
+                  scope.setName(scope.subject);
+                }
+
+                scope.setName = function(subject) {
+
+                    var personInfo = commonService.getPersonInfoLocal(subject);
+                    
+                    if (personInfo != null) {
+                        commonService.setPersonName(subject, personInfo);
+                        scope.$digest();
+                    } else {
+                        console.log(scope);
+                        var accountID = scope.activeAccount.accountID;
+                        dataService.fetchSubjectInfo(accountID,subject.socialNumber)
+                        .then(function(data) {
+                            commonService.setPersonName(subject, data);
+                            scope.$digest();
+                        });
+                    }
+    
                 }
 
                 scope.setTrendData = function() {
@@ -46,7 +66,8 @@ angular.module('ndrApp')
                 scope: {
                     subject: '=',
                     latest: '=',
-                    contactAttributes: "="
+                    contactAttributes: "=",
+                    activeAccount 	: '='
                 }
             };
         }

@@ -31,6 +31,7 @@ angular.module('ndrApp')
             populateSeriesData();
             setTablePaging();
             populateTableData();
+            scope.setName(scope.subject);
 
             $timeout(function () {
               Highcharts.charts.map(function (c) {
@@ -39,6 +40,24 @@ angular.module('ndrApp')
                 }
               })
             }, 500);
+
+          }
+
+          scope.setName = function(subject) {
+            console.log(subject);
+            var personInfo = commonService.getPersonInfoLocal(subject);
+            
+            if (personInfo != null) {
+                commonService.setPersonName(subject, personInfo);
+                scope.$digest();
+            } else {
+                var accountID = scope.activeAccount.accountID;
+                dataService.fetchSubjectInfo(accountID,subject.socialNumber)
+                .then(function(data) {
+                    commonService.setPersonName(subject, data);
+                    scope.$digest();
+                });
+            }
 
           }
 

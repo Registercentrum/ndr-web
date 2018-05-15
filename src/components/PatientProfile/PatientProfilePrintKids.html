@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <h4 style="margin-top: 0px">
-                <i class="fa fa-user"></i>  {{ subject.socialNumber }}
+                <i class="fa fa-user"></i>  {{ subject.socialNumber }}<span ng-show="subject.name">, {{ subject.name }}</span>
             </h4>
         </div>
     </div>
@@ -114,6 +114,10 @@
                             <tr>
                                 <td width="80">Senaste ögonbotten-<br />undersökning</td>
                                 <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                            </tr>
+                            <tr>
+                                <td width="80">Behandlad för ögonkomplikation</td>
+                                <td width="20">{{  latest.eyeTreated.label }}</td>
                             </tr>
                         </table>
 
