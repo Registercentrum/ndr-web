@@ -10,6 +10,7 @@ angular.module('ndrApp')
                 units: [],
                 counties: [],
                 indicators: [],
+                indicators2017: [],
                 preparedGeoList: [],
                 subjectInfo:{},
                 promFormMeta: null,
@@ -41,6 +42,7 @@ angular.module('ndrApp')
             /* RESTANGULAR OBJECTS */
             var endpoints = {
                 indicator: Restangular.one('indicator'),
+                indicator2017: Restangular.one('indicator2017'),
                 indicatorresult: Restangular.one('indicatorresult'),
                 contactAttributes: Restangular.one('ContactAttribute'),
                 units: Restangular.all('unit'),
@@ -139,7 +141,6 @@ angular.module('ndrApp')
                     return ret;
                 });
 
-                console.log(ret);
                 return ret;
             }
 
@@ -13764,13 +13765,15 @@ angular.module('ndrApp')
                             useCache: true
                         }),
                         endpoints.counties.getList(),
-                        endpoints.indicator.get()
+                        endpoints.indicator.get(),
+                        endpoints.indicator2017.get()
                     ]).then(function(data) {
                         //console.log("data2", data[0].plain());
 
                         self.data.units = data[0].plain();
                         self.data.counties = data[1].plain();
                         self.data.indicators = data[2].plain();
+                        self.data.indicators2017 = data[3].plain();
 
                         self.prepareGeoList();
                     });
@@ -13781,6 +13784,7 @@ angular.module('ndrApp')
                         self.data.units = units;
                         self.data.counties = counties;
                         self.data.indicators = indicators;
+                        self.data.indicators2017 = indicators2017;
 
                         self.prepareGeoList();
                     });
