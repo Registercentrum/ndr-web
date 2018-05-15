@@ -2,8 +2,8 @@
 
 angular.module('ndrApp')
     .controller('PatientsController', [
-        '$scope', '$state', '$stateParams', '$log', '$filter', 'dataService', '$timeout', '$window', '$http',
-        function($scope, $state, $stateParams, $log, $filter, dataService, $timeout, $window, $http) {
+        '$scope', '$state', '$stateParams', '$log', '$filter', 'dataService', '$timeout', '$window', '$http','commonService',
+        function($scope, $state, $stateParams, $log, $filter, dataService, $timeout, $window, $http, commonService) {
 
             /*
             This whole file needs to be rubuilt!!!
@@ -71,11 +71,11 @@ angular.module('ndrApp')
 
             $scope.init = function() {
 
-                var unitTypeID = $scope.accountModel.activeAccount.unit.typeID;
-                var fields = dataService.getFormFields(1, unitTypeID);
+                $scope.unitTypeID = $scope.accountModel.activeAccount.unit.typeID;
+                var fields = dataService.getFormFields(1, $scope.unitTypeID);
                 //not loaded?
                 if (!fields) {
-                    $scope.loadFilters(unitTypeID);
+                    $scope.loadFilters($scope.unitTypeID);
                     return;
                 }
 
@@ -115,9 +115,41 @@ angular.module('ndrApp')
                 });
 
             };
-            $scope.showName = function(subject) {
+            $scope.showCurrentNames = function(){
+
+                for (var i = 0; i < $scope.ItemsByPage[$scope.currentPage].length; i++) { 
+                    var subject = $scope.ItemsByPage[$scope.currentPage][i];
+                    //$scope.showName(subject);
+                    setTimeout(function(subject){ 
+                        $scope.setName(subject);
+                    }, 100, subject);
+                }
+            },
+            $scope.setName = function(subject) {
+                
+                var personInfo = commonService.getPersonInfoLocal(subject);
+                
+                if (personInfo != null) {
+                    commonService.setPersonName(subject, personInfo);
+                    $scope.$digest();
+                } else {
+                    var accountID = $scope.accountModel.activeAccount.accountID
+                    dataService.fetchSubjectInfo(accountID,subject.snr)
+                    .then(function(data) {
+                        commonService.setPersonName(subject, data);
+                        $scope.$digest();
+                    });
+                }
+
+            }
+            /*$scope.showName = function(subject) {
                 
                 var subjectInfo;
+
+                //already fetched
+                if (subject.firstName) {
+                    return;
+                }
 
                 var getSubjectInfo = function(snr) {
                     subjectInfo = dataService.getSubjectInfo(subject.snr);
@@ -125,7 +157,12 @@ angular.module('ndrApp')
                 }
 
                 var setSubjectInfo = function(subjectInfo) {
-                    subject.name = subjectInfo.firstName + ' ' + subjectInfo.lastName;
+                    console.log(subjectInfo);
+                    if (!subjectInfo.firstName || !subjectInfo.lastName) {
+                        alert('Ingen information kunde hittas för personnummer ' + snr + ' i folkbokföringen');
+                    } else {
+                        subject.name = subjectInfo.firstName + ' ' + subjectInfo.lastName;
+                    }
                 }
 
                 subjectInfo = getSubjectInfo(subject.snr);
@@ -142,7 +179,7 @@ angular.module('ndrApp')
                     });
                 }
                 
-            }
+            }*/
             $scope.today = function() {
                 $scope.dt = new Date();
             };
@@ -792,14 +829,16 @@ angular.module('ndrApp')
                     }
                 });
 
-                attributes.push({
-                    columnName: 'name',
-                    question: 'Namn',
-                    domain: {
-                        isEnumerated: false,
-                        domainID: 106
-                    }
-                });
+                if ($scope.unitTypeID == 3) {
+                    attributes.push({
+                        columnName: 'name',
+                        question: 'Namn',
+                        domain: {
+                            isEnumerated: false,
+                            domainID: 106
+                        }
+                    });
+                }
 
                 attributes.push({
                     columnName: 'contactDate',
