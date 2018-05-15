@@ -114,6 +114,15 @@ angular.module('ndrApp')
                 if (scope.questions[i].isIterated && scope.iterateEntity)
                 {
                     ret[scope.questions[i].columnName] = (scope.iterateEntity[scope.questions[i].columnName] || scope.subject[scope.questions[i].columnName]);
+                    
+                    //Exception iterate from incidence
+                    if (scope.questions[i].columnName == 'yearOfOnset') {
+                      if (scope.subject.incidence != null) {
+                        if (scope.subject.incidence.incDate != null) {
+                          ret[scope.questions[i].columnName] = parseInt(scope.subject.incidence.incDate.substring(0, 4));
+                        }
+                      }
+                    }
                 }
               } else { //update!
                 ret.id = scope.updateEntity.contactID;
