@@ -289,6 +289,19 @@ angular.module('ndrApp')
                 scope.model.incDate = scope.getStringDate(scope.model.incDate);
             };
 
+            scope.tryDone = function() {
+                
+                console.log('clicked',scope.model.incDone);
+
+                if (!scope.model.incDone) {
+                    if (!scope.model.incDate) {
+                        alert('Du kan inte klarmarkera en incidens utan att ha fyllt i ett diagnosdatum')
+                        scope.model.incDone = !scope.model.incDone;
+                    }
+                }
+
+            }
+
             scope.saveForm = function() {
 
                 scope.serverSaveErrors = [];
