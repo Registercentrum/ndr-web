@@ -10332,6 +10332,16 @@ button[disabled=disabled] {
     min-width: 200px;
   }
 }
+.clickable .snr:hover {
+  text-decoration: underline;
+}
+.clickable:hover {
+  cursor: pointer;
+}
+.clickable .name {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
 .PatientSearch-input:focus {
   color: #000;
 }
