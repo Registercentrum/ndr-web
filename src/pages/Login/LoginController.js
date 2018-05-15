@@ -37,8 +37,26 @@ angular.module('ndrApp').controller('LoginController',
           waitForLogin(type);
         })
         ['catch'](function (response) {
-          $scope.model.loginStarted = false;
+
+          try { //personnummer kan ej valideras
+            if (response.data.ModelState.socialNumber) {
+              $scope.model.message = response.data.ModelState.socialNumber[0];
+            } 
+          }
+          catch(err) {}
+
+          try { //personen är ej 18 år
+            if (response.statusText) {
+              $scope.model.message = response.statusText;
+            } 
+          }
+          catch(err) {}
+
+          console.log(response);
+
           $scope.model.loginFailed = true;
+
+          $scope.model.loginStarted = false;
         });
     };
 
