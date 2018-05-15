@@ -82,6 +82,11 @@ angular.module('ndrApp')
                         value: '1'
                     }
                 }
+                if (f.columnName == 'pumpOngoing') {
+                    valueFilter.insulinMethod = {
+                        value: '2'
+                    }
+                }
 
 
                 valueFilter[f.columnName] = {
@@ -118,19 +123,19 @@ angular.module('ndrApp')
 
             dataService.getReportingStatistics(scope.model.activeAccount.accountID, function(d) {
 
-                d.fields = d.fields.filter(function(f) {
-                    return !f.isIndicatorExclusive;
-                });
 
                 d.fields = commonService.excludeMetafields(d.fields, scope.model.excludes);
+
+                d.fields = d.fields.filter(function(f) {
+                    return (!f.isIndicatorExclusive && !f.isCalculated);
+                });
+
 
                 if (scope.model.unitType == 1) {
                     d.fields = d.fields.filter(function(f) {
                         return !(f.columnName === 'cgm' || f.columnName === 'pumpOngoing')
                     });
                 }
-
-                console.log(d);
 
                 var list = d.fields.map(function(f) {
 
@@ -144,6 +149,15 @@ angular.module('ndrApp')
 
                     if (f.id == 141)
                         f.question = 'Hypoglykemiförekomst svåra';
+
+                    if (f.id == 179)
+                        f.question = 'Medelglukos i CGM/FGM';
+
+                    if (f.id == 180)
+                        f.question = 'SD medelglukos i CGM/FGM';
+
+                    if (f.id == 181)
+                        f.question = 'Andel (%) glukosvärden under 4 mmol/L i CGM/FGM';
 
                     //Fields with different denominator
                     switch (f.columnName) {
