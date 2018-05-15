@@ -40,7 +40,8 @@
                             </div>
                           </div>
 
-                          <div class="col-md-4 profilebg" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 18px; font-size: 14px;font-weight: 300;height: 280px;">
+                          <div class="col-md-4 profilebg" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 16px; font-size: 14px;font-weight: 300;height: 280px;">
+                              <h5 ng-show="subject.name"><strong>{{ subject.name }}</strong></h5>
                               <h5>{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}</h5>
                               <p><span class="strong">{{ diabetesTypeText() }}</span></p>
                               <hr />
@@ -68,7 +69,7 @@
                                   <p ng-show="latest.cgm.value == 1"> CGM/FGM modell: {{ latest.cgmType.label }}</p>
                                   <hr />
                                   <p>Medelglukos i CGM/FGM*: {{ latest.sdCGMLast2W.label }}</p>
-                                  <p>Medelglukos SD*: {{ latest.meanGlukosesLast2W.label }}</p>
+                                  <p>Medelglukos SDS*: {{ latest.meanGlukosesLast2W.label }}</p>
                                   <p>Andel glukosvärden under 4 mmol/L*: {{ latest.shareGlucoseLast2W.label }}</p>
                                   <p>Andel glukosvärden inom målområdet*: {{ latest.shareGlucoseTarget.label }}</p>
                                 </div>
@@ -227,6 +228,10 @@
                                   <tr>
                                       <td width="80">Senaste ögonbotten-<br />undersökning</td>
                                       <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                                  </tr>
+                                  <tr>
+                                      <td width="80">Behandlad för ögonkomplikation</td>
+                                      <td width="20">{{  latest.eyeTreated.label }}</td>
                                   </tr>
                               </table>
 

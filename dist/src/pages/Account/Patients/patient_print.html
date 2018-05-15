@@ -21,7 +21,7 @@
     <div class="" style="width:900px" ng-show="model.mode == 'visual'">
         <div ng-if="subject">
             <div ng-if="unitTypeID != 3" patient-profile-print-grownup subject="subject" latest="model.latest" contact-attributes="contactAttributes" />
-            <div ng-if="unitTypeID == 3" patient-profile-print-kids subject="subject" latest="model.latest" contact-attributes="contactAttributes"/>
+            <div ng-if="unitTypeID == 3" patient-profile-print-kids subject="subject" active-account="accountModel.activeAccount" latest="model.latest" contact-attributes="contactAttributes"/>
         </div>
         <div class="row new-page">
 
