@@ -222,8 +222,8 @@ angular.module('ndrApp', [
 
                 .state('main.statisticsAbout', {
                     url: '/om-statistiken',
-                    templateUrl: 'src/pages/Statistics/statisticsAbout.html?v=3'
-                    //controller: 'StatisticsController'
+                    templateUrl: 'src/pages/Statistics/statisticsAbout.html?v=3',
+                    controller: 'StatisticsAboutController'
                 })
 
                 .state('main.annualReport', {
