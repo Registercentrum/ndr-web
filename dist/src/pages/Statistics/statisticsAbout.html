@@ -25,93 +25,27 @@
                             <div class="col-md-4">
                                 <h5>Måluppfyllelse (andel %)</h5>
                                 <ul class="no-bullet">
-									<li>HbA1c &lt;52</li>
-									<li>HbA1c &lt;52, kostbehandlade</li>
-									<li>HbA1c &lt;52, tablettbehandlade</li>
-									<li>HbA1c &lt;52, insulinbehandlade</li>
-									<li>HbA1c &lt;52, tablett- och insulinbehandlade</li>
-									<li>HbA1c &lt;60</li>
-									<li>HbA1c &lt;60, kostbehandlade</li>
-									<li>HbA1c &lt;60, tablettbehandlade</li>
-									<li>HbA1c &lt;60, insulinbehandlade</li>
-									<li>HbA1c &lt;60, tablett- och insulinbehandlade</li>
-									<li>HbA1c &lt;50</li>
-									<li>HbA1c &lt;50, kostbehandlade</li>
-									<li>HbA1c &lt;50, tablettbehandlade</li>
-									<li>HbA1c &lt;50, insulinbehandlade</li>
-									<li>HbA1c &lt;50, tablett- och insulinbehandlade</li>
-									<li>HbA1c &gt70</li>
-									<li>HbA1c &gt70, kostbehandlade</li>
-									<li>HbA1c &gt70, tablettbehandlade</li>
-									<li>HbA1c &gt70, insulinbehandlade</li>
-									<li>HbA1c &gt70, tablett- och insulinbehandlade</li>
-									<li>Blodtryck &lt;130/80</li>
-									<li>Blodtryck ≤130/80</li>
-									<li>Blodtryck &lt;140/80</li>
-									<li>Blodtryck ≤140/80</li>
-									<li>Blodtryck &lt;140/85</li>
-									<li>Blodtryck &lt;130/80, blodtryckssänkande läkemedel</li>
-									<li>Blodtryck ≤130/80, blodtryckssänkande läkemedel</li>
-									<li>Blodtryck &lt;140/80, blodtryckssänkande läkemedel</li>
-									<li>Blodtryck ≤140/80, blodtryckssänkande läkemedel</li>
-									<li>Blodtryck &lt;140/85, blodtryckssänkande läkemedel</li>
-									<li>BMI - Undervikt (enligt WHO = BMI &lt;18,5)</li>
-									<li>BMI - Normalvikt (enligt WHO = BMI 18,5 - 24,9)</li>
-									<li>BMI - Övervikt (enligt WHO = BMI 25,0 - 29,9)</li>
-									<li>BMI - Fetma grad 1 (enligt WHO = BMI 30,0 - 34,9)</li>
-									<li>BMI - Fetma grad 2-3 (enligt WHO = BMI 35,0 -)</li>
-									<li>BMI - Övervikt/fetma grad 1-3 (enligt WHO = BMI 25,0 -)</li>
-									<li>Insulinbehandlade med pump</li>
-									<li>Insulinbehandlade med CGM</li>
-									<li>Fotundersökning senaste året</li>
-									<li>Fysiskt inaktiva</li>
-									<li>Förekomst av albuminuri</li>
-									<li>Förekomst av diabetesretinopati</li>
-									<li>Insulinbehandlade med insulinpump</li>
-									<li>Kolesterol &lt;4,5</li>
-									<li>Kolesterol &lt;4,5, lipidsänkande läkemedel</li>
-									<li>LDL &lt;2,5</li>
-									<li>LDL &lt;2,5, lipidsänkande läkemedel</li>
-									<li>Med blodtryckssänkande läkemedel</li>
-									<li>Med lipidsänkande läkemedel</li>
-									<li>Rökare</li>
-									<li>Ögonbottenundersökning inom 2 år</li>
-									<li>Ögonbottenundersökning inom 3 år</li>
+
+                                    <li ng-repeat="i in model.indicators | filter : {resultTypeID: 1}">
+                                        {{ i.name }}
+                                    </li>
+
                                 </ul>
                             </div>
                             <div class="col-md-4">
                                 <h5>Medelvärden </h5>
                                 <ul class="no-bullet">
-                                    <li>HbA1c</li>
-                                    <li>HbA1c, kostbehandlade</li>
-                                    <li>HbA1c, tablettbehandlade</li>
-                                    <li>HbA1c, insulinbehandlade</li>
-                                    <li>HbA1c, tablett- och insulinbehandlade</li>
-                                    <li>Blodtryck, systoliskt</li>
-                                    <li>Blodtryck, diastoliskt</li>
-                                    <li>BMI</li>
-                                    <li>Kolesterol</li>
-                                    <li>LDL</li>
+                                    <li ng-repeat="i in model.indicators | filter : {resultTypeID: 2}">
+                                        {{ i.name }}
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-md-4">
                                 <h5>Rapportering (andel %)</h5>
                                 <ul class="no-bullet">
-									<li>HbA1c</li>
-									<li>Blodtryck</li>
-									<li>Albuminuri</li>
-									<li>Blodtryckssänkande behandling</li>
-									<li>BMI</li>
-									<li>Datum för ögonbottenundersökning</li>
-									<li>Diabetesbehandling</li>
-									<li>Diabetesretinopati</li>
-									<li>Fotundersökning senaste året</li>
-									<li>Fysisk aktivitet</li>
-									<li>Kolesterol</li>
-									<li>LDL</li>
-									<li>Lipidsänkande läkemedel</li>
-									<li>Pumpindikation för pumpanvändare</li>
-									<li>Rökare</li>
+                                    <li ng-repeat="i in model.indicators | filter : {resultTypeID: 3}">
+                                        {{ i.name }}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -121,17 +55,17 @@
                     <h3 id="tolka">Tolka resultat</h3>
 
 
-                        <p>I Knappen redovisas resultat för ett antal viktiga indikatorer, både för diabetesvård i primärvården och vid medicinkliniker.</p>
-                        <p>Innehållet är egentligen inte nytt, utan dessa eller snarlika data har brukat visas i årsrapporten. Den viktigaste ”nyheten” är istället att redovisningen byggs upp kring ett antal indikatorer, som formulerats med syfte att sätta fokus på viktiga kvalitetsaspekter för diabetesvården. Vi tror att detta kommer att vara en hjälp för både vårdgivare och landsting, och för andra som vill kunna följa och förbättra diabetesvårdens kvalitet. Detta betyder inte att just dessa indikatorer är de enda måtten som är intressanta och värda att följa.</p>
+                        <p>I Knappen redovisas resultat för ett antal viktiga indikatorer för diabetesvården i primärvård, vid medicinkliniker och vid landets barn- och ungdomsdiabetesmottagningar.</p>
+                        <p>Redovisningen byggs upp kring ett antal indikatorer, som formulerats med syfte att sätta fokus på viktiga kvalitetsaspekter för diabetesvården. Vi tror att detta kommer att vara en hjälp för både vårdgivare och landsting, och för andra som vill kunna följa och förbättra diabetesvårdens kvalitet. Detta betyder inte att just dessa indikatorer är de enda måtten som är intressanta och värda att följa.</p>
                         <p>Utöver själva indikatorredovisningen visas även annan, relevant information, som till exempel uppgift om bortfall/avsaknad av värde, då detta är särskilt viktigt att uppmärksamma.</p>
 
                         <h4>Att tolka indikatorbaserade jämförelser</h4>
                         <p>Resultaten kan vara en viktig grund för det egna förbättringsarbetet men all tolkning av data kräver en kunskap om lokala förutsättningar, täckningsgrad och registreringskvalitet och även om patientgruppernas sammansättning på de olika vårdcentralerna och klinikerna.</p>
                         <p>Huvudsyftet med att visa data om diabetesvård som jämförelser mellan landsting, kliniker och vårdcentraler är att jämförelser kan väcka intressanta frågor om variation och hur olika resultat uppkommer och därmed leda till en förbättring.</p>
                         <p>Syftet med att formulera indikatorer och visa jämförelser är inte att utse det landsting eller den enhet som är ”bästa landsting/klinik/vårdcentral” eller att ge patienterna korrekt och säkerställd konsumentinformation om vårdcentralens kvalitet. Rankinglistor är tyvärr ofta ett säkert sätt att nå uppmärksamhet i medierna, men är sällan tillräckligt väl underbyggda.</p>
-                        <p>Det kan finnas skäl att i fördjupande analyser göra kvalitetsjämförelser, med höga krav på att de är rättvisande, i meningen att man fångar egenskaper hos och kvaliteten i enhetens vårdprocesser, och inte andra faktorer. Men detta är resurskrävande och därmed bortom den löpande redovisningen av resultat från NDR.</p>
-                        <p>När resultaten av indikatorbaserade jämförelser skall analyseras mera djupgående och i ett utvärderingssyfte, bör bland annat följande faktorer beaktas:
-                        </p><ul>
+                        <p>Det kan finnas skäl att i fördjupande analyser göra kvalitetsjämförelser, med höga krav på att de är rättvisande, i meningen att man fångar egenskaper hos och kvaliteten i enhetens vårdprocesser, och inte andra faktorer. Men detta är resurskrävande och därmed bortom den löpande redovisningen av resultat från NDR och Swediabkids.</p>
+                        <p>När resultaten av indikatorbaserade jämförelser skall analyseras mera djupgående och i ett utvärderingssyfte, bör bland annat följande faktorer beaktas:</p>
+                        <ul>
                             <li>Hur bra är indikatorn – fångas den avsedda kvalitetsaspekten?</li>
                             <li>Hur komplett är rapporteringen av data?</li>
                             <li>Är registreringen av indikatorerna likformig eller kan de påverkas av lokala traditioner hos de som rapporterar?</li>
@@ -141,10 +75,6 @@
                         <p></p>
 
                         <p>Med detta sagt – om resultaten som här skall användas för att ge stöd för förbättring av diabetesvård behöver man inte ha svar på alla dessa komplexa frågor. De som arbetar på en klinik eller vårdcentral har goda möjligheter att förstå sina resultat och identifiera möjliga förbättringar med hjälp av de egna resultaten och kunskapen om den egna verksamheten.</p>
-
-
-
-
 
                         <h4>Konfidensintervall</h4>
                         <p>Ett konfidensintervall är ett intervall som med en förutbestämd säkerhet innefattar det sanna värdet av till exempel en andel, ett medeltal eller en oddskvot. Det används ofta för att uppskatta osäkerheten i ett skattat värde vid slumpmässiga urval. Vanligen anges den övre och nedre gränsen för det intervall inom vilket det ”sanna” värdet med 95 procents säkerhet befinner sig.</p>
@@ -168,6 +98,15 @@
                 </p>
 
             </div>
+            <div class="Panel Panel--blue">
+			
+                    <h4 class="Panel-title">Indikatorbeskrivningar Knappen</h4>
+    
+                    <ul class="documents" >
+                        <li><a download target="_blank" href="pdfs/KnappenIndikatorbeskrivningar.pdf"><img src="images/icon_pdf.png" alt=""/>Ladda ner</a></li>
+                    </ul>
+                
+                </div>
 
         </div>
 
