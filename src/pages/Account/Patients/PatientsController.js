@@ -119,14 +119,13 @@ angular.module('ndrApp')
 
                 for (var i = 0; i < $scope.ItemsByPage[$scope.currentPage].length; i++) { 
                     var subject = $scope.ItemsByPage[$scope.currentPage][i];
-                    //$scope.showName(subject);
-                    setTimeout(function(subject){ 
-                        $scope.setName(subject);
-                    }, 100, subject);
+                    $scope.setName(subject);
                 }
             },
             $scope.setName = function(subject) {
                 
+                if ($scope.unitTypeID != 3) return;
+
                 var personInfo = commonService.getPersonInfoLocal(subject);
                 
                 if (personInfo != null) {
