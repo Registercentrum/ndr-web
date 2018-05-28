@@ -39,7 +39,7 @@ angular.module('ndrApp')
             scope.$watch('model', function (newValue, oldValue){
                 getSelectedKeyIndicator();
                 scope.model.selectedKeyIndicatorName = _.find(dataService.data.indicators.byType.target, {id: scope.model.selectedKeyIndicator}).name;
-                if(newValue.sex === oldValue.sex || newValue.diabetesType === oldValue.diabetesType) getKeyIndicators();
+                if(newValue.sex === oldValue.sex || newValue.diabetesType === oldValue.diabetesType || newValue.unitType === oldValue.unitType) getKeyIndicators();
             }, true);
 
             function getSelectedKeyIndicator () {
