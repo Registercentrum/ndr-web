@@ -19,6 +19,10 @@ angular.module("ndrApp")
 				{
 					id: 2,
 					name: 'Medicinklinik'
+                },
+				{
+					id: 3,
+					name: 'Barnklinik'
 				}
 			],
             autocompleteModel: {
