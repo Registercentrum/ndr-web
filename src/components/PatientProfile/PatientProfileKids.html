@@ -52,7 +52,8 @@
                               <p>BMI-SDS: <span class="strong">{{  latest.bmiSDS.label }}</span></p>
                               <hr />
                               <p>Senaste besök: <span class="strong">{{ latest.contactDate.label }}</span></p>
-                              <p>Egenvårdsplan: <span class="strong">{{ latest.selfcarePlanDate.label }}</span></p>
+                              <p ng-show="!model.warnings.selfcarePlanDate">Egenvårdsplan: <span class="strong">{{ latest.selfcarePlanDate.label }}</span></p>
+                              <p ng-show="model.warnings.selfcarePlanDate">Egenvårdsplan: <span class="strong tag-warning" tooltip="Längre än 11 månader sedan">{{ latest.selfcarePlanDate.label }}</span></p>
                           </div>
 
                           <div class="Panel Panel--blue col-md-4">
@@ -68,8 +69,8 @@
                                   <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
                                   <p ng-show="latest.cgm.value == 1"> CGM/FGM modell: {{ latest.cgmType.label }}</p>
                                   <hr />
-                                  <p>Medelglukos i CGM/FGM*: {{ latest.sdCGMLast2W.label }}</p>
-                                  <p>Medelglukos SDS*: {{ latest.meanGlukosesLast2W.label }}</p>
+                                  <p>Medelglukos i CGM/FGM*: {{ latest.meanGlukosesLast2W.label }}</p>
+                                  <p>Medelglukos SDS*: {{ latest.sdCGMLast2W.label }}</p>
                                   <p>Andel glukosvärden under 4 mmol/L*: {{ latest.shareGlucoseLast2W.label }}</p>
                                   <p>Andel glukosvärden inom målområdet*: {{ latest.shareGlucoseTarget.label }}</p>
                                 </div>
@@ -187,6 +188,11 @@
                                       <td>Senaste blodtryck</td>
                                       <td>{{ latest.bpSystolic.value }} / {{ latest.bpDiastolic.value }} mmHg</td>
                                   </tr>
+                                  <tr ng-if="latest.bpSystolic.value && latest.bpDiastolic.value">
+                                    <td width="20">Senaste blodtryck datum</td>
+                                    <td width="80" ng-show="!model.warnings.bpSystolic">{{ latest.bpSystolic.date }}</td>
+                                    <td width="80" ng-show="model.warnings.bpSystolic"><span tooltip="Längre än 11 månader sedan" class="tag-warning">{{ latest.bpSystolic.date }}</span></td> <!-- <i class="fa-exclamation"></i> ng-show="model.warnings.bpSystolic" -->
+                                  </tr>
                                   <tr>
                                       <td>Hypertoni</td>
                                       <td>{{ latest.hypertension.label }}</td>
@@ -227,7 +233,8 @@
                                   </tr>
                                   <tr>
                                       <td width="80">Senaste ögonbotten-<br />undersökning</td>
-                                      <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                                      <td width="20" ng-show="!model.warnings.fundusExaminationDate">{{  latest.fundusExaminationDate.label }}</td>
+                                      <td width="20" ng-show="model.warnings.fundusExaminationDate"><span tooltip="Längre än 11 månader sedan" class="tag-warning">{{ latest.fundusExaminationDate.label }}</span></td>
                                   </tr>
                                   <tr>
                                       <td width="80">Behandlad för ögonkomplikation</td>
@@ -265,7 +272,8 @@
                                   </tr>
                                   <tr>
                                       <td>Datum U-Albumin/Kreatinin</td>
-                                      <td>{{ latest.uAlbCreatinine.date }}</td>
+                                      <td ng-show="!model.warnings.uAlbCreatinine">{{ latest.uAlbCreatinine.date }}</td>
+                                      <td ng-show="model.warnings.uAlbCreatinine"><span tooltip="Längre än 11 månader sedan" class="tag-warning">{{ latest.uAlbCreatinine.date }}</span></td>
                                   </tr>
                                   <tr>
                                       <td>Albuminuri</td>

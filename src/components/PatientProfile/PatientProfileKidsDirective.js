@@ -10,6 +10,7 @@ angular.module('ndrApp')
             tableIndex: null,
             tableCount: null,
             excluded: [],
+            warnings: null,
             data: {
               trend: {
 
@@ -28,9 +29,12 @@ angular.module('ndrApp')
 
             scope.model.domainPhysical = commonService.getMetafieldByQuestionText(scope.contactAttributes, 'fysisk').domain;
 
+            console.log(scope.latest);
+
             populateSeriesData();
             setTablePaging();
             populateTableData();
+            setWarnings();
             scope.setName(scope.subject);
 
             $timeout(function () {
@@ -44,7 +48,6 @@ angular.module('ndrApp')
           }
 
           scope.setName = function(subject) {
-            console.log(subject);
             var personInfo = commonService.getPersonInfoLocal(subject);
             
             if (personInfo != null) {
@@ -64,6 +67,19 @@ angular.module('ndrApp')
           scope.$watch('subject', function(newValue) {
             scope.init();
           });
+          
+          function setWarnings() {
+
+            console.log(scope.latest);
+            
+            scope.model.warnings = {
+              selfCarePlanDate: (scope.latest.selfcarePlanDate.value ? commonService.dateWithinMonths(scope.latest.selfcarePlanDate.value,11) : false),
+              bpSystolic: (scope.latest.bpSystolic.value ? commonService.dateWithinMonths(scope.latest.bpSystolic.date,11) : false),
+              fundusExaminationDate: (scope.latest.fundusExaminationDate.value ? commonService.dateWithinMonths(scope.latest.fundusExaminationDate.value,11) : false),
+              uAlbCreatinine: (scope.latest.uAlbCreatinine.value ? commonService.dateWithinMonths(scope.latest.uAlbCreatinine.date,11) : false)
+            }
+            console.log(scope.model.warnings);
+          };
 
           scope.tableForward = function () {
             scope.model.tableIndex--;
@@ -82,11 +98,11 @@ angular.module('ndrApp')
 
           function setTablePaging() {
             if (scope.subject !== undefined) {
-              scope.tableCount = Math.ceil(scope.subject.contacts.length / 5);
-              scope.tableIndex = 1;
+              scope.model.tableCount = Math.ceil(scope.subject.contacts.length / 5);
+              scope.model.tableIndex = 1;
             } else {
-              scope.tableCount = 0;
-              scope.tableIndex = 0;
+              scope.model.tableCount = 0;
+              scope.model.tableIndex = 0;
             }
           };
 
