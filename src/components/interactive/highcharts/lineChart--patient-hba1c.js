@@ -84,7 +84,7 @@ angular.module('ndrApp')
                         },
                          tooltip: {
                             formatter: function() {
-                                var time = Highcharts.dateFormat('%Y', new Date(this.x))
+                                var time = moment(this.x).format("YYYY-MM-DD"); //Highcharts.dateFormat('%YMD', new Date(this.x))
                                 return time + ': <b>' +  this.y + '</b>';
                             }
                         },
