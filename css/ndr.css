@@ -10342,6 +10342,15 @@ button[disabled=disabled] {
   font-size: 1.4rem;
   font-weight: 600;
 }
+.tag-warning {
+  padding: 3px 4px;
+  background-color: #756f6f;
+  border: 2px solid #823131;
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  /* min-width: 90px; */
+}
 .PatientSearch-input:focus {
   color: #000;
 }
@@ -11013,6 +11022,9 @@ p.lead {
 @media print {
   .print-wrapper {
     padding: 0px !important;
+  }
+  .Profile-Panel {
+    height: 200px;
   }
   .page-break {
     display: block;
