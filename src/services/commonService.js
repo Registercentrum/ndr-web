@@ -167,6 +167,11 @@ angular.module('ndrApp')
         var diff = moment().diff(moment(d), 'years');
         return diff >= years ? true : false;
     };
+    this.dateWithinMonths = function(d, months) {
+      if (!d) return false;
+      var diff = moment().diff(moment(d), 'months');
+      return diff >= months ? true : false;
+    };
     this.currentAge = function(subject) {
       return moment().diff(subject.dateOfBirth, 'years');
     }
