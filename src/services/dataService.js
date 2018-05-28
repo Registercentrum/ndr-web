@@ -781,9 +781,8 @@ angular.module('ndrApp')
                         name: obj.name,
                         id: 'unit_' + obj.unitID
                     };
-                    if (obj.typeID != 3) { //exclude kids, to be removed later
-                        preparedGeoList.push(o);
-                    }
+
+                    preparedGeoList.push(o);
 
                 });
 
