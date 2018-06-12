@@ -30,7 +30,7 @@ angular.module('ndrApp')
 
             if (data)
               if (data.contacts) {
-                if (data.contacts.length > 0) {
+                if (data.contacts.length > 0 || data.incidence) {
                   $scope.hasError = false;
                   getPatient(data.subjectID);
                   return;
