@@ -134,6 +134,15 @@ angular.module('ndrApp')
 
 
         this.logOut = function () {
+
+
+          var url = APIconfigService.baseURL + 'CurrentVisitor/logout?APIKey=' + APIconfigService.APIKey;
+
+          $http.get(APIconfigService.constructUrl(url))
+          .then(function (response) {
+            console.log('Logged out!',response);
+          });
+
           this.accountModel.user = null;
           this.accountModel.activeAccount = null;
           cookieFactory.erase("SESSIONID");
