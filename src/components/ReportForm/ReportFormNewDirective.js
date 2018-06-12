@@ -6,7 +6,7 @@ angular.module('ndrApp')
         function link (scope, element, attrs) {
 
           scope.formConfig = {
-            iterateQuestions: ['height','pumpOngoing','pumpOngoingSerial','treatment','insulinMethod','pumpIndication','pumpClosureReason','diabeticRetinopathy','smokingHabit','snuffingHabit','footExaminationDate','laserTreatment','visualLoss','diagnosisWorseSeeingEye','fundusExaminationDate','cerebrovascularDisease','ischemicHeartDisease','microscopicProteinuria','macroscopicProteinuria','aspirin','lipidLoweringDrugs','antihypertensives','height','yearOfOnset','diabetesType', 'thyreoidea','celiaki'],
+            iterateQuestions: ['height','pumpOngoing','pumpOngoingSerial','cgm','carbohydrate','treatment','insulinMethod','pumpIndication','pumpClosureReason','diabeticRetinopathy','smokingHabit','snuffingHabit','footExaminationDate','laserTreatment','visualLoss','diagnosisWorseSeeingEye','fundusExaminationDate','cerebrovascularDisease','ischemicHeartDisease','microscopicProteinuria','macroscopicProteinuria','aspirin','lipidLoweringDrugs','antihypertensives','height','yearOfOnset','diabetesType', 'thyreoidea','celiaki'],
             iterateCondition: {
               height: function(unitType) {
                 return (unitType != 3);
