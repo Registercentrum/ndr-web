@@ -32,7 +32,7 @@
                 <p>Antal dgr/vecka fysisk akt.: <span class="strong">{{  latest.physicalActivityKids.label }}</span></p>
                 <p>BMI-SDS: <span class="strong">{{  latest.bmiSDS.label }}</span></p>
                 <p>Senaste besök: <span class="strong">{{ latest.contactDate.label }}</span></p>
-                <p>Egenvårdsplan: <span class="strong">{{ latest.selfcarePlanDate.label }}</span></p>
+                <p>Egenvårdsplan: <span class="strong">{{ latest.selfcarePlanDate.label }}</span> <i class="fa fa-exclamation-circle" tooltip="Längre än 11 månader sedan" ng-show="model.warnings.selfcarePlanDate"></i></p>
             </div>
         </div>
 
@@ -80,8 +80,12 @@
                                 <td>Senaste blodtryck</td>
                                 <td>{{ latest.bpSystolic.value }} / {{ latest.bpDiastolic.value }} mmHg</td>
                             </tr>
+                            <tr ng-if="latest.bpSystolic.value && latest.bpDiastolic.value">
+                                <td width="20">Senaste blodtryck datum</td>
+                                <td width="80">{{ latest.bpSystolic.date }} <i class="fa fa-exclamation-circle" tooltip="Längre än 11 månader sedan" ng-show="model.warnings.selfcarePlanDate"></i></td>
+                            </tr>
                             <tr>
-                                <td>Hypertoni</td>
+                                <td>Blodtryck, bedömning</td>
                                 <td>{{ latest.hypertension.label }}</td>
                             </tr>
                             <tr>
@@ -113,7 +117,7 @@
                             </tr>
                             <tr>
                                 <td width="80">Senaste ögonbotten-<br />undersökning</td>
-                                <td width="20">{{  latest.fundusExaminationDate.label }}</td>
+                                <td width="20">{{  latest.fundusExaminationDate.label }} <i class="fa fa-exclamation-circle" tooltip="Längre än 11 månader sedan" ng-show="model.warnings.fundusExaminationDate"></i></td>
                             </tr>
                             <tr>
                                 <td width="80">Behandlad för ögonkomplikation</td>
@@ -149,7 +153,7 @@
                         </tr>
                         <tr>
                             <td>Datum U-Albumin/Kreatinin</td>
-                            <td>{{ latest.uAlbCreatinine.date }}</td>
+                            <td>{{ latest.uAlbCreatinine.date }}  <i class="fa fa-exclamation-circle" tooltip="Längre än 11 månader sedan" ng-show="model.warnings.uAlbCreatinine"></i></td>
                         </tr>
                         <tr>
                             <td>Albuminuri</td>

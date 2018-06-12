@@ -26,7 +26,17 @@ angular.module('ndrApp')
                 scope.init = function() {
                   scope.setTrendData();
                   scope.setName(scope.subject);
+                  scope.setWarnings();
                 }
+
+                scope.setWarnings = function() {          
+                    scope.model.warnings = {
+                      selfcarePlanDate: (scope.latest.selfcarePlanDate.value ? commonService.dateWithinMonths(scope.latest.selfcarePlanDate.value,11) : false),
+                      bpSystolic: (scope.latest.bpSystolic.value ? commonService.dateWithinMonths(scope.latest.bpSystolic.date,11) : false),
+                      fundusExaminationDate: (scope.latest.fundusExaminationDate.value ? commonService.dateWithinMonths(scope.latest.fundusExaminationDate.value,11) : false),
+                      uAlbCreatinine: (scope.latest.uAlbCreatinine.value ? commonService.dateWithinMonths(scope.latest.uAlbCreatinine.date,11) : false)
+                    }
+                  };
 
                 scope.setName = function(subject) {
 
@@ -36,7 +46,6 @@ angular.module('ndrApp')
                         commonService.setPersonName(subject, personInfo);
                         scope.$digest();
                     } else {
-                        console.log(scope);
                         var accountID = scope.activeAccount.accountID;
                         dataService.fetchSubjectInfo(accountID,subject.socialNumber)
                         .then(function(data) {
