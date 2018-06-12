@@ -522,7 +522,7 @@ angular.module('ndrApp')
                             defaultDenom: 'total'
                         },
                         {
-                            header: 'Kontinuerlig klukosmätning',
+                            header: 'Kontinuerlig glukosmätning',
                             hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
                             fields: [{
                                     name: 'cgmYes',
