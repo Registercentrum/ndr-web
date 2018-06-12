@@ -13,9 +13,10 @@ angular.module('ndrApp')
 
 
         dataService.getUnits(function (data) {
-            units = data;
+            units = data.filter(function(u) {
+                return u.postalCode;
+            });
         });
-
 
         function filterUnits (postalCode) {
             var filtered = [];
