@@ -183,7 +183,7 @@ angular.module('ndrApp', [
                 })
 
                 .state('main.currentUser', {
-                    url: '/currentuser',
+                    url: '/Konto',
                     controller : 'CurrentUserController',
                     templateUrl: 'src/pages/CurrentUser/currentUser.html?v=3',
                     resolve: {
