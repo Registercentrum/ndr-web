@@ -29,8 +29,6 @@ angular.module('ndrApp')
 
             scope.model.domainPhysical = commonService.getMetafieldByQuestionText(scope.contactAttributes, 'fysisk').domain;
 
-            console.log(scope.latest);
-
             populateSeriesData();
             setTablePaging();
             populateTableData();
@@ -68,17 +66,13 @@ angular.module('ndrApp')
             scope.init();
           });
           
-          function setWarnings() {
-
-            console.log(scope.latest);
-            
+          function setWarnings() {          
             scope.model.warnings = {
-              selfCarePlanDate: (scope.latest.selfcarePlanDate.value ? commonService.dateWithinMonths(scope.latest.selfcarePlanDate.value,11) : false),
+              selfcarePlanDate: (scope.latest.selfcarePlanDate.value ? commonService.dateWithinMonths(scope.latest.selfcarePlanDate.value,11) : false),
               bpSystolic: (scope.latest.bpSystolic.value ? commonService.dateWithinMonths(scope.latest.bpSystolic.date,11) : false),
               fundusExaminationDate: (scope.latest.fundusExaminationDate.value ? commonService.dateWithinMonths(scope.latest.fundusExaminationDate.value,11) : false),
               uAlbCreatinine: (scope.latest.uAlbCreatinine.value ? commonService.dateWithinMonths(scope.latest.uAlbCreatinine.date,11) : false)
             }
-            console.log(scope.model.warnings);
           };
 
           scope.tableForward = function () {
