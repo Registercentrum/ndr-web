@@ -111,10 +111,24 @@ angular.module('ndrApp')
                 }
 
                 //set iterated values
-                if (scope.questions[i].isIterated && scope.iterateEntity)
+                if (scope.questions[i].isIterated && scope.iterateEntity || (scope.subject[scope.questions[i].columnName]))
                 {
-                    ret[scope.questions[i].columnName] = (scope.iterateEntity[scope.questions[i].columnName] || scope.subject[scope.questions[i].columnName]);
                     
+                    //Normal iteration from contact firstly, from subject secondly
+                    if (scope.subject[scope.questions[i].columnName]) {
+                      ret[scope.questions[i].columnName] = scope.subject[scope.questions[i].columnName];
+                    }
+                    else if (scope.iterateEntity[scope.questions[i].columnName] != null) {
+                      ret[scope.questions[i].columnName] = scope.iterateEntity[scope.questions[i].columnName];
+                    } 
+
+                    //Normal iteration from contact firstly, from subject secondly 
+                    /*if (scope.iterateEntity[scope.questions[i].columnName] != null) {
+                      ret[scope.questions[i].columnName] = scope.iterateEntity[scope.questions[i].columnName];
+                    } else if (scope.subject[scope.questions[i].columnName]) {
+                      ret[scope.questions[i].columnName] = scope.subject[scope.questions[i].columnName];
+                    }*/
+
                     //Exception iterate from incidence
                     if (scope.questions[i].columnName == 'yearOfOnset') {
                       if (scope.subject.incidence != null) {
