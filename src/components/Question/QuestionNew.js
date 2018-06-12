@@ -176,38 +176,13 @@ angular.module('ndrApp')
 			link: function(scope, iElement, iAttrs, form) {
 
         scope.form = form;
-
         scope.onChange = function() {
-
-          if (scope.model[scope.question.columnName] === '') scope.model[scope.question.columnName] = null;
 
           if(scope.question.onChange) {
             scope.question.onChange(scope);
           }
           scope.model.isValid = form.$valid;
         }
-
-        //ng-model-options="updateOn"
-        /*scope.$watch('question', function(newValue) {
-          switch(scope.question.domain.domainID) {
-              case 102:
-                  scope.step = 0.1;
-                  scope.decimals = 1;
-                  break;
-              case 103:
-                  scope.step = 0.01;
-                  scope.decimals = 2;
-                  break;
-              case 109:
-                  scope.step = 0.001;
-                  scope.decimals = 4;
-                  break;
-              default:
-                  scope.step = 1;
-                  scope.decimals = 0;
-          }
-
-        });*/
 
 			},
 			replace: true,
