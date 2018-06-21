@@ -41,8 +41,8 @@
                 <h5>Glukoskontroll</h5>
                 <p>Kontinuerlig glukosmätning: <span class="strong">{{ latest.cgm.label }}</span></p>
                 <p ng-show="latest.cgm.value == 1">CGM/FGM modell: <span class="strong">{{ latest.cgmType.label }}</span></p>
-                <p>Medelglukos i CGM/FGM*: <span class="strong">{{ latest.sdCGMLast2W.label }}</span></p>
-                <p>Medelglukos SD*: <span class="strong">{{ latest.meanGlukosesLast2W.label }}</span></p>
+                <p>Medelglukos i CGM/FGM*: <span class="strong">{{ latest.meanGlukosesLast2W.label }}</span></p>
+                <p>Medelglukos SD*: <span class="strong">{{ latest.sdCGMLast2W.label }}</span></p>
                 <p>Andel glukosvärden under 4 mmol/L*: <span class="strong">{{ latest.shareGlucoseLast2W.label }}</span></p>
                 <p>Andel glukosvärden inom målområdet*: <span class="strong">{{ latest.shareGlucoseTarget.label }}</span></p>
             </div>
