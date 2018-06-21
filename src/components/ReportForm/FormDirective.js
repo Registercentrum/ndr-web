@@ -111,13 +111,13 @@ angular.module('ndrApp')
                 }
 
                 //set iterated values
-                if (scope.questions[i].isIterated && scope.iterateEntity || (scope.subject[scope.questions[i].columnName]))
+                if ((scope.questions[i].isIterated && scope.iterateEntity) || (scope.subject[scope.questions[i].columnName]))
                 {
                     
-                    //Normal iteration from contact firstly, from subject secondly
+                    //Try iterate from subject first
                     if (scope.subject[scope.questions[i].columnName]) {
                       ret[scope.questions[i].columnName] = scope.subject[scope.questions[i].columnName];
-                    }
+                    } //Then normal iteration from contact
                     else if (scope.iterateEntity[scope.questions[i].columnName] != null) {
                       ret[scope.questions[i].columnName] = scope.iterateEntity[scope.questions[i].columnName];
                     } 
