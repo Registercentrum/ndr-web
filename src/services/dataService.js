@@ -773,16 +773,18 @@ angular.module('ndrApp')
 
             this.prepareGeoList = function() {
                 var preparedGeoList = [];
-
+                
                 _.each(self.data.units, function(obj, key) {
+                    
+                    if (!obj.isForTest) {
+                        var o = {
+                            type: 'unit',
+                            name: obj.name,
+                            id: 'unit_' + obj.unitID
+                        };
 
-                    var o = {
-                        type: 'unit',
-                        name: obj.name,
-                        id: 'unit_' + obj.unitID
-                    };
-
-                    preparedGeoList.push(o);
+                        preparedGeoList.push(o);
+                    }
 
                 });
 
