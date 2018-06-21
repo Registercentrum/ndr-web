@@ -65,9 +65,13 @@ angular.module('ndrApp')
                            gridLineWidth: 0.5,
                            gridLineColor : '#cccc',
                            lineWidth: 0,
-
+                           startOnTick: false,
+                           endOnTick: false,
+                           tickInterval: 10,
                             minorGridLineWidth: 0,
-                            /*min : 55,
+                            floor: 30,
+                            /*ceiling: 200,
+                            min : 20,
                             max : 80,*/
 
                             title: {
@@ -143,6 +147,14 @@ angular.module('ndrApp')
 
 
                 scope.$watch('model', function(model) {
+
+                    /*console.log(model);
+                    var min = 100;
+                    model.map(function(v) {
+                        if (v.y<min) { min = (v.y) }
+                    });
+                    console.log(min);
+                    chart.yAxis.floor = min;*/
 
                     chart.highcharts().series[0].setData(model)
 
