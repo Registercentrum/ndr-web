@@ -48,14 +48,11 @@ angular.module('ndrApp').controller('LoginController',
           try { //personen är ej 18 år
             if (response.statusText) {
               $scope.model.message = response.statusText;
-            } 
+            }
           }
           catch(err) {}
 
-          console.log(response);
-
           $scope.model.loginFailed = true;
-
           $scope.model.loginStarted = false;
         });
     };
