@@ -30,13 +30,13 @@ angular.module('ndrApp')
 
             if (data)
               if (data.contacts) {
-                if (data.contacts.length > 0 || data.incidence) {
+                if (data.contacts.length > 0) { // || data.incidence
                   $scope.hasError = false;
                   getPatient(data.subjectID);
                   return;
                 } else {
                   $scope.hasError = true;
-                  $scope.errorMessage = 'Personen finns inte rapporterad på din enhet.';
+                  $scope.errorMessage = 'Personen har inga rapporterade besök på din enhet.';
                   return;
                 }
               }
