@@ -115,70 +115,51 @@ angular.module('ndrApp')
                 });
 
             };
-            $scope.showCurrentNames = function(){
+            //does 2 things: 1) check if name already fetched, if so setting the name 2) returns array of unfetched subjects
+            $scope.setFetchedNames = function(subjects){
 
-                for (var i = 0; i < $scope.ItemsByPage[$scope.currentPage].length; i++) { 
-                    var subject = $scope.ItemsByPage[$scope.currentPage][i];
-                    $scope.setName(subject);
-                }
-            },
-            $scope.setName = function(subject) {
-                
-                if ($scope.unitTypeID != 3) return;
+                var accountID = $scope.accountModel.activeAccount.accountID;
+                var subjectsToFetch = [];
 
-                var personInfo = commonService.getPersonInfoLocal(subject);
-                
-                if (personInfo != null) {
-                    commonService.setPersonName(subject, personInfo);
-                    $scope.$digest();
-                } else {
-                    var accountID = $scope.accountModel.activeAccount.accountID
-                    dataService.fetchSubjectInfo(accountID,subject.snr)
-                    .then(function(data) {
-                        commonService.setPersonName(subject, data);
-                        $scope.$digest();
-                    });
-                }
+                for (var i = 0; i < subjects.length; i++) { 
 
-            }
-            /*$scope.showName = function(subject) {
-                
-                var subjectInfo;
+                    var subject = subjects[i];
+                    var personInfo = commonService.getPersonInfoLocal(subject);
 
-                //already fetched
-                if (subject.firstName) {
-                    return;
-                }
-
-                var getSubjectInfo = function(snr) {
-                    subjectInfo = dataService.getSubjectInfo(subject.snr);
-                    return subjectInfo;
-                }
-
-                var setSubjectInfo = function(subjectInfo) {
-                    console.log(subjectInfo);
-                    if (!subjectInfo.firstName || !subjectInfo.lastName) {
-                        alert('Ingen information kunde hittas för personnummer ' + snr + ' i folkbokföringen');
+                    if (personInfo) {
+                        subject.name = commonService.getName(personInfo);
                     } else {
-                        subject.name = subjectInfo.firstName + ' ' + subjectInfo.lastName;
+                        subjectsToFetch.push(subject);
                     }
                 }
+                return subjectsToFetch;
 
-                subjectInfo = getSubjectInfo(subject.snr);
+            };
 
-                if (subjectInfo) {
-                    setSubjectInfo(subjectInfo)
-                    return;
-                } else {
-                    var accountID = $scope.accountModel.activeAccount.accountID
-                    dataService.fetchSubjectInfo(accountID,subject.snr)
-                    .then(function(data) {
-                        setSubjectInfo(data);
-                        $scope.$digest();
+            $scope.showNames = function(subjects){
+
+                if ($scope.unitTypeID != 3) return;
+                
+                var accountID = $scope.accountModel.activeAccount.accountID;
+                var subjectsToFetch = $scope.setFetchedNames(subjects)
+
+                if (subjectsToFetch.length) {
+                    dataService.fetchSubjectsInfo(subjectsToFetch,accountID).then(function(data) {
+                        $scope.setFetchedNames(subjectsToFetch);
                     });
                 }
-                
-            }*/
+            };
+            $scope.showCurrentNames = function(){
+                var subjects = $scope.ItemsByPage[$scope.currentPage];
+                $scope.showNames(subjects);
+            }
+            $scope.showName = function(s){
+                //already there
+                if (s.name) return;
+
+                $scope.showNames([s]);
+            }
+
             $scope.today = function() {
                 $scope.dt = new Date();
             };
