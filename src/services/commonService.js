@@ -175,17 +175,11 @@ angular.module('ndrApp')
     this.currentAge = function(subject) {
       return moment().diff(subject.dateOfBirth, 'years');
     }
-
     this.getPersonInfoLocal = function(subject) {
       return dataService.getSubjectInfo(subject.snr);
     }
-    this.setPersonName = function(subject, personInfo) {
-      if (!personInfo.firstName || !personInfo.lastName) {
-          alert('Ingen information kunde hittas för personnummer ' + snr + ' i folkbokföringen');
-      } else {
-          subject.name = personInfo.firstName + ' ' + personInfo.lastName;
-      }
+    this.getName = function(personInfo) {
+      return (personInfo.firstName ? personInfo.firstName : '')  + ' ' + (personInfo.lastName ? personInfo.lastName : '');
     }
-
 
   }]);

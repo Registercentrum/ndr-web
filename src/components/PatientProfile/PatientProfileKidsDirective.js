@@ -49,13 +49,13 @@ angular.module('ndrApp')
             var personInfo = commonService.getPersonInfoLocal(subject);
             
             if (personInfo != null) {
-                commonService.setPersonName(subject, personInfo);
+                subject.name = commonService.getName(personInfo);
                 scope.$digest();
             } else {
                 var accountID = scope.activeAccount.accountID;
                 dataService.fetchSubjectInfo(accountID,subject.socialNumber)
                 .then(function(data) {
-                    commonService.setPersonName(subject, data);
+                    subject.name = commonService.getName(data);
                     scope.$digest();
                 });
             }
