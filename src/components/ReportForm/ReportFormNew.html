@@ -1,5 +1,5 @@
 <div style="margin-top: 30px;">
-
+	<span class="Button btn-danger pull-right" ng-click="delete()" ng-show="accountModel.user.isAdministrator &&  model.contactModel.id">Ta bort</span>
 	<h5 class="text-info">{{accountModel.activeAccount.unit.name}}</h5>
 	<h3 class="Report-title" style="margin:1rem 0 2rem">{{contactToUpdate ? 'Komplettera' : 'Rapportera nytt'}} besök</h3>
 

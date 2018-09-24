@@ -5,6 +5,8 @@ angular.module('ndrApp')
 
         function link (scope, element, attrs) {
 
+          console.log(scope.accountModel.user.isAdministrator);
+
           scope.formConfig = {
             iterateQuestions: ['height','pumpOngoing','pumpOngoingSerial','cgm','carbohydrate','treatment','insulinMethod','pumpIndication','pumpClosureReason','diabeticRetinopathy','smokingHabit','snuffingHabit','footExaminationDate','laserTreatment','visualLoss','diagnosisWorseSeeingEye','fundusExaminationDate','cerebrovascularDisease','ischemicHeartDisease','microscopicProteinuria','macroscopicProteinuria','aspirin','lipidLoweringDrugs','antihypertensives','height','yearOfOnset','diabetesType', 'thyreoidea','celiaki'],
             iterateCondition: {
@@ -259,6 +261,11 @@ angular.module('ndrApp')
 
         			}
             }
+          }
+
+          scope.delete = function() {
+            if (confirm("Vill du ta bort detta besök?")) dataService.deleteContact(scope.model.contactModel.id)
+            $state.go('main.account.reportone', { patientID: scope.subject.subjectID }, {reload: true});
           }
 
           scope.formOptionalsConfig = {
