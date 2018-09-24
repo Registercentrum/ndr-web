@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div ng-if="subject && contactAttributes">
+    <div ng-if="subject && contactAttributes && !hasError">
         <div class="fr mb2">
             <a class="gray f4" ui-sref="main.account.patientPrint({patientID: subject.subjectID, latest: latest})"><i class="fa fa-print"></i> Skriv ut</a>
             <a class="gray f4" style="margin-left: 10px" href="#/inloggad/rapportera/{{ subject.subjectID }}"><i class="fa fa-plus-circle"></i> Rapportera / Komplettera</a>
@@ -45,7 +45,7 @@
     </div>
 
 </div>
-<div ng-if="subject && contactAttributes" >
+<div ng-if="subject && contactAttributes && !hasError" >
     <div ng-if="unitTypeID != 3" patient-profile-grownup active-account="accountModel.activeAccount" subject="subject" contact-attributes="contactAttributes" latest="latest" />
     <div ng-if="unitTypeID == 3" patient-profile-kids active-account="accountModel.activeAccount" subject="subject" contact-attributes="contactAttributes" latest="latest" />
 </div>
