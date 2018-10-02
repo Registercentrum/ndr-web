@@ -161,6 +161,9 @@ angular.module('ndrApp')
 
                     //Fields with different denominator
                     switch (f.columnName) {
+                        case 'insulinMethod':
+                            denom = 'insulinTreated';
+                            break;
                         case 'pumpOngoing':
                             denom = 'pumpUsing';
                             break;
