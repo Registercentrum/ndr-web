@@ -10,15 +10,15 @@ angular.module('ndrApp')
           }
           scope.init = function() {
             if (scope.subject) {
-              scope[scope.name].$setPristine();
               scope.setModel();
+              scope[scope.name].$setPristine();
               scope.setIteration();
               scope.setOnChange();
               scope.setVisibility();
-              scope.setModelInitial();
+              scope.setHiddenToNull();
             }
           }
-          scope.setModelInitial = function() {
+          scope.setHiddenToNull = function() {
             scope.questions.forEach(function(q) { //sets all not visible questions to null
               if (q.visible) {
                 var isVisible = q.visible(scope.model, scope.subject);
@@ -27,6 +27,7 @@ angular.module('ndrApp')
                 }
               }
             });
+
           }
 
           scope.isVisible = function(question) {
@@ -105,6 +106,9 @@ angular.module('ndrApp')
               ret[scope.questions[i].columnName] = null;
               if (!scope.updateEntity) { //new!
 
+
+
+
                 // set default values
                 if (scope.config.defaults[scope.questions[i].columnName]) {
                   ret[scope.questions[i].columnName] = scope.config.defaults[scope.questions[i].columnName]();
@@ -163,11 +167,11 @@ angular.module('ndrApp')
             scope.init();
           });
           scope.$watch('updateEntity', function(newValue) {
-            scope.init();
+            if (scope.subject) scope.init();
           });
-          scope.$watch('newIndex', function(newValue) {
-            scope.init();
-          });
+          /*scope.$watch('newIndex', function(newValue) {
+            if (scope.subject) scope.init();
+          });*/
         }
         return {
           restrict : 'A',
