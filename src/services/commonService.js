@@ -105,13 +105,15 @@ angular.module('ndrApp')
     }
 
     this.getOneSeries = function(subject,key, yearsback) {
-      var series = [],
-        now = moment();
+
+      var series = [];
+      var contact = getLatestContactWithValue(subject,key);
+      var from = contact ? moment(contact.contactDate) : null;
 
       _.each(subject.contacts, function (obj) {
         var then = moment(obj.contactDate);
 
-        if (_.isNumber(obj[key]) && now.diff(then, 'years') <= yearsback) {
+        if (_.isNumber(obj[key]) && from.diff(then, 'years') <= yearsback) {
           series.push({
             x: new Date(obj.contactDate),
             y: obj[key]
