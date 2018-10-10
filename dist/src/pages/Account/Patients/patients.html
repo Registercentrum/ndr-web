@@ -154,31 +154,6 @@
                             <!-- If the domain is of date type -->
                             <div class="FilterDatePopup" ng-if="filter.domain.name == 'Date'">
                                 <div class="input-group">
-                                    <!--<span class="input-group-addon">
-                                    <button
-                                            type="button"
-                                            class="FilterDatePopup-button"
-                                            ng-click="openPicker($event, filter.columnName, 'from')">
-                                        <i class="fa fa-calendar"></i>
-                                    </button>
-                                </span>
-                                    <div ng-class="{ 'has-error' : searchForm[filter.columnName + 'From'].$error[filter.columnName + 'FromInValid'] }">
-                                        <input type="text" class="FilterDatePopup-input form-control" name="{{ filter.columnName }}From" datepicker-popup="{{ format }}" ng-model="selectedFilters[filter.columnName].from.date" is-open="selectedFilters[filter.columnName].from.opened" datepicker-options="dateOptions"
-                                            date-disabled="disabled(date, mode)" ng-required="true" close-text="Close">
-                                    </div>
-
-                                    <span class="input-group-addon">
-                                   <button
-                                           type="button"
-                                           class="FilterDatePopup-button"
-                                           ng-click="openPicker($event, filter.columnName, 'to')">
-                                       <i class="fa fa-calendar"></i>
-                                   </button>
-                                 </span>
-                                    <div ng-class="{ 'has-error' : searchForm[filter.columnName + 'To'].$error[filter.columnName + 'ToInValid'] }">
-                                        <input type="text" class="FilterDatePopup-input form-control" name="{{ filter.columnName }}To" datepicker-popup="{{ format }}" ng-model="selectedFilters[filter.columnName].to.date" is-open="selectedFilters[filter.columnName].to.opened" datepicker-options="dateOptions"
-                                            date-disabled="disabled(date, mode)" ng-required="true" close-text="Close">
-                                    </div>-->
                                     <div style="display: flex">
                                       <div style="" ng-class="{ 'has-error' : searchForm.{{filter.columnName}}.$invalid }">
                                         <input type="text" name="{{filter.columnName}}" required ng-pattern="/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ng-change="tryLoad()" class="form-control" ng-model="selectedFilters[filter.columnName].from.date" />
