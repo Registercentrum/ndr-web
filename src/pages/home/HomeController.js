@@ -31,6 +31,7 @@ angular.module('ndrApp')
             {
                 ID : [202],
                 level : 0,
+                unitType: 1,
                 fromYear    : date.getFullYear()-1,
                 toYear    : date.getMonth() == 0 ? date.getFullYear()-1 : date.getFullYear(),
                 fromMonth   : date.getMonth()+1,
