@@ -33,7 +33,7 @@ angular.module('ndrApp')
                     scope.model.warnings = {
                       selfcarePlanDate: (scope.latest.selfcarePlanDate.value ? commonService.dateWithinMonths(scope.latest.selfcarePlanDate.value,11) : false),
                       bpSystolic: (scope.latest.bpSystolic.value ? commonService.dateWithinMonths(scope.latest.bpSystolic.date,11) : false),
-                      fundusExaminationDate: (scope.latest.fundusExaminationDate.value ? commonService.dateWithinMonths(scope.latest.fundusExaminationDate.value,11) : false),
+                      fundusExaminationDate: (scope.latest.fundusExaminationDate.value ? (scope.latest.diabeticRetinopathy.value ? commonService.dateWithinMonths(scope.latest.fundusExaminationDate.value,9) : commonService.dateWithinMonths(scope.latest.fundusExaminationDate.value,21))  : false),
                       uAlbCreatinine: (scope.latest.uAlbCreatinine.value ? commonService.dateWithinMonths(scope.latest.uAlbCreatinine.date,11) : false)
                     }
                   };
