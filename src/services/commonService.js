@@ -107,7 +107,7 @@ angular.module('ndrApp')
     this.getOneSeries = function(subject,key, yearsback) {
 
       var series = [];
-      var contact = getLatestContactWithValue(subject,key);
+      var contact = this.getLatestContactWithValue(subject,key);
       var from = contact ? moment(contact.contactDate) : null;
 
       _.each(subject.contacts, function (obj) {
