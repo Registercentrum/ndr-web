@@ -114,38 +114,35 @@
                     </form>
                 </div>
 
-                <div class="row">
-                    <div class="">
-                        <div class="col-md-12">
-                            <p><strong>
-							<i class="fa fa-exclamation-circle blue"></i> För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress stämmer.
-							</strong></p>
-                        </div>
+                <div class="row" ng-show="visitor.isUser && user.hsaid">
+                    <div class="col-md-12 alert alert-info">
+                        <span>
+                            <i class="fa fa-exclamation-circle blue"></i> För att vi skall kunna kontakta dig när din ansökan är hanterad är det viktigt att du säkerställer att din e-postadress stämmer.
+                        </span>
                     </div>
                 </div>
 				
-                <div class="row" ng-if="!visitor.isUser && user.hsaid">
-                    <div class="">
-                        <div class="col-md-12">
-                            <p><strong>
+                <div class="row" ng-show="!visitor.isUser && user.hsaid">
+                    <div class="col-md-12 alert alert-info">
+                        <span>
 							<i class="fa fa-exclamation-circle blue"></i> Efter att du ansökt om konto kommer du att kunna uppdatera dina användaruppgifter.
-							</strong></p>
-                        </div>
+                        </span>
                     </div>
                 </div>
-				
-                <div class="row" >
-                    <div ng-show="newAccountError.length>0" class="alertText">
-                        <div class="col-md-12">
-                            <p><strong><i class="fa fa-exclamation-circle blue"></i> {{newAccountError[0]}}</strong></p>
-                        </div>
+                
+                <div class="row" ng-show="newAccountError.length>0">
+                    <div class="col-md-12 alert alert-warning">
+                        <span>
+                            <i class="fa fa-exclamation-circle blue"></i> {{newAccountError[0]}}
+                        </span>
                     </div>
                 </div>
-                <div class="row">
-                    <div ng-show="newAccountSuccess" class="">
-                        <div class="col-md-12">
-                            <p><strong>Din kontoansökan är inskickad och vi kommer att återkomma till dig när ärendet är hanterat.</strong></p>
-                        </div>
+
+                <div class="row" ng-show="newAccountSuccess">
+                    <div class="col-md-12 alert alert-success">
+                        <span>
+                            <i class="fa fa-exclamation-circle blue"></i> Din kontoansökan är inskickad och vi kommer att återkomma till dig när ärendet är hanterat.
+                        </span>
                     </div>
                 </div>
 

@@ -162,11 +162,31 @@ angular.module('ndrApp')
 				};
 
                 $http(httpConfig)
-                    .success(function (data) {
+                    .then(function(response) {
+                        console.log('applied success',response);
+                        $scope.user = response.data;
+						$scope.visitor.isUser = true;
+                        $scope.setRoles();
+                        $scope.newAccountSuccess = true;
+                    })['catch'](function(data) {
+                        console.log('applied failure',data);
+                        $scope.newAccountError.push('Ett okänt fel inträffade. Var god försök igen senare.');
+                        /*if (data.ModelState) {
+                            for (var prop in data.ModelState)
+                                if (data.ModelState.hasOwnProperty(prop)) $scope.newAccountError.push(data.ModelState[prop][0]);
+                        } else {
+                            $scope.newAccountError.push('Ett okänt fel inträffade. Var god försök igen senare.');
+                        }*/
+                    });
+
+
+
+                    /*.success(function (data) {
                         $scope.user = data;
 						$scope.visitor.isUser=true;
 
                         $scope.setRoles();
+                        console.log('applied success');
                         $scope.newAccountSuccess = true;
                     })
                     .error(function (data) {
@@ -176,6 +196,6 @@ angular.module('ndrApp')
                         } else {
                             $scope.newAccountError.push('Ett okänt fel inträffade. Var god försök igen senare.');
                         }
-                });
+                    });*/
             };
         }]);
