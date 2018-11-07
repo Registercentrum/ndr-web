@@ -41,8 +41,9 @@
                           </div>
 
                           <div class="col-md-4 profilebg" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 16px; font-size: 14px;font-weight: 300;height: 280px;">
+                              <h5 style="color: red" ng-show="subject.dateOfDeath">Avliden</h5>
                               <h5 ng-show="subject.name"><strong>{{ subject.name }}</strong></h5>
-                              <h5>{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}</h5>
+                              <h5>{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + (subject.incidence ? subject.incidence.incDate : subject.yearOfOnset) : '' }}</h5>
                               <p><span class="strong">{{ diabetesTypeText() }}</span></p>
                               <hr />
                               <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
@@ -65,10 +66,12 @@
                               </div>
                               <div class="Profile-Content">
                                 <div class="Profile-Center">
-                                  <p>Kontinuerlig glukosmätning: {{ latest.cgm.label }}</p>
-                                  <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
-                                  <p ng-show="latest.cgm.value == 1"> CGM/FGM modell: {{ latest.cgmType.label }}</p>
-                                  <hr />
+                                  <div ng-show="[3,4,9,10].indexOf(latest.treatment.value) > -1">
+                                    <p>Kontinuerlig glukosmätning: {{ latest.cgm.label }}</p>
+                                    <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
+                                    <p ng-show="latest.cgm.value"> CGM/FGM modell: {{ latest.cgmType.label }}</p>
+                                    <hr />
+                                  </div>
                                   <p>Medelglukos i CGM/FGM*: {{ latest.meanGlukosesLast2W.label }}</p>
                                   <p>Medelglukos SD*: {{ latest.sdCGMLast2W.label }}</p>
                                   <p>Andel glukosvärden under 4 mmol/L*: {{ latest.shareGlucoseLast2W.label }}</p>
@@ -234,7 +237,10 @@
                                   <tr>
                                       <td width="80">Senaste ögonbotten-<br />undersökning</td>
                                       <td width="20" ng-show="!model.warnings.fundusExaminationDate">{{  latest.fundusExaminationDate.label }}</td>
-                                      <td width="20" ng-show="model.warnings.fundusExaminationDate"><span tooltip="Längre än 11 månader sedan" class="tag-warning">{{ latest.fundusExaminationDate.label }}</span></td>
+                                      <td width="20" ng-show="model.warnings.fundusExaminationDate">
+                                        <span ng-if="latest.diabeticRetinopathy.value" tooltip="Längre än 9 månader sedan" class="tag-warning">{{ latest.fundusExaminationDate.label }}</span>
+                                        <span ng-if="!latest.diabeticRetinopathy.value" tooltip="Längre än 21 månader sedan" class="tag-warning">{{ latest.fundusExaminationDate.label }}</span>
+                                      </td>
                                   </tr>
                                   <tr>
                                       <td width="80">Behandlad för ögonkomplikation</td>
