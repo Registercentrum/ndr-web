@@ -15,9 +15,6 @@
 	<div class="col-md-12" ng-show="serverSubjectError">
 		<span>{{serverSubjectError}}</span>
 	</div>
-	<div class="col-md-12" >
-		<span>{{serverSubjectError}}</span>
-	</div>
 	<!--<div class="row" ng-show="!subject">
 		<div class="col-md-12">
 			<div class="Panel Panel--alert">
@@ -33,7 +30,28 @@
 			<a target="_blank" ng-if="accountModel.activeAccount.unit.typeID == 3" ng-show="subject.incidence.incDone" href="" ng-click="setIncidence()">Incidensuppgifter <i class="fa fa-tag"></i></a>
 			<span ng-if="accountModel.activeAccount.unit.typeID == 3" ng-show="subject.incRepOtherUnit">Incidens inrapporterad från annan vårdenhet</span>
 		</div>
-		<div class="PatientHeader clearfix">
+		<div class="PatientHeader" style="display: flex;">
+			<div style="width: 28rem">
+				<div style="font-weight: 400" ng-if="unitTypeID === 3">{{ subject.name }}</div>
+				<div class="PatientHeader-personNumber" style="line-height: 1.2;">{{ subject.socialNumber }}</div>
+				<div style="font-weight: 300;">{{ subject.diabetesTypeText ? subject.diabetesTypeText + ', ' : 'Diabetes' }} {{ subject.yearOfOnset ? 'sedan ' + (subject.incidence ? subject.incidence.incDate : subject.yearOfOnset) : ''}}</div>
+			</div>
+			<div  style="flex:1;display: flex;">
+				<div style="flex: 1;display: flex;align-items: center;justify-content: flex-end">
+					<button ng-click="setIncidence()" style="margin-right: 2rem" ng-show="!subject.incidence.incDone && !subject.incRepOtherUnit" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left">Incidens</button>
+					<button ng-click="setContact()" style="margin-right: 2rem" id="bnNewContact" type="submit" class="Button Button--primary Button--strong pull-left">Ny rapportering</button>
+					<select
+						ng-model="contactToUpdate"
+						ng-change="setContact(contactToUpdate)"
+						style="width: 20rem"
+						ng-options="contact.contactDate.split('T')[0] for contact in subject.contacts"
+						class="form-control">
+						<option selected value="">Komplettera</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<!--<div class="PatientHeader clearfix">
 			<div class="PatientHeader-personNumber col-md-3 u-noLeftPadding">{{ subject.socialNumber }}</div>
 			<div class="pull-right">
 				<button ng-click="setIncidence()" ng-show="!subject.incidence.incDone && !subject.incRepOtherUnit" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left" style="margin-right: 25px;">Incidens</button>
@@ -49,7 +67,7 @@
 					</select>
 				</form>
 			</div>
-		</div>
+		</div>-->
 		<!--<div ng-show="view == 1" report-form account-model="accountModel" subject="subject" contact-to-update="contactToUpdate"></div>-->
 		<!--<div ng-show="view == 1" report-form-history account-model="accountModel" subject="subject" new-index="newIndex" contact-to-update="contactToUpdate"></div>-->
 		<div ng-if="subject && metafields">

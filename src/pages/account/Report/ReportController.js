@@ -35,8 +35,8 @@ angular.module('ndrApp')
 
 angular.module('ndrApp')
     .controller('ReportController', [
-        '$scope', '$stateParams', '$state', '$modal', '$filter', 'dataService',
-        function($scope, $stateParams, $state, $modal, $filter, dataService) {
+        '$scope', '$stateParams', '$state', '$modal', '$filter', 'dataService', 'commonService',
+        function($scope, $stateParams, $state, $modal, $filter, dataService, commonService) {
 
             //console.log("from report", account);
 
@@ -59,12 +59,33 @@ angular.module('ndrApp')
                 }
             };
 
+            $scope.setName = function(subject,accountID) {
+                
+                var personInfo = commonService.getPersonInfoLocal(subject);
+
+                if (personInfo != null) {
+                    subject.name = commonService.getName(personInfo);
+                    $scope.$digest();
+                } else {
+                    dataService.fetchSubjectInfo(accountID,subject.socialNumber)
+                    .then(function(data) {
+                        subject.name = commonService.getName(data);
+                        $scope.$digest();
+                    });
+                }
+    
+    
+            }
+
             $scope.init = function() {
 
-              var unitTypeID = $scope.accountModel.activeAccount.unit.typeID;
-              $scope.metafields = dataService.getFormFields(null,unitTypeID);
+              $scope.unitTypeID = $scope.accountModel.activeAccount.unit.typeID;
+
+
+
+              $scope.metafields = dataService.getFormFields(null,$scope.unitTypeID );
               if (!$scope.metafields) {
-                $scope.loadQuestions(unitTypeID);
+                $scope.loadQuestions($scope.unitTypeID );
               } else {
                 $scope.contactQuestions = $scope.getContactQuestions($scope.metafields);
                 $scope.optionalQuestions = $scope.getOptionalQuestions($scope.metafields);
@@ -143,6 +164,7 @@ angular.module('ndrApp')
                         }
 
                         $scope.subject = data;
+                        $scope.setName($scope.subject,$scope.accountModel.activeAccount.accountID);
                         $scope.view = 0;
 
                         setTimeout(function() {
