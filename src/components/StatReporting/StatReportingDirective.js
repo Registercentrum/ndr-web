@@ -82,12 +82,34 @@ angular.module('ndrApp')
                         value: '1'
                     }
                 }
+
                 if (f.columnName == 'pumpOngoing') {
                     valueFilter.insulinMethod = {
                         value: '2'
                     }
                 }
 
+                if (['shareGlucoseLast2W','shareGlucoseTarget','meanGlukosesLast2W','sdCGMLast2W'].indexOf(f.columnName)>-1) {
+                    valueFilter.cgm = {
+                        value: '1'
+                    }
+                }
+
+                if (f.recAgeFrom) {
+                    valueFilter.age = {
+                        minValue: f.recAgeFrom, 
+                        min: f.recAgeFrom, 
+                        max: 120
+                    }
+                }
+
+                if (f.columnName == 'selfcarePlanDate') {
+                    valueFilter.age = {
+                        minValue: 1, 
+                        min: 1, 
+                        max: 15
+                    }
+                }
 
                 valueFilter[f.columnName] = {
                     min: f.min,
@@ -194,6 +216,9 @@ angular.module('ndrApp')
                         case 'fundusExaminationDate':
                             denom = 'ageGT10';
                             break;
+                        case 'eyeTreated':
+                            denom = 'ageGT10';
+                            break;
                         case 'bpSystolic':
                             denom = 'ageGT10';
                             break;
@@ -218,6 +243,21 @@ angular.module('ndrApp')
                         case 'physicalActivityKids':
                             denom = 'ageGT5';
                             break;
+                        case 'selfcarePlanDate':
+                            denom = 'Age1To15';
+                            break;  
+                        case 'shareGlucoseLast2W':
+                            denom = 'cgm';
+                            break;
+                        case 'shareGlucoseTarget':
+                            denom = 'cgm';
+                            break;
+                        case 'meanGlukosesLast2W':
+                            denom = 'cgm';
+                            break;
+                        case 'sdCGMLast2W':
+                            denom = 'cgm';
+                            break;  
                         default:
                             denom = 'contactDate'
                     }
@@ -226,6 +266,7 @@ angular.module('ndrApp')
                         columnName: f.columnName,
                         min: f.minValue,
                         max: f.maxValue,
+                        recAgeFrom: f.recAgeFrom,
                         question: f.question,
                         unitShare: {
                             value: scope.getShare(d.counts[3][f.columnName], d.counts[3][denom]),
