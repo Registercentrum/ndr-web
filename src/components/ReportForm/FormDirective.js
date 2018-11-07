@@ -18,10 +18,11 @@ angular.module('ndrApp')
               scope.setHiddenToNull();
             }
           }
+
           scope.setHiddenToNull = function() {
             scope.questions.forEach(function(q) { //sets all not visible questions to null
               if (q.visible) {
-                var isVisible = q.visible(scope.model, scope.subject);
+                var isVisible = q.visible(scope.model,scope.subject);
                 if (!isVisible) {
                   scope.model[q.columnName] = null;
                 }
@@ -31,7 +32,6 @@ angular.module('ndrApp')
           }
 
           scope.isVisible = function(question) {
-
             if(question.visible) {
               return question.visible(scope.model, scope.subject);
             }
