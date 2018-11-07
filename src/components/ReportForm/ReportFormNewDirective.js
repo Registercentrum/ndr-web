@@ -8,6 +8,7 @@ angular.module('ndrApp')
           console.log(scope.accountModel.user.isAdministrator);
 
           scope.formConfig = {
+            stickyQuestionKey: 'contactDate',
             iterateQuestions: ['height','pumpOngoing','pumpOngoingSerial','cgm','cgmType','carbohydrate','treatment','insulinMethod','pumpIndication','pumpClosureReason','diabeticRetinopathy','smokingHabit','snuffingHabit','footExaminationDate','laserTreatment','visualLoss','diagnosisWorseSeeingEye','fundusExaminationDate','cerebrovascularDisease','ischemicHeartDisease','microscopicProteinuria','macroscopicProteinuria','aspirin','lipidLoweringDrugs','antihypertensives','height','yearOfOnset','diabetesType', 'thyreoidea','celiaki'],
             iterateCondition: {
               height: function(unitType) {
@@ -66,6 +67,8 @@ angular.module('ndrApp')
                   qscope.model.pumpClosureReason = null;
                   qscope.model.pumpOngoing = null;
                   qscope.model.pumpOngoingSerial = null;
+                  qscope.model.cgm = null;
+                  qscope.model.cgmType = null;
                 }
               },
               insulinMethod: function(qscope) {
@@ -108,6 +111,9 @@ angular.module('ndrApp')
               }
             },
             visibility: {
+              yearOfOnset: function(model,subject) {
+                return (unitType != 3)
+              },
               pumpOngoing: function(model) {
                 return ((model.treatment == 3 || model.treatment == 4 || model.treatment == 9 || model.treatment == 10) && (model.insulinMethod == 2))
               },
