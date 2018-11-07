@@ -24,7 +24,7 @@
 
         <div class="col-md-4 col-print-4">
             <div class="panel-wrapper">
-                <h5><span class="strong">{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + subject.yearOfOnset : '' }}<span class="strong"></h5>
+                <h5><span class="strong">{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + (subject.incidence ? subject.incidence.incDate : subject.yearOfOnset) : '' }}<span class="strong"></h5>
                 <p<span class="strong"></p>{{ diabetesTypeText() }}</p>
                 <p>Vikt: <span class="strong">{{  latest.weight.label }}</span></p>
                 <p>Längd: <span class="strong">{{  latest.height.label }}</span></p>
@@ -39,8 +39,10 @@
         <div class="col-md-4 col-print-4">
             <div class="panel-wrapper">
                 <h5>Glukoskontroll</h5>
-                <p>Kontinuerlig glukosmätning: <span class="strong">{{ latest.cgm.label }}</span></p>
-                <p ng-show="latest.cgm.value == 1">CGM/FGM modell: <span class="strong">{{ latest.cgmType.label }}</span></p>
+                <div ng-show="[3,4,9,10].indexOf(latest.treatment.value) > -1">
+                    <p>Kontinuerlig glukosmätning: <span class="strong">{{ latest.cgm.label }}</span></p>
+                    <p ng-show="latest.cgm.value == 1">CGM/FGM modell: <span class="strong">{{ latest.cgmType.label }}</span></p>
+                </div>
                 <p>Medelglukos i CGM/FGM*: <span class="strong">{{ latest.meanGlukosesLast2W.label }}</span></p>
                 <p>Medelglukos SD*: <span class="strong">{{ latest.sdCGMLast2W.label }}</span></p>
                 <p>Andel glukosvärden under 4 mmol/L*: <span class="strong">{{ latest.shareGlucoseLast2W.label }}</span></p>
@@ -117,7 +119,12 @@
                             </tr>
                             <tr>
                                 <td width="80">Senaste ögonbotten-<br />undersökning</td>
-                                <td width="20">{{  latest.fundusExaminationDate.label }} <i class="fa fa-exclamation-circle" tooltip="Längre än 11 månader sedan" ng-show="model.warnings.fundusExaminationDate"></i></td>
+                                <td width="20">{{  latest.fundusExaminationDate.label }}
+                                    <div ng-show="model.warnings.fundusExaminationDate">
+                                        <i ng-if="latest.diabeticRetinopathy.value" class="fa fa-exclamation-circle" tooltip="Längre än 9 månader sedan"></i>
+                                        <i ng-if="!latest.diabeticRetinopathy.value" class="fa fa-exclamation-circle" tooltip="Längre än 21 månader sedan"></i>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td width="80">Behandlad för ögonkomplikation</td>

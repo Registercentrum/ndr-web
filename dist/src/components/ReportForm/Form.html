@@ -1,11 +1,36 @@
-<form name="{{name}}" class="contactForm" novalidate ng-model-options="{ 'updateOn': 'blur' }">
-	<div ng-repeat="q in questions" ng-show="isVisible(q)" class="qrow">
-		<div class="questionlabel" ng-class="getQuestionClass({{name}}.{{ q.columnName}}.$invalid, model[q.columnName] != null)">{{ q.question }}<div class="helpContainer"><i class="fa fa-question-circle helpNote" ng-show="q.helpNote != null" tooltip="{{q.helpNote}}"></i></div></div>
-		<div ndr-Question-New question="q" model="model" methods="config.methods" subject="subject"></div>
-		<div class="refContainer" ng-if="refModels.length" ng-repeat="c in refModels">
-			<span class="refValue">{{ viewVal(q, c)}}</span>
+<form name="{{name}}" class="contactForm" novalidate ng-model-options="{ 'updateOn': 'blur' }" v-if="initated">
+
+	<div ng-repeat="q in questions">
+		<div ng-if="q.columnName === config.stickyQuestionKey" set-class-when-at-top="fix-to-top">
+			<div ng-show="isVisible(q)" class="qrow" style="background-color: #fff">
+				<div class="questionlabel" ng-class="getQuestionClass({{name}}.{{q.columnName}}.$invalid, model[q.columnName] != null)">
+					{{ q.question }}
+					<div class="helpContainer">
+						<i class="fa fa-question-circle helpNote" ng-show="q.helpNote != null" tooltip="{{q.helpNote}}"></i>
+					</div>
+				</div>
+				<div ndr-Question-New question="q" model="model" methods="config.methods" subject="subject"></div>
+				<div class="refContainer" ng-if="refModels.length" ng-repeat="c in refModels">
+					<span class="refValue">{{ viewVal(q, c)}}</span>
+				</div>
+			</div>
+		</div>
+		<div ng-if="q.columnName !== config.stickyQuestionKey">
+			<div ng-show="isVisible(q)" class="qrow">
+				<div class="questionlabel" ng-class="getQuestionClass({{name}}.{{q.columnName}}.$invalid, model[q.columnName] != null)">
+					{{ q.question }}
+					<div class="helpContainer">
+						<i class="fa fa-question-circle helpNote" ng-show="q.helpNote != null" tooltip="{{q.helpNote}}"></i>
+					</div>
+				</div>
+				<div ndr-Question-New question="q" model="model" methods="config.methods" subject="subject"></div>
+				<div class="refContainer" ng-if="refModels.length" ng-repeat="c in refModels">
+					<span class="refValue">{{ viewVal(q, c)}}</span>
+				</div>
+			</div>
 		</div>
 	</div>
+
 </form>
 	<!--<form name="form" class="contactForm" novalidate ng-model-options="{ 'updateOn': 'blur' }">
 		<div ng-repeat="q in questions" class="qrow" ng-show="isVisible(q, subject)">
