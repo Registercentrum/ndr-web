@@ -103,7 +103,7 @@ angular.module('ndrApp')
           };
 
           function populateTableData() {
-            var excluded = ['unit', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals'];
+            var excluded = ['unit', 'contactID', 'insertedAt', 'lastUpdatedAt', 'unitID', 'optionals','yearOfOnset'];
             var tableFields = commonService.excludeMetafields(scope.contactAttributes, excluded);
             var contacts = angular.copy(scope.subject.contacts).splice((scope.model.tableIndex-1)*5, 5);
 
