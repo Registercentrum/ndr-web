@@ -111,7 +111,7 @@ angular.module('ndrApp')
               }
             },
             visibility: {
-              yearOfOnset: function(model,subject) {
+              yearOfOnset: function(model,subject,unitType) {
                 return (unitType != 3)
               },
               pumpOngoing: function(model) {
