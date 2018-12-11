@@ -155,10 +155,10 @@
                             <div class="FilterDatePopup" ng-if="filter.domain.name == 'Date'">
                                 <div class="input-group">
                                     <div style="display: flex">
-                                      <div style="" ng-class="{ 'has-error' : searchForm.{{filter.columnName}}.$invalid }">
+                                      <div ng-class="{ 'has-error' : searchForm.{{filter.columnName}}.$invalid }">
                                         <input type="text" name="{{filter.columnName}}" required ng-pattern="/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ng-change="tryLoad()" class="form-control" ng-model="selectedFilters[filter.columnName].from.date" />
                                       </div>
-                                      <div style="" ng-class="{ 'has-error' : searchForm.{{filter.columnName}}.$invalid }">
+                                      <div ng-class="{ 'has-error' : searchForm.{{filter.columnName}}.$invalid }">
                                         <input type="text" name="{{filter.columnName}}" required ng-pattern="/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ng-change="tryLoad()" class="form-control" ng-model="selectedFilters[filter.columnName].to.date" />
                                       </div>
                                     </div>
