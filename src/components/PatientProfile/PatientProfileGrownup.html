@@ -96,8 +96,8 @@
                     <div class="col-md-4">
                         <div class="Panel Panel--purple">
                             <h4 class="Profile-heading">Nikotin</h4>  <i class="Profile-latest-value fa fa-noun_100084_cc" style="font-size: 40px;"></i>
-                            <h5 class="text-center" style="margin-top: 80px" >{{ latest.smokingEndYear.value ? 'Slutat röka ' + latest.smokingEndYear.label : (latest.smokingHabit.value ? latest.smokingHabit.label :'Uppgift om rökvanor saknas')  }}</h3>
-                            <h5 class="text-center" style="margin-top: 80px" >{{ latest.snuffingEndYear.value ? 'Slutat snusa ' + latest.snuffingEndYear.label : (latest.snuffingHabit.value ? latest.snuffingHabit.label :'Uppgift om snusvanor saknas')  }}</h3>
+                            <h5 class="text-center" style="margin-top: 80px" >{{ latest.smokingHabit.value == 4 ? 'Slutat röka ' + latest.smokingEndYear.label : (latest.smokingHabit.value ? latest.smokingHabit.label :'Uppgift om rökvanor saknas')  }}</h3>
+                            <h5 class="text-center" style="margin-top: 80px" >{{ latest.snuffingHabit.value == 4 ? 'Slutat snusa ' + latest.snuffingEndYear.label : (latest.snuffingHabit.value ? latest.snuffingHabit.label :'Uppgift om snusvanor saknas')  }}</h3>
                         </div>
                     </div>
                 </div>
