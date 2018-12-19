@@ -89,7 +89,6 @@ angular.module('ndrApp')
                             };
                             break;
 						case 'age7to11':
-							console.log('age7to11');
                             valueFilter.age = {
                                 min: 7,
                                 max: 11
@@ -323,7 +322,7 @@ angular.module('ndrApp')
                 if (scope.model.unitType === 3) {
                     scope.model.charConfig = [{
                             header: 'Kön',
-                            hiddenIfDTTypes: [],
+                            //hiddenIfDTTypes: [],
                             fields: [{
                                     name: 'male',
                                     header: 'Pojkar'
@@ -337,7 +336,7 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Ålder',
-                            hiddenIfDTTypes: [],
+                            //hiddenIfDTTypes: [],
                             fields: [{
                                     name: 'ageLT7',
                                     header: '0-6 år'
@@ -355,7 +354,7 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Duration',
-                            hiddenIfDTTypes: [],
+                            //hiddenIfDTTypes: [],
                             noClick: true,
                             fields: [{
                                     name: 'durLT1',
@@ -382,7 +381,10 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Metod att ge insulin',
-                            hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            //hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            showFn: function(diabType, unitType) {
+                                return [1].indexOf(diabType) > -1;
+                            },
                             fields: [{
                                     name: 'imInjection',
                                     header: 'injektion'
@@ -396,7 +398,10 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Kontinuerlig glukosmätning',
-                            hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            //hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            showFn: function(diabType, unitType) {
+                                return [1].indexOf(diabType) > -1;
+                            },
                             fields: [{
                                     name: 'cgmYes',
                                     header: 'använder CGM/FGM',
@@ -416,7 +421,7 @@ angular.module('ndrApp')
                 } else {
                     scope.model.charConfig = [{
                             header: 'Kön',
-                            hiddenIfDTTypes: [],
+                            //hiddenIfDTTypes: [],
                             fields: [{
                                     name: 'male',
                                     header: 'män'
@@ -430,7 +435,7 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Ålder',
-                            hiddenIfDTTypes: [],
+                            //hiddenIfDTTypes: [],
                             fields: [{
                                     name: 'ageLT30',
                                     header: '18-29 år'
@@ -452,7 +457,7 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Duration',
-                            hiddenIfDTTypes: [],
+                            //hiddenIfDTTypes: [],
                             noClick: true,
                             fields: [{
                                     name: 'durLT10',
@@ -483,7 +488,10 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Diabetesbehandling',
-                            hiddenIfDTTypes: [1],
+                            //hiddenIfDTTypes: [1],
+                            showFn: function(diabType, unitType) {
+                                return [0, 2, 3, 4, 5, 9].indexOf(diabType) > -1;
+                            },
                             fields: [{
                                     name: 'treat1',
                                     header: 'enbart kost'
@@ -509,7 +517,10 @@ angular.module('ndrApp')
                         },
                         {
                             header: 'Metod att ge insulin',
-                            hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            //hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            showFn: function(diabType, unitType) {
+                                return [1].indexOf(diabType) > -1;
+                            },
                             fields: [{
                                     name: 'imInjection',
                                     header: 'injektion'
@@ -524,6 +535,19 @@ angular.module('ndrApp')
                         {
                             header: 'Kontinuerlig glukosmätning',
                             hiddenIfDTTypes: [0, 2, 3, 4, 5, 9],
+                            showFn: function(diabType, unitType) {
+
+                                if ([0,1].indexOf(diabType) < 0) {
+                                    return false
+                                }
+
+                                //special case hide MK all diabTypes
+                                if(diabType === 0 && unitType === 2) {
+                                    return false
+                                }
+
+                                return true;
+                            },
                             fields: [{
                                     name: 'cgmYes',
                                     header: 'använder CGM/FGM',
