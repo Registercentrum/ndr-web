@@ -45,7 +45,7 @@
 			<td class="">{{model.charStatistics[d.id][1]['total'] ? (((model.charStatistics[d.id][1]['total']/model.charStatistics[0][1]['total'])*100).toFixed(0)+'%') : ''}}</td>
 		</tr>
 	</tbody>
-	<tbody ng-repeat="area in model.charConfig" ng-if="area.hiddenIfDTTypes.indexOf(model.activeDTType.id) < 0">
+	<tbody ng-repeat="area in model.charConfig" ng-if="!area.showFn || area.showFn(model.activeDTType.id,model.unitType)"> <!-- ng-if="area.hiddenIfDTTypes.indexOf(model.activeDTType.id) < 0"  ng-if="!!!area.showFn && area.showfn(model.activeDTType.id,model.unitType) -->
 		<tr class="areaHeader">
 			<td class="rowHeader" colspan="5" rowspan>{{area.header}}</td>
 		</tr>
