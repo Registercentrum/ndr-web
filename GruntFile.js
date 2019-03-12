@@ -81,6 +81,13 @@ module.exports = function(grunt) {
             }
         },
 
+        cssmin: {
+            minify: {
+                src: 'css/ndr.css',
+                dest: 'dist/css/ndr.css'
+            }
+        },
+
         svgmin: {
             options: {
                 plugins: [
