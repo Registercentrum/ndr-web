@@ -1,0 +1,117 @@
+form .qrow {
+  display: flex;
+  /*justify-content: center;*/
+  font-size: 13px;
+  border-bottom: 1px solid #c4e2ed !important;
+  padding: 2px 0;
+}
+.contactSelector {
+  color: #74BAD8;
+  font-size: 2.2rem
+}
+.contactSelector:hover {
+  color: #389cc7;
+  cursor: pointer;
+}
+.contactSelector.left {
+  margin-right: 2rem;
+}
+.contactSelector.right {
+  margin-left: 2rem;
+}
+/*.questionGroup .qrow {
+  border-bottom: none !important;
+}*/
+.questiongroup .qrow {
+  max-width: 462px;
+}
+.questionGroup .qrow:last-child {
+    border-bottom: none !important;
+}
+
+
+.questionfield {
+  width: 242px;
+  min-width: 242px;
+  border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
+  transition: background-color 1s;
+  padding: 6px 8px 6px;
+  font-size: 13px;
+  margin-right: 40px;
+}
+.questionfield input, .questionfield select{
+  height: 30px;
+  padding: 6px;
+  margin: 0;
+}
+.questionfield .measureUnit {
+  margin: 6px 3px 0;
+  width:68px;
+}
+
+.questionfield.has-error {
+  /*background-color: #ffb3b3; */
+  border: 1px solid #ffcccc;
+}
+.questionfield.has-no-error {
+  background-color: #FAFBFC;
+  border: 1px solid #FAFBFC;
+}
+.questionfield.has-value {
+  background-color: #cbe7da; /* #b9dfcd*/
+  border: 1px solid #79d2a6;
+}
+.questionfield p {
+  margin: 0 0 0 2px;
+  font-size: 11px;
+}
+.contactForm .questionText .helpContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contactForm .helpNote {
+  color: #74BAD8;
+  margin-left: 0.5rem;
+}
+.contactForm .questionlabel {
+  width: 220px;
+  min-width: 220px;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  margin-left: 1.5rem;
+}
+.contactForm .refContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contactForm .refValue {
+  display: inline-block;
+  color:#8c8c8c
+}
+
+/*.questionlabel {
+  border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
+}*/
+/*.questionlabel.has-error {
+  background-color: #ffe6e6;
+}
+.questionlabel.has-no-error {
+  background-color: #FAFBFC;
+}
+.questionlabel.has-value {
+  background-color: #eef7f3;
+}*/
+
+.contactForm .form-control {
+  font-size: 13px;
+}
+form .qrow:last-child {
+    border-bottom: none;
+}

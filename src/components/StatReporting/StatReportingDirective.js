@@ -244,7 +244,7 @@ angular.module('ndrApp')
                             denom = 'ageGT5';
                             break;
                         case 'selfcarePlanDate':
-                            denom = 'Age1To15';
+                            denom = 'age1To15';
                             break;  
                         case 'shareGlucoseLast2W':
                             denom = 'cgm';
@@ -257,6 +257,18 @@ angular.module('ndrApp')
                             break;
                         case 'sdCGMLast2W':
                             denom = 'cgm';
+                            break;  
+                        case 'cholesterol':
+                            denom = 'ageGT10';
+                            break;
+                        case 'triglyceride':
+                            denom = 'ageGT10';
+                            break;
+                        case 'ldl':
+                            denom = 'ageGT10';
+                            break;  
+                        case 'hdl':
+                            denom = 'ageGT10';
                             break;  
                         default:
                             denom = 'contactDate'
@@ -281,6 +293,13 @@ angular.module('ndrApp')
                             group: null
                         }
                     };
+
+                    if (f.columnName === 'selfcarePlanDate') {
+                        console.log(o);
+                        console.log('täljare',d.counts[1][f.columnName]);
+                        console.log('nämnare',d.counts[1][denom]);
+                        
+                    }
 
                     o.unitShare.group = scope.getValueGroup(o.unitShare.value);
                     o.countyShare.group = scope.getValueGroup(o.countyShare.value);

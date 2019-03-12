@@ -3,6 +3,11 @@ angular.module("ndrApp")
 
         dataService.getOne("publication", $stateParams.id).then(function (data){
 
+            $scope.isEnglish = !!$stateParams.english
+
+            console.log('isEnglish',$scope.isEnglish);
+
+
             var authors = [
                 data.firstAuthor,
                 data.otherAuthor,

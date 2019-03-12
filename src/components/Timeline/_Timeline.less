@@ -56,5 +56,32 @@
       margin-left: 0;
     }
   }
+  .Timeline-text-below:before {
+    content: '\f017';
+    font-family: icomoon;
+    display: block;
+    font-weight: 400;
+    position: absolute;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #278470;
+    padding: 0px 8px;
+    font-size: 1.2em;
+    left: 50%;
+    top: -30px;
+    margin-left: -15px;
+  }
+  .Timeline-element--first .Timeline-text:before {
+    width: 50%;
+    text-align: right;
+    left: 10px;
+    margin-left: 0;
+  }
+  .Timeline-element--last .Timeline-text:before {
+    width: 50%;
+    text-align: left;
+    left: auto;
+    right: 10px;
+    margin-left: 0;
+  }
 
 }

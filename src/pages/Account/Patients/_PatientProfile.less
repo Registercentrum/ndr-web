@@ -54,6 +54,77 @@
   margin-top: 50px
 }
 
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Profile-Panel {
+  display: flex;
+  flex-direction: column;
+  height: 280px;
+  font-size: 14px;
+}
+.Profile-Header {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+}
+.Profile-Header h4 {
+  flex: 1;
+}
+.Panel--profile h5 {
+  font-weight: 600;
+}
+.Profile-Content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.Profile-Center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+/*.Profile-Center * {
+  flex: 1;
+}*/
+.Profile-Footer {
+  height: 40px;
+  text-align: right;
+  font-size: 1.2rem;
+}
+.Profile-Panel hr {
+  margin: 0 0 2px;
+}
+.Profile-Panel p {
+  margin: 2px 0;
+}
+.print-wrapper p {
+  margin: 0 0 5px;
+}
+.print-wrapper .panel-wrapper {
+  margin: 1em 0 2rem;
+}
+.profilebg {
+  background-size: auto 100%;
+}
+.profilebg.girl {
+  background: url("/images/profilflicka.jpg") no-repeat center center;
+}
+.profilebg.boy {
+  background: url("/images/profilpojke.jpg") no-repeat center center;
+}
+.profilebg.man {
+  background: url("/images/profilman.jpg") no-repeat center center;
+}
+.profilebg.woman {
+  background: url("/images/profilkvinna.jpg") no-repeat center center;
+}
+.subjectProfile .helpNote {
+	color: #dfb200;
+}
+
 
 @media print {
 
@@ -83,6 +154,9 @@
 
   h3{
     margin: 0px 0px 5px 0px;
+  }
+  .Profile-Panel {
+    height: 200px;
   }
 
 }

@@ -87,7 +87,7 @@ angular.module('ndrApp')
             });
 
             $scope.model.listModelNews = {
-                data : data
+                data : data.slice(0, 3)
             }
 
             setTimeout(function (){

@@ -8,7 +8,7 @@
 		{{d.name}}
 	</button>
 </div>
-<table class="tableReportingChar table table-responsive">
+<table class="table-reporting-char table table-responsive">
 	<thead>
 	  <tr>
 		<th></th>
@@ -26,35 +26,35 @@
 	</tbody>
 	<tbody>
 		<tr class="value" style="background-color: white">
-			<td class="rowLabel rowHeader borderRight"><strong>{{model.activeDTType.name}}</strong></td>
+			<td class="row-label  row-header  border-right"><strong>{{model.activeDTType.name}}</strong></td>
 			<td class=""><strong>{{model.charStatistics[model.activeDTType.id][3]['total']}}</strong></td>
-			<td class="borderRight"></td>
-			<td class="borderRight"></td>
+			<td class="border-right"></td>
+			<td class="border-right"></td>
 			<td class=""></td>
 		</tr>
 	</tbody>
 	<tbody ng-if="model.activeDTType.id == 0">
 		<tr class="areaHeader">
-			<td class="rowHeader" colspan="5">Diabetestyp</td>
+			<td class="row-header " colspan="5">Diabetestyp</td>
 		</tr>
 		<tr class="value" ng-repeat="d in model.allDTTypes" ng-if="d.id>0">
-			<td class="rowLabel borderRight">{{d.name}}</td>
-			<td class="borderRight" ng-class="{ 'fieldCount': model.charStatistics[d.id][3].total }" ng-click="countClicked(null,null,d.id)">{{model.charStatistics[d.id][3]['total']}}</td>
-			<td class="borderRight">{{model.charStatistics[d.id][3]['total'] ? (((model.charStatistics[d.id][3]['total']/model.charStatistics[0][3]['total'])*100).toFixed(0)+'%') : ''}}</td>
-			<td class="borderRight">{{model.charStatistics[d.id][2]['total'] ? (((model.charStatistics[d.id][2]['total']/model.charStatistics[0][2]['total'])*100).toFixed(0)+'%') : ''}}</td>
+			<td class="row-label  border-right">{{d.name}}</td>
+			<td class="border-right" ng-class="{ 'fieldCount': model.charStatistics[d.id][3].total }" ng-click="countClicked(null,null,d.id)">{{model.charStatistics[d.id][3]['total']}}</td>
+			<td class="border-right">{{model.charStatistics[d.id][3]['total'] ? (((model.charStatistics[d.id][3]['total']/model.charStatistics[0][3]['total'])*100).toFixed(0)+'%') : ''}}</td>
+			<td class="border-right">{{model.charStatistics[d.id][2]['total'] ? (((model.charStatistics[d.id][2]['total']/model.charStatistics[0][2]['total'])*100).toFixed(0)+'%') : ''}}</td>
 			<td class="">{{model.charStatistics[d.id][1]['total'] ? (((model.charStatistics[d.id][1]['total']/model.charStatistics[0][1]['total'])*100).toFixed(0)+'%') : ''}}</td>
 		</tr>
 	</tbody>
 	<tbody ng-repeat="area in model.charConfig" ng-if="!area.showFn || area.showFn(model.activeDTType.id,model.unitType)"> <!-- ng-if="area.hiddenIfDTTypes.indexOf(model.activeDTType.id) < 0"  ng-if="!!!area.showFn && area.showfn(model.activeDTType.id,model.unitType) -->
 		<tr class="areaHeader">
-			<td class="rowHeader" colspan="5" rowspan>{{area.header}}</td>
+			<td class="row-header " colspan="5" rowspan>{{area.header}}</td>
 		</tr>
 		<tr class="value" ng-repeat="v in area.fields">
-			<td class="rowLabel borderRight">{{v.header}} <i class="fa fa-question-circle helpNote" ng-show="v.helpText" tooltip="{{v.helpText}}"></i></td>
-			<td class="borderRight" ng-class="{ 'fieldCount': (model.charStatistics[model.activeDTType.id][3][v.name] && !area.noClick) }" ng-click="countClicked(area,v)">{{model.charStatistics[model.activeDTType.id][3][v.name]}}</td>
-			<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][3][v.name]/(model.charStatistics[model.activeDTType.id][3][v.denom] || (model.charStatistics[model.activeDTType.id][3][area.defaultDenom]) || 1))*100).toFixed(0)+'%'}}</td>
-			<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][2][v.name]/(model.charStatistics[model.activeDTType.id][2][v.denom] || (model.charStatistics[model.activeDTType.id][2][area.defaultDenom]) || 1))*100).toFixed(0)+'%'}}</td>
-			<td class="borderRight">{{((model.charStatistics[model.activeDTType.id][1][v.name]/(model.charStatistics[model.activeDTType.id][1][v.denom] || (model.charStatistics[model.activeDTType.id][1][area.defaultDenom]) || 1))*100).toFixed(0)+'%'}}</td>
+			<td class="row-label  border-right">{{v.header}} <i class="fa fa-question-circle help-note" ng-show="v.helpText" tooltip="{{v.helpText}}"></i></td>
+			<td class="border-right" ng-class="{ 'fieldCount': (model.charStatistics[model.activeDTType.id][3][v.name] && !area.noClick) }" ng-click="countClicked(area,v)">{{model.charStatistics[model.activeDTType.id][3][v.name]}}</td>
+			<td class="border-right">{{((model.charStatistics[model.activeDTType.id][3][v.name]/(model.charStatistics[model.activeDTType.id][3][v.denom] || (model.charStatistics[model.activeDTType.id][3][area.defaultDenom]) || 1))*100).toFixed(0)+'%'}}</td>
+			<td class="border-right">{{((model.charStatistics[model.activeDTType.id][2][v.name]/(model.charStatistics[model.activeDTType.id][2][v.denom] || (model.charStatistics[model.activeDTType.id][2][area.defaultDenom]) || 1))*100).toFixed(0)+'%'}}</td>
+			<td class="border-right">{{((model.charStatistics[model.activeDTType.id][1][v.name]/(model.charStatistics[model.activeDTType.id][1][v.denom] || (model.charStatistics[model.activeDTType.id][1][area.defaultDenom]) || 1))*100).toFixed(0)+'%'}}</td>
 		</tr>
 	</tbody>
 </table>
