@@ -6,7 +6,7 @@
       <div class="Panel clearfix">
 
         <article class="Publication">
-          <h1 class="Publication-title">{{ publication.name }}</h1>
+          <h1 class="Publication-title">{{ publication.name }} {{ $stateParams.english }}</h1>
 
           <div class="Publication-metadata col-md-3 u-noLeftPadding">
             <img ng-if="!publication.image" src="https://placehold.it/200&text=saknar%20bild">
@@ -17,7 +17,7 @@
 
           <div class="col-md-9 u-noRightPadding">
             <h3 class="Publication-body-abstractTitle">Abstract</h3>
-            <div class="Publication-body" ng-bind-html="publication.laymansDescription"></div>
+            <div class="Publication-body" ng-show="!isEnglish" ng-bind-html="publication.laymansDescription"></div>
 
             <div ng-show="publication.pubMedURL" class="Publication-link">
               <a href="{{ publication.pubMedURL }}" target="_blank" class="Button Button--default">Full PDF</a>

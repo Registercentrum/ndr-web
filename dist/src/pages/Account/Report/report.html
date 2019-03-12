@@ -38,6 +38,7 @@
 			</div>
 			<div  style="flex:1;display: flex;">
 				<div style="flex: 1;display: flex;align-items: center;justify-content: flex-end">
+					<!--<button ng-click="setHeredity()" style="margin-right: 2rem" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left">Hereditet</button>--->
 					<button ng-click="setIncidence()" style="margin-right: 2rem" ng-show="!subject.incidence.incDone && !subject.incRepOtherUnit" ng-if="accountModel.activeAccount.unit.typeID == 3 && subject" id="bnIncidence" type="submit" class="Button Button--info Button--strong pull-left">Incidens</button>
 					<button ng-click="setContact()" style="margin-right: 2rem" id="bnNewContact" type="submit" class="Button Button--primary Button--strong pull-left">Ny rapportering</button>
 					<select
@@ -73,6 +74,7 @@
 		<div ng-if="subject && metafields">
 			<div ng-show="view == 1" report-form-new account-model="accountModel" subject="subject" questions="contactQuestions" optional-questions="optionalQuestions" new-index="newIndex" contact-to-update="contactToUpdate"></div>
 			<div ng-if="view == 2" incidence-form account-model="accountModel" subject="subject" questions="incidenceQuestions" ></div>
+			<!--<div ng-if="!view" heredity account-model="accountModel" subject="subject" ></div>-->
 		</div>
 	</div>
 </div>

@@ -40,12 +40,12 @@
                             </div>
                           </div>
 
-                          <div class="col-md-4 profilebg" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 16px; font-size: 14px;font-weight: 300;height: 280px;">
+                          <div class="col-md-4 profilebg Profile-Panel" ng-class="{1:'boy', 2:'girl'}[subject.sex]"  style="line-height: 16px; font-size: 14px;font-weight: 300;height: 280px;">
                               <h5 style="color: red" ng-show="subject.dateOfDeath">Avliden</h5>
                               <h5 ng-show="subject.name"><strong>{{ subject.name }}</strong></h5>
                               <h5>{{ (subject.sex === 1 ? 'Pojke' : 'Flicka') + ', ' + subject.age }} år{{subject.yearOfOnset ? ', debut ' + (subject.incidence ? subject.incidence.incDate : subject.yearOfOnset) : '' }}</h5>
                               <p><span class="strong">{{ diabetesTypeText() }}</span></p>
-                              <hr />
+                              <hr/>
                               <!--<p>Debutår: {{ subject.yearOfOnset }}</p>-->
                               <p>Vikt: <span class="strong">{{  latest.weight.label }}</span></p>
                               <p>Längd: <span class="strong">{{  latest.height.label }}</span></p>
@@ -305,7 +305,7 @@
             <div ng-show="model.mode == 'table'" class="Panel">
                 <h2>Rapporteringar</h2>
                 <div class="row">
-                  <div class="btn-group pull-right" style="margin: 0 16px 10px 0;">
+                  <div class="pull-right" style="margin: 0 16px 10px 0;">
                       <a class="Button Button--info Button--small" ng-click="tableForward()" ng-show="model.tableCount>1 && model.tableIndex>1" ><i class="fa fa-arrow-circle-left"></i> Framåt</a>
                       <a class="Button Button--info Button--small" ng-click="tableBack()"  ng-show="model.tableCount>1 && model.tableIndex<model.tableCount" >Bakåt  <i class="fa fa-arrow-circle-right"></i></a>
                   </div>

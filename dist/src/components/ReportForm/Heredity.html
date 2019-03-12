@@ -1,0 +1,100 @@
+<div style="margin-top: 40px;">
+	<span class="Button btn-danger pull-right" ng-click="delete()" ng-show="accountModel.user.isAdministrator &&  model.contactModel.id">Ta bort</span>
+	<h5 class="text-info">{{accountModel.activeAccount.unit.name}}</h5>
+	<h3 class="Report-title" style="margin:1rem 0 2rem">Rapportera hereditet</h3>
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="yearOfOnset">Postnummer vid diagnos</label>
+			<input name="postalNo" type="text" class="form-control"ng-model="model.formData.postalNo" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="yearOfOnset">Födelseland</label>
+			<input name="bc" type="text" class="form-control" ng-model="model.formData.bc" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="yearToSweden">Kom till Sverige</label>
+			<input name="bc" placeholder="ÅÅÅÅ" type="text" class="form-control" ng-model="model.formData.yearToSweden" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="yearOfOnset">Alla nedan födda i Sverige</label>
+			<input name="postalNo" type="text" class="form-control"ng-model="model.formData.postalNo" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="yearOfOnset">Födelseland mor</label>
+			<input name="postalNo" type="text" class="form-control"ng-model="model.formData.bcMother" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="bcGrandpa1">Födelseland morfar</label>
+			<input name="bcGrandpa1" type="text" class="form-control"ng-model="model.formData.bcGrandpa1" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="bcGrandma1">Födelseland mormor</label>
+			<input name="bcGrandma1" type="text" class="form-control"ng-model="model.formData.bcGrandma1" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="bcMother">Födelseland far</label>
+			<input name="bcMother" type="text" class="form-control"ng-model="model.formData.bcMother" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="bcGrandpa2">Födelseland farfar</label>
+			<input name="bcGrandpa2" type="text" class="form-control"ng-model="model.formData.bcGrandpa2" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="bcGrandma2">Födelseland farmor</label>
+			<input name="bcGrandma2" type="text" class="form-control"ng-model="model.formData.bcGrandma2" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="heightMother">Mors längd</label>
+			<input name="heightMother" type="text" class="form-control"ng-model="model.formData.heightMother" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="weightMother">Mors vikt</label>
+			<input name="weightMother" type="text" class="form-control"ng-model="model.formData.weightMother" >
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="heightFather">Fars längd</label>
+			<input name="heightFather" type="text" class="form-control"ng-model="model.formData.heightFather" >
+		</div>
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="weightFather">Fars vikt</label>
+			<input name="weightFather" type="text" class="form-control"ng-model="model.formData.weightFather" >
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-3 Report-formGroup-form">
+			<label class="" for="siblingCount">Antal syskon</label><i class="fa fa-question-circle helpNote" ng-show="lists['yearOfOnset'].helpNote != null"></i>
+			<input name="yearOfOnset" type="number" class="form-control" min="0" max="12" ng-model="model.siblingCount" > <!--placeholder="Antal syskon" ng-class="{ 'has-no-error' : contactModel.yearOfOnset != null}"-->
+			<!--<p ng-show="contactForm.yearOfOnset.$pristine && contactModel.yearOfOnset != null && contactModel.yearOfOnset == subject.yearOfOnset && contactToUpdate == null" class="Report-formItemHelp help-block iteration">OBS Förifyllt från tidigare rapportering</p>-->
+		</div>
+	</div>
+	<div>
+		<div style="display: flex">
+			<div class="heredity-col-header-empty header-width"></div>
+			<div class="heredity-col-header" ng-repeat="d in model.diseases">
+				<span class="deg-45">{{d.text}}</span>
+			</div>
+		</div>
+		<table class="heredity" style="width: 100%">
+			<tr ng-repeat="r in model.relatives" style="display: flex" ng-show="!r.siblingIndex || (r.siblingIndex <= model.siblingCount+1)"> <!-- ng-hide="model.siblingsRowsToHide[r.key] -->
+				<td ng-show="!r.siblingIndex || r.siblingIndex <= model.siblingCount" class="heredity-row-header header-width">{{ r.text }}</td> <!-- <i class="fas fa-minus-circle bn-remove-sibling" ng-show="r.siblingIndex === model.siblingCount" ng-click="removeSibling(r)"></i> -->
+				<td ng-show="r.siblingIndex>model.siblingCount" class="heredity-row-header header-width" ng-click="addSibling()"></td> <!-- <span class="bn-add-sibling">Lägg till syskon</span> -->
+				<td ng-show="!r.siblingIndex || (r.siblingIndex <= model.siblingCount)" ng-repeat="d in model.diseases" class="clickable f-1" ng-class="{ selected: model.gridData[r.key][d.key]}" ng-click="toggleVal(r,d)"><i ng-show="model.gridData[r.key][d.key]" class="fas fa-check"></i></td> <!-- {{ ? 'Ja' : ''}} ---->
+			</tr>
+		</table>
+		<div class="bn-container">
+			<button type="submit" ng-click="saveHeredity()" class="Button Button--medium Button--info">Spara</button>
+		</div>
+	</div>
+</div>

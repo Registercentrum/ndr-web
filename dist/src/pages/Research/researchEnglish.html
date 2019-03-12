@@ -1,0 +1,92 @@
+<!--  "id": 2,
+"name": "Hypertension in diabetes: trends in clinical control in repeated large-scale national surveys from Sweden",
+"laymansDescription": "Studie av blodtrycksnivåer under det sena 1990-talet hos patienter med typ 1- och typ 2-diabetes, talande för en långsam successiv förbättring.",
+"firstAuthor": "Nilsson PM",
+"lastAuthor": "Cederholm J",
+"otherAuthor": "Gudbjörnsdottir S, Eliasson B",
+"dateOfSubmission": null,
+"dateOfPublication": "2003-01-01T00:00:00",
+"magazine": "J Hum Hypertens",
+"issue": "2003;17",
+"pages": "37-44",
+"status": {
+"id": 5,
+"text": "Publicerat"
+},
+"ethicsApprovalStatus": {
+"id": 2,
+"text": "Ej relevant"
+},
+"image": null,
+"pubMedURL": null,
+"route": "researchproject",
+"reqParams": null,
+"fromServer": true,
+"parentResource": null,
+"restangularCollection": false
+},
+{-->
+
+<div class="container">
+
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="Page-title">Research</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="Panel">
+      <h2 class="Panel-title">Publications</h2>
+
+      <article ng-repeat="publication in publications" class="Research clearfix">
+        <img src="{{ publication.image ? publication.image : 'images/placeholder_publ.png' }}" style="width:100px; height: 100px;margin:25px 20px 0 20px" class="Research-image col-md-4 u-noLeftPadding">
+
+        <div class="Research-text col-md-8 u-noRightPadding">
+        <p class="Research-text-date">{{publication.dateOfPublication | date: 'mediumDate' }}</p><!--/*'d MMMM, yyyy'*/ -->
+          <h3 class="Research-text-title">
+            <a href="#/forskning/{{ publication.id }}/english" class="Research-text-title-link">{{ publication.name }}</a>
+          </h3>
+          <p class="Research-text-authors">
+            Authors:
+            {{ publication.firstAuthor }},
+            {{ publication.otherAuthor }},
+            {{ publication.lastAuthor }}
+          </p>
+          <p class="Research-text-authors">
+            Published:
+            {{ publication.published }}
+          </p>
+        </div>
+      </article>
+
+
+    <!--<pre>-->
+    <!--{{ publications | json }}-->
+    <!--</pre>-->
+
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="Panel">
+      <h3 class="Panel-title">Contact</h3>
+      <p>Questions about research in NDR?</p>
+      <p><a href="mailto:ann-marie.svensson@registercentrum.se">Ann-Marie Svensson, Research Advisor</a></p>
+       </div>
+	<!--<div class="Panel Panel--blue">
+
+		<article class="">
+			<h5><a download target="_blank" href="pdfs/ansokan_utlamnande_forskning.doc"><i class="fa fa-file-text-o"></i> Blankett för ansökan om datauttag</a></h5>
+		</article>
+
+	</div>-->
+
+  </div>
+
+</div>
+
+
+
+</div><!-- end container -->
