@@ -698,18 +698,23 @@ angular.module('ndrApp')
                             var noteToAdd = "Enligt riktlinje från " + metafields[i].recAgeFrom + " år."
                             metafields[i].helpNote = (metafields[i].helpNote ? metafields[i].helpNote + ' ' + noteToAdd : noteToAdd)
                         }
-                        if (metafields[i].columnName == 'sex') {
+                        if (metafields[i].columnName === 'sex') {
                             metafields[i].domain.domainValues[0].text = 'Pojke'
                             metafields[i].domain.domainValues[1].text = 'Flicka'
                         }
-                        if (metafields[i].columnName == 'diabetesType') {
+                        if (metafields[i].columnName === 'diabetesType') {
                             metafields[i].domain.domainValues[0].text = 'Typ 1';
                         }
-                        if (metafields[i].columnName == 'albuminuria') {
+                        if (metafields[i].columnName === 'albuminuria') {
                             metafields[i].helpNote = ['För diagnos krävs förhöjd alb/kreatininratio i 2 av 3 prov av morgonurin inom 6 månader. '
                             ,'-Mikroalbuminuri: flickor 3,5-25 mg/mmol, pojkar 2,5-25 mg/mmol.'
                             ,'-Makroalbuminuri: >25 mg/mmol. - Normaliserat värde: efter farmakologisk behandling.'].join('')
                         }
+                        if (['lipidLoweringDrugs','cholesterol','triglyceride','ldl','hdl'].indexOf(metafields[i].columnName) > -1) {
+                            var noteToAdd = 'Lipidkontroll bör genomföras tidigt efter diabetesdebuten hos alla över 10 år och redan efter 2 års ålder om det finns ärftlighet för tidig utveckling av hjärt-och kärlsjukdom eller familjära blodfettsrubbningar';
+                            metafields[i].helpNote = (metafields[i].helpNote ? metafields[i].helpNote + ' ' + noteToAdd : noteToAdd);
+                        }
+                        
                         if (metafields[i].columnName == 'treatment') {
                             setTreatmentDomain(metafields[i].domain);
                         }
@@ -830,10 +835,10 @@ angular.module('ndrApp')
                     countyCode: 0,
                     unitID: 0,
                     indicatorID: null,
-                    fromYear: 2017,
+                    fromYear: 2018,
                     fromQuartal: 0,
                     fromMonth: 0,
-                    toYear: 2017,
+                    toYear: 2018,
                     toQuartal: 0,
                     toMonth: 0,
                     diabetesType: 0,
@@ -843,7 +848,7 @@ angular.module('ndrApp')
                     toAge: 0,
                     interval: null,
                     recalculate: false,
-                    outdatedDays: 3
+                    outdatedDays: 1
                     //dTH :
                 };
 
@@ -858,10 +863,6 @@ angular.module('ndrApp')
 
             var preSelectedSearchFilters = {
                 values: {
-                    hba1c: {
-                        min: 20,
-                        max: 177
-                    },
                     s: {
                         value: null
                     },
