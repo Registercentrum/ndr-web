@@ -195,6 +195,10 @@ angular.module('ndrApp')
             $scope.setIncidence = function() {
                 $scope.view = 2;
             }
+            $scope.setHeredity = function() {
+                $scope.view = 3;
+            }
+            
             $scope.init();
 
 
