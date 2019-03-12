@@ -277,6 +277,18 @@ angular.module('ndrApp', [
                     controller : 'ResearchController'
                 })
 
+                .state('main.researchEnglish', {
+                    url: '/Research',
+                    templateUrl: 'src/pages/Research/researchEnglish.html',
+                    controller : 'ResearchEnglishController'
+                })
+
+                .state('main.researchItemEnglish', {
+                    url: '/forskning/:id/:english',
+                    templateUrl: 'src/components/Publication/Publication.html?v=3',
+                    controller : 'PublicationController'
+                })
+
                 .state('main.researchItem', {
                     url: '/forskning/:id',
                     templateUrl: 'src/components/Publication/Publication.html?v=3',
