@@ -8,6 +8,7 @@
 					<li ng-class="{active: model.activeTab == 1}" ng-click="handleTabClick(1);"><a href="javascript:void(0)">Resultatöversikt</a></li>
 					<li ng-class="{active: model.activeTab == 2}" ng-click="handleTabClick(2);"><a href="javascript:void(0)">Rapporteringsgrad</a></li>
 					<li ng-class="{active: model.activeTab == 3}" ng-click="handleTabClick(3);"><a href="javascript:void(0)">Våra patienter</a></li>
+					<li ng-if="model.activeAccount.unit.isUsingPROM" ng-class="{active: model.activeTab == 4}" ng-click="handleTabClick(4);"><a href="javascript:void(0)">PROM</a></li>
 				</ul>
 				<!--<tabset justified class="nav-tabs-secondary nav-tabs-negative-30">
 					<tab active="model.activeTab == 1" heading="Resultatöversikt" ng-click="handleTabClick(1);">
@@ -23,6 +24,7 @@
 				<div ng-show="model.activeTab == 1" key-indicators light="true" model="model.keyIndicatorModel"></div>
 				<div ng-show="model.activeTab == 2" stat-reporting  model="model.statReporting"></div>
 				<div ng-show="model.activeTab == 3" stat-char model="model.statCharModel"></div>
+				<div ng-show="model.activeTab == 4" stat-prom active-account="model.activeAccount"></div>
 			</div>
 		</div>
 	</div>

@@ -14,7 +14,9 @@ angular.module("ndrApp")
 			unit: $scope.model.activeAccount.unit,
 			unitType: $scope.model.activeAccount.unit.typeID,
 			diabetesType: $scope.model.activeAccount.unit.typeID === 1 ? 0 : 1
-		};
+        };
+        
+        console.log('unit',$scope.model.activeAccount.unit);
 		
 		//separated for future needs
 		$scope.model.statCharModel = {
