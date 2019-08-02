@@ -174,6 +174,11 @@ angular.module('ndrApp')
             }
 
             this.getUserProjects = function() {
+
+                if (!accountService.accountModel.activeAccount) {
+                    return [];
+                }
+
                 var unitID = accountService.accountModel.activeAccount.unit.unitID
                 var projects = _.filter(this.projects, function(d) {
                     return d.units.indexOf(unitID) !== -1;
@@ -584,6 +589,19 @@ angular.module('ndrApp')
                     type: 'GET',
                     dataType: 'json',
                     success: callback
+                });
+            };
+
+            this.getPROMStatistics = function(accountID, query) {
+                var query = query || {};
+                query.APIKey = APIconfigService.APIKey;
+                query.AccountID = accountID;
+
+                return $.ajax({
+                    url: APIconfigService.baseURL + 'PROMStatistics?dt=' + query.dt + '&sex=' + query.sex,
+                    data: query,
+                    type: 'GET',
+                    dataType: 'json'
                 });
             };
 
