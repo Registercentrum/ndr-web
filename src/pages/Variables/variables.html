@@ -1,0 +1,53 @@
+
+
+<div class="container variables">
+    <h1 class="Page-title">NDRs Variabler</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="form-header">Delregister</h3>
+            <div class="button-group">
+                <button
+                    ng-repeat="r in state.meta.registers"
+                    ng-click="setQuery('register',{{r.id}})" class="Button Button--default ng-binding Button--default"
+                    ng-class="{'Button--info': state.query.register === r.id}">
+                    {{r.desc}}
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6 bottom-align">
+            <!--<div style="position: relative; height: 100%;">
+                <div style="position: absolute; bottom: 0;">
+                    <img src="images/export-to-csv.png" ng-click="exportToCSV()">
+                    <input class="search" type="text" placeholder="Sök"></input>
+                </div>
+            </div>-->
+            <input class="search" type="text" placeholder="Sök"></input>
+            <img src="images/export-to-csv.png" class="logo-export" ng-click="exportToCSV()">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <tr>
+                    <th ng-repeat="f in state.fields" ng-click="sort(f)">{{f.header}}</th>
+                    <!--<th>Kommentar</th>-->
+                </tr>
+                <tr ng-repeat="v in state.filtered">
+                    <td ng-repeat="f in state.fields" class="text">{{ displayVal(v[f.name],f) }}</td>
+                </tr>
+                <!--<tr ng-repeat="v in state.filtered">
+                    <td class="text">{{ v.question }}</td>
+                    <td>{{ v.measureUnit }}</td>
+                    <td>{{ v.minValue }}</td>
+                    <td>{{ v.maxValue }}</td>
+                    <td>{{ v.isAdultcareExclusive ? 'Ja' : '' }}</td>
+                    <td>{{ v.isChildcareExclusive ? 'Ja' : '' }}</td>
+                    <td>{{ v.isCalculated ? 'Ja' : '' }}</td>
+                    <td class="text">{{ v.helpNote }}</td>
+                </tr>-->
+            </table>
+        </div>
+    </div>
+
+</div>
