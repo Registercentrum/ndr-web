@@ -231,6 +231,12 @@ angular.module('ndrApp', [
                     templateUrl: 'src/pages/Statistics/annualReport.html?v=3'
                 })
 
+                .state('main.variables', {
+                    url: '/variabler',
+                    templateUrl: 'src/pages/Variables/variables.html',
+                    controller: 'VariablesController'
+                })
+
                 .state('main.compare1', {
                     url: '/knappen1',
                     templateUrl: 'src/pages/Compare/compare.html?v=3'
