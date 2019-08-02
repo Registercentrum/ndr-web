@@ -1,0 +1,77 @@
+<div class="stat-prom">
+	<h1 class="Panel-title">PROM</h1>
+	<p>Uppgifterna nedan baseras på enkäter från de senaste 365 dagarna.<br />Tabellen uppdateras varje natt.</p>
+	<!--<div style="margin-bottom: 15px" ng-if="state.unitDTTypes.length>1">
+		<button style="margin-right: 5px"
+			ng-repeat="d in state.unitDTTypes"
+			ng-click="setDisplayedDTType({{d.id}})" class="Button Button--default ng-binding Button--default"
+			ng-class="{'Button--info': state.activeDTType.id === d.id}">
+			{{d.name}}
+		</button>
+	</div>-->
+	<h3 class="form-header">Diabetestyp</h3>
+	<div class="button-group">
+		<button
+			ng-repeat="d in state.dtTypes"
+			ng-click="setDTType({{d.id}})" class="Button Button--default ng-binding Button--default"
+			ng-class="{'Button--info': state.formData.dt === d.id}">
+			{{d.name}}
+		</button>
+	</div>
+	<h3 class="form-header">Kön</h3>
+	<div class="button-group">
+		<button
+			ng-repeat="s in state.sex"
+			ng-click="setSex({{s.id}})" class="Button Button--default ng-binding Button--default"
+			ng-class="{'Button--info': state.formData.sex === s.id}">
+			{{s.name}}
+		</button>
+	</div>
+	<h2>Enkäter</h2><!-- <i class="fa fa-question-circle help-note" style="font-size: 14px" tooltip="{{state.helpText}}"></i> -->
+	<table ng-if="state.statData" class="table-reporting-char table table-responsive">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Riket</th>
+				<th>{{state.unit.name}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="bold">Utskickade</td>
+				<td>{{state.statData.inviteStat['1'].count ? state.statData.inviteStat['1'].count : '-'}}</td>
+				<td>{{state.statData.inviteStat['3'].count ? state.statData.inviteStat['3'].count : '-'}}</td>
+			</tr>
+			<tr>
+				<td class="bold">Besvarade</td>
+				<td>{{state.statData.inviteStat['1'].submitted ? state.statData.inviteStat['1'].submitted : '-'}}</td>
+				<td>{{state.statData.inviteStat['3'].submitted ? state.statData.inviteStat['3'].submitted : '-'}}</td>
+			</tr>
+			<tr>
+				<td class="bold">Andel besvarade</td>
+				<td class="bold">{{state.statData.inviteStat['1'].share ? state.statData.inviteStat['1'].share + '%' : '-'}}</td>
+				<td class="bold">{{state.statData.inviteStat['3'].share ? state.statData.inviteStat['3'].share + '%' : '-'}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<h2>Utfall</h2>
+	<table ng-if="state.statData" class="table-reporting-char table-dimension table table-responsive">
+		<thead>
+		<tr>
+			<th></th>
+			<th>Riket</th>
+			<th>{{state.unit.name}}</th>
+			<th>Skillnad</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="d in state.statData.dimensions">
+				<td class="table-row-header">{{d.desc}}</td>
+				<td>{{formatOutcome(state.statData.dimStat['1'][d.id].outcome,1)}}</td>
+				<td>{{formatOutcome(state.statData.dimStat['3'][d.id].outcome,1)}}</td>
+				<td><span class="valueIndicator" ng-class="{'better':(state.statData.dimStat['3'][d.id].diffClass === 4), 'good':(state.statData.dimStat['3'][d.id].diffClass === 3), 'bad':(state.statData.dimStat['3'][d.id].diffClass === 2), 'worst':(state.statData.dimStat['3'][d.id].diffClass === 1)}"><span class="value">{{formatOutcome(state.statData.dimStat['3'][d.id].diff,1)}}</span></span></td>
+				<!-- <span class="valueIndicator" ng-class="{'better':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}"> -->
+			</tr>
+		</tbody>
+	</table>
+</div>
