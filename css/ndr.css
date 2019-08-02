@@ -8772,17 +8772,19 @@ accordion .panel-title > .small > a {
   display: inline-block;
 }
 .nav-tabs > li > a {
-  padding: 20px 30px;
-  margin-right: 0;
-  border: none;
+  padding: 24px 1.5rem;
+  min-width: 12rem;
+  text-align: center;
   color: #999999;
   font-weight: bold;
+  border: none !important;
+  border-radius: 0 !important;
 }
 .nav-tabs > li > a::after {
   content: "";
   position: absolute;
-  left: 30px;
-  right: 30px;
+  left: 20px;
+  right: 20px;
   bottom: 0;
   height: 5px;
   background-color: #ddd;
@@ -8795,6 +8797,7 @@ accordion .panel-title > .small > a {
 .nav-tabs > li.active > a:focus {
   border: none;
   border-width: 0px;
+  border-bottom-color: #ddd;
   color: #333333;
 }
 .nav-tabs > li.active > a::after,
@@ -8802,8 +8805,8 @@ accordion .panel-title > .small > a {
 .nav-tabs > li.active > a:focus::after {
   content: "";
   position: absolute;
-  left: 30px;
-  right: 30px;
+  left: 10px;
+  right: 10px;
   bottom: 0;
   height: 5px;
   background-color: #74BAD8;
@@ -10179,7 +10182,7 @@ fieldset[disabled] .IndicatorButton {
   border-right: none;
 }
 .PatientHeader {
-  margin: 30px 0 0 0;
+  margin: 0;
   padding: 20px;
   background-color: #f1efe4;
   border: 1px solid #ebe9da;
@@ -10535,6 +10538,9 @@ form .qrow {
 .questionGroup .qrow:last-child {
   border-bottom: none !important;
 }
+.subject-tag {
+  margin-bottom: 0.2rem;
+}
 .questionfield {
   width: 242px;
   min-width: 242px;
@@ -10747,6 +10753,41 @@ form .qrow:last-child {
 .Research-text-authors {
   color: #888;
   font-size: 14px;
+}
+.stat-prom .button-group {
+  margin: .6rem 0 1rem;
+}
+.stat-prom h2 {
+  font-size: 20px;
+  margin-bottom: 5px !important;
+}
+.stat-prom h3 {
+  font-size: 16px;
+  margin: 5px 0 0 !important;
+}
+.stat-prom .Button {
+  width: 12rem;
+  margin-right: 3px;
+}
+.stat-prom .table-dimension > tbody > tr:hover {
+  font-weight: 600;
+  background-color: #f7f7f7;
+}
+.stat-prom .table-reporting-char > tbody > tr > td {
+  vertical-align: middle;
+  width: 2rem;
+}
+.stat-prom .valueIndicator > .value {
+  display: inline-block;
+  text-align: center;
+  width: 3rem;
+}
+.stat-prom .table-reporting-char .table-row-header {
+  width: 16rem;
+  padding-left: 0.4rem;
+}
+.stat-prom .bold {
+  font-weight: 600;
 }
 .table-reporting tr td {
   vertical-align: bottom;
@@ -11056,6 +11097,9 @@ p.lead {
   background: #ECBC00;
 }
 .valueIndicator.good:before {
+  background: #8cb16e;
+}
+.valueIndicator.better:before {
   background: #3E9654;
 }
 .tableReporting .colHeader {
@@ -11352,4 +11396,57 @@ p.lead {
 .News-text-readmore {
   margin: 1em 0;
 }
+.variables {
+  font-size: 1.4rem;
+}
+.variables .button-group {
+  margin: .6rem 0 1rem;
+}
+.variables .form-header {
+  font-size: 24px;
+  font-weight: 400;
+}
+.variables .Button {
+  width: 12rem;
+  margin-right: 3px;
+}
+.variables table th {
+  padding: 0 0.6rem;
+  vertical-align: bottom;
+}
+.variables table td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #eae7e7;
+  border-top: 1px solid #eae7e7;
+  border-left: 1px solid #eae7e7;
+  border-right: 1px solid #eae7e7;
+  text-align: center;
+}
+.variables table td.text {
+  text-align: left;
+}
+.variables .search {
+  padding: 0.5rem 0.8rem;
+  border: none;
+  background-color: #f9f4f4;
+  width: 24.4rem;
+}
+.variables .logo-export {
+  vertical-align: bottom;
+}
+@media (min-width: 768px) {
+  .variables .row {
+    position: relative;
+  }
+  .variables .bottom-align {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    text-align: right;
+  }
+}
+/*.variables table tr {
+  border-bottom: 1px solid #eae7e7;
+  border-top: 1px solid #eae7e7;
+}*/
 /*# sourceMappingURL=ndr.css.map */
