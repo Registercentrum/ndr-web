@@ -16,9 +16,9 @@
 	<tbody>
 	  <tr class="variable" ng-repeat="f in model.reportList" ng-click="handleRowClick(f)">
 		<td class="rowHeader" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}"><span style="">{{f.question}}</span></td>
-		<td class="value myUnit"><span class="valueIndicator" ng-class="{'good':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}">{{f.unitShare.value}}%</span></td>
-		<td class="value myCounty"><span class="valueIndicator" ng-class="{'good':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}">{{f.countyShare.value}}%</span></td>
-		<td class="value"><span class="valueIndicator" ng-class="{'good':(f.sweShare.group === 4), 'ok':(f.sweShare.group === 3), 'bad':(f.sweShare.group === 2), 'worst':(f.sweShare.group === 1)}">{{f.sweShare.value}}%</span></td>
+		<td class="value myUnit"><span class="valueIndicator" ng-class="{'better':(f.unitShare.group === 4), 'ok':(f.unitShare.group === 3), 'bad':(f.unitShare.group === 2), 'worst':(f.unitShare.group === 1)}">{{f.unitShare.value}}%</span></td>
+		<td class="value myCounty"><span class="valueIndicator" ng-class="{'better':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}">{{f.countyShare.value}}%</span></td>
+		<td class="value"><span class="valueIndicator" ng-class="{'better':(f.sweShare.group === 4), 'ok':(f.sweShare.group === 3), 'bad':(f.sweShare.group === 2), 'worst':(f.sweShare.group === 1)}">{{f.sweShare.value}}%</span></td>
 	  </tr>
 	</tbody>
 </table>
