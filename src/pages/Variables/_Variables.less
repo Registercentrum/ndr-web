@@ -10,26 +10,38 @@
     font-weight: 400;
   }
   .Button {
-		width: 12rem;
-		margin-right: 3px;
-	}
-  
-  table {
+		width: 15rem;
+    margin-right: 3px;
+    padding: 6px;
+  }
 
+  table {
+    width: 100%;
+    margin-top: 2rem;
     th {
       padding: 0 0.6rem;
-      vertical-align: bottom;
+      word-break: keep-all;
+      border-bottom: 1px solid #b7b5b5;
+      cursor: pointer;
+      .sort-icon {
+        padding-left: .2rem;
+        .fas {
+          font-size: 12px;
+        }
+      }
     }
     td {
       padding: 0.4rem 0.6rem;
-      border-bottom: 1px solid #eae7e7;
-      border-top: 1px solid #eae7e7;
-      border-left: 1px solid #eae7e7;
-      border-right: 1px solid #eae7e7;
-      text-align: center;
+      border: 1px solid #f7f7f7;
+      a {
+        cursor: pointer;
+      }
     }
     td.text {
       text-align: left;
+    }
+    tr.inActive {
+      color: #ff6285;
     }
 
   }
@@ -43,6 +55,7 @@
 
   .logo-export {
     vertical-align: bottom;
+    cursor: pointer;
   }
 
   @media (min-width: 768px ) {
@@ -55,6 +68,15 @@
       bottom: 10px;
       right: 0;
       text-align: right;
+    }
+
+    .checkbox-label {
+      margin-bottom: 2rem;
+      display: inline-block;
+
+      .bold {
+        font-weight: 500;
+      }
     }
   }
 

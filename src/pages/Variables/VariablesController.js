@@ -1,63 +1,247 @@
 angular.module("ndrApp")
-    .controller('VariablesController',['$scope', '$stateParams', 'dataService', function($scope, $stateParams, dataService) {
+    .controller('VariablesController',['$scope', '$stateParams', 'dataService', 'commonService', function($scope, $stateParams, dataService, commonService) {
 
         $scope.state = {
             metafields: [],
             filtered: [],
-            fields: [ 
-                { name: 'question', header: 'Fråga', type: String },
+            countShowDomainValues: 2,
+            displayInFull: {},
+            columns: [
+                { name: 'register', header: 'Register', type: String
+                    ,showFn(query) { 
+                        return query.register === 0;
+                    },
+                    setFn(m) {
+                        if (m.isChildcareExclusive) { return "Swediabkids" }
+                        if (m.isAdultcareExclusive) { return "NDR" }
+                        return 'Alla'
+                    }
+                },
+                { name: 'form', header: 'Formulär', type: String 
+                    ,setFn(m) {
+                        switch(m.formID) {
+                            case 1:
+                                return 'Bas'
+                            case 2:
+                                return 'Incidens'
+                            default:
+                                return '';
+                        }
+                    }
+                },
+                { name: 'question', header: 'Variabel', type: String },
+                { name: 'statisticsName', header: 'Statistiknamn', type: String 
+                    ,setFn(m) {
+                        return m.statisticsName ? m.statisticsName : m.columnName;
+                    }
+                },
+                { name: 'domain', header: 'Utfall', type: String, isCompressed: true
+                    ,compressIf(m) {
+                        return m.domain.isEnumerated && m.domain.domainValues.length>2
+                    }
+                    ,setFn2(m, asCSV) {
+
+                        if (!m.domain.isEnumerated) return m.domain.description;
+
+                        var ret = '';
+                        var delimeter = !!asCSV ? ',' : '<br>';
+
+                        m.domain.domainValues
+                            .sort(function(a,b) {
+                                return a.code - b.code;
+                            })
+                            .forEach(function(dv) {
+                                ret += (dv.code + ' = ' + dv.text + delimeter);
+                            });
+
+                        return ret;
+                    }
+                },
                 { name: 'measureUnit', header: 'Enhet', type: String },
-                { name: 'minValue', header: 'Min-värde', type: Number },
-                { name: 'maxValue', header: 'Max-värde', type: Number },
-                { name: 'isAdultcareExclusive', header: 'Vuxen-exklusiv', type: Boolean },
-                { name: 'isChildcareExclusive', header: 'Barn-exklusiv', type: Boolean },
+                { name: 'minValue', header: 'Min', type: Number },
+                { name: 'maxValue', header: 'Max', type: Number },
                 { name: 'isCalculated', header: 'Beräknas', type: Boolean },
-                { name: 'helpNote', header: 'Hjälptext', type: Number }
+                { name: 'dateOfPublication', header: 'Tillagd', type: Date },
+                { name: 'dateOfRemoval', header: 'Borttagen', type: Date 
+                    , showFn(query) { 
+                        return query.inActive;
+                    } 
+                },
+                { name: 'helpNote', header: 'Hjälptext', type: String, isCompressed: true }
             ],
             meta: {
                 registers: [
                     { id: 0, desc: 'Alla' },
-                    { id: 1, desc: 'Vuxen' },
-                    { id: 2, desc: 'Barn'}
+                    { id: 1, desc: 'NDR' },
+                    { id: 2, desc: 'Swediabkids'}
                 ]
             },
             query: {
-                register: 0
+                register: 0,
+                inActive: false,
+                search: ''
             },
             sort: {
-                field: null, //default sort set below
+                column: null, //default sort set below
                 asc: true
             }
         }
 
-        $scope.state.sort.field = $scope.state.fields[0];
+        $scope.$watch('state.query', function() {
+            $scope.filter();
+        },true);
 
+        $scope.state.sort.column = $scope.state.columns[2]; //=Variabelnamn
 
+        $scope.setCalculatedAttributes = function(columns,metafields)  {
+               
+            return metafields.map(function(m) {
+                columns.forEach(function(c) {
+                    if (c.setFn) m[c.name] = c.setFn(m);
+                });
+                return m;
+            });
+        }
 
-        console.log('hej', dataService);
-
-        metafields = dataService.getValue('metafields');
-
-        console.log();
-
-
-        dataService.getMetaFields(null,null).then(function(data) {
+        dataService.getMetaFields(null,null,true).then(function(data) {
             $scope.state.metafields = dataService.getValue('metafields');
+            $scope.state.metafields = $scope.setCalculatedAttributes($scope.state.columns,$scope.state.metafields);           
             $scope.filter();
         })
 
-        $scope.setQuery = function(key,val) {
-            $scope.state.query[key] = val;
-            $scope.filter();
+        $scope.getContentHeaders = function(columns,delimeter,newLine) {
+            return columns.map(function(c) {
+                return $scope.getColContent(c.header);
+            }).join(delimeter)+newLine;
         }
 
-        $scope.displayVal = function(v,f) {
-            switch(f.type) {
+        $scope.showHideTag = function(displayInFull) {
+            return '<a>' + (displayInFull ? 'Dölj' : 'Visa') + '</a>';
+        },
+        $scope.displayVal = function(m,c,asCSV) {
+                        
+            var v = m[c.name];
+
+            if (!v) {
+                return '';
+            }
+            
+            //Show as expandlink - text "Visa"
+            if (!asCSV && c.isCompressed) {
+                if (!c.compressIf || c.compressIf(m)) {
+                    if (!$scope.state.displayInFull[m.columnName] || !!!$scope.state.displayInFull[m.columnName][c.name])
+                        return $scope.showHideTag(false)
+                }
+            }
+            
+            if(c.displayFn) return c.displayFn(m); 
+
+            if(c.name === 'domain') {
+                //if (m.isEnumerated)
+                return $scope.displayDomain(m,asCSV); 
+            }
+            
+            switch(c.type) {
                 case Boolean:
                     return v ? 'Ja' : ''
+                case Date:
+                    return v ? v.split('T')[0].split('-').join('').substring(2) : ''
                 default:
-                    return v;
+                    return v === null ? '' : v;
             } 
+        }
+        $scope.displayDomain = function(m,asCSV) {
+
+            if (!m.domain.isEnumerated) return m.domain.description;
+
+            var ret = '';
+            var delimeter = !!asCSV ? ',' : '<br>';
+
+            ret = m.domain.domainValues
+                .sort(function(a,b) {
+                    return a.code - b.code;
+                })
+                .map(function(dv) {
+                    return (dv.code + ' = ' + dv.text)
+                })
+            
+            if (!asCSV) {
+                var  showCount = $scope.state.countShowDomainValues
+                if (ret.length > showCount) {
+                    ret.push($scope.showHideTag(true))
+                } 
+            }
+
+
+            ret = ret.join(delimeter);
+
+            return ret;
+        }
+
+        $scope.toggleDisplayInFull = function(v,c) {
+
+            if (!$scope.state.displayInFull[v.columnName])
+                $scope.state.displayInFull[v.columnName] = {}
+            
+            $scope.state.displayInFull[v.columnName][c.name] = !!!$scope.state.displayInFull[v.columnName][c.name]                    
+        }
+
+        $scope.getContentData = function(rows, columns, delimeter, newLine) {
+
+            var ret = ''
+            rows.map(function(m) {
+                var arr = [];
+                columns.map(function(c) {
+                    arr.push($scope.getColContent($scope.displayVal(m,c,true)));
+                });
+                ret += arr.join(delimeter) + newLine;
+            });
+
+            return ret;
+        }
+        $scope.getContentQuery = function(query, newLine) {
+            var ret = $scope.getColContent("NDR Variabellista") + newLine;
+
+            if (query.inActive) {
+                ret += $scope.getColContent("Enbart inaktiva variabler") + newLine
+            }
+
+            ret += $scope.getColContent("Delregister: " + $scope.state.meta.registers.filter(function(r) {
+                return r.id === query.register;
+            })[0].desc) + newLine;
+
+            if (query.search) {
+                ret = $scope.getColContent("Sökord: " + query.search) + newLine;
+            }
+
+            return ret + newLine;
+
+        }
+        $scope.getColContent = function(s) {
+            return '"'+ s + '"'
+        }
+        $scope.exportToCSV = function() {
+            var content = "\ufeff"; //to work with åäö
+            var delimeter = ";"
+            var newLine =  "\n"
+            var columns = $scope.state.columns;
+            var rows = $scope.state.filtered;
+            var query = $scope.state.query;
+            var fileName = 'NDR_Variabler_' + commonService.getTimeStamp() + '.csv';
+
+            content += $scope.getContentQuery(query, newLine);
+            content += $scope.getContentHeaders(columns,delimeter,newLine);
+            content += $scope.getContentData(rows,columns,delimeter,newLine);
+
+            commonService.downloadCSV(content,fileName);
+        }
+
+        $scope.setQuery = function(key,val) {
+            $scope.state.query[key] = val;
+        }
+
+        $scope.toggleInactive = function() {
+            $scope.state.query.inActive = !$scope.state.query.inActive;
         }
 
         $scope.getSortVal = function(v,f) {
@@ -71,22 +255,27 @@ angular.module("ndrApp")
             } 
         }
 
-        $scope.sort = function(f)
+        $scope.sort = function(c)
         {
             var sort = $scope.state.sort;
             
-            sort.asc = sort.field.name === f.name ? !sort.asc : true;
-            sort.field = f;
+            sort.asc = sort.column.name === c.name ? !sort.asc : true;
+            sort.column = c;
             $scope.filter();
         }
 
         $scope.filter = function() {
 
-            var query = $scope.state.query
+            var query = $scope.state.query;
             var sort = $scope.state.sort;
             var fields = $scope.state.metafields;
             
-            //filter
+            //filter by IsActive
+            fields = fields.filter(function(f) {
+                return f.isActive == !query.inActive;
+            });
+
+            //filter by register
             fields = fields.filter(function(f) {
                 if(query.register === 1)
                     return !f.isChildcareExclusive
@@ -96,11 +285,24 @@ angular.module("ndrApp")
                 return true;
             });
 
+            //filter by search
+            var searchFields = ['question','helpNote','measureUnit','statisticsName','form']; //obs only stringfields
+            fields = fields.filter(function(f) {
+                var searchString = searchFields.map(function(sf) {
+                    return f[sf] === null ? '' : f[sf].toLowerCase();
+                }).join(' ');
+
+                if (searchString.indexOf(query.search)>-1)
+                    return true;
+
+                return false;
+            });
+
             //and sort
             fields = fields.sort(function(a,b) {
 
-                var x = $scope.getSortVal(a[sort.field.name],sort.field);
-                var y = $scope.getSortVal(b[sort.field.name],sort.field);
+                var x = $scope.getSortVal(a[sort.column.name],sort.column);
+                var y = $scope.getSortVal(b[sort.column.name],sort.column);
 
                 if (sort.asc) {
                     //if (x === null) return 0;

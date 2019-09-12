@@ -1,10 +1,9 @@
 
 
 <div class="container variables">
-    <h1 class="Page-title">NDRs Variabler</h1>
+    <h1 class="Page-title">Variabellista</h1>
     <div class="row">
         <div class="col-md-6">
-            <h3 class="form-header">Delregister</h3>
             <div class="button-group">
                 <button
                     ng-repeat="r in state.meta.registers"
@@ -15,13 +14,17 @@
             </div>
         </div>
         <div class="col-md-6 bottom-align">
-            <!--<div style="position: relative; height: 100%;">
-                <div style="position: absolute; bottom: 0;">
-                    <img src="images/export-to-csv.png" ng-click="exportToCSV()">
-                    <input class="search" type="text" placeholder="Sök"></input>
-                </div>
-            </div>-->
-            <input class="search" type="text" placeholder="Sök"></input>
+            <span ng-click="toggleInactive()">
+                <input type="checkbox" ng-checked="state.query.inActive">
+                <span class="checkbox-label" ng-class="{ bold: state.query.inActive }">Visa enbart borttagna</span>
+            </span>
+            <br />
+            <input class="search" 
+                type="text" 
+                ng-model="state.query.search" 
+                ng-model-options="{ debounce: 600 }".
+                placeholder="Sök bland variabler">
+            </input>
             <img src="images/export-to-csv.png" class="logo-export" ng-click="exportToCSV()">
         </div>
     </div>
@@ -30,22 +33,19 @@
         <div class="col-md-12">
             <table>
                 <tr>
-                    <th ng-repeat="f in state.fields" ng-click="sort(f)">{{f.header}}</th>
-                    <!--<th>Kommentar</th>-->
+                    <!--<th ng-show="!state.query.inActive">Välj</th>-->
+                    <th ng-repeat="c in state.columns" ng-show="!c.showFn || c.showFn(state.query)" ng-click="sort(c)">
+                        <span class="text">{{c.header}}</span>
+                        <span class="sort-icon" ng-show="c.name === state.sort.column.name">
+                            <i ng-show="state.sort.asc" class="fas fa-arrow-down"></i>
+                            <i ng-show="!state.sort.asc" class="fas fa-arrow-up"></i> <!-- <i class="far fa-arrow-alt-circle-up"></i>-->
+                        </span>
+                    </th>
                 </tr>
-                <tr ng-repeat="v in state.filtered">
-                    <td ng-repeat="f in state.fields" class="text">{{ displayVal(v[f.name],f) }}</td>
+                <tr ng-repeat="v in state.filtered" ng-class="{ inActive: state.query.inActive }">
+                    <!--<td ng-show="!state.query.inActive" valign="top"><input type="checkbox" valign="top"></td>-->
+                    <td ng-repeat="c in state.columns" ng-click="toggleDisplayInFull(v,c)" valign="top" ng-show="!c.showFn || c.showFn(state.query)" class="text" ng-bind-html="displayVal(v,c)" />
                 </tr>
-                <!--<tr ng-repeat="v in state.filtered">
-                    <td class="text">{{ v.question }}</td>
-                    <td>{{ v.measureUnit }}</td>
-                    <td>{{ v.minValue }}</td>
-                    <td>{{ v.maxValue }}</td>
-                    <td>{{ v.isAdultcareExclusive ? 'Ja' : '' }}</td>
-                    <td>{{ v.isChildcareExclusive ? 'Ja' : '' }}</td>
-                    <td>{{ v.isCalculated ? 'Ja' : '' }}</td>
-                    <td class="text">{{ v.helpNote }}</td>
-                </tr>-->
             </table>
         </div>
     </div>
