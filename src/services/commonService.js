@@ -40,13 +40,15 @@ angular.module('ndrApp')
       return {value: contact[metafield.columnName], date: contact.contactDate, label: label}; //$filter0('number')(value)
     }
 
-    this.getMetafieldLabel = function(value, metafield) {
+    this.getMetafieldLabel = function(value, metafield, displayMissing, excludeMeasureUnit) {
 
+      var defaultDisplayMissing = ' - ';
+
+      var missing = (displayMissing !== null) ? displayMissing : defaultDisplayMissing;
       var ret = null;
       var key = metafield.columnName;
 
-      if (typeof(value) === "undefined") return ' - '
-      if (value === null) return ' - '
+      if (typeof(value) === "undefined" || value === null) return missing;
 
       // If it's a date, format it in a nice way
       if (metafield.domain.name === 'Date') {
@@ -58,7 +60,7 @@ angular.module('ndrApp')
       } else if (metafield.domain.name === 'Bool') {
         ret = value ? 'Ja' : 'Nej';
       } else {
-        ret = value.toString().replace('.', ',') + (metafield.measureUnit != null ? ' ' + metafield.measureUnit : '');
+        ret = value.toString().replace('.', ',') + (!excludeMeasureUnit ?  (metafield.measureUnit != null ? ' ' + metafield.measureUnit : '') : '');
       }
 
       return ret;
@@ -182,6 +184,49 @@ angular.module('ndrApp')
     }
     this.getName = function(personInfo) {
       return (personInfo.firstName ? personInfo.firstName : '')  + ' ' + (personInfo.lastName ? personInfo.lastName : '');
+    }
+    this.getTimeStamp = function() {
+
+        var d = new Date();
+      
+        function pad2(n) {  // always returns a string
+            return (n < 10 ? '0' : '') + n;
+        }
+
+        return d.getFullYear() +
+               pad2(d.getMonth() + 1) + 
+               pad2(d.getDate()) +
+               pad2(d.getHours()) +
+               pad2(d.getMinutes()) +
+               pad2(d.getSeconds());
+
+    }
+
+    this.downloadCSV = function(content, fileName) {
+      var link = document.createElement("a");
+
+      if (link.download !== undefined) { // feature detection
+          // Browsers that support HTML5 download attribute
+          var blob = new Blob([content], { type: 'text/csv;encoding:utf-8' });
+          var url = URL.createObjectURL(blob);           
+          link.setAttribute("href", url);
+          link.setAttribute("download", fileName);
+          link.style = "visibility:hidden";
+      }
+      
+      if (navigator.msSaveBlob) { // IE 10+
+         link.addEventListener("click", function (event) {
+           var blob = new Blob([content], {
+             "type": "text/csv;charset=utf-8;"
+           });
+         navigator.msSaveBlob(blob, fileName);
+        }, false);
+      }
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
     }
 
   }]);
