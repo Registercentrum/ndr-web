@@ -9564,6 +9564,15 @@ fieldset[disabled] .IndicatorButton {
 .carousel-caption {
   top: -20px;
 }
+.contact-csv-export .Panel {
+  padding: 10px;
+}
+.contact-csv-export .Button {
+  width: 12rem;
+}
+.contact-csv-export .text-info {
+  margin: 0 2rem;
+}
 .FeedMedium {
   margin: 0;
   padding: 0;
@@ -9914,7 +9923,7 @@ fieldset[disabled] .IndicatorButton {
 .MultiFilter {
   border: 1px solid #888888;
   background: #fff;
-  margin: 30px 0;
+  margin-bottom: 30px;
   font-size: 14px;
 }
 .MultiFilter-row {
@@ -11407,23 +11416,38 @@ p.lead {
   font-weight: 400;
 }
 .variables .Button {
-  width: 12rem;
+  width: 15rem;
   margin-right: 3px;
+  padding: 6px;
+}
+.variables table {
+  width: 100%;
+  margin-top: 2rem;
 }
 .variables table th {
   padding: 0 0.6rem;
-  vertical-align: bottom;
+  word-break: keep-all;
+  border-bottom: 1px solid #b7b5b5;
+  cursor: pointer;
+}
+.variables table th .sort-icon {
+  padding-left: .2rem;
+}
+.variables table th .sort-icon .fas {
+  font-size: 12px;
 }
 .variables table td {
   padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid #eae7e7;
-  border-top: 1px solid #eae7e7;
-  border-left: 1px solid #eae7e7;
-  border-right: 1px solid #eae7e7;
-  text-align: center;
+  border: 1px solid #f7f7f7;
+}
+.variables table td a {
+  cursor: pointer;
 }
 .variables table td.text {
   text-align: left;
+}
+.variables table tr.inActive {
+  color: #ff6285;
 }
 .variables .search {
   padding: 0.5rem 0.8rem;
@@ -11433,6 +11457,7 @@ p.lead {
 }
 .variables .logo-export {
   vertical-align: bottom;
+  cursor: pointer;
 }
 @media (min-width: 768px) {
   .variables .row {
@@ -11443,6 +11468,13 @@ p.lead {
     bottom: 10px;
     right: 0;
     text-align: right;
+  }
+  .variables .checkbox-label {
+    margin-bottom: 2rem;
+    display: inline-block;
+  }
+  .variables .checkbox-label .bold {
+    font-weight: 500;
   }
 }
 /*.variables table tr {
