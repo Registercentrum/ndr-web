@@ -335,6 +335,23 @@ angular.module('ndrApp')
 
             };
 
+            this.fetchUnitPeriodContacts = function(data) {
+                console.log(data);
+                var url = APIconfigService.baseURL + 'Contact/' + (data.contactID || '') +
+                    '?AccountID=' + accountService.accountModel.activeAccount.accountID +
+                    '&APIKey=' + APIconfigService.APIKey +
+                    '&dateFrom=' + data.dateFrom +
+                    '&dateTo=' + data.dateTo;
+                var query = {
+                    url: APIconfigService.constructUrl(url),
+                    method: 'GET',
+                    data: data
+                };
+
+                return $http(query);
+
+            };
+
             this.saveContactNew = function(data) {
                 var url = APIconfigService.baseURL + 'Contact/' + (data.id || '') +
                     '?AccountID=' + accountService.accountModel.activeAccount.accountID +
@@ -673,8 +690,10 @@ angular.module('ndrApp')
 
             }
 
-            this.getMetaFields = function(accountID, unitType) {
-                var query = query || {};
+            this.getMetaFields = function(accountID, unitType,includeOutdated) {
+                var query = query || {
+                    includeOutdated: !!includeOutdated
+                };
                 var cache = this.data;
                 query.APIKey = APIconfigService.APIKey;
                 query.AccountID = accountID;
