@@ -71,6 +71,11 @@ angular.module('ndrApp')
                   qscope.model.cgmType = null;
                 }
               },
+              cgm: function(qscope) {
+                if (qscope.model.insulinMethod === 2) {
+                  qscope.model.cgmType = null;
+                }
+              },
               insulinMethod: function(qscope) {
                 if (qscope.model.insulinMethod != 2) {
                   qscope.model.pumpIndication = null;
