@@ -8,17 +8,17 @@ angular.module("ndrApp")
             displayInFull: {},
             columns: [
                 { name: 'register', header: 'Register', type: String
-                    ,showFn(query) { 
+                    ,showFn: function(query) { 
                         return query.register === 0;
                     },
-                    setFn(m) {
+                    setFn: function(m) {
                         if (m.isChildcareExclusive) { return "Swediabkids" }
                         if (m.isAdultcareExclusive) { return "NDR" }
                         return 'Alla'
                     }
                 },
                 { name: 'form', header: 'Formulär', type: String 
-                    ,setFn(m) {
+                    ,setFn: function(m) {
                         switch(m.formID) {
                             case 1:
                                 return 'Bas'
@@ -31,15 +31,15 @@ angular.module("ndrApp")
                 },
                 { name: 'question', header: 'Variabel', type: String },
                 { name: 'statisticsName', header: 'Statistiknamn', type: String 
-                    ,setFn(m) {
+                    ,setFn: function(m) {
                         return m.statisticsName ? m.statisticsName : m.columnName;
                     }
                 },
                 { name: 'domain', header: 'Utfall', type: String, isCompressed: true
-                    ,compressIf(m) {
+                    ,compressIf: function(m) {
                         return m.domain.isEnumerated && m.domain.domainValues.length>2
                     }
-                    ,setFn2(m, asCSV) {
+                    ,setFn2: function(m, asCSV) {
 
                         if (!m.domain.isEnumerated) return m.domain.description;
 
@@ -63,7 +63,7 @@ angular.module("ndrApp")
                 { name: 'isCalculated', header: 'Beräknas', type: Boolean },
                 { name: 'dateOfPublication', header: 'Tillagd', type: Date },
                 { name: 'dateOfRemoval', header: 'Borttagen', type: Date 
-                    , showFn(query) { 
+                    , showFn: function(query) { 
                         return query.inActive;
                     } 
                 },
