@@ -12,8 +12,14 @@ angular.module('ndrApp')
                 dateTo: $filter('date')(new Date(),format),
             };
 
+            scope.accessUsers = [6403,7057,6144,6402,5372,6404,6400,7061];
+
             scope.showForm = false;
             
+            scope.hasAccess = function() {
+                var user = accountService.accountModel.user;
+                return user.isAdministrator || (scope.accessUsers.indexOf(user.userID)>-1);
+            }
             
             scope.openModalSelectPeriod = function() {
                 $modal.open({

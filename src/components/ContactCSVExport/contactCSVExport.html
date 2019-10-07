@@ -1,5 +1,5 @@
 <div>
-    <a class="pull-right" ng-click="openModalSelectPeriod()" style="font-size: 14px; cursor: pointer;">Ladda ner grunddata</a>
+    <a class="pull-right" ng-if="hasAccess()" ng-click="openModalSelectPeriod()" style="font-size: 14px; cursor: pointer;">Ladda ner grunddata</a>
 	<!-- end Panel -->
 	<script type="text/ng-template" id="modalSelectPeriod.html">
 		<div class="modal-body text-center contact-csv-export">
