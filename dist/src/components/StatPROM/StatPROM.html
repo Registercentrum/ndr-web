@@ -70,7 +70,6 @@
 				<td>{{formatOutcome(state.statData.dimStat['1'][d.id].outcome,1)}}</td>
 				<td>{{formatOutcome(state.statData.dimStat['3'][d.id].outcome,1)}}</td>
 				<td><span class="valueIndicator" ng-class="{'better':(state.statData.dimStat['3'][d.id].diffClass === 4), 'good':(state.statData.dimStat['3'][d.id].diffClass === 3), 'bad':(state.statData.dimStat['3'][d.id].diffClass === 2), 'worst':(state.statData.dimStat['3'][d.id].diffClass === 1)}"><span class="value">{{formatOutcome(state.statData.dimStat['3'][d.id].diff,1)}}</span></span></td>
-				<!-- <span class="valueIndicator" ng-class="{'better':(f.countyShare.group === 4), 'ok':(f.countyShare.group === 3), 'bad':(f.countyShare.group === 2), 'worst':(f.countyShare.group === 1)}"> -->
 			</tr>
 		</tbody>
 	</table>
