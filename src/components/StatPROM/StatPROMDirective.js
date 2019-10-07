@@ -55,10 +55,16 @@ angular.module('ndrApp')
                 }
             }
             scope.formatOutcome = function(v, decimals, suffix) {       
-                if (!v)
+                
+                try {
+                    if (!v)
                     return '-'
 
-                return v.toFixed(decimals).replace('.',',') + (suffix ? suffix : '');   
+                    return v.toFixed(decimals).replace('.',',') + (suffix ? suffix : '');   
+                } catch(e) {
+                    return '-'
+                }
+
             }   
             scope.setDTType = function(id) {
                 this.state.formData.dt = id;
@@ -70,13 +76,16 @@ angular.module('ndrApp')
             }
             scope.fetchStat = function() {
                 dataService.getPROMStatistics(scope.activeAccount.accountID, scope.state.formData).then(function(data) {
+
+                    console.log('data',data);
+
                     scope.state.statData = data;
                     
                     //does unit have data
                     if (scope.state.statData.dimStat[3][1]) {
                         scope.setCalculated();
-                        scope.$apply();
                     }
+                    scope.$apply();
                 });
             }
 
