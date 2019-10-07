@@ -101,23 +101,25 @@ angular.module("ndrApp")
                 });
                 return m;
             });
-        }
+        };
 
         dataService.getMetaFields(null,null,true).then(function(data) {
             $scope.state.metafields = dataService.getValue('metafields');
-            $scope.state.metafields = $scope.setCalculatedAttributes($scope.state.columns,$scope.state.metafields);           
+            $scope.state.metafields = $scope.setCalculatedAttributes($scope.state.columns,$scope.state.metafields);
             $scope.filter();
-        })
+            $scope.$apply();
+        });
 
         $scope.getContentHeaders = function(columns,delimeter,newLine) {
             return columns.map(function(c) {
                 return $scope.getColContent(c.header);
             }).join(delimeter)+newLine;
-        }
+        };
 
         $scope.showHideTag = function(displayInFull) {
             return '<a>' + (displayInFull ? 'Dölj' : 'Visa') + '</a>';
-        },
+        };
+
         $scope.displayVal = function(m,c,asCSV) {
                         
             var v = m[c.name];
@@ -149,7 +151,8 @@ angular.module("ndrApp")
                 default:
                     return v === null ? '' : v;
             } 
-        }
+        };
+
         $scope.displayDomain = function(m,asCSV) {
 
             if (!m.domain.isEnumerated) return m.domain.description;
@@ -176,7 +179,7 @@ angular.module("ndrApp")
             ret = ret.join(delimeter);
 
             return ret;
-        }
+        };
 
         $scope.toggleDisplayInFull = function(v,c) {
 
@@ -184,7 +187,7 @@ angular.module("ndrApp")
                 $scope.state.displayInFull[v.columnName] = {}
             
             $scope.state.displayInFull[v.columnName][c.name] = !!!$scope.state.displayInFull[v.columnName][c.name]                    
-        }
+        };
 
         $scope.getContentData = function(rows, columns, delimeter, newLine) {
 
@@ -198,7 +201,8 @@ angular.module("ndrApp")
             });
 
             return ret;
-        }
+        };
+
         $scope.getContentQuery = function(query, newLine) {
             var ret = $scope.getColContent("NDR Variabellista") + newLine;
 
@@ -216,10 +220,12 @@ angular.module("ndrApp")
 
             return ret + newLine;
 
-        }
+        };
+
         $scope.getColContent = function(s) {
             return '"'+ s + '"'
-        }
+        };
+
         $scope.exportToCSV = function() {
             var content = "\ufeff"; //to work with åäö
             var delimeter = ";"
@@ -234,15 +240,15 @@ angular.module("ndrApp")
             content += $scope.getContentData(rows,columns,delimeter,newLine);
 
             commonService.downloadCSV(content,fileName);
-        }
+        };
 
         $scope.setQuery = function(key,val) {
             $scope.state.query[key] = val;
-        }
+        };
 
         $scope.toggleInactive = function() {
             $scope.state.query.inActive = !$scope.state.query.inActive;
-        }
+        };
 
         $scope.getSortVal = function(v,f) {
             switch(f.type) {
@@ -253,7 +259,7 @@ angular.module("ndrApp")
                 default:
                     return v;
             } 
-        }
+        };
 
         $scope.sort = function(c)
         {
@@ -262,7 +268,7 @@ angular.module("ndrApp")
             sort.asc = sort.column.name === c.name ? !sort.asc : true;
             sort.column = c;
             $scope.filter();
-        }
+        };
 
         $scope.filter = function() {
 
@@ -316,7 +322,9 @@ angular.module("ndrApp")
             });
 
             $scope.state.filtered = fields;
-        }
+        };
+
+        $scope.filter();
 
     }]);
 
