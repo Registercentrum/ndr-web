@@ -39,18 +39,18 @@
 		<tbody>
 			<tr>
 				<td class="bold">Utskickade</td>
-				<td>{{state.statData.inviteStat['1'].count}}</td>
-				<td>{{state.statData.inviteStat['3'].count}}</td>
+				<td>{{state.statData.inviteStat['1'].count ? state.statData.inviteStat['1'].count : '-'}}</td>
+				<td>{{state.statData.inviteStat['3'].count ? state.statData.inviteStat['3'].count : '-'}}</td>
 			</tr>
 			<tr>
 				<td class="bold">Besvarade</td>
-				<td>{{state.statData.inviteStat['1'].submitted}}</td>
-				<td>{{state.statData.inviteStat['3'].submitted}}</td>
+				<td>{{state.statData.inviteStat['1'].submitted ? state.statData.inviteStat['1'].submitted : '-'}}</td>
+				<td>{{state.statData.inviteStat['3'].submitted ? state.statData.inviteStat['3'].submitted : '-'}}</td>
 			</tr>
 			<tr>
-				<td class="bold">Andel besvarade (%)</td>
-				<td class="bold">{{state.statData.inviteStat['1'].share}}</td>
-				<td class="bold">{{state.statData.inviteStat['3'].share}}</td>
+				<td class="bold">Andel besvarade</td>
+				<td class="bold">{{state.statData.inviteStat['1'].share ? state.statData.inviteStat['1'].share + '%' : '-'}}</td>
+				<td class="bold">{{state.statData.inviteStat['3'].share ? state.statData.inviteStat['3'].share + '%' : '-'}}</td>
 			</tr>
 		</tbody>
 	</table>

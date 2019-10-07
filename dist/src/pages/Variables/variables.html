@@ -1,0 +1,53 @@
+
+
+<div class="container variables">
+    <h1 class="Page-title">Variabellista</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="button-group">
+                <button
+                    ng-repeat="r in state.meta.registers"
+                    ng-click="setQuery('register',{{r.id}})" class="Button Button--default ng-binding Button--default"
+                    ng-class="{'Button--info': state.query.register === r.id}">
+                    {{r.desc}}
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6 bottom-align">
+            <span ng-click="toggleInactive()">
+                <input type="checkbox" ng-checked="state.query.inActive">
+                <span class="checkbox-label" ng-class="{ bold: state.query.inActive }">Visa enbart borttagna</span>
+            </span>
+            <br />
+            <input class="search" 
+                type="text" 
+                ng-model="state.query.search" 
+                ng-model-options="{ debounce: 600 }".
+                placeholder="Sök bland variabler">
+            </input>
+            <img src="images/export-to-csv.png" class="logo-export" ng-click="exportToCSV()">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table>
+                <tr>
+                    <!--<th ng-show="!state.query.inActive">Välj</th>-->
+                    <th ng-repeat="c in state.columns" ng-show="!c.showFn || c.showFn(state.query)" ng-click="sort(c)">
+                        <span class="text">{{c.header}}</span>
+                        <span class="sort-icon" ng-show="c.name === state.sort.column.name">
+                            <i ng-show="state.sort.asc" class="fas fa-arrow-down"></i>
+                            <i ng-show="!state.sort.asc" class="fas fa-arrow-up"></i> <!-- <i class="far fa-arrow-alt-circle-up"></i>-->
+                        </span>
+                    </th>
+                </tr>
+                <tr ng-repeat="v in state.filtered" ng-class="{ inActive: state.query.inActive }">
+                    <!--<td ng-show="!state.query.inActive" valign="top"><input type="checkbox" valign="top"></td>-->
+                    <td ng-repeat="c in state.columns" ng-click="toggleDisplayInFull(v,c)" valign="top" ng-show="!c.showFn || c.showFn(state.query)" class="text" ng-bind-html="displayVal(v,c)" />
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -14,6 +14,7 @@
     <div class="col-md-12">
         <h1 class="Page-title">Söklista</h1>
         <p>Välj besöksperiod och andra sökkriterier.</p>
+        <div contact-CSV-Export />
     </div>
     <form name="searchForm">
         <div class="col-md-12">
@@ -44,35 +45,11 @@
                         <div class="MultiFilter-row-filterKnobs col-sm-7">
                             <div class="FilterDatePopup">
                                 <div class="input-group">
-                                    <!--<span class="input-group-addon">
-                                    <button
-                                            type="button"
-                                            class="FilterDatePopup-button"
-                                            ng-click="open($event, 'from')">
-                                        <i class="fa fa-calendar"></i>
-                                    </button>
-                                    </span>
-                                    <div ng-class="{ 'has-error' : searchForm.dateFrom.$error.dateFromInValid }">
-                                        <input type="text" class="FilterDatePopup-input form-control" name="dateFrom" datepicker-popup="{{ format }}" ng-model="datePickers.from.date" is-open="datePickers.from.opened" min-date="minDate" max-date="datePickers.maxDate" datepicker-options="dateOptions"
-                                            date-disabled="disabled(date, mode)" ng-required="true" close-text="Close">
-                                    </div>
-                                    <span class="input-group-addon">
-                                   <button
-                                           type="button"
-                                           class="FilterDatePopup-button"
-                                           ng-click="open($event, 'to')">
-                                       <i class="fa fa-calendar"></i>
-                                   </button>
-                                    </span>
-                                    <div ng-class="{ 'has-error' : searchForm.dateTo.$error.dateToInValid }">
-                                        <input type="text" class="FilterDatePopup-input form-control" name="dateTo" datepicker-popup="{{ format }}" ng-model="datePickers.to.date" is-open="datePickers.to.opened" min-date="minDate" max-date="datePickers.maxDate" datepicker-options="dateOptions"
-                                            date-disabled="disabled(date, mode)" ng-required="true" close-text="Close">
-                                    </div>-->
                                     <div style="display: flex">
-                                      <div style="" ng-class="{ 'has-error' : searchForm.dateFrom.$invalid }">
+                                      <div ng-class="{ 'has-error' : searchForm.dateFrom.$invalid }">
                                         <input type="text" name="dateFrom" required ng-pattern="/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ng-change="tryLoad()" class="form-control" ng-model="dateFrom" />
                                       </div>
-                                      <div style="" ng-class="{ 'has-error' : searchForm.dateTo.$invalid }">
+                                      <div ng-class="{ 'has-error' : searchForm.dateTo.$invalid }">
                                         <input type="text" name="dateTo" required ng-pattern="/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ng-change="tryLoad()" class="form-control" ng-model="dateTo" />
                                       </div>
                                     </div>
