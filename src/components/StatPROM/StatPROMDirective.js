@@ -34,20 +34,20 @@ angular.module('ndrApp')
                     var diffClass;
 
                     switch(true) {
-                    case (diff<(-1*diffStep)):
-                        diffClass = 1;
-                        break;
-                    case (diff>(1*diffStep)):
-                        diffClass = 4;
-                        break;
-                    case (diff<0):
-                        diffClass = 2;
-                        break;
-                    case (diff>0):
-                        diffClass = 3;
-                        break;
-                    default:
-                        diffClass = 0;
+                        case (diff<(-1*diffStep)):
+                            diffClass = 1;
+                            break;
+                        case (diff>(1*diffStep)):
+                            diffClass = 4;
+                            break;
+                        case (diff<0):
+                            diffClass = 2;
+                            break;
+                        case (diff>0):
+                            diffClass = 3;
+                            break;
+                        default:
+                            diffClass = 0;
                     }
 
                     scope.state.statData.dimStat[3][d].diffClass = diffClass;

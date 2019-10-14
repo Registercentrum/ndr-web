@@ -1,5 +1,5 @@
 <div class="stat-prom">
-	<h1 class="Panel-title">PROM</h1>
+	<h1 class="Panel-title">Diabetesenkäten</h1>
 	<p>Uppgifterna nedan baseras på enkäter från de senaste 365 dagarna.<br />Tabellen uppdateras varje natt.</p>
 	<!--<div style="margin-bottom: 15px" ng-if="state.unitDTTypes.length>1">
 		<button style="margin-right: 5px"
@@ -55,6 +55,15 @@
 		</tbody>
 	</table>
 	<h2>Utfall</h2>
+	<div class="col-md-12 descLabels">
+		<div class="pull-right">
+			<h3 id="header">Jämförelse med riket angivet i procentenheter</h3>
+			<span class="valueIndicator worst">< -5</span>
+			<span class="valueIndicator bad">-5 - 0</span>
+			<span class="valueIndicator good">0 - 5</span>
+			<span class="valueIndicator better">> 5</span>
+		</div>
+	</div>
 	<table ng-if="state.statData" class="table-reporting-char table-dimension table table-responsive">
 		<thead>
 		<tr>

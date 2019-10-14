@@ -10791,6 +10791,9 @@ form .qrow:last-child {
   text-align: center;
   width: 3rem;
 }
+.stat-prom .descLabels #header {
+  font-size: 12px !important;
+}
 .stat-prom .table-reporting-char .table-row-header {
   width: 16rem;
   padding-left: 0.4rem;
